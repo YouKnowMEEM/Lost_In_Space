@@ -1,0 +1,40 @@
+{
+  "id": "apollo-11-eagle-descent-stage",
+  "name": "Eagle",
+  "mission": "Apollo 11",
+  "vehicle": "Lunar Module LM-5",
+  "artifactType": "Lunar Module Descent Stage",
+  "location": "Tranquility Base, Mare Tranquillitatis",
+  "landingDate": "1969-07-20",
+  "story": "Eagle was Apollo 11's lunar module. On July 20, 1969, it carried Neil Armstrong and Edwin 'Buzz' Aldrin from lunar orbit to the Sea of Tranquility and became the vehicle from which humans first stepped onto another world. After the astronauts launched the ascent stage to return to lunar orbit, the descent stage remained at Tranquility Base.",
+  "facts": [
+    {"label":"Mission","value":"Apollo 11"},
+    {"label":"Call sign","value":"Eagle"},
+    {"label":"Module","value":"LM-5"},
+    {"label":"Landing site","value":"Tranquility Base"},
+    {"label":"Region","value":"Mare Tranquillitatis"},
+    {"label":"Landing","value":"July 20, 1969"},
+    {"label":"Crew aboard LM","value":"Neil Armstrong · Buzz Aldrin"},
+    {"label":"Descent stage","value":"Left on the Moon"},
+    {"label":"Ascent stage","value":"Returned to lunar orbit"}
+  ],
+  "timeline": [
+    {"date":"July 16, 1969","title":"Launch","text":"Apollo 11 launches from Launch Complex 39A aboard Saturn V AS-506."},
+    {"date":"July 19, 1969","title":"Lunar orbit","text":"Apollo 11 enters lunar orbit. Armstrong and Aldrin prepare Eagle for descent."},
+    {"date":"July 20, 1969","title":"Eagle lands","text":"The lunar module touches down in the Sea of Tranquility. Armstrong reports that the Eagle has landed."},
+    {"date":"July 20–21, 1969","title":"The first footsteps","text":"Armstrong and Aldrin work on the surface, deploy experiments, photograph the site and collect lunar samples."},
+    {"date":"July 21, 1969","title":"Ascent","text":"The ascent stage lifts off using the descent stage as its launch platform and later rendezvous with Columbia."},
+    {"date":"After ascent","title":"The descent stage stays","text":"The lower stage remains at Tranquility Base as a physical record of the first crewed lunar landing."}
+  ],
+  "media": [
+    {"type":"NASA archive","title":"Apollo 11 Mission Page","source":"NASA","url":"https://www.nasa.gov/mission/apollo-11/"},
+    {"type":"NASA history","title":"July 20, 1969 — One Giant Leap","source":"NASA History","url":"https://www.nasa.gov/history/july-20-1969-one-giant-leap-for-mankind/"},
+    {"type":"NASA science","title":"Apollo 11 Landing Site From Dawn to Dusk","source":"NASA / GSFC / ASU","url":"https://science.nasa.gov/resource/apollo-11-landing-site-from-dawn-to-dusk/"},
+    {"type":"NASA archive","title":"Apollo 11 Mission Overview","source":"NASA History","url":"https://www.nasa.gov/history/apollo-11-mission-overview/"}
+  ],
+  "sources": [
+    {"kind":"Primary archive","title":"Apollo 11 — NASA","note":"NASA's mission page with mission overview, photography, video and audio resources.","url":"https://www.nasa.gov/mission/apollo-11/"},
+    {"kind":"Historical record","title":"Apollo 11 Mission Overview","note":"NASA historical mission record with crew, LM-5, landing details and mission milestones.","url":"https://www.nasa.gov/history/apollo-11-mission-overview/"},
+    {"kind":"Lunar imagery","title":"Apollo 11 Landing Site From Dawn to Dusk","note":"NASA/GSFC/ASU resource using Lunar Reconnaissance Orbiter imagery to show the landing site and surface tracks.","url":"https://science.nasa.gov/resource/apollo-11-landing-site-from-dawn-to-dusk/"}
+  ]
+}

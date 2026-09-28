@@ -1,0 +1,1 @@
+Place the supplied audio file here and name it home-audio.mp3. The home page plays it at 45% volume after the visitor presses the sound button. Audio autoplay is intentionally not forced by the browser.

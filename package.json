@@ -1,0 +1,30 @@
+{
+  "name": "sleeping-beauties",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev:all": "concurrently -k \"npm run dev\" \"npm run dev --prefix server\"",
+    "dev:api": "npm run dev --prefix server"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.3.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "three": "^0.180.0",
+    "react-router-dom": "^7.9.3",
+    "framer-motion": "^12.23.24",
+    "zustand": "^5.0.8",
+    "@react-three/postprocessing": "^3.0.4",
+    "concurrently": "^9.1.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.2",
+    "vite": "^7.1.7"
+  }
+}
