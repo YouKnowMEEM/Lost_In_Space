@@ -229,7 +229,6 @@ export function Home() {
       </Canvas>
     </div>
 
-    <div className="solar-scale-caption">Planetary orbit spacing uses a shared AU scale; the Moon orbit and deep-space probes are compressed for visibility.</div>
     <div className="solar-search-wrap">
       <label className="solar-search">
         <ScanLine size={18}/>
@@ -251,7 +250,7 @@ export function Home() {
       {selected === "moon" && <><em>Earth's only natural satellite</em><button onClick={enterMoonArchive} disabled={!!journey}>Explore <ArrowRight size={16}/></button></>}
       {selected === "mars" && <><em>Dusty, cold, desert world with a very thin atmosphere.</em><button onClick={enterMarsArchive} disabled={!!journey}>Explore <ArrowRight size={16}/></button></>}
       {selected === "deep" && <em>Interplanetary and heliocentric objects</em>}
-      {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em><small className="scale-note">Schematic deep-space placement · not to scale</small></>}
+      {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em></>}
     </div>}
     <AnimatePresence>{journey?.phase === "fade" && <motion.div className={`moon-journey-fade journey-${journey.world}`} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.46}} aria-hidden="true"/>}</AnimatePresence>
     <button className="solar-audio-toggle" onClick={()=>setAudioOn(v=>!v)} aria-label={audioOn?"Mute ambient audio":"Play ambient audio"}>
