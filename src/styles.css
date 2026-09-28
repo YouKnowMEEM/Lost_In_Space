@@ -455,6 +455,7 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
 .nav-dropdown-menu a{padding:10px 12px;border-radius:6px;color:#c9d8e8;text-decoration:none;font-size:12px}
 .nav-dropdown-menu a:hover{background:rgba(113,188,239,.13);color:white}
 .planet-hover-word{display:block;white-space:nowrap;color:#f5f8ff;font:800 12px "Nunito Sans",system-ui,sans-serif;letter-spacing:.18em;text-shadow:0 2px 12px #000,0 0 16px #a6d8ff;pointer-events:none}
+.deep-space-probe-label{display:block;padding:5px 8px;border:1px solid rgba(151,208,250,.55);border-radius:6px;background:rgba(3,10,20,.9);box-shadow:0 2px 12px rgba(0,0,0,.65),0 0 14px rgba(94,178,240,.2);color:#f0f7ff;font:800 11px/1.2 "Nunito Sans",system-ui,sans-serif;letter-spacing:.04em;text-shadow:0 1px 4px #000;white-space:nowrap;pointer-events:none}
 .solar-explore-pop{left:auto;right:clamp(22px,5vw,78px);top:50%;bottom:auto;transform:translateY(-50%);width:min(280px,calc(100% - 40px));padding:22px 24px;background:rgba(7,16,31,.82);border-color:rgba(165,211,248,.28)}
 .solar-explore-pop>strong{font-size:23px;letter-spacing:.12em}
 .solar-explore-pop>em{color:#d0d9e6;font:italic 15px/1.55 Georgia,serif}

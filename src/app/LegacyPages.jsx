@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { CameraControls, Float, Html, Stars, useGLTF } from "@react-three/drei";
+import { CameraControls, Float, Html, Stars, useGLTF, useTexture } from "@react-three/drei";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -113,10 +113,15 @@ export function Home() {
   const [selected, setSelected] = useState(null);
   const [audioOn, setAudioOn] = useState(true);
   const [welcomeVisible, setWelcomeVisible] = useState(true);
+  const [speedModifier, setSpeedModifier] = useState(1);
+  const [distanceToSelected, setDistanceToSelected] = useState(null);
   const audioRef = useRef(null);
   const cameraRef = useRef(null);
   const moonAnchorRef = useRef(null);
   const marsAnchorRef = useRef(null);
+  const earthAnchorRef = useRef(null);
+  const sunAnchorRef = useRef(null);
+  const probesRefs = useRef({});
   const [journey, setJourney] = useState(null);
   useEffect(() => {
     const object = new URLSearchParams(location.search).get("object");
@@ -207,7 +212,7 @@ export function Home() {
     </AnimatePresence>
     <audio ref={audioRef} loop src="/audio/home-audio.mp3" preload="auto"/>
     <div className="solar-home-scene">
-      <Canvas shadows camera={{ position: [0, 5.5, 13.5], fov: 42, near: 0.1, far: 240 }} dpr={[1, 1.75]}>
+      <Canvas shadows camera={{ position: [0, 5.5, 13.5], fov: 42, near: 0.1, far: 500 }} dpr={[1, 1.75]}>
         <color attach="background" args={["#030712"]}/>
         <ambientLight intensity={0.12}/>
         <pointLight
@@ -224,12 +229,21 @@ export function Home() {
             shadow-normalBias={0.006}
         />
         <MovingStarfield/>
-        <SolarSystem selected={selected} onSelect={setSelected} moonAnchorRef={moonAnchorRef} marsAnchorRef={marsAnchorRef} paused={!!journey}/>
-        <CameraControls ref={cameraRef} makeDefault minDistance={0.12} maxDistance={34} smoothTime={1.25} dollyToCursor={false}/>
+        <Suspense fallback={null}>
+          <SolarSystem selected={selected} onSelect={setSelected} moonAnchorRef={moonAnchorRef} marsAnchorRef={marsAnchorRef} earthAnchorRef={earthAnchorRef} sunAnchorRef={sunAnchorRef} probesRefs={probesRefs} paused={!!journey} speedModifier={speedModifier} cameraRef={cameraRef} onDistanceChange={setDistanceToSelected}/>
+        </Suspense>
+        <CameraControls ref={cameraRef} makeDefault minDistance={1.5} maxDistance={80} smoothTime={0.6} dollyToCursor={false}/>
       </Canvas>
     </div>
 
     <div className="solar-scale-caption">Planetary orbit spacing uses a shared AU scale; the Moon orbit and deep-space probes are compressed for visibility.</div>
+    {distanceToSelected && selected && <div style={{ position: "absolute", top: 20, left: 20, zIndex: 1000, background: "rgba(0,0,0,0.5)", padding: "8px 14px", borderRadius: "8px", color: "#afc8e8", fontFamily: "monospace", fontSize: "13px", backdropFilter: "blur(4px)", letterSpacing: "0.5px" }}>
+      <span style={{ color: "#7a9cc6", fontSize: "11px" }}>DIST </span>{distanceToSelected} AU
+    </div>}
+    <div className="solar-controls-panel" style={{ position: "absolute", bottom: 20, right: 20, zIndex: 1000, background: "rgba(0,0,0,0.5)", padding: "10px", borderRadius: "8px", color: "white", display: "flex", flexDirection: "column", gap: "10px", backdropFilter: "blur(4px)" }}>
+      
+      <label style={{ display: "flex", alignItems: "flex-start", gap: "8px", flexDirection: "column" }}>Simulation Speed <input type="range" min="0" max="5" step="0.1" value={speedModifier} onChange={e => setSpeedModifier(parseFloat(e.target.value))} style={{ width: "150px" }} /></label>
+    </div>
     <div className="solar-search-wrap">
       <label className="solar-search">
         <ScanLine size={18}/>
@@ -260,64 +274,73 @@ export function Home() {
   </main></Shell>;
 }
 
-const EARTH_MODEL_URL = "https://solarsystem.nasa.gov/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaTBSIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--7c1183d35fdc9e4b5143c8601376552b89b5d99f/Earth_1_12756.glb";
-const MARS_MODEL_URL = "https://solarsystem.nasa.gov/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdEFRIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--9ddbf780bb3c564b8e561bb238a2f6713d445c42/Mars_1_6792.glb";
+const PLANET_TEXTURES = {
+  earth: "/models/2k_earth.jpeg",
+  mars: "/models/2k_mars.jpeg",
+  moon: "/models/2k_moon.jpeg"
+};
 
-function CelestialModel({ url, radius, onClick, name, hovered, setHovered }) {
+function SunModel({ onClick, hovered, setHovered }) {
   const spin = useRef();
-  const { scene } = useGLTF(url);
-  const object = useMemo(() => {
+  const { scene } = useGLTF("/models/sun.glb");
+  const model = useMemo(() => {
     const clone = scene.clone(true);
     clone.traverse((node) => {
       if (node.isMesh) {
-        // The Sun is a self-lit visual object. It must not block its own
-        // point light, while planets should cast and receive eclipse shadows.
-        node.castShadow = name !== "sun";
-        node.receiveShadow = name !== "sun";
-        if (name === "sun") {
-          const materials = Array.isArray(node.material) ? node.material : [node.material];
-          materials.forEach((material) => {
-            if (!material) return;
-            // The NASA Sun model uses an emissive texture; temper it so
-            // surface detail remains visible instead of clipping to yellow-white.
-            if ("emissiveIntensity" in material) material.emissiveIntensity = 0.32;
-            material.needsUpdate = true;
-          });
-        }
+        node.castShadow = false;
+        node.receiveShadow = false;
+        const materials = Array.isArray(node.material) ? node.material : [node.material];
+        materials.forEach((material) => {
+          if (material && "emissiveIntensity" in material) material.emissiveIntensity = 1.2;
+          if (material && "emissive" in material) material.emissive = new THREE.Color("#ffcc66");
+          if (material) material.needsUpdate = true;
+        });
       }
     });
     return clone;
   }, [scene]);
+  
   const fit = useMemo(() => {
-    const box = new THREE.Box3().setFromObject(object);
+    const box = new THREE.Box3().setFromObject(model);
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
     const diameter = Math.max(size.x, size.y, size.z) || 1;
-    return { scale: (radius * 2) / diameter, center };
-  }, [object, radius]);
+    return { scale: (1.05 * 2) / diameter, center };
+  }, [model]);
+
   useFrame((_, delta) => {
     if (spin.current) spin.current.rotation.y += delta * 0.11;
   });
-  return <group onClick={onClick} onPointerOver={(e)=>{e.stopPropagation();setHovered(name)}} onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
-    <group ref={spin} scale={fit.scale}>
-      <primitive object={object} position={[-fit.center.x,-fit.center.y,-fit.center.z]}/>
+
+  return (
+    <group onClick={onClick} onPointerOver={(e)=>{e.stopPropagation();setHovered("sun")}} onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
+      <pointLight position={[0,0,0]} intensity={60} distance={4.5} decay={2} color="#ffddaa" />
+      <group ref={spin} scale={fit.scale}>
+        <primitive object={model} position={[-fit.center.x,-fit.center.y,-fit.center.z]}/>
+      </group>
     </group>
-    {hovered === name && <Html position={[radius*1.25,0.15,0]} center distanceFactor={7} zIndexRange={[30,0]}><span className="planet-hover-word">{name.toUpperCase()}</span></Html>}
-  </group>;
+  );
 }
 useGLTF.preload("/models/sun.glb");
-useGLTF.preload("/models/moon.glb");
-useGLTF.preload(EARTH_MODEL_URL);
-useGLTF.preload(MARS_MODEL_URL);
 
-function PlanetFallback({ radius, color, name, hovered, setHovered, onClick }) {
-  return <group onClick={onClick} onPointerOver={(e)=>{e.stopPropagation();setHovered(name)}} onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
-    <mesh>
-      <sphereGeometry args={[radius,40,32]}/>
-      <meshStandardMaterial color={color} roughness={1}/>
-    </mesh>
-    {hovered===name && <Html position={[radius*1.3,.12,0]} center distanceFactor={7}><span className="planet-hover-word">{name.toUpperCase()}</span></Html>}
-  </group>;
+function CelestialModel({ radius, onClick, name, hovered, setHovered }) {
+  const spin = useRef();
+  const texture = useTexture(PLANET_TEXTURES[name]);
+  useFrame((_, delta) => {
+    // Keep the Moon tidally locked in this schematic: its position orbits Earth,
+    // while the visible face stays fixed instead of rotating around its axis.
+    if (name !== "moon" && spin.current) spin.current.rotation.y += delta * 0.11;
+  });
+  return (
+    <group onClick={onClick} onPointerOver={(e)=>{e.stopPropagation();setHovered(name)}} onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
+      <group ref={spin}>
+        <mesh castShadow receiveShadow>
+          <sphereGeometry args={[radius, 64, 32]} />
+          <meshStandardMaterial map={texture} roughness={1} />
+        </mesh>
+      </group>
+    </group>
+  );
 }
 
 function MovingStarfield() {
@@ -334,14 +357,14 @@ function MovingStarfield() {
 }
 
 const PROBE_DATA = [
-  { id:"voyager-1", label:"Voyager 1", color:"#c9b98f", position:[8.7,.55,-1.2], style:"voyager" },
-  { id:"voyager-2", label:"Voyager 2", color:"#c9b98f", position:[-7.8,-.35,2.6], style:"voyager" },
-  { id:"pioneer-10", label:"Pioneer 10", color:"#d9b34f", position:[-1.8,.4,6.9], style:"pioneer" },
-  { id:"pioneer-11", label:"Pioneer 11", color:"#d9b34f", position:[2.8,-.55,-7.6], style:"pioneer" },
-  { id:"new-horizons", label:"New Horizons", color:"#aeb9c7", position:[-5.8,.9,-7.3], style:"new-horizons" }
+  { id:"voyager-1", label:"Voyager 1", color:"#c9b98f", position:[8.7*2.2, .55*2.2, -1.2*2.2], style:"voyager" },
+  { id:"voyager-2", label:"Voyager 2", color:"#c9b98f", position:[-7.8*2.2, -.35*2.2, 2.6*2.2], style:"voyager" },
+  { id:"pioneer-10", label:"Pioneer 10", color:"#d9b34f", position:[-1.8*2.2, .4*2.2, 6.9*2.2], style:"pioneer" },
+  { id:"pioneer-11", label:"Pioneer 11", color:"#d9b34f", position:[2.8*2.2, -.55*2.2, -7.6*2.2], style:"pioneer" },
+  { id:"new-horizons", label:"New Horizons", color:"#aeb9c7", position:[-5.8*2.2, .9*2.2, -7.3*2.2], style:"new-horizons" }
 ];
 
-function DeepSpaceProbe({ probe, hovered, setHovered, onClick }) {
+function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef }) {
   const group = useRef();
   const isPioneer = probe.style === "pioneer";
   const isNH = probe.style === "new-horizons";
@@ -350,7 +373,7 @@ function DeepSpaceProbe({ probe, hovered, setHovered, onClick }) {
   useFrame((_,delta) => {
     if (group.current) group.current.rotation.y += delta * (isPioneer ? .055 : .035);
   });
-  return <group position={probe.position} ref={group} rotation={[.24,.4,-.18]}
+  return <group position={probe.position} ref={(node) => { group.current = node; if (anchorRef) anchorRef(node); }} rotation={[.24,.4,-.18]}
                 onClick={(e)=>{e.stopPropagation();onClick(probe.id)}}
                 onPointerOver={(e)=>{e.stopPropagation();setHovered(probe.id)}}
                 onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
@@ -367,9 +390,11 @@ function DeepSpaceProbe({ probe, hovered, setHovered, onClick }) {
         <mesh material={gold}><boxGeometry args={[.24,.012,.27]}/></mesh>
         {[0,1,2,3].map(i=><mesh key={i} position={[-.09+i*.06,.009,0]}><boxGeometry args={[.006,.006,.25]}/><meshStandardMaterial color="#6d7890" metalness={0.25} roughness={0.7}/></mesh>)}
       </group>)}
-      {isNH && <mesh position={[.19,-.015,-.1]} material={gold}><boxGeometry args={[.3,.012,.22]}/></mesh>}
+    {isNH && <mesh position={[.19,-.015,-.1]} material={gold}><boxGeometry args={[.3,.012,.22]}/></mesh>}
     </>}
-    {hovered===probe.id && <Html position={[.34,.22,0]} center distanceFactor={8}><span className="planet-hover-word">{probe.label.toUpperCase()}</span></Html>}
+    <Html position={[0,.48,0]} center distanceFactor={12} zIndexRange={[30,0]}>
+      <span className="deep-space-probe-label">{probe.label}</span>
+    </Html>
   </group>;
 }
 
@@ -398,7 +423,7 @@ function EllipticalOrbit({ semiMajor, eccentricity, inclination = 0, color = "#9
   return <group rotation={[inclination,0,0]}><primitive object={line}/></group>;
 }
 
-function SolarSystem({ selected, onSelect, moonAnchorRef, marsAnchorRef, paused }) {
+function SolarSystem({ selected, onSelect, moonAnchorRef, marsAnchorRef, earthAnchorRef, sunAnchorRef, probesRefs, paused, speedModifier, cameraRef, onDistanceChange }) {
   const [hovered,setHovered] = useState(null);
   const elapsed = useRef(0);
   const earthPosition = useRef();
@@ -408,14 +433,31 @@ function SolarSystem({ selected, onSelect, moonAnchorRef, marsAnchorRef, paused 
   const marsPlane = useRef();
   const moonPlane = useRef();
   const moonWorld = useMemo(() => new THREE.Vector3(), []);
-  const earthA = 2.2, marsA = 2.2 * 1.523679, moonA = .42;
+  const earthA = 5.0, marsA = 5.0 * 1.523679, moonA = 0.85;
   const earthE = .0167, marsE = .0934, moonE = .0549;
   const earthPeriod = 365.256, marsPeriod = 686.98, moonPeriod = 27.3217;
   const inclinationMars = THREE.MathUtils.degToRad(1.85);
   const inclinationMoon = THREE.MathUtils.degToRad(5.145);
-  useFrame((_, delta) => {
+  const targetPos = useMemo(() => new THREE.Vector3(), []);
+  const camPos = useMemo(() => new THREE.Vector3(), []);
+  const prevSelected = useRef(null);
+  const distFrameCount = useRef(0);
+
+  const RADII = { sun: 1.05, earth: .31, moon: .105, mars: .24 };
+  const ZOOM_DISTANCES = { sun: 3.5, earth: 1.4, moon: 0.6, mars: 1.1 };
+
+  const getTargetRef = (sel) => {
+    if (sel === "earth") return earthAnchorRef;
+    if (sel === "mars") return marsAnchorRef;
+    if (sel === "moon") return moonAnchorRef;
+    if (sel === "sun") return sunAnchorRef;
+    if (probesRefs && probesRefs.current[sel]) return { current: probesRefs.current[sel] };
+    return null;
+  };
+
+  useFrame((state, delta) => {
     if (paused) return;
-    elapsed.current += Math.min(delta, .05) * 3; // three simulated days per real second
+    elapsed.current += Math.min(delta, .05) * 3 * speedModifier;
     const days = elapsed.current;
     const earthEccentric = solveKepler((days / earthPeriod) * Math.PI * 2 + .3, earthE);
     const marsEccentric = solveKepler((days / marsPeriod) * Math.PI * 2 + 2.1, marsE);
@@ -424,29 +466,83 @@ function SolarSystem({ selected, onSelect, moonAnchorRef, marsAnchorRef, paused 
     if (marsPosition.current) marsPosition.current.position.set(marsA * (Math.cos(marsEccentric) - marsE), 0, marsA * Math.sqrt(1-marsE*marsE) * Math.sin(marsEccentric));
     if (moonPosition.current) moonPosition.current.position.set(moonA * (Math.cos(moonEccentric) - moonE), 0, moonA * Math.sqrt(1-moonE*moonE) * Math.sin(moonEccentric));
     if (moonAnchorRef?.current) moonAnchorRef.current.getWorldPosition(moonWorld);
+    
+    const controls = cameraRef?.current;
+    if (!controls) return;
+
+    // Selection changed — fire a one-shot fly-to animation
+    if (selected !== prevSelected.current) {
+      prevSelected.current = selected;
+      
+      const tRef = selected ? getTargetRef(selected) : sunAnchorRef;
+      if (tRef && tRef.current) {
+        tRef.current.getWorldPosition(targetPos);
+        const radius = RADII[selected] || 0.3;
+        const zoomDist = ZOOM_DISTANCES[selected] || (radius * 4.5);
+        
+        // Compute a destination camera position: offset from target
+        controls.getPosition(camPos);
+        const dir = camPos.clone().sub(targetPos);
+        if (dir.lengthSq() < 0.001) dir.set(0, 0.4, 1);
+        dir.normalize().multiplyScalar(zoomDist);
+        const dest = targetPos.clone().add(dir);
+        
+        // Set clipping distance — generous padding so you can never enter the sphere
+        controls.minDistance = radius * 3;
+        
+        // Smooth fly-to animation (setLookAt with smooth=true)
+        controls.setLookAt(
+          dest.x, dest.y, dest.z,
+          targetPos.x, targetPos.y, targetPos.z,
+          true
+        );
+      } else if (!selected) {
+        controls.minDistance = 1.5;
+        controls.setLookAt(0, 5.5, 13.5, 0, 0, 0, true);
+      }
+    }
+    
+    // For orbiting objects: continuously update the controls target to follow them
+    if (selected) {
+      const tRef = getTargetRef(selected);
+      if (tRef && tRef.current) {
+        tRef.current.getWorldPosition(targetPos);
+        controls.moveTo(targetPos.x, targetPos.y, targetPos.z, false);
+      }
+    }
+    
+    // Distance calculation (throttle to every ~10 frames for perf)
+    distFrameCount.current++;
+    if (onDistanceChange && distFrameCount.current % 10 === 0) {
+      controls.getPosition(camPos);
+      const tRef = selected ? getTargetRef(selected) : sunAnchorRef;
+      if (tRef && tRef.current) {
+        tRef.current.getWorldPosition(targetPos);
+        const dist = camPos.distanceTo(targetPos);
+        onDistanceChange((dist * 0.2).toFixed(2));
+      }
+    }
   });
   const select = (name) => (event) => { event.stopPropagation(); onSelect(name); };
   return <>
-    <Suspense fallback={<PlanetFallback radius={1.05} color="#f6bb48" name="sun" hovered={hovered} setHovered={setHovered} onClick={select("sun")}/>}>
-      <CelestialModel url="/models/sun.glb" radius={1.05} name="sun" hovered={hovered} setHovered={setHovered} onClick={select("sun")}/>
-    </Suspense>
+    <group ref={sunAnchorRef}>
+      <SunModel hovered={hovered} setHovered={setHovered} onClick={select("sun")} />
+    </group>
     <EllipticalOrbit semiMajor={earthA} eccentricity={earthE}/>
     <EllipticalOrbit semiMajor={marsA} eccentricity={marsE} inclination={inclinationMars}/>
     {PROBE_DATA.map(probe =>
-        <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect}/>
+        <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect} anchorRef={(node) => { if (probesRefs) probesRefs.current[probe.id] = node; }}/>
     )}
     <group ref={earthPlane}>
       <group ref={earthPosition}>
-        <Suspense fallback={<PlanetFallback radius={.31} color="#397ca9" name="earth" hovered={hovered} setHovered={setHovered} onClick={select("earth")}/>}>
-          <CelestialModel url={EARTH_MODEL_URL} radius={.31} name="earth" hovered={hovered} setHovered={setHovered} onClick={select("earth")}/>
-        </Suspense>
+        <group ref={earthAnchorRef}>
+          <CelestialModel radius={.31} name="earth" hovered={hovered} setHovered={setHovered} onClick={select("earth")} />
+        </group>
         <EllipticalOrbit semiMajor={moonA} eccentricity={moonE} inclination={inclinationMoon} color="#aabbd0" opacity={.25}/>
         <group ref={moonPlane} rotation={[inclinationMoon,0,0]}>
           <group ref={moonPosition}>
             <group ref={moonAnchorRef}>
-              <Suspense fallback={<PlanetFallback radius={.105} color="#aaa9a3" name="moon" hovered={hovered} setHovered={setHovered} onClick={select("moon")}/>}>
-                <CelestialModel url="/models/moon.glb" radius={.105} name="moon" hovered={hovered} setHovered={setHovered} onClick={select("moon")}/>
-              </Suspense>
+              <CelestialModel radius={.105} name="moon" hovered={hovered} setHovered={setHovered} onClick={select("moon")} />
             </group>
           </group>
         </group>
@@ -455,14 +551,13 @@ function SolarSystem({ selected, onSelect, moonAnchorRef, marsAnchorRef, paused 
     <group ref={marsPlane} rotation={[inclinationMars,0,0]}>
       <group ref={marsPosition}>
         <group ref={marsAnchorRef}>
-          <Suspense fallback={<PlanetFallback radius={.24} color="#a64c32" name="mars" hovered={hovered} setHovered={setHovered} onClick={select("mars")}/>}>
-            <CelestialModel url={MARS_MODEL_URL} radius={.24} name="mars" hovered={hovered} setHovered={setHovered} onClick={select("mars")}/>
-          </Suspense>
+          <CelestialModel radius={.24} name="mars" hovered={hovered} setHovered={setHovered} onClick={select("mars")} />
         </group>
       </group>
     </group>
   </>;
 }
+
 
 export function LandingPage() {
   const navigate = useNavigate();

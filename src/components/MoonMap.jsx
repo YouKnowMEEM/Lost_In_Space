@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { CameraControls, Html, Stars, useGLTF } from "@react-three/drei";
+import { CameraControls, Html, Stars, useTexture } from "@react-three/drei";
 
 // Apollo 11 landed at 0.67409° N, 23.47298° E (Tranquility Base).
 // The marker is positioned using the standard latitude/longitude sphere mapping.
@@ -17,42 +17,19 @@ export function latLngToVector3(lat, lng, radius = 1.29) {
 
 function MoonModel() {
   const spin = useRef();
-  const { scene } = useGLTF("/models/moon.glb");
+  const texture = useTexture("/models/2k_moon.jpeg");
   useFrame((_, delta) => {
     if (spin.current) spin.current.rotation.y += delta * 0.025;
   });
-  const model = useMemo(() => {
-    const clone = scene.clone(true);
-    clone.traverse((object) => {
-      if (!object.isMesh) return;
-      object.castShadow = true;
-      object.receiveShadow = true;
-      if (Array.isArray(object.material)) {
-        object.material = object.material.map((material) => material.clone());
-      } else if (object.material) {
-        object.material = object.material.clone();
-      }
-    });
-    return clone;
-  }, [scene]);
-
-  const fit = useMemo(() => {
-    const bounds = new THREE.Box3().setFromObject(model);
-    const size = bounds.getSize(new THREE.Vector3());
-    const center = bounds.getCenter(new THREE.Vector3());
-    const maxDimension = Math.max(size.x, size.y, size.z) || 1;
-    return { center, scale: 7.3 / maxDimension };
-  }, [model]);
-
   return (
       <group ref={spin}>
-        <group scale={fit.scale}>
-          <primitive object={model} position={[-fit.center.x, -fit.center.y, -fit.center.z]} />
-        </group>
+        <mesh>
+          <sphereGeometry args={[3.65, 64, 32]} />
+          <meshStandardMaterial map={texture} roughness={1} />
+        </mesh>
       </group>
   );
 }
-useGLTF.preload("/models/moon.glb");
 
 function EagleMarker({ onOpen }) {
   const marker = useMemo(() => latLngToVector3(0.67409, 23.47298, 3.70), []);
@@ -138,27 +115,18 @@ export default function MoonMap({ onDecrypt }) {
 // Viking 1 lander site: 22.48° N, 47.97° W (Chryse Planitia).
 function MarsModel() {
   const spin = useRef();
-  const { scene } = useGLTF("https://solarsystem.nasa.gov/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdEFRIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--9ddbf780bb3c564b8e561bb238a2f6713d445c42/Mars_1_6792.glb");
+  const texture = useTexture("/models/2k_mars.jpeg");
   useFrame((_, delta) => {
     if (spin.current) spin.current.rotation.y += delta * 0.024;
   });
-  const model = useMemo(() => {
-    const clone = scene.clone(true);
-    clone.traverse((object) => {
-      if (object.isMesh) {
-        object.castShadow = true;
-        object.receiveShadow = true;
-      }
-    });
-    return clone;
-  }, [scene]);
-  const fit = useMemo(() => {
-    const bounds = new THREE.Box3().setFromObject(model);
-    const size = bounds.getSize(new THREE.Vector3());
-    const center = bounds.getCenter(new THREE.Vector3());
-    return { center, scale: 7.3 / (Math.max(size.x, size.y, size.z) || 1) };
-  }, [model]);
-  return <group ref={spin}><group scale={fit.scale}><primitive object={model} position={[-fit.center.x,-fit.center.y,-fit.center.z]}/></group></group>;
+  return (
+      <group ref={spin}>
+        <mesh>
+          <sphereGeometry args={[3.65, 64, 32]} />
+          <meshStandardMaterial map={texture} roughness={1} />
+        </mesh>
+      </group>
+  );
 }
 function VikingMarker() {
   const marker = useMemo(() => latLngToVector3(22.48,-47.97,3.70), []);
