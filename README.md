@@ -1,79 +1,123 @@
 # Sleeping Beauties
 
-A React + Vite interactive archive for forgotten space exploration hardware.
+**Abandoned but not forgotten.**
+
+Sleeping Beauties is an interactive space archive built with React, Vite, Three.js, and a small Express API. It explores celestial destinations and forgotten space-exploration hardware through immersive 3D experiences and archival stories.
+
+## Features
+
+- **Landing page (`/`)** — a minimal introduction with “Abandoned but not forgotten” and “Explore the Sleeping Beauties”.
+- **Deep Space (`/space`)** — an interactive solar-system experience with selectable destinations.
+- **Moon (`/moon`)** — an interactive 3D Moon experience and Apollo 11 landing-site marker.
+- **Mars (`/mars`)** — an interactive 3D Mars experience and Viking 1 landing-site marker.
+- **Eagle (`/eagle`)** — a chapter-based Apollo Lunar Module story.
+- **Shared visual language** — starry space backgrounds and cinematic transitions between destinations.
+
+## Technology
+
+- React and React Router
+- Vite
+- Three.js, React Three Fiber, and Drei
+- Framer Motion
+- Express
+- MySQL (`mysql2`)
 
 ## Project structure
 
 ```text
 sleeping-beauties/
 ├── src/
-│   ├── App.jsx                  # Route table only
-│   ├── pages/                   # One route entry per destination
-│   │   ├── HomePage.jsx
+│   ├── App.jsx                  # Route table
+│   ├── pages/                   # Route entry points
+│   │   ├── HomePage.jsx         # Landing page
+│   │   ├── SpacePage.jsx        # Interactive deep-space page
 │   │   ├── MoonPage.jsx
 │   │   ├── MarsPage.jsx
-│   │   ├── EaglePage.jsx
-│   │   └── AboutPage.jsx
+│   │   └── EaglePage.jsx
 │   ├── app/
-│   │   └── LegacyPages.jsx      # Existing page implementations (refactor incrementally)
+│   │   └── LegacyPages.jsx      # Existing page implementations
 │   ├── components/
-│   │   └── MoonMap.jsx          # Reusable map/planet surface visualizations
+│   │   └── MoonMap.jsx          # Moon and Mars 3D visualizations
 │   ├── services/
 │   │   └── archiveApi.js        # Browser API client
 │   ├── data/
-│   │   └── eagle.json          # Offline/fallback Eagle copy
+│   │   └── eagle.json           # Eagle offline/fallback content
 │   └── styles.css
 ├── server/
 │   ├── src/
 │   │   ├── index.js             # API bootstrap and middleware
 │   │   ├── db.js                # MySQL connection pool
-│   │   └── routes/archive.js    # Archive read endpoints
+│   │   └── routes/
+│   │       └── archive.js       # Archive read endpoints
 │   └── .env.example
 ├── database/
-│   └── sleeping_beauties_mysql.sql
+│   ├── sleeping_beauties_mysql.sql
+│   └── migrations/
 └── public/
-    ├── models/                  # Large GLB assets; keep out of JS bundles
-    └── audio/
+    ├── models/                  # 3D GLB assets
+    └── audio/                   # Audio assets
 ```
 
-### Editing safely as a team
-
-- Route changes: edit `src/App.jsx` or the corresponding file in `src/pages/`.
-- Moon/Mars maps: `src/components/MoonMap.jsx`.
-- Database queries/API endpoints: `server/src/routes/`.
-- Database connection settings: `server/.env` (never commit this file).
-- SQL schema and seed data: `database/sleeping_beauties_mysql.sql`.
-- Eagle fallback content: `src/data/eagle.json`.
-- 3D assets: `public/models/`; audio assets: `public/audio/`.
-
-`src/app/LegacyPages.jsx` currently holds the original page implementations to preserve the working design during this first restructuring pass. The route files provide clear entry points, but page internals can be extracted into dedicated feature components in later, small pull requests.
+`src/pages/` provides clear route entry points. The current page implementations are still largely kept in `src/app/LegacyPages.jsx` to preserve the existing experience; they can be extracted into smaller feature components incrementally.
 
 ## Requirements
 
 - Node.js 20.19+ (or 22.12+)
-- MySQL 8+
+- npm
+- MySQL 8+ (only needed when using the database API)
 
-## Install and run
+## Install dependencies
 
-```bash
-npm install
+From the project root, install the frontend dependencies with:
+
+```powershell
+npm install --legacy-peer-deps
+```
+
+**Important:** Use `npm install --legacy-peer-deps` every time you install or reinstall the root project's dependencies, including after deleting `node_modules` or when setting up a fresh checkout. A normal `npm install` can fail because of the current React / `@react-three/drei` peer-dependency conflict. Do not replace this with `--force`.
+
+Install the API dependencies separately:
+
+```powershell
 npm install --prefix server
-cp server/.env.example server/.env
-# Edit server/.env with your local MySQL credentials.
-mysql -u root -p < database/sleeping_beauties_mysql.sql
+```
+
+## Run the website
+
+For frontend-only development:
+
+```powershell
+npm run dev
+```
+
+Then open <http://localhost:5173>.
+
+To run the frontend and API together, configure MySQL first, then run:
+
+```powershell
 npm run dev:all
 ```
 
-Frontend: http://localhost:5173  
-API health: http://localhost:4000/api/health
+The frontend is available at <http://localhost:5173> and the API health endpoint at <http://localhost:4000/api/health>.
 
-For frontend-only work, `npm run dev` is sufficient. The Eagle overview uses the bundled JSON as a fallback if the API is unavailable.
+## MySQL setup
 
-Set `VITE_API_URL` in a root `.env` file if the API is hosted elsewhere. Restart Vite after changing environment variables.
+1. Create or select a local MySQL database.
+2. Copy `server/.env.example` to `server/.env`.
+3. Update `server/.env` with your local database credentials and settings.
+4. Import the provided schema and seed data:
 
-## MySQL and automatic data updates
+   ```powershell
+   mysql -u root -p < database/sleeping_beauties_mysql.sql
+   ```
 
-The API reads archive data from MySQL. Current public endpoints:
+5. Start the frontend and API with `npm run dev:all`.
+
+Never commit `server/.env` or share database passwords. Keep credentials on the server; the browser must not connect directly to MySQL.
+
+### Database-backed content
+
+The API provides these read-only endpoints:
 
 - `GET /api/health`
 - `GET /api/bodies`
@@ -81,33 +125,53 @@ The API reads archive data from MySQL. Current public endpoints:
 - `GET /api/artifacts/:slug`
 - `GET /api/artifacts?body=moon`
 
-The Eagle overview fetches its long story from the database and falls back to `src/data/eagle.json` if the API is unreachable. Data edits in MySQL are reflected on the next fetch; public API responses have a short 30-second cache policy. A browser refresh fetches the latest content. No frontend rebuild is needed for database content changes.
+The Eagle overview requests its long story from the API and uses `src/data/eagle.json` as a fallback when the API is unavailable. Database content is reflected on subsequent API fetches; responses use a short cache period. Refresh the page to request the content again. Database content changes do not require a frontend rebuild.
 
-The API currently exposes read-only public endpoints. Do not expose database credentials to the browser or connect React directly to MySQL. For future admin editing, add authenticated write endpoints rather than granting public write access.
+The current API is read-only. Any future content-management interface should use authenticated server-side write endpoints.
 
-## Performance
+## Working with the code
 
-- Large GLB/audio assets stay in `public/` and are requested separately from the JavaScript bundle.
-- Vite separates React, Three.js, motion and icon dependencies into cacheable chunks.
-- Build sourcemaps are disabled for production to reduce output size.
-- Keep source images at an appropriate display resolution; retain the original high-quality source assets in the archive.
-- Avoid adding duplicate versions of large GLB files. The identical, unused `eagle.glb` duplicate has been removed; `apollo-lunar-module.glb` remains the canonical Eagle model.
+- **Routes:** `src/App.jsx` and the matching file in `src/pages/`.
+- **Moon and Mars 3D scenes:** `src/components/MoonMap.jsx`.
+- **Page implementation:** `src/app/LegacyPages.jsx` (until individual features are extracted).
+- **API endpoints and SQL queries:** `server/src/routes/`.
+- **Database connection:** `server/src/db.js` and local `server/.env`.
+- **SQL schema and seed data:** `database/sleeping_beauties_mysql.sql`.
+- **Eagle fallback content:** `src/data/eagle.json`.
+- **3D and audio assets:** `public/models/` and `public/audio/`.
 
-## Team workflow
+Keep pull requests focused on one page, component, API change, or migration. Avoid adding duplicate large assets.
 
-1. Create a feature branch: `git switch -c feature/your-topic`.
-2. Keep changes focused on one page, component, API route or SQL migration.
-3. Run `npm run build` before opening a pull request.
-4. Never commit `.env`, database passwords, `node_modules/`, or `dist/`.
-5. For schema changes, add a numbered SQL migration in `database/migrations/` instead of silently changing an already deployed schema.
+## Performance notes
 
-## Current limitation
+- GLB and audio files are served as separate assets rather than bundled into JavaScript.
+- Vite splits major libraries into cacheable chunks.
+- Production source maps are disabled to reduce build output.
+- Preserve source asset quality while avoiding unnecessary duplicates.
 
-This pass introduces the route structure and API foundation while preserving the existing page implementation. It does not yet convert every section of the large legacy page file into independent components, nor does it include a production deployment, authentication, or automatic database migrations.
+## GitHub team workflow
 
+1. Pull the latest changes from the shared branch.
+2. Create a feature branch, for example:
 
-## Navigation
+   ```powershell
+   git switch -c feature/your-topic
+   ```
 
-- `/` is the minimal landing page: “Abandoned but not forgotten” and “Explore the Sleeping Beauties”.
-- `/space` is the interactive deep-space solar-system page.
-- `/moon`, `/mars`, and `/eagle` are the archive experiences. The former About page is no longer routed.
+3. Make a focused change and test it locally.
+4. Before opening a pull request, run:
+
+   ```powershell
+   npm run build
+   ```
+
+5. Do not commit `node_modules/`, `dist/`, `.env` files, credentials, or local logs.
+6. For changes to an already deployed database schema, add a numbered SQL migration under `database/migrations/`.
+
+When a fresh checkout or dependency reinstall is needed, use `npm install --legacy-peer-deps` at the project root, then install the server dependencies with `npm install --prefix server`.
+
+## Current limitations
+
+- Page internals have not all been split into independent feature components yet.
+- The API currently provides read-only endpoints.
+- Production deployment, authentication, and automated database migrations are not included.
