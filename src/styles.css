@@ -95,8 +95,8 @@ html{scroll-behavior:smooth}body{background:#000}.app-shell{position:relative;is
 .lunar-graveyard.moon-map-shell{height:calc(100vh - 72px);min-height:640px}
 .lunar-graveyard .moon-map-vignette{
   background:
-    radial-gradient(ellipse at 66% 48%,transparent 0,transparent 37%,rgba(1,3,8,.24) 65%,rgba(1,3,8,.76) 100%),
-    linear-gradient(90deg,rgba(1,4,9,.94) 0%,rgba(1,4,9,.68) 29%,rgba(1,4,9,.08) 58%,rgba(1,3,8,.12) 100%);
+          radial-gradient(ellipse at 66% 48%,transparent 0,transparent 37%,rgba(1,3,8,.24) 65%,rgba(1,3,8,.76) 100%),
+          linear-gradient(90deg,rgba(1,4,9,.94) 0%,rgba(1,4,9,.68) 29%,rgba(1,4,9,.08) 58%,rgba(1,3,8,.12) 100%);
 }
 .lunar-graveyard .moon-map-sidebar{
   top:124px;bottom:90px;left:24px;width:320px;min-width:0;
@@ -130,19 +130,19 @@ html{scroll-behavior:smooth}body{background:#000}.app-shell{position:relative;is
 .lunar-graveyard .lunar-timeline{bottom:20px;width:min(540px,42vw);left:auto;right:28px;transform:none}
 .lunar-graveyard .lunar-timeline .timeline-years span:nth-child(2){display:none}
 @media(max-width:900px){
- .lunar-graveyard.moon-map-shell{height:calc(100vh - 64px);min-height:680px}
- .lunar-graveyard .moon-map-sidebar{top:116px;bottom:88px;left:16px;width:min(340px,calc(100vw - 32px))}
- .moon-sidebar-toggle{left:16px;top:74px}
- .lunar-graveyard .moon-map-topline{right:16px;top:14px}
- .lunar-graveyard .lunar-timeline{left:auto;right:16px;bottom:14px;width:min(420px,calc(100vw - 32px))}
- .lunar-graveyard .moon-map-selection{right:16px;bottom:94px;width:230px}
+  .lunar-graveyard.moon-map-shell{height:calc(100vh - 64px);min-height:680px}
+  .lunar-graveyard .moon-map-sidebar{top:116px;bottom:88px;left:16px;width:min(340px,calc(100vw - 32px))}
+  .moon-sidebar-toggle{left:16px;top:74px}
+  .lunar-graveyard .moon-map-topline{right:16px;top:14px}
+  .lunar-graveyard .lunar-timeline{left:auto;right:16px;bottom:14px;width:min(420px,calc(100vw - 32px))}
+  .lunar-graveyard .moon-map-selection{right:16px;bottom:94px;width:230px}
 }
 @media(max-width:560px){
- .lunar-graveyard .moon-map-topline span:nth-child(2){display:none}
- .lunar-graveyard .moon-map-sidebar{top:112px;bottom:92px;padding:14px}
- .lunar-graveyard .moon-map-selection{left:auto;right:12px;bottom:92px;width:210px}
- .lunar-graveyard .lunar-timeline{left:12px;right:12px;bottom:12px;width:auto}
- .moon-sidebar-toggle{left:12px;top:74px}
+  .lunar-graveyard .moon-map-topline span:nth-child(2){display:none}
+  .lunar-graveyard .moon-map-sidebar{top:112px;bottom:92px;padding:14px}
+  .lunar-graveyard .moon-map-selection{left:auto;right:12px;bottom:92px;width:210px}
+  .lunar-graveyard .lunar-timeline{left:12px;right:12px;bottom:12px;width:auto}
+  .moon-sidebar-toggle{left:12px;top:74px}
 }
 
 /* Kid-friendly typography: rounded, readable Nunito Sans throughout. */
@@ -601,28 +601,28 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
 .space-backdrop:before{
   content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.48;
   background-image:
-    radial-gradient(1px 1px at 8% 14%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 19% 67%,#cfe5ff 98%,transparent),
-    radial-gradient(1.2px 1.2px at 33% 29%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 47% 82%,#d8e9ff 98%,transparent),
-    radial-gradient(1.2px 1.2px at 63% 13%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 76% 58%,#d7e9ff 98%,transparent),
-    radial-gradient(1px 1px at 91% 32%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 84% 91%,#d7e9ff 98%,transparent);
+          radial-gradient(1px 1px at 8% 14%,#fff 98%,transparent),
+          radial-gradient(1px 1px at 19% 67%,#cfe5ff 98%,transparent),
+          radial-gradient(1.2px 1.2px at 33% 29%,#fff 98%,transparent),
+          radial-gradient(1px 1px at 47% 82%,#d8e9ff 98%,transparent),
+          radial-gradient(1.2px 1.2px at 63% 13%,#fff 98%,transparent),
+          radial-gradient(1px 1px at 76% 58%,#d7e9ff 98%,transparent),
+          radial-gradient(1px 1px at 91% 32%,#fff 98%,transparent),
+          radial-gradient(1px 1px at 84% 91%,#d7e9ff 98%,transparent);
   background-size:317px 251px,401px 337px,359px 293px,443px 379px,383px 311px,467px 349px,331px 277px,421px 367px;
 }
 .eagle-book .eagle-book-hero,.eagle-book .book-chapter{
   background-image:
-    radial-gradient(1px 1px at 12% 22%,rgba(200,222,255,.5) 98%,transparent),
-    radial-gradient(1px 1px at 72% 68%,rgba(200,222,255,.32) 98%,transparent),
-    radial-gradient(1px 1px at 88% 17%,rgba(200,222,255,.38) 98%,transparent);
+          radial-gradient(1px 1px at 12% 22%,rgba(200,222,255,.5) 98%,transparent),
+          radial-gradient(1px 1px at 72% 68%,rgba(200,222,255,.32) 98%,transparent),
+          radial-gradient(1px 1px at 88% 17%,rgba(200,222,255,.38) 98%,transparent);
   background-size:197px 181px,263px 229px,311px 277px;
 }
 .eagle-theme-light .eagle-book-hero,.eagle-theme-light .book-chapter{
   background-image:
-    radial-gradient(1px 1px at 12% 22%,rgba(62,91,124,.22) 98%,transparent),
-    radial-gradient(1px 1px at 72% 68%,rgba(62,91,124,.16) 98%,transparent),
-    radial-gradient(1px 1px at 88% 17%,rgba(62,91,124,.2) 98%,transparent);
+          radial-gradient(1px 1px at 12% 22%,rgba(62,91,124,.22) 98%,transparent),
+          radial-gradient(1px 1px at 72% 68%,rgba(62,91,124,.16) 98%,transparent),
+          radial-gradient(1px 1px at 88% 17%,rgba(62,91,124,.2) 98%,transparent);
 }
 
 
@@ -672,10 +672,10 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
 .eagle-book .chapter-inner{max-width:1120px}
 .eagle-book .book-chapter{scroll-margin-top:138px}
 @media(max-width:720px){
- .storybook-turn{gap:8px;flex-wrap:wrap}
- .storybook-turn button{padding:10px 12px;font-size:11px}
- .story-page-count{order:-1;width:100%;text-align:center}
- .eagle-book .book-chapter{scroll-margin-top:110px}
+  .storybook-turn{gap:8px;flex-wrap:wrap}
+  .storybook-turn button{padding:10px 12px;font-size:11px}
+  .story-page-count{order:-1;width:100%;text-align:center}
+  .eagle-book .book-chapter{scroll-margin-top:110px}
 }
 
 
@@ -688,15 +688,15 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
 .landing-stars{
   position:absolute;inset:-10%;z-index:-1;pointer-events:none;
   background:
-    radial-gradient(1px 1px at 8% 16%,rgba(255,255,255,.9) 99%,transparent),
-    radial-gradient(1.5px 1.5px at 18% 72%,rgba(197,222,255,.8) 99%,transparent),
-    radial-gradient(1px 1px at 31% 38%,rgba(255,255,255,.72) 99%,transparent),
-    radial-gradient(1px 1px at 44% 82%,rgba(255,255,255,.75) 99%,transparent),
-    radial-gradient(1.5px 1.5px at 61% 21%,rgba(194,219,255,.85) 99%,transparent),
-    radial-gradient(1px 1px at 72% 61%,rgba(255,255,255,.8) 99%,transparent),
-    radial-gradient(1px 1px at 87% 34%,rgba(255,255,255,.72) 99%,transparent),
-    radial-gradient(1px 1px at 94% 84%,rgba(255,255,255,.7) 99%,transparent),
-    radial-gradient(ellipse at 50% 48%,rgba(36,75,125,.22),transparent 52%);
+          radial-gradient(1px 1px at 8% 16%,rgba(255,255,255,.9) 99%,transparent),
+          radial-gradient(1.5px 1.5px at 18% 72%,rgba(197,222,255,.8) 99%,transparent),
+          radial-gradient(1px 1px at 31% 38%,rgba(255,255,255,.72) 99%,transparent),
+          radial-gradient(1px 1px at 44% 82%,rgba(255,255,255,.75) 99%,transparent),
+          radial-gradient(1.5px 1.5px at 61% 21%,rgba(194,219,255,.85) 99%,transparent),
+          radial-gradient(1px 1px at 72% 61%,rgba(255,255,255,.8) 99%,transparent),
+          radial-gradient(1px 1px at 87% 34%,rgba(255,255,255,.72) 99%,transparent),
+          radial-gradient(1px 1px at 94% 84%,rgba(255,255,255,.7) 99%,transparent),
+          radial-gradient(ellipse at 50% 48%,rgba(36,75,125,.22),transparent 52%);
   background-size:100% 100%;animation:landing-drift 36s linear infinite alternate;
 }
 .landing-copy{width:min(920px,100%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:clamp(18px,3vh,30px)}
@@ -708,3 +708,39 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
 @media(prefers-reduced-motion:reduce){.landing-stars{animation:none}.landing-explore{transition:none}}
 .solar-home{height:calc(100vh - 72px);min-height:480px}
 @media(max-width:700px){.solar-home{height:calc(100svh - 64px);min-height:420px}}
+
+
+/* Space explorer scale note */
+.solar-scale-caption{
+  position:absolute;z-index:4;left:clamp(16px,2.2vw,32px);bottom:18px;
+  max-width:min(480px,42vw);padding:7px 10px;border:1px solid rgba(165,190,220,.12);
+  border-radius:8px;background:rgba(2,7,15,.42);backdrop-filter:blur(8px);
+  color:rgba(205,218,235,.62);font:500 9px/1.5 "Nunito Sans",system-ui,sans-serif;
+  letter-spacing:.035em;pointer-events:none;
+}
+.nav-dropdown-menu{min-width:170px}
+@media(max-width:700px){
+  .solar-scale-caption{bottom:12px;left:12px;max-width:calc(100% - 24px);font-size:8px}
+}
+
+/* Cinematic return from the Moon or Mars to Deep Space */
+.world-return-fade {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #02040a;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 460ms ease-in-out;
+}
+.world-return-fade.world-return-fade-visible { opacity: 1; }
+.space-return-fade {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #02040a;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-return-fade { transition-duration: 1ms; }
+}

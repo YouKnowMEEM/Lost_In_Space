@@ -9,14 +9,18 @@ export function latLngToVector3(lat, lng, radius = 1.29) {
   const latitude = THREE.MathUtils.degToRad(lat);
   const longitude = THREE.MathUtils.degToRad(lng);
   return new THREE.Vector3(
-    radius * Math.cos(latitude) * Math.cos(longitude),
-    radius * Math.sin(latitude),
-    -radius * Math.cos(latitude) * Math.sin(longitude)
+      radius * Math.cos(latitude) * Math.cos(longitude),
+      radius * Math.sin(latitude),
+      -radius * Math.cos(latitude) * Math.sin(longitude)
   );
 }
 
 function MoonModel() {
+  const spin = useRef();
   const { scene } = useGLTF("/models/moon.glb");
+  useFrame((_, delta) => {
+    if (spin.current) spin.current.rotation.y += delta * 0.025;
+  });
   const model = useMemo(() => {
     const clone = scene.clone(true);
     clone.traverse((object) => {
@@ -41,9 +45,11 @@ function MoonModel() {
   }, [model]);
 
   return (
-    <group scale={fit.scale}>
-      <primitive object={model} position={[-fit.center.x, -fit.center.y, -fit.center.z]} />
-    </group>
+      <group ref={spin}>
+        <group scale={fit.scale}>
+          <primitive object={model} position={[-fit.center.x, -fit.center.y, -fit.center.z]} />
+        </group>
+      </group>
   );
 }
 useGLTF.preload("/models/moon.glb");
@@ -51,23 +57,23 @@ useGLTF.preload("/models/moon.glb");
 function EagleMarker({ onOpen }) {
   const marker = useMemo(() => latLngToVector3(0.67409, 23.47298, 3.70), []);
   return (
-    <group position={marker}>
-      <Html center distanceFactor={8} zIndexRange={[30, 10]}>
-        <button
-          className="eagle-location-marker"
-          type="button"
-          aria-label="Open Apollo 11 Eagle landing site"
-          title="Apollo 11 · Tranquility Base"
-          onClick={(event) => {
-            event.stopPropagation();
-            onOpen?.();
-          }}
-        >
-          <span className="eagle-marker-pulse" />
-          <span className="eagle-marker-core" />
-        </button>
-      </Html>
-    </group>
+      <group position={marker}>
+        <Html center distanceFactor={8} zIndexRange={[30, 10]}>
+          <button
+              className="eagle-location-marker"
+              type="button"
+              aria-label="Open Apollo 11 Eagle landing site"
+              title="Apollo 11 · Tranquility Base"
+              onClick={(event) => {
+                event.stopPropagation();
+                onOpen?.();
+              }}
+          >
+            <span className="eagle-marker-pulse" />
+            <span className="eagle-marker-core" />
+          </button>
+        </Html>
+      </group>
   );
 }
 
@@ -91,57 +97,68 @@ function MoonScene({ onOpen }) {
   }, []);
 
   return (
-    <Canvas
-      camera={{ position: [0, 0.25, 12.4], fov: 38, near: 0.1, far: 100 }}
-      dpr={[1, 1.75]}
-      gl={{ antialias: true, alpha: false }}
-    >
-      <color attach="background" args={["#050912"]} />
-      <hemisphereLight args={["#f3f6ff", "#626b7a", 1.15]} />
-      <ambientLight intensity={0.78} />
-      <ArchiveStarfield/>
-      <directionalLight position={[-5, 7, 9]} intensity={2.25} />
-      <directionalLight position={[6, 1, 5]} intensity={0.75} color="#c5d9ee" />
-      <Suspense fallback={null}>
-        <MoonModel />
-        <EagleMarker onOpen={onOpen} />
-      </Suspense>
-      <CameraControls
-        ref={controls}
-        makeDefault
-        minDistance={4.3}
-        maxDistance={22}
-        smoothTime={1.25}
-        draggingSmoothTime={0.2}
-        dollyToCursor={false}
-        azimuthRotateSpeed={0.55}
-        polarRotateSpeed={0.55}
-      />
-    </Canvas>
+      <Canvas
+          camera={{ position: [0, 0.25, 12.4], fov: 38, near: 0.1, far: 100 }}
+          dpr={[1, 1.75]}
+          gl={{ antialias: true, alpha: false }}
+      >
+        <color attach="background" args={["#050912"]} />
+        {/* Uniform illumination keeps the entire Moon visible; no day/night terminator. */}
+        <ambientLight intensity={1.35} />
+        <ArchiveStarfield/>
+        <Suspense fallback={null}>
+          <MoonModel />
+          <EagleMarker onOpen={onOpen} />
+        </Suspense>
+        <CameraControls
+            ref={controls}
+            makeDefault
+            minDistance={4.3}
+            maxDistance={22}
+            smoothTime={1.25}
+            draggingSmoothTime={0.2}
+            dollyToCursor={false}
+            azimuthRotateSpeed={0.55}
+            polarRotateSpeed={0.55}
+        />
+      </Canvas>
   );
 }
 
 export default function MoonMap({ onDecrypt }) {
   return (
-    <main className="moon-clean-page" aria-label="Interactive 3D Moon">
-      <div className="moon-clean-canvas">
-        <MoonScene onOpen={() => onDecrypt?.("apollo-11")} />
-      </div>
-    </main>
+      <main className="moon-clean-page" aria-label="Interactive 3D Moon">
+        <div className="moon-clean-canvas">
+          <MoonScene onOpen={() => onDecrypt?.("apollo-11")} />
+        </div>
+      </main>
   );
 }
 
 // Viking 1 lander site: 22.48° N, 47.97° W (Chryse Planitia).
 function MarsModel() {
+  const spin = useRef();
   const { scene } = useGLTF("https://solarsystem.nasa.gov/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdEFRIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--9ddbf780bb3c564b8e561bb238a2f6713d445c42/Mars_1_6792.glb");
-  const model = useMemo(() => scene.clone(true), [scene]);
+  useFrame((_, delta) => {
+    if (spin.current) spin.current.rotation.y += delta * 0.024;
+  });
+  const model = useMemo(() => {
+    const clone = scene.clone(true);
+    clone.traverse((object) => {
+      if (object.isMesh) {
+        object.castShadow = true;
+        object.receiveShadow = true;
+      }
+    });
+    return clone;
+  }, [scene]);
   const fit = useMemo(() => {
     const bounds = new THREE.Box3().setFromObject(model);
     const size = bounds.getSize(new THREE.Vector3());
     const center = bounds.getCenter(new THREE.Vector3());
     return { center, scale: 7.3 / (Math.max(size.x, size.y, size.z) || 1) };
   }, [model]);
-  return <group scale={fit.scale}><primitive object={model} position={[-fit.center.x,-fit.center.y,-fit.center.z]}/></group>;
+  return <group ref={spin}><group scale={fit.scale}><primitive object={model} position={[-fit.center.x,-fit.center.y,-fit.center.z]}/></group></group>;
 }
 function VikingMarker() {
   const marker = useMemo(() => latLngToVector3(22.48,-47.97,3.70), []);
@@ -152,7 +169,8 @@ function MarsScene() {
   useEffect(() => { controls.current?.setLookAt(0,.25,12.4,0,0,0,false); }, []);
   return <Canvas camera={{position:[0,.25,12.4],fov:38,near:.1,far:100}} dpr={[1,1.75]} gl={{antialias:true,alpha:false}}>
     <color attach="background" args={["#030712"]}/><ArchiveStarfield/>
-    <hemisphereLight args={["#f5e8d8","#6a3023",1.15]}/><ambientLight intensity={.72}/><directionalLight position={[-5,7,9]} intensity={2.35}/><directionalLight position={[6,1,5]} intensity={.65} color="#f5a47a"/>
+    {/* Uniform illumination keeps the entire Mars globe visible; no day/night terminator. */}
+    <ambientLight intensity={1.35}/>
     <Suspense fallback={null}><MarsModel/><VikingMarker/></Suspense>
     <CameraControls ref={controls} makeDefault minDistance={4.3} maxDistance={22} smoothTime={1.25} draggingSmoothTime={.2} dollyToCursor={false} azimuthRotateSpeed={.55} polarRotateSpeed={.55}/>
   </Canvas>;

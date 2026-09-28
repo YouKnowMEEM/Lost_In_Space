@@ -34,19 +34,19 @@ function Topbar() {
   }, []);
   const toggleMenu = (name) => setOpenMenu(current => current === name ? null : name);
   return (
-    <header className="topbar">
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <Link className="brand" to="/" aria-label="Sleeping Beauties home">
-        <span className="brand-mark"><Orbit size={21}/></span>
-        <span><strong>{isMoon || isMars ? `${world} — Explore the Sleeping Beauties.` : "SLEEPING BEAUTIES"}</strong>{!(isMoon || isMars) && <small>THE FORGOTTEN SPACE EXPLORERS</small>}</span>
-      </Link>
-      <nav aria-label="Main navigation">
-        <Link className={location.pathname === "/" ? "nav-active" : ""} to="/">Home</Link>
-        <Link className={location.pathname === "/space" ? "nav-active" : ""} to="/space">Deep Space</Link>
-        <div className={`nav-dropdown ${openMenu === "explore" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "explore"} className={location.pathname.startsWith("/moon") || location.pathname.startsWith("/mars") ? "nav-active" : ""} onClick={()=>toggleMenu("explore")}>Explore <ChevronDown size={13}/></button><div className="nav-dropdown-menu"><Link to="/moon" onClick={()=>setOpenMenu(null)}>Moon</Link><Link to="/mars" onClick={()=>setOpenMenu(null)}>Mars</Link><Link to="/space" onClick={()=>setOpenMenu(null)}>Deep Space</Link></div></div>
-        {(isMoon || isMars) && <div className={`nav-dropdown ${openMenu === "objects" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "objects"} className={location.pathname.startsWith("/eagle") ? "nav-active" : ""} onClick={()=>toggleMenu("objects")}>Objects <ChevronDown size={13}/></button><div className="nav-dropdown-menu">{isMars ? <Link to="/mars" onClick={()=>setOpenMenu(null)}>Vikings</Link> : <Link to="/eagle" onClick={()=>setOpenMenu(null)}>Eagle</Link>}</div></div>}
-      </nav>
-    </header>
+      <header className="topbar">
+        <a className="skip-link" href="#main-content">Skip to content</a>
+        <Link className="brand" to="/" aria-label="Sleeping Beauties home">
+          <span className="brand-mark"><Orbit size={21}/></span>
+          <span><strong>{isMoon || isMars ? `${world} — Explore the Sleeping Beauties.` : "SLEEPING BEAUTIES"}</strong>{!(isMoon || isMars) && <small>THE FORGOTTEN SPACE EXPLORERS</small>}</span>
+        </Link>
+        <nav aria-label="Main navigation">
+          <Link className={location.pathname === "/" ? "nav-active" : ""} to="/">Home</Link>
+          <Link className={location.pathname === "/space" ? "nav-active" : ""} to="/space">Deep Space</Link>
+          <div className={`nav-dropdown ${openMenu === "explore" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "explore"} className={location.pathname.startsWith("/moon") || location.pathname.startsWith("/mars") ? "nav-active" : ""} onClick={()=>toggleMenu("explore")}>Explore <ChevronDown size={13}/></button><div className="nav-dropdown-menu"><Link to="/moon" onClick={()=>setOpenMenu(null)}>Moon</Link><Link to="/mars" onClick={()=>setOpenMenu(null)}>Mars</Link><Link to="/space" onClick={()=>setOpenMenu(null)}>Deep Space</Link></div></div>
+          {(isMoon || isMars || location.pathname.startsWith("/space")) && <div className={`nav-dropdown ${openMenu === "objects" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "objects"} className={openMenu === "objects" ? "nav-active" : ""} onClick={()=>toggleMenu("objects")}>Objects <ChevronDown size={13}/></button><div className="nav-dropdown-menu">{location.pathname.startsWith("/space") ? <><Link to="/space?object=voyager-1" onClick={()=>setOpenMenu(null)}>Voyager 1</Link><Link to="/space?object=voyager-2" onClick={()=>setOpenMenu(null)}>Voyager 2</Link><Link to="/space?object=pioneer-10" onClick={()=>setOpenMenu(null)}>Pioneer 10</Link><Link to="/space?object=pioneer-11" onClick={()=>setOpenMenu(null)}>Pioneer 11</Link><Link to="/space?object=new-horizons" onClick={()=>setOpenMenu(null)}>New Horizons</Link></> : isMars ? <Link to="/mars" onClick={()=>setOpenMenu(null)}>Vikings</Link> : <Link to="/eagle" onClick={()=>setOpenMenu(null)}>Eagle</Link>}</div></div>}
+        </nav>
+      </header>
   );
 }
 
@@ -100,7 +100,7 @@ function PlanetSphere({ kind }) {
 
 function MiniCanvas({ kind }) {
   return <Canvas shadows camera={{position:[0,0,4.2], fov:38}} dpr={[1,2]}>
-    <ambientLight intensity={0.12}/><directionalLight position={[-4,3,5]} intensity={4.5} castShadow/>
+    <ambientLight intensity={0.06}/><directionalLight position={[-4,3,5]} intensity={4.5} castShadow/>
     <Stars radius={25} depth={12} count={900} factor={1.4} fade/>
     <Float speed={0.55} rotationIntensity={0.08} floatIntensity={0.12}><PlanetSphere kind={kind}/></Float>
   </Canvas>;
@@ -108,15 +108,21 @@ function MiniCanvas({ kind }) {
 
 export function Home() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(null);
-  const [audioOn, setAudioOn] = useState(false);
+  const [audioOn, setAudioOn] = useState(true);
   const [welcomeVisible, setWelcomeVisible] = useState(true);
   const audioRef = useRef(null);
   const cameraRef = useRef(null);
   const moonAnchorRef = useRef(null);
   const marsAnchorRef = useRef(null);
   const [journey, setJourney] = useState(null);
+  useEffect(() => {
+    const object = new URLSearchParams(location.search).get("object");
+    const valid = ["voyager-1", "voyager-2", "pioneer-10", "pioneer-11", "new-horizons"];
+    if (valid.includes(object)) setSelected(object);
+  }, [location.search]);
   const enterWorld = async (world) => {
     if (journey) return;
     setJourney({ world, phase: "approach" });
@@ -132,8 +138,8 @@ export function Home() {
       const destination = target.clone().add(approach.multiplyScalar(radius * 2.25));
       try {
         await controls.setLookAt(
-          destination.x, destination.y, destination.z,
-          target.x, target.y, target.z, true
+            destination.x, destination.y, destination.z,
+            target.x, target.y, target.z, true
         );
       } catch (_) {
         // If the camera animation is interrupted, still complete the route change.
@@ -156,8 +162,24 @@ export function Home() {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = 0.45;
-    if (audioOn) audio.play().catch(() => setAudioOn(false));
-    else audio.pause();
+    if (audioOn) {
+      const attemptPlay = () => audio.play().catch(() => {});
+      attemptPlay();
+      // Browsers may block audible autoplay until the visitor interacts.
+      const resume = () => {
+        if (audioOn) attemptPlay();
+        window.removeEventListener("pointerdown", resume);
+        window.removeEventListener("keydown", resume);
+      };
+      window.addEventListener("pointerdown", resume, { once: true });
+      window.addEventListener("keydown", resume, { once: true });
+      return () => {
+        window.removeEventListener("pointerdown", resume);
+        window.removeEventListener("keydown", resume);
+        audio.pause();
+      };
+    }
+    audio.pause();
     return () => audio.pause();
   }, [audioOn]);
 
@@ -167,11 +189,15 @@ export function Home() {
     { name: "Mars", detail: "The red planet · collection coming later", type: "WORLD", action: () => setSelected("mars") },
     { name: "Deep Space", detail: "Interplanetary and heliocentric objects", type: "ARCHIVE", action: () => setSelected("deep") },
     { name: "Earth", detail: "Our home world", type: "WORLD", action: () => setSelected("earth") },
-    { name: "Voyager 1", detail: "A spacecraft exploring interstellar space", type: "ARTIFACT", action: () => setSelected("voyager") }
+    { name: "Voyager 1", detail: "Interstellar probe launched in 1977", type: "SPACECRAFT", action: () => setSelected("voyager-1") },
+    { name: "Voyager 2", detail: "Outer-planet explorer launched in 1977", type: "SPACECRAFT", action: () => setSelected("voyager-2") },
+    { name: "Pioneer 10", detail: "Jupiter flyby mission launched in 1972", type: "SPACECRAFT", action: () => setSelected("pioneer-10") },
+    { name: "Pioneer 11", detail: "Jupiter and Saturn flyby mission launched in 1973", type: "SPACECRAFT", action: () => setSelected("pioneer-11") },
+    { name: "New Horizons", detail: "Pluto and Kuiper Belt explorer launched in 2006", type: "SPACECRAFT", action: () => setSelected("new-horizons") }
   ];
   const matches = query.trim()
-    ? searchable.filter(item => `${item.name} ${item.detail} ${item.type}`.toLowerCase().includes(query.trim().toLowerCase()))
-    : [];
+      ? searchable.filter(item => `${item.name} ${item.detail} ${item.type}`.toLowerCase().includes(query.trim().toLowerCase()))
+      : [];
 
   return <Shell><main className="solar-home" id="main-content" tabIndex="-1">
     <AnimatePresence>
@@ -181,16 +207,29 @@ export function Home() {
     </AnimatePresence>
     <audio ref={audioRef} loop src="/audio/home-audio.mp3" preload="auto"/>
     <div className="solar-home-scene">
-      <Canvas camera={{ position: [0, 5.5, 13.5], fov: 42, near: 0.1, far: 180 }} dpr={[1, 1.75]}>
+      <Canvas shadows camera={{ position: [0, 5.5, 13.5], fov: 42, near: 0.1, far: 240 }} dpr={[1, 1.75]}>
         <color attach="background" args={["#030712"]}/>
-        <ambientLight intensity={0.62}/>
-        <pointLight position={[0, 0, 0]} intensity={110} distance={65} decay={2}/>
+        <ambientLight intensity={0.12}/>
+        <pointLight
+            position={[0, 0, 0]}
+            intensity={180}
+            distance={0}
+            decay={2}
+            castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+            shadow-camera-near={0.05}
+            shadow-camera-far={24}
+            shadow-bias={-0.00008}
+            shadow-normalBias={0.006}
+        />
         <MovingStarfield/>
         <SolarSystem selected={selected} onSelect={setSelected} moonAnchorRef={moonAnchorRef} marsAnchorRef={marsAnchorRef} paused={!!journey}/>
         <CameraControls ref={cameraRef} makeDefault minDistance={0.12} maxDistance={34} smoothTime={1.25} dollyToCursor={false}/>
       </Canvas>
     </div>
 
+    <div className="solar-scale-caption">Planetary orbit spacing uses a shared AU scale; the Moon orbit and deep-space probes are compressed for visibility.</div>
     <div className="solar-search-wrap">
       <label className="solar-search">
         <ScanLine size={18}/>
@@ -202,7 +241,7 @@ export function Home() {
           <span><small>{item.type}</small><strong>{item.name}</strong><em>{item.detail}</em></span><ArrowRight size={16}/>
         </button>)}
       </div>}
-      {query.trim() && matches.length===0 && <div className="solar-search-empty">No space objects found. Try “Moon” or “Eagle”.</div>}
+      {query.trim() && matches.length===0 && <div className="solar-search-empty">No space objects found. Try “Moon”, “Mars” or “Voyager”.</div>}
     </div>
 
     {selected && <div className="solar-explore-pop solar-explore-other">
@@ -212,7 +251,7 @@ export function Home() {
       {selected === "moon" && <><em>Earth's only natural satellite</em><button onClick={enterMoonArchive} disabled={!!journey}>Explore <ArrowRight size={16}/></button></>}
       {selected === "mars" && <><em>Dusty, cold, desert world with a very thin atmosphere.</em><button onClick={enterMarsArchive} disabled={!!journey}>Explore <ArrowRight size={16}/></button></>}
       {selected === "deep" && <em>Interplanetary and heliocentric objects</em>}
-      {selected === "voyager" && <><em>Launched in 1977, Voyager 1 is exploring the space between the stars.</em><small className="scale-note">Illustrative position and spacecraft model · not to scale</small></>}
+      {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em><small className="scale-note">Schematic deep-space placement · not to scale</small></>}
     </div>}
     <AnimatePresence>{journey?.phase === "fade" && <motion.div className={`moon-journey-fade journey-${journey.world}`} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.46}} aria-hidden="true"/>}</AnimatePresence>
     <button className="solar-audio-toggle" onClick={()=>setAudioOn(v=>!v)} aria-label={audioOn?"Mute ambient audio":"Play ambient audio"}>
@@ -231,8 +270,20 @@ function CelestialModel({ url, radius, onClick, name, hovered, setHovered }) {
     const clone = scene.clone(true);
     clone.traverse((node) => {
       if (node.isMesh) {
-        node.castShadow = true;
-        node.receiveShadow = true;
+        // The Sun is a self-lit visual object. It must not block its own
+        // point light, while planets should cast and receive eclipse shadows.
+        node.castShadow = name !== "sun";
+        node.receiveShadow = name !== "sun";
+        if (name === "sun") {
+          const materials = Array.isArray(node.material) ? node.material : [node.material];
+          materials.forEach((material) => {
+            if (!material) return;
+            // The NASA Sun model uses an emissive texture; temper it so
+            // surface detail remains visible instead of clipping to yellow-white.
+            if ("emissiveIntensity" in material) material.emissiveIntensity = 0.32;
+            material.needsUpdate = true;
+          });
+        }
       }
     });
     return clone;
@@ -277,40 +328,48 @@ function MovingStarfield() {
     if (near.current) near.current.rotation.y -= delta * 0.006;
   });
   return <>
-    <group ref={far}><Stars radius={100} depth={70} count={4200} factor={2.1} saturation={0.08} fade speed={0.18}/></group>
-    <group ref={near}><Stars radius={55} depth={35} count={900} factor={3.1} saturation={0.18} fade speed={0.35}/></group>
+    <group ref={far}><Stars radius={180} depth={120} count={9500} factor={1.25} saturation={0.06} fade speed={0.025}/></group>
+    <group ref={near}><Stars radius={85} depth={55} count={1800} factor={2.0} saturation={0.1} fade speed={0.045}/></group>
   </>;
 }
 
-function VoyagerCraft({ onClick, hovered, setHovered }) {
-  const craft = useRef();
-  const dishMat = useMemo(()=>new THREE.MeshStandardMaterial({color:"#d8d2c5",metalness:.68,roughness:.38,side:THREE.DoubleSide}),[]);
-  useFrame((_,delta)=>{
-    if(craft.current){
-      craft.current.position.x += delta*.003;
-      craft.current.rotation.y += delta*.08;
-    }
+const PROBE_DATA = [
+  { id:"voyager-1", label:"Voyager 1", color:"#c9b98f", position:[8.7,.55,-1.2], style:"voyager" },
+  { id:"voyager-2", label:"Voyager 2", color:"#c9b98f", position:[-7.8,-.35,2.6], style:"voyager" },
+  { id:"pioneer-10", label:"Pioneer 10", color:"#d9b34f", position:[-1.8,.4,6.9], style:"pioneer" },
+  { id:"pioneer-11", label:"Pioneer 11", color:"#d9b34f", position:[2.8,-.55,-7.6], style:"pioneer" },
+  { id:"new-horizons", label:"New Horizons", color:"#aeb9c7", position:[-5.8,.9,-7.3], style:"new-horizons" }
+];
+
+function DeepSpaceProbe({ probe, hovered, setHovered, onClick }) {
+  const group = useRef();
+  const isPioneer = probe.style === "pioneer";
+  const isNH = probe.style === "new-horizons";
+  const metal = useMemo(() => new THREE.MeshStandardMaterial({color:probe.color, metalness:.72, roughness:.34}), [probe.color]);
+  const gold = useMemo(() => new THREE.MeshStandardMaterial({color:"#b89a55", metalness:.62, roughness:.42, side:THREE.DoubleSide}), []);
+  useFrame((_,delta) => {
+    if (group.current) group.current.rotation.y += delta * (isPioneer ? .055 : .035);
   });
-  return <group ref={craft} position={[5.0,.15,-1.8]} rotation={[.28,.35,-.2]}
-    onClick={onClick} onPointerOver={e=>{e.stopPropagation();setHovered("voyager")}} onPointerOut={e=>{e.stopPropagation();setHovered(null)}}>
-    <mesh><sphereGeometry args={[.42,16,12]}/><meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false}/></mesh>
-    <mesh material={dishMat}><circleGeometry args={[.22,32]}/></mesh>
-    <mesh position={[0,.05,.015]} rotation={[Math.PI/2,0,0]}>
-      <cylinderGeometry args={[.012,.012,.24,8]}/><meshStandardMaterial color="#b7a67f" metalness={.7} roughness={.4}/>
-    </mesh>
-    <mesh position={[0,-.03,-.18]}>
-      <boxGeometry args={[.12,.11,.12]}/><meshStandardMaterial color="#c4bca8" metalness={.55} roughness={.5}/>
-    </mesh>
-    <mesh position={[.25,-.02,-.12]} rotation={[0,0,Math.PI/2]}>
-      <cylinderGeometry args={[.018,.018,.55,8]}/><meshStandardMaterial color="#aaa18e" metalness={.6} roughness={.45}/>
-    </mesh>
-    {[-.16,0,.16].map((x,i)=><group key={i} position={[x,-.02,-.32]}>
-      <mesh rotation={[0,0,Math.PI/2]}><cylinderGeometry args={[.035,.035,.32,10]}/><meshStandardMaterial color="#c99a43" metalness={.65} roughness={.4}/></mesh>
-    </group>)}
-    {[-1,1].map(side=><mesh key={side} position={[side*.16,.06,-.1]} rotation={[0,0,side*.32]}>
-      <cylinderGeometry args={[.006,.006,.34,6]}/><meshStandardMaterial color="#e1c16d" metalness={.65} roughness={.35}/>
-    </mesh>)}
-    {hovered==="voyager" && <Html position={[.42,.2,0]} center distanceFactor={8}><span className="planet-hover-word">VOYAGER 1</span></Html>}
+  return <group position={probe.position} ref={group} rotation={[.24,.4,-.18]}
+                onClick={(e)=>{e.stopPropagation();onClick(probe.id)}}
+                onPointerOver={(e)=>{e.stopPropagation();setHovered(probe.id)}}
+                onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
+    <mesh><sphereGeometry args={[.27,16,12]}/><meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false}/></mesh>
+    {isPioneer ? <>
+      <mesh rotation={[Math.PI/2,0,0]} material={gold}><circleGeometry args={[.23,32]}/></mesh>
+      <mesh position={[0,0,.09]}><cylinderGeometry args={[.055,.07,.18,10]}/><primitive object={metal} attach="material"/></mesh>
+      <mesh position={[0,.22,0]}><cylinderGeometry args={[.009,.009,.42,6]}/><primitive object={gold} attach="material"/></mesh>
+    </> : <>
+      <mesh position={[0,0,0]} material={metal}><boxGeometry args={isNH?[.13,.15,.17]:[.12,.12,.13]}/></mesh>
+      <mesh position={[0,.12,0]} rotation={[Math.PI/2,0,0]} material={metal}><circleGeometry args={[isNH ? .12 : .21,32]}/></mesh>
+      <mesh position={[0,.01,-.19]} rotation={[0,0,Math.PI/2]}><cylinderGeometry args={[.008,.008,.42,6]}/><primitive object={gold} attach="material"/></mesh>
+      {!isNH && [-1,1].map(side=><group key={side} position={[side*.22,-.01,-.12]} rotation={[0,0,side*.04]}>
+        <mesh material={gold}><boxGeometry args={[.24,.012,.27]}/></mesh>
+        {[0,1,2,3].map(i=><mesh key={i} position={[-.09+i*.06,.009,0]}><boxGeometry args={[.006,.006,.25]}/><meshStandardMaterial color="#6d7890" metalness={0.25} roughness={0.7}/></mesh>)}
+      </group>)}
+      {isNH && <mesh position={[.19,-.015,-.1]} material={gold}><boxGeometry args={[.3,.012,.22]}/></mesh>}
+    </>}
+    {hovered===probe.id && <Html position={[.34,.22,0]} center distanceFactor={8}><span className="planet-hover-word">{probe.label.toUpperCase()}</span></Html>}
   </group>;
 }
 
@@ -318,7 +377,7 @@ function solveKepler(meanAnomaly, eccentricity) {
   let eccentricAnomaly = meanAnomaly;
   for (let i = 0; i < 6; i++) {
     eccentricAnomaly -= (eccentricAnomaly - eccentricity * Math.sin(eccentricAnomaly) - meanAnomaly) /
-      (1 - eccentricity * Math.cos(eccentricAnomaly));
+        (1 - eccentricity * Math.cos(eccentricAnomaly));
   }
   return eccentricAnomaly;
 }
@@ -349,7 +408,7 @@ function SolarSystem({ selected, onSelect, moonAnchorRef, marsAnchorRef, paused 
   const marsPlane = useRef();
   const moonPlane = useRef();
   const moonWorld = useMemo(() => new THREE.Vector3(), []);
-  const earthA = 2.2, marsA = 3.5, moonA = .52;
+  const earthA = 2.2, marsA = 2.2 * 1.523679, moonA = .42;
   const earthE = .0167, marsE = .0934, moonE = .0549;
   const earthPeriod = 365.256, marsPeriod = 686.98, moonPeriod = 27.3217;
   const inclinationMars = THREE.MathUtils.degToRad(1.85);
@@ -373,7 +432,9 @@ function SolarSystem({ selected, onSelect, moonAnchorRef, marsAnchorRef, paused 
     </Suspense>
     <EllipticalOrbit semiMajor={earthA} eccentricity={earthE}/>
     <EllipticalOrbit semiMajor={marsA} eccentricity={marsE} inclination={inclinationMars}/>
-    <VoyagerCraft onClick={select("voyager")} hovered={hovered} setHovered={setHovered}/>
+    {PROBE_DATA.map(probe =>
+        <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect}/>
+    )}
     <group ref={earthPlane}>
       <group ref={earthPosition}>
         <Suspense fallback={<PlanetFallback radius={.31} color="#397ca9" name="earth" hovered={hovered} setHovered={setHovered} onClick={select("earth")}/>}>
@@ -456,9 +517,9 @@ function Lander3D({ year }) {
         if (!material) return;
         material.roughness = THREE.MathUtils.lerp(0.32, 0.92, wear);
         material.metalness = THREE.MathUtils.lerp(
-          material.userData.originalMetalness ?? material.metalness ?? 0.35,
-          0.12,
-          wear
+            material.userData.originalMetalness ?? material.metalness ?? 0.35,
+            0.12,
+            wear
         );
         material.needsUpdate = true;
       });
@@ -466,11 +527,11 @@ function Lander3D({ year }) {
   }, [model, year]);
 
   return (
-    <group position={[0, -0.15, 0]} rotation={[0.08, -0.2, 0]}>
-      <group scale={fit.scale}>
-        <primitive object={model} position={[-fit.center.x, -fit.center.y, -fit.center.z]} />
+      <group position={[0, -0.15, 0]} rotation={[0.08, -0.2, 0]}>
+        <group scale={fit.scale}>
+          <primitive object={model} position={[-fit.center.x, -fit.center.y, -fit.center.z]} />
+        </group>
       </group>
-    </group>
   );
 }
 useGLTF.preload("/models/apollo-lunar-module.glb");
@@ -604,7 +665,7 @@ export function EaglePage() {
         <div className="chapter-inner">
           <div className="chapter-heading-row"><span className="chapter-index">01</span><div><p className="book-eyebrow">BUILT FOR ANOTHER WORLD</p><h2>The Strangest Spaceship Ever Built</h2></div></div><p className="storybook-narrator">Have you ever seen a spaceship that looks a little like a spider? Eagle was built that way for a very good reason.</p>
           <div className="editorial-split"><div className="chapter-prose"><p className="dropcap">Why no wings? Because the Moon has almost no air. Wings need air to work, and a pointed airplane nose would not help Eagle there. The engineers had a different idea: build a spacecraft that could float down gently and stand on four legs.</p><p>Every kilogram mattered. Engineers gave the lunar module a light, angular body and four spindly legs. Its strange shape was not a compromise in the usual sense—it was a design shaped by the place it had to go.</p><p>Layers of reflective thermal insulation helped protect the spacecraft from the extreme hot and cold of space. The gold appearance was part of that practical protection, not decoration.</p><p className="chapter-last-line">Eagle wasn't designed to look beautiful. It was designed to do something no machine had ever done before.</p></div>{img(EAGLE_PHOTOS.orbit,"Eagle in landing configuration, photographed from Columbia","Eagle prepares to land · Apollo 11 / NASA","https://science.nasa.gov/resource/the-eagle-prepares-to-land/")}</div>
-      {chapterTurn(0)}
+          {chapterTurn(0)}
         </div>
       </section>
 
@@ -612,7 +673,7 @@ export function EaglePage() {
         <div className="chapter-inner">
           <div className="chapter-heading-row"><span className="chapter-index">02</span><div><p className="book-eyebrow">A MACHINE OF UNUSUAL DETAILS</p><h2>A Golden Spider with a Secret</h2></div></div><p className="storybook-narrator">Look closely at the golden wrapping. It wasn't there to make Eagle pretty—it helped protect it from the wild temperatures of space.</p>
           <div className="detail-layout"><div className="detail-copy"><p>So, what was it like inside? Armstrong and Aldrin stood up, held safely by special restraints. There were no pilot seats. Instead, switches, displays and hand controllers filled the space in front of them—rather like a tiny control room.</p><p>The cabin and its equipment were carried by a light structure wrapped in insulation. Eagle was designed around the needs of a short, precise mission: descend, land, explore, and leave.</p><div className="fact-ribbon"><span>✦</span><div><strong>Standing room only</strong><small>The astronauts operated the lunar module while standing, with restraints to help them stay in position.</small></div></div></div><div className="detail-illustration"><div className="foil-graphic"><div className="foil-grid"/><span>THERMAL BLANKET</span></div><div className="illustration-note">Reflective insulation helped manage heat in the harsh lunar environment.</div></div></div>
-      {chapterTurn(1)}
+          {chapterTurn(1)}
         </div>
       </section>
 
@@ -621,17 +682,17 @@ export function EaglePage() {
           <div className="chapter-heading-row"><span className="chapter-index">03</span><div><p className="book-eyebrow">THE CLEVER TWO-PART DESIGN</p><h2>A Spaceship Designed to Leave Itself Behind</h2></div></div><p className="storybook-narrator">Here's a clever trick: Eagle had two parts. One helped the astronauts land, and the other would carry them back up.</p>
           <p className="chapter-intro-wide">Here's the clever part: Eagle was made of two sections joined together. One would stay on the Moon, while the other would carry the astronauts back to orbit. Choose a part below to see what it did.</p>
           <div className="cutaway-panel"><div className="cutaway-view"><div className="cutaway-label cutaway-ascent">01 · ASCENT STAGE</div><div className="cutaway-label cutaway-descent">02 · DESCENT STAGE</div><div className="cutaway-model"><EagleScene year={1969} ejected={{cameras:false,boots:false,descent:false}} laserActive={false} background="#e9e8e2"/></div><div className="hotspot-row">{[["ascent","Ascent stage"],["descent","Descent stage"],["legs","Landing legs"],["engine","Descent engine"]].map(([key,label])=><button key={key} className={selectedPart===key?"selected":""} onClick={()=>setSelectedPart(key)}>{label}</button>)}</div></div><aside className="part-explainer"><span className="book-eyebrow">COMPONENT GUIDE</span><div className="part-number">0{["ascent","descent","legs","engine"].indexOf(selectedPart)+1}</div><h3>{partInfo[selectedPart].name}</h3><p className="part-tag">{partInfo[selectedPart].tag}</p><p>{partInfo[selectedPart].body}</p><div className="part-reason"><strong>Why separate?</strong><span>The lower stage did the heavy work of landing. The lighter upper stage could then lift the crew back into orbit without carrying the landing gear and empty descent hardware.</span></div></aside></div>
-      {chapterTurn(2)}
+          {chapterTurn(2)}
         </div>
       </section>
 
       <section className="book-chapter chapter-night" id="chapter-4">
         <div className="night-stars" aria-hidden="true"/><div className="chapter-inner night-inner">
-          <div className="chapter-heading-row"><span className="chapter-index">04</span><div><p className="book-eyebrow">JULY 20, 1969 · DESCENT</p><h2>The Descent into the Unknown</h2></div></div><p className="storybook-narrator">Now imagine looking out of a tiny window as the Moon grows larger. The computer beeps—and everyone has to stay calm.</p>
-          <div className="night-grid"><div className="night-copy"><p>Now the Moon was getting closer. Eagle had separated from Columbia, and its descent engine began slowing the spacecraft as it headed toward the Sea of Tranquility. Imagine watching the grey ground grow bigger in the windows.</p><p>Then the computer issued alarms: 1202, followed by 1201. These were not signs that the computer had completely failed. They indicated that it was overloaded with work. In Mission Control, flight controllers assessed the alarms and confirmed that the landing could continue.</p><p>But the descent was still far from routine. The crew had to keep flying while the team on Earth watched the numbers and listened.</p></div><div className="alarm-panel"><span className="alarm-label">GUIDANCE COMPUTER · PROGRAM ALARMS</span><div className="alarm-readout"><strong>1202</strong><span>EXECUTIVE OVERFLOW</span></div><div className="alarm-readout"><strong>1201</strong><span>EXECUTIVE OVERFLOW</span></div><p>The alarms indicated the computer was overloaded—not that all guidance had stopped.</p><a href="https://www.nasa.gov/mission/apollo-11/" target="_blank" rel="noreferrer">Explore NASA's mission archive ↗</a></div></div>
-          <div className="descent-timeline" aria-label="Key descent events"><div><span>01</span><strong>Powered descent</strong><small>Eagle begins braking toward the surface.</small></div><div><span>02</span><strong>1202 / 1201 alarms</strong><small>Mission Control confirms the computer can continue.</small></div><div><span>03</span><strong>Manual approach</strong><small>Armstrong steers away from rough terrain.</small></div><div><span>04</span><strong>Touchdown</strong><small>20:17:40 UTC · July 20, 1969</small></div></div><div className="descent-media"><div className="descent-media-copy"><span>MISSION AUDIO & VIDEO</span><h3>Listen to the moment unfold.</h3><p>Optional archival footage. Use the player controls to start or pause.</p></div><div className="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/nOcDftgR5UQ?rel=0" title="NASA Apollo 11 landing video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen/></div></div>
-      {chapterTurn(3)}
-        </div>
+        <div className="chapter-heading-row"><span className="chapter-index">04</span><div><p className="book-eyebrow">JULY 20, 1969 · DESCENT</p><h2>The Descent into the Unknown</h2></div></div><p className="storybook-narrator">Now imagine looking out of a tiny window as the Moon grows larger. The computer beeps—and everyone has to stay calm.</p>
+        <div className="night-grid"><div className="night-copy"><p>Now the Moon was getting closer. Eagle had separated from Columbia, and its descent engine began slowing the spacecraft as it headed toward the Sea of Tranquility. Imagine watching the grey ground grow bigger in the windows.</p><p>Then the computer issued alarms: 1202, followed by 1201. These were not signs that the computer had completely failed. They indicated that it was overloaded with work. In Mission Control, flight controllers assessed the alarms and confirmed that the landing could continue.</p><p>But the descent was still far from routine. The crew had to keep flying while the team on Earth watched the numbers and listened.</p></div><div className="alarm-panel"><span className="alarm-label">GUIDANCE COMPUTER · PROGRAM ALARMS</span><div className="alarm-readout"><strong>1202</strong><span>EXECUTIVE OVERFLOW</span></div><div className="alarm-readout"><strong>1201</strong><span>EXECUTIVE OVERFLOW</span></div><p>The alarms indicated the computer was overloaded—not that all guidance had stopped.</p><a href="https://www.nasa.gov/mission/apollo-11/" target="_blank" rel="noreferrer">Explore NASA's mission archive ↗</a></div></div>
+        <div className="descent-timeline" aria-label="Key descent events"><div><span>01</span><strong>Powered descent</strong><small>Eagle begins braking toward the surface.</small></div><div><span>02</span><strong>1202 / 1201 alarms</strong><small>Mission Control confirms the computer can continue.</small></div><div><span>03</span><strong>Manual approach</strong><small>Armstrong steers away from rough terrain.</small></div><div><span>04</span><strong>Touchdown</strong><small>20:17:40 UTC · July 20, 1969</small></div></div><div className="descent-media"><div className="descent-media-copy"><span>MISSION AUDIO & VIDEO</span><h3>Listen to the moment unfold.</h3><p>Optional archival footage. Use the player controls to start or pause.</p></div><div className="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/nOcDftgR5UQ?rel=0" title="NASA Apollo 11 landing video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen/></div></div>
+        {chapterTurn(3)}
+      </div>
       </section>
 
       <section className="book-chapter chapter-touchdown" id="chapter-5">
@@ -639,7 +700,7 @@ export function EaglePage() {
           <div className="chapter-heading-row"><span className="chapter-index">05</span><div><p className="book-eyebrow">THE FINAL APPROACH</p><h2>Thirty Seconds to Make History</h2></div></div><p className="storybook-narrator">Would you have been nervous? Armstrong had to steer around rocks while the fuel clock kept ticking.</p>
           <div className="touchdown-layout"><div className="touchdown-copy"><p>But there was a problem. The computer was guiding Eagle toward a rocky crater. Armstrong took control and steered toward a safer patch of ground. Every second mattered, so he had to choose carefully.</p><p>Dust kicked up beneath the descent engine and made the surface harder to judge. The fuel margin was shrinking, and the crew had little room for delay. The landing depended on careful decisions in the final moments.</p><div className="landing-time"><span>TOUCHDOWN · UTC</span><strong>20:17:40</strong><small>July 20, 1969</small></div></div>{img("https://upload.wikimedia.org/wikipedia/commons/a/a4/Aldrin_Apollo_11_original.jpg","Buzz Aldrin on the lunar surface during Apollo 11","Apollo 11 surface photography · NASA","https://science.nasa.gov/resource/the-eagle-prepares-to-land/")}</div>
           <blockquote className="hero-quote">“Houston, Tranquility Base here. The Eagle has landed.”<cite>— Neil Armstrong · July 20, 1969</cite></blockquote>
-      {chapterTurn(4)}
+          {chapterTurn(4)}
         </div>
       </section>
 
@@ -648,23 +709,23 @@ export function EaglePage() {
           <div className="chapter-heading-row"><span className="chapter-index">06</span><div><p className="book-eyebrow">A FEW HOURS ON ANOTHER WORLD</p><h2>Footprints in a Silent World</h2></div></div><p className="storybook-narrator">On the Moon, even walking was different. Every step left a mark in the powdery ground.</p>
           <div className="surface-story"><div className="surface-image"><img src="https://apod.nasa.gov/apod/image/1907/AS11-40-5961pan.jpg" alt="Apollo 11 Tranquility Base lunar panorama" loading="lazy" onError={e=>e.currentTarget.style.display="none"}/><div className="surface-image-caption">Tranquility Base panorama · Armstrong / NASA</div></div><div className="surface-copy"><p>At last, a human stepped onto the Moon! Armstrong went first, and Aldrin followed. With weaker gravity than on Earth, moving felt different. Their boots pressed marks into the soft lunar dust while they took pictures, set up experiments and gathered rocks and soil.</p><p>The crew brought back approximately 21.5 kilograms of lunar material. Their work gave scientists rocks and soil to study directly, as well as photographs and measurements from the surface.</p><div className="sample-stat"><strong>21.5 kg</strong><span>APPROXIMATE LUNAR SAMPLES RETURNED</span></div><p>With no wind or rain to erase them, footprints can remain visible for an extremely long time. They still change slowly, though, as tiny impacts and other processes gradually alter the surface.</p></div></div>
           <div className="panorama-source"><a href="https://apod.nasa.gov/apod/ap190719.html" target="_blank" rel="noreferrer">View the original Tranquility Base panorama at NASA APOD ↗</a></div>
-      {chapterTurn(5)}
+          {chapterTurn(5)}
         </div>
       </section>
 
       <section className="book-chapter chapter-night liftoff-chapter" id="chapter-7">
         <div className="night-stars" aria-hidden="true"/><div className="chapter-inner night-inner">
-          <div className="chapter-heading-row"><span className="chapter-index">07</span><div><p className="book-eyebrow">JULY 21, 1969 · ASCENT</p><h2>The Great Escape</h2></div></div><p className="storybook-narrator">Time to go home! Eagle's top half had one engine and one big job: lift the astronauts back to orbit.</p>
-          <div className="liftoff-grid"><div><p>Soon it was time to say goodbye to the Moon. Eagle's upper section separated from the lower landing platform. Its own engine fired, lifting the astronauts upward while the landing legs stayed behind.</p><p>There was no launch tower or runway. The descent stage itself had served as the launch platform. Eagle's upper half climbed back toward the orbiting command module.</p><div className="liftoff-note"><span>✦</span><p>The ascent stage used the descent stage as a platform—but did not take it along.</p></div></div><div className="liftoff-model"><EagleScene year={1969} ejected={{cameras:false,boots:false,descent:false}} laserActive={false} background="#101722" stars/></div></div>
-      {chapterTurn(6)}
-        </div>
+        <div className="chapter-heading-row"><span className="chapter-index">07</span><div><p className="book-eyebrow">JULY 21, 1969 · ASCENT</p><h2>The Great Escape</h2></div></div><p className="storybook-narrator">Time to go home! Eagle's top half had one engine and one big job: lift the astronauts back to orbit.</p>
+        <div className="liftoff-grid"><div><p>Soon it was time to say goodbye to the Moon. Eagle's upper section separated from the lower landing platform. Its own engine fired, lifting the astronauts upward while the landing legs stayed behind.</p><p>There was no launch tower or runway. The descent stage itself had served as the launch platform. Eagle's upper half climbed back toward the orbiting command module.</p><div className="liftoff-note"><span>✦</span><p>The ascent stage used the descent stage as a platform—but did not take it along.</p></div></div><div className="liftoff-model"><EagleScene year={1969} ejected={{cameras:false,boots:false,descent:false}} laserActive={false} background="#101722" stars/></div></div>
+        {chapterTurn(6)}
+      </div>
       </section>
 
       <section className="book-chapter chapter-light" id="chapter-8">
         <div className="chapter-inner">
           <div className="chapter-heading-row"><span className="chapter-index">08</span><div><p className="book-eyebrow">BACK TO COLUMBIA</p><h2>A Reunion Among the Stars</h2></div></div><p className="storybook-narrator">Someone was waiting above the Moon. Michael Collins and Columbia were the next stop on Eagle's journey.</p>
           <div className="editorial-split reunion-split"><div className="chapter-prose"><p>High above the Moon, Michael Collins was waiting in Columbia. Eagle's upper section carefully met up with the spacecraft and docked. Armstrong and Aldrin could finally join their crewmate again.</p><p>The astronauts transferred to Columbia, carrying the lunar samples and the records of their time on the surface. The ascent stage was then discarded. It later impacted the Moon; its precise impact location is unknown.</p><p>The crew's return journey to Earth was now underway. The lower half of Eagle remained at Tranquility Base, a silent witness to the first crewed lunar landing.</p></div>{img(EAGLE_PHOTOS.reunion,"Apollo 11 Eagle ascent stage near Columbia in lunar orbit","Eagle return toward Columbia · NASA","https://science.nasa.gov/resource/eagles-return/")}</div>
-      {chapterTurn(7)}
+          {chapterTurn(7)}
         </div>
       </section>
 
@@ -677,7 +738,7 @@ export function EaglePage() {
           <div className="final-gallery">{img(EAGLE_PHOTOS.lro,"Lunar Reconnaissance Orbiter image of the Apollo 11 landing site","LRO view of the Eagle descent stage · NASA/GSFC/ASU","https://science.nasa.gov/earth/earth-observatory/apollo-11-landing-site-39408/")}{img(EAGLE_PHOTOS.reunion,"Apollo 11 Eagle ascent stage in lunar orbit","Eagle’s return · NASA","https://science.nasa.gov/resource/eagles-return/")}</div>
           <div className="archive-links"><a href="https://science.nasa.gov/earth/earth-observatory/apollo-11-landing-site-39408/" target="_blank" rel="noreferrer">NASA · Apollo 11 landing site ↗</a><a href="https://science.nasa.gov/resource/apollo-11-landing-site-from-dawn-to-dusk/" target="_blank" rel="noreferrer">NASA · Dawn to dusk sequence ↗</a><a href="https://svs.gsfc.nasa.gov/4185/" target="_blank" rel="noreferrer">NASA · 3D landing-site visualization ↗</a><a href="https://www.nasa.gov/mission/apollo-11/" target="_blank" rel="noreferrer">Apollo 11 mission archive ↗</a></div>
           <div className="book-end"><span>END OF STORY · ARCHIVE 001</span><a href="#top" className="back-to-top">Back to the beginning ↑</a><Link to="/moon">Explore Tranquility Base →</Link></div>
-      {chapterTurn(8)}
+          {chapterTurn(8)}
         </div>
       </section>
     </main>
@@ -688,7 +749,7 @@ function Overview(){
   useEffect(()=>{
     const controller=new AbortController();
     getArtifact("apollo-11-eagle-descent-stage",controller.signal)
-      .then(setLiveArtifact).catch(()=>{});
+        .then(setLiveArtifact).catch(()=>{});
     return ()=>controller.abort();
   },[]);
   return <div className="content-grid"><article className="story"><span className="eyebrow">RECOVERY NOTE 001</span><h2>The Eagle landed. Then it stayed.</h2><p>{liveArtifact?.longStory || eagle.story}</p><p>Its descent stage remains at Tranquility Base. The ascent stage carried Armstrong and Aldrin back to lunar orbit, where they rendezvoused with Columbia. The descent stage became the platform from which humanity first stepped onto another world.</p><div className="quote">“Houston, Tranquility Base here. The Eagle has landed.”<small>— Neil Armstrong, July 20, 1969</small></div></article><aside className="data-panel">{eagle.facts.map(f=><div className="data-row" key={f.label}><span>{f.label}</span><strong>{f.value}</strong></div>)}<a className="source-button" href={eagle.sources[0].url} target="_blank" rel="noreferrer">OPEN NASA ARCHIVE <ExternalLink size={14}/></a></aside></div>}
