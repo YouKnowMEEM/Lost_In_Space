@@ -12,7 +12,7 @@ import eagle from "../data/eagle.json";
 import { getArtifact } from "../services/archiveApi";
 import MoonMap, { MarsMap } from "../components/MoonMap";
 
-const SPACE_BG = "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000&auto=format&fit=crop";
+const SPACE_BG = "/images/home-background.jpg";
 const VOYAGER_AUDIO = "https://www.nasa.gov/wp-content/uploads/2015/01/voyager-plasma-waves.mp3";
 const QUINDAR_AUDIO = "https://www.nasa.gov/wp-content/uploads/2015/01/quindar_tones.mp3";
 

@@ -1,0 +1,164 @@
+/* Eagle storybook: a light, joyful picture book. Everything is scoped under .eg */
+.eg {
+  --ink: #1e2a5a;
+  --sun: #ffd23f;
+  --coral: #d63a5f;
+  position: relative;
+  min-height: 100dvh;
+  padding-bottom: 32px;
+  color: var(--ink);
+  background: linear-gradient(180deg, #bfe8ff 0%, #e4f5ff 52%, #fff2d2 100%);
+  font-family: ui-rounded, "SF Pro Rounded", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  overflow-x: hidden;
+}
+.eg *,
+.eg *::before,
+.eg *::after { box-sizing: border-box; }
+.eg h1,
+.eg h2,
+.eg p { margin: 0; }
+.eg h1:focus,
+.eg h2:focus { outline: none; }
+.eg :focus-visible { outline: 4px solid #7c5cff; outline-offset: 3px; }
+
+/* chunky picture-book buttons */
+.eg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 24px;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--ink);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.eg-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 7px 0 var(--ink); }
+.eg-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+.eg-btn:disabled { opacity: 0.4; cursor: default; box-shadow: 0 2px 0 var(--ink); }
+.eg-btn.sm { min-height: 44px; padding: 0 16px; font-size: 0.95rem; }
+.eg-primary { background: var(--sun); }
+
+.eg-top { display: flex; align-items: center; gap: 10px; max-width: 1040px; margin: 0 auto; padding: 16px 16px 8px; }
+.eg-listen { margin-left: auto; }
+
+/* the book */
+.eg-book {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  max-width: 1040px;
+  min-height: min(560px, calc(100dvh - 200px));
+  margin: 8px auto 0;
+  background: #fff;
+  border: 4px solid var(--ink);
+  border-radius: 36px;
+  box-shadow: 10px 12px 0 rgba(30, 42, 90, 0.16);
+  overflow: hidden;
+  animation: eg-in 0.5s ease backwards;
+}
+
+/* picture side */
+.eg-stage {
+  position: relative;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding-bottom: 12%;
+  overflow: hidden;
+  background: linear-gradient(#8fd3ff, #d8f1ff 62%, #fff1cf);
+}
+.eg-stage.dusk { background: linear-gradient(#b9a7ff, #ffd0e6 66%, #ffeccb); }
+.eg-stage::after { /* the Moon's ground */
+  content: "";
+  position: absolute;
+  left: -15%;
+  right: -15%;
+  bottom: -42%;
+  height: 64%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #fff 0 20%, #ece8f7 58%, #d4cfe8);
+  box-shadow: 0 -6px 24px rgba(255, 255, 255, 0.8);
+}
+.eg-eagle { position: relative; z-index: 1; width: min(58%, 250px); height: auto; overflow: visible; }
+.eg-icons { position: relative; z-index: 1; display: flex; gap: 18px; font-size: clamp(3rem, 9vw, 4.8rem); line-height: 1; }
+.eg-ic { display: inline-block; }
+.eg-spark {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  animation: eg-twinkle 2.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.35s);
+}
+.eg-spark:nth-child(3n) { background: var(--sun); }
+
+/* Eagle's moods */
+.eg-pose-float,
+.eg-pose-sleep { animation: eg-bob 3.4s ease-in-out infinite; }
+.eg-pose-sleep { animation-duration: 5.5s; }
+.eg-pose-drop { animation: eg-drop 3.6s cubic-bezier(0.3, 0, 0.3, 1) infinite; }
+.eg-pose-land { animation: eg-settle 0.9s ease-out backwards; }
+.eg-pose-split .eg-up { animation: eg-split 2.6s ease-in-out infinite; }
+.eg-pose-lift .eg-up { animation: eg-lift 3.8s ease-in infinite; }
+.eg-sleepface { display: none; }
+.eg-pose-sleep .eg-sleepface { display: block; }
+.eg-pose-sleep .eg-up { display: none; } /* only the bottom half stayed behind */
+
+.fx-rocket .eg-ic { animation: eg-launch 3.2s ease-in infinite; }
+.fx-hop .eg-ic:first-child { animation: eg-hop 1.8s ease-in-out infinite; }
+.fx-float .eg-ic { animation: eg-bob 3s ease-in-out infinite; animation-delay: calc(var(--i) * 0.45s); }
+
+/* words side */
+.eg-text { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: clamp(22px, 4vw, 48px); }
+.eg-text h1 { font-size: clamp(3rem, 9vw, 5.2rem); line-height: 0.95; letter-spacing: -0.02em; color: var(--coral); }
+.eg-text h2 { font-size: clamp(1.8rem, 4.6vw, 2.7rem); line-height: 1.08; color: var(--coral); }
+.eg-sub { font-size: clamp(1.3rem, 3vw, 1.7rem); font-weight: 800; }
+.eg-note { font-weight: 700; opacity: 0.75; }
+.eg-story { font-size: clamp(1.25rem, 3.1vw, 1.6rem); line-height: 1.75; font-weight: 600; }
+.eg-on { background: linear-gradient(transparent 50%, #ffe066 50%); border-radius: 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.eg-cta,
+.eg-end { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 6px; }
+.eg-the-end { font-size: 1.7rem; font-weight: 900; color: var(--coral); }
+.eg-end a:not(.eg-btn) { font-weight: 700; color: var(--ink); }
+
+/* page turning */
+.eg-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px; max-width: 1040px; margin: 26px auto 0; padding: 0 16px; }
+.eg-dots { display: flex; gap: 4px; }
+.eg-dots button { width: 26px; height: 26px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+.eg-dots button::before { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--ink); background: #fff; transition: transform 0.15s, background 0.15s; }
+.eg-dots .on::before { background: var(--sun); transform: scale(1.35); }
+
+@keyframes eg-bob { 50% { transform: translateY(-12px); } }
+@keyframes eg-drop { 0% { transform: translateY(-120%); } 65%, 100% { transform: none; } }
+@keyframes eg-settle { 0% { transform: translateY(-40px); } 55% { transform: translateY(6px); } 100% { transform: none; } }
+@keyframes eg-split { 50% { transform: translateY(-18px); } }
+@keyframes eg-lift { 0%, 20% { transform: none; opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-190px); opacity: 0; } }
+@keyframes eg-launch { 0%, 15% { transform: translateY(60px); } 100% { transform: translateY(-230px); } }
+@keyframes eg-hop { 50% { transform: translateY(-52px); } }
+@keyframes eg-twinkle { 50% { opacity: 0.25; transform: scale(0.55); } }
+@keyframes eg-in { from { opacity: 0; transform: translateY(16px) rotate(-0.4deg); } }
+
+@media (max-width: 860px) {
+  .eg-book { grid-template-columns: 1fr; min-height: 0; margin: 8px 12px 0; border-radius: 28px; }
+  .eg-stage { min-height: 280px; }
+  .eg-dots { order: -1; width: 100%; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eg *,
+  .eg *::before,
+  .eg *::after { animation: none !important; transition: none !important; }
+}
