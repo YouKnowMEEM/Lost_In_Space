@@ -1,0 +1,5 @@
+[
+  { "id": "mro", "name": "MRO", "type": "circular", "radius": 4.35, "inclination": 0.28, "markerAngle": 0.8 },
+  { "id": "odyssey-2001", "name": "2001 Mars Odyssey", "type": "circular", "radius": 4.35, "inclination": -0.55, "markerAngle": -0.65 },
+  { "id": "maven", "name": "MAVEN · INACTIVE", "type": "elliptical", "status": "inactive", "periapsis": 3.62, "apoapsis": 4.35, "inclination": 0.8, "markerAngle": 0.5 }
+]

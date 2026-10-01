@@ -10,7 +10,8 @@ import {
 } from "lucide-react";
 import eagle from "../data/eagle.json";
 import { getArtifact } from "../services/archiveApi";
-import MoonMap, { MarsMap } from "../components/MoonMap";
+import MoonExplorer from "../pages/MoonExplorer";
+import MarsExplorer from "../pages/MarsExplorer";
 
 const SPACE_BG = "/images/home-background.jpg";
 const VOYAGER_AUDIO = "https://www.nasa.gov/wp-content/uploads/2015/01/voyager-plasma-waves.mp3";
@@ -572,10 +573,9 @@ export function LandingPage() {
 }
 
 export function MoonPage() {
-  const navigate = useNavigate();
-  return <Shell immersive><div id="main-content" className="moon-route-arrival" tabIndex="-1"><MoonMap onDecrypt={(missionId) => { if (missionId === "apollo-11") navigate("/eagle"); }}/></div></Shell>;
+  return <Shell immersive><MoonExplorer /></Shell>;
 }
-export function MarsPage() { return <Shell immersive><div id="main-content" tabIndex="-1"><MarsMap /></div></Shell>; }
+export function MarsPage() { return <Shell immersive><MarsExplorer /></Shell>; }
 
 
 function Lander3D({ year }) {
