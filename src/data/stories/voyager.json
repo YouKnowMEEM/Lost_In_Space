@@ -1,0 +1,241 @@
+{
+  "id": "voyager",
+  "book": 3,
+  "title": "Voyager 1",
+  "subtitle": "The traveller who kept going",
+  "tagline": "A bedtime story from deep space",
+  "voice": "af_heart",
+  "theme": "deep",
+  "missionPath": "/voyager-1/mission",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Voyager 1",
+      "scene": "voyager-cover",
+      "narration": "Sleeping Beauties presents... Voyager 1. The traveller who kept going. A bedtime story from deep space."
+    },
+    {
+      "id": "farthest",
+      "title": "The Farthest Traveller",
+      "scene": "voyager-far",
+      "text": [
+        "Close your eyes and fly with me. Past the Moon. Past red Mars. Past giant Jupiter and ringed Saturn, past blue Uranus and Neptune, until the Sun behind you is just one bright star.",
+        "Now keep going. Much, much farther.",
+        "Out there, in the dark between the stars, a small spacecraft is still travelling. It is farther from home than anything people have ever made.",
+        "Its name is Voyager 1. It left Earth almost fifty years ago, and it has never stopped."
+      ],
+      "fact": "Voyager 1 is more than 25 billion kilometres from Earth. Even light, the fastest thing there is, needs almost a whole day to get there."
+    },
+    {
+      "id": "lineup",
+      "title": "A Lucky Line-Up",
+      "scene": "voyager-lineup",
+      "text": [
+        "In the [1960s]{nineteen sixties}, scientists noticed something special. In the late [1970s]{nineteen seventies}, the giant outer planets would line up along one side of the Sun.",
+        "A spacecraft could fly to one planet, then borrow that planet's pull, like a slingshot, to swing on to the next. A line-up like this happens only about once every [175]{a hundred and seventy-five} years!",
+        "So NASA built twin spacecraft, Voyager 1 and Voyager 2. Each had a big white dish to talk to Earth, long arms to hold its instruments, and three small nuclear power generators to keep it running for years and years."
+      ],
+      "photo": {
+        "nasa": "PIA21478",
+        "caption": "Engineers at NASA's Jet Propulsion Laboratory build the ten-sided body of Voyager 2, the twin of Voyager 1, in February 1977.",
+        "credit": "NASA / JPL-Caltech · PIA21478",
+        "pos": "br"
+      },
+      "fact": "Voyager's computers can do about 8,000 things a second. A phone today can do billions!"
+    },
+    {
+      "id": "launch",
+      "title": "Two Rockets, Two Weeks Apart",
+      "scene": "voyager-launch",
+      "text": [
+        "Voyager 2 launched first, on the twentieth of August, [1977]{nineteen seventy-seven}. Two weeks later, on the fifth of September, it was Voyager 1's turn.",
+        "At four minutes to nine in the morning, a tall Titan rocket roared into the Florida sky, with Voyager 1 tucked inside its nose.",
+        "Wait a minute. Why is it called Voyager 1, if it launched second?",
+        "Because it was on a faster path. It would reach Jupiter and Saturn first, and leave its twin far behind."
+      ],
+      "photo": {
+        "nasa": "PIA21747",
+        "caption": "Liftoff! Voyager 1 leaves Florida on its Titan-Centaur rocket on September 5, 1977.",
+        "credit": "NASA / JPL-Caltech · PIA21747",
+        "pos": "tl"
+      },
+      "fact": "Voyager 1 travels about 17 kilometres every second. At that speed you could fly from London to New York in about five and a half minutes."
+    },
+    {
+      "id": "record",
+      "title": "A Golden Message",
+      "scene": "voyager-record",
+      "text": [
+        "Before it left, Voyager 1 was given a very special present: a golden record.",
+        "It looks like an old music record, made of copper and covered in gold. On it are the sounds of Earth: thunder and rain, birds and whales, laughter, a kiss, and music from all around the world.",
+        "There are pictures too, one hundred and fifteen of them, and friendly greetings in fifty-five languages. One of them is a little boy saying, “Hello from the children of planet Earth.”",
+        "It is a message in a bottle, thrown into the biggest ocean there is. Just in case someone, someday, finds it."
+      ],
+      "photo": {
+        "nasa": "PIA21741",
+        "caption": "The real Golden Record is prepared for Voyager 1 in 1977.",
+        "credit": "NASA / JPL-Caltech · PIA21741",
+        "pos": "tr"
+      },
+      "fact": "One of the greetings is in Bengali: “Nomoshkar, bishshe shanti hok.” It means “Hello! Let there be peace everywhere.”"
+    },
+    {
+      "id": "jupiter",
+      "title": "Hello, Jupiter!",
+      "scene": "voyager-jupiter",
+      "text": [
+        "For a year and a half, Voyager 1 crossed the dark. Then, early in [1979]{nineteen seventy-nine}, a gigantic striped planet began to fill its cameras. Jupiter, the biggest planet of all.",
+        "Voyager took thousands and thousands of pictures. Swirling clouds. Storms bigger than the whole Earth. The Great Red Spot, a giant storm that has been spinning for at least a hundred and fifty years.",
+        "It even found a thin, faint ring around Jupiter that nobody had ever seen before.",
+        "On the fifth of March, Voyager swooped closest, then flew on."
+      ],
+      "photo": {
+        "nasa": "PIA00144",
+        "caption": "Jupiter with two of its moons, Io and Europa, photographed by Voyager 1 on February 13, 1979.",
+        "credit": "NASA / JPL · PIA00144",
+        "pos": "bl"
+      },
+      "fact": "Voyager 1 sent home about 18,000 pictures of Jupiter and its moons. Its sharpest camera could read a newspaper headline from a kilometre away."
+    },
+    {
+      "id": "io",
+      "title": "A Moon with Volcanoes",
+      "scene": "voyager-io",
+      "text": [
+        "Then came the biggest surprise of all. Jupiter has a moon called [Io]{/ˈaɪoʊ/}, about the same size as our own Moon.",
+        "A few days after the flyby, a navigation engineer named Linda Morabito was studying a picture of [Io]{/ˈaɪoʊ/}, checking the positions of the stars behind it. At its edge she noticed a strange, glowing umbrella shape.",
+        "It was a volcano, erupting! It was the first time anyone had ever seen a volcano erupting anywhere except on Earth.",
+        "Voyager found more and more of them, puffing sulfur high above [Io's]{/ˈaɪoʊz/} yellow and orange ground."
+      ],
+      "photo": {
+        "nasa": "PIA00010",
+        "caption": "Voyager 1's view of Io, with the volcano Loki erupting a plume at its edge.",
+        "credit": "NASA / JPL · PIA00010",
+        "pos": "br"
+      },
+      "fact": "Io is the most volcanic place we know of. Its volcanoes can throw material hundreds of kilometres high."
+    },
+    {
+      "id": "saturn",
+      "title": "Rings and a Hazy Moon",
+      "scene": "voyager-saturn",
+      "text": [
+        "Next stop, Saturn! In November [1980]{nineteen eighty}, Voyager 1 arrived at the planet with the most beautiful rings in the solar system.",
+        "Up close, the rings were not a few smooth hoops. They were made of hundreds and hundreds of thin ringlets, like the grooves of a record.",
+        "Then Voyager flew close to Titan, Saturn's biggest moon, to study its thick orange haze. And that close pass changed everything. Titan's pull swung Voyager 1 up and away, out of the flat path where the planets travel.",
+        "There would be no more planets to visit. From now on, Voyager 1 was heading for the stars."
+      ],
+      "photo": {
+        "nasa": "PIA00024",
+        "caption": "Saturn and two of its moons, Tethys and Dione, photographed by Voyager 1 on November 3, 1980.",
+        "credit": "NASA / JPL · PIA00024",
+        "pos": "br"
+      },
+      "fact": "Titan's air is mostly nitrogen, like the air we breathe, but it is so thick and hazy that Voyager could not see the ground at all."
+    },
+    {
+      "id": "dot",
+      "title": "One Last Look Home",
+      "scene": "voyager-dot",
+      "text": [
+        "Voyager 1 travelled on for nearly ten years, deeper and deeper into the dark.",
+        "Then, on Valentine's Day, [1990]{nineteen ninety}, the team gave its cameras one last job. Turn around, and take a family portrait of the planets.",
+        "From about six billion kilometres away, Earth was smaller than a single dot in the picture. A tiny speck of pale blue, floating in a beam of sunlight.",
+        "Everyone you have ever met was on that little dot. Soon after, Voyager's cameras were switched off forever, to save power for the long journey ahead."
+      ],
+      "photo": {
+        "nasa": "PIA00452",
+        "caption": "The Pale Blue Dot: Earth, photographed by Voyager 1 on February 14, 1990, from about 6 billion kilometres away.",
+        "credit": "NASA / JPL · PIA00452",
+        "pos": "tr"
+      },
+      "fact": "Earth was smaller than one pixel in the picture. The scientist Carl Sagan called it the Pale Blue Dot."
+    },
+    {
+      "id": "bubble",
+      "title": "Leaving the Sun's Bubble",
+      "scene": "voyager-bubble",
+      "text": [
+        "Did you know the Sun blows a wind? Not a wind of air, but a wind of tiny charged particles, rushing out in every direction. It blows a gigantic bubble around all the planets.",
+        "For years and years, Voyager 1 sailed through that bubble. In [2004]{two thousand and four}, it reached the place where the Sun's wind suddenly slows down.",
+        "And on the twenty-fifth of August, [2012]{twenty twelve}, its instruments noticed that the particles around it had changed. Voyager 1 had slipped out of the Sun's bubble, into the space between the stars.",
+        "It was the first thing ever made by people to reach interstellar space."
+      ],
+      "photo": {
+        "nasa": "PIA17460",
+        "caption": "An artist's picture of the Sun's bubble and the space beyond it, where Voyager 1 is travelling now.",
+        "credit": "NASA / JPL-Caltech · PIA17460",
+        "pos": "br"
+      },
+      "video": {
+        "nasa": "GSFC_20170905_Solar_m12639_System",
+        "title": "Where does the solar system end?",
+        "caption": "A short NASA video about the edge of the Sun's bubble.",
+        "credit": "NASA's Goddard Space Flight Center"
+      },
+      "fact": "Scientists were only sure a year later, after the Sun sent out a burst that made the gas around Voyager ring like a bell."
+    },
+    {
+      "id": "listening",
+      "title": "Whispers Across the Dark",
+      "scene": "voyager-listening",
+      "text": [
+        "How can we hear from something so far away?",
+        "Voyager 1 talks to Earth with a radio about as strong as the light bulb in a refrigerator. By the time its whisper reaches us, it is twenty billion times weaker than the power a digital watch uses.",
+        "To catch it, NASA uses giant dish antennas, some seventy metres wide, in California, Spain and Australia. As the Earth turns, they take turns listening.",
+        "A message from Voyager takes almost a whole day to arrive. So when engineers send it a command, they wait about two days to find out if it worked."
+      ],
+      "photo": {
+        "nasa": "PIA13277",
+        "caption": "A giant 70-metre antenna of NASA's Deep Space Network at Goldstone, California.",
+        "credit": "NASA / JPL-Caltech · PIA13277",
+        "pos": "tr"
+      },
+      "fact": "The listening stations sit on opposite sides of the world, so one of them can always see Voyager while the Earth spins."
+    },
+    {
+      "id": "glitch",
+      "title": "The Day Voyager Talked Nonsense",
+      "scene": "voyager-glitch",
+      "text": [
+        "In November [2023]{twenty twenty-three}, something went wrong. Voyager 1 was still sending signals, but they made no sense. It was like getting a letter full of scrambled letters.",
+        "The team at NASA's Jet Propulsion Laboratory worked like detectives. Slowly, they worked out that one tiny chip in Voyager's memory had broken.",
+        "So, very carefully, they moved Voyager's instructions into other parts of its memory, sending the new code across more than twenty-four billion kilometres.",
+        "In April [2024]{twenty twenty-four}, the answer came back. Voyager 1 was making sense again! The whole team cheered."
+      ],
+      "video": {
+        "nasa": "JPL-20240425-VOYAGEf-0001-Voyager 1 Team Reacts to Receiving Engineering Data From Spacecraft",
+        "title": "Watch the team cheer",
+        "caption": "The Voyager team at NASA's Jet Propulsion Laboratory on April 20, 2024, when readable data arrived again.",
+        "credit": "NASA / JPL-Caltech"
+      },
+      "fact": "All of Voyager's computers together have about 69 kilobytes of memory. One photo on a phone needs far more than that!"
+    },
+    {
+      "id": "sleepy",
+      "title": "Getting Sleepy",
+      "scene": "voyager-sleepy",
+      "text": [
+        "Voyager 1 is very old now, and it is getting tired.",
+        "Its power generators make a little less electricity every year. To save energy, the team switches things off, one at a time. First some heaters. Then, one by one, its instruments.",
+        "In April [2026]{twenty twenty-six}, they switched off one more. Now only two are still working: one that feels the magnetic fields of space, and one that listens to waves rippling through it.",
+        "One day, Voyager 1 will not have enough power to call home. It will fall silent, like the other sleeping beauties."
+      ],
+      "fact": "Voyager's power generators lose about 4 watts every year. That's about as much as a small night-light."
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Voyager",
+      "scene": "voyager-goodnight",
+      "text": [
+        "But even asleep, Voyager 1 will keep sailing. It does not need its engines to keep going, because out there there is no air and almost nothing to slow it down.",
+        "In the year [40,272]{forty thousand, two hundred and seventy-two}, it will pass a small star called [AC+79 3888]{A C plus seventy-nine, three eight eight eight}, though even then it will be more than a light-year away from it.",
+        "And on it will go, for millions of years, carrying the golden record and the sounds of home.",
+        "So tonight, look up at the stars. Somewhere out there, past all the planets, a little traveller is still on its way.",
+        "Goodnight, Voyager."
+      ],
+      "fact": "Seen from Earth, Voyager 1 is in the constellation Ophiuchus, the Serpent Bearer, which you can find in the evening sky in summer."
+    }
+  ]
+}

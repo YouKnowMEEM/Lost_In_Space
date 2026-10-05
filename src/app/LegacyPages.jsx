@@ -13,7 +13,7 @@ import { getArtifact } from "../services/archiveApi";
 import MoonExplorer from "../pages/MoonExplorer";
 import MarsExplorer from "../pages/MarsExplorer";
 
-const SPACE_BG = "/images/home-background.jpg";
+const SPACE_BG = "/images/HomeBG.png";
 const VOYAGER_AUDIO = "https://www.nasa.gov/wp-content/uploads/2015/01/voyager-plasma-waves.mp3";
 const QUINDAR_AUDIO = "https://www.nasa.gov/wp-content/uploads/2015/01/quindar_tones.mp3";
 

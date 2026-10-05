@@ -1,0 +1,45 @@
+Sleeping Beauties: update 2 for NASA Space Apps Challenge 2026
+================================================================
+
+This archive has every file that differs from your original project, so it works
+whether or not you already applied the first update.
+
+How to apply
+------------
+1. Unzip this archive on top of your SleepingBeauties folder (the one that already
+   has node_modules). Say "yes" to replacing files.
+2. If they are still there, delete these four old files. Nothing uses them any more:
+     src/data/eagleStory.js
+     src/hooks/useNarrator.js      (and the empty src/hooks folder)
+     src/pages/eagle.css
+     src/pages/landing.css
+3. Run the site:
+     npm run dev        then open http://localhost:5173
+   No new npm packages were added, so there is nothing new to install.
+
+What changed in this update
+---------------------------
+1. Real photos in the storybooks now always appear. The photo used to stay invisible
+   when it had finished loading before the page was ready to notice.
+2. Mission files open in a bright reading mode. The moon/sun button in the top bar
+   switches between light and dark, and the choice is remembered.
+3. Home page: Worlds now comes before Storybooks (in the page and in the menu).
+4. Storybook wording: each book is now "A bedtime story from the Moon / Mars /
+   deep space", with its reading time and page count shown as small labels. The
+   narrator's cover line was re-recorded to match.
+5. New storybook: Voyager 1, "The traveller who kept going"
+     /voyager-1           13 pages, narrated (about 9 minutes), with its
+                          own deep-space lullaby, real NASA photos and two NASA videos
+     /voyager-1/mission   the mission file: timeline, the NASA 3D model with labelled
+                          parts, a live map of where Voyager 1 is now (distance,
+                          radio delay and kilometres flown while you read), what it
+                          carries, photos, videos and sources
+6. Home page ring: autoplay no longer stops after a while. It pauses only while you
+   point at or tab to its buttons, or drag it, and then carries on by itself.
+7. Worlds, Storybooks and Photos: headings now start right under the menu bar.
+8. Every book has a way back to its world: Eagle to the Moon page, Viking 1 to the
+   Mars page, Voyager 1 to the Space page (with Voyager 1 selected), plus a home
+   button.
+9. Space, Moon and Mars pages: not touched (their files are byte-for-byte unchanged).
+
+See README.md for details, credits, and how to rebuild the narration.

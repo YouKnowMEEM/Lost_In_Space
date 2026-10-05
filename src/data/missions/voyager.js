@@ -1,0 +1,155 @@
+// Mission file: Voyager 1. Facts checked against NASA Science's Voyager 1 page, NASA's NSSDCA
+// record (1977-084A), the Voyager FAQ, NASA's Golden Record pages and NASA/JPL mission news
+// (2017 thruster test, the 2023–24 memory-chip fix, the 2025 and 2026 instrument switch-offs).
+// Live distances come from src/lib/voyagerDistance.js, anchored to NASA's light-day milestone.
+
+import { LIGHT_DAY_MOMENT, billionKm, lightTime, voyagerAt } from "../../lib/voyagerDistance";
+
+const now = voyagerAt();
+const lightDayReached = Date.now() >= LIGHT_DAY_MOMENT;
+
+export const voyagerMission = {
+  id: "voyager",
+  name: "Voyager 1",
+  kicker: "Voyager 1 · Mission file",
+  title: "Voyager 1, the farthest traveller",
+  hero: {
+    nasa: "PIA21839",
+    focus: "62% 50%",
+    caption: "Artist's concept of a Voyager spacecraft in deep space. NASA / JPL-Caltech · PIA21839",
+  },
+  summary: [
+    "Voyager 1 is the most distant object ever made by people. It was launched in 1977 to fly past Jupiter and Saturn, has kept going for almost half a century, and in 2012 became the first spacecraft to reach interstellar space, the region between the stars.",
+    "Voyager 1 and its twin, Voyager 2, were built by NASA's Jet Propulsion Laboratory to make the most of a rare line-up of the outer planets. Voyager 1 took the faster route. It reached Jupiter in March 1979 and Saturn in November 1980, sending home tens of thousands of pictures and finding volcanoes erupting on Io, a ring around Jupiter and a thick nitrogen atmosphere on Titan.",
+    "Its close pass of Titan swung it up and out of the plane of the planets, so there was nothing left to visit. In 1990 it turned around to photograph Earth as the Pale Blue Dot, then switched off its cameras. Since then it has measured the solar wind, the edge of the Sun's bubble and, since 2012, the thin gas and magnetic fields between the stars.",
+    "Unlike Eagle and Viking 1, Voyager 1 is not resting on the ground. It is still flying at about 17 km every second and still talking to Earth. Its plutonium power supply weakens every year, so the team switches parts off one by one to keep it going. When the power finally runs out it will fall silent and drift on among the stars, carrying the Golden Record.",
+  ],
+  stats: [
+    { label: "Launched", value: "5 Sep 1977", sub: "12:56 UTC" },
+    { label: "From Earth now", value: billionKm(now.earthKm), sub: `${lightTime(now.lightSeconds)} for its radio signal` },
+    { label: "Speed", value: "17 km/s", sub: "about 61,000 km/h" },
+    { label: "Interstellar since", value: "25 Aug 2012", sub: "the first spacecraft there" },
+  ],
+  facts: [
+    ["Mission", "Voyager, twin spacecraft Voyager 1 and Voyager 2"],
+    ["Built by", "NASA's Jet Propulsion Laboratory, Pasadena, California"],
+    ["Launch", "5 Sep 1977, 12:56 UTC · Titan IIIE-Centaur · Cape Canaveral, Launch Complex 41"],
+    ["Mass", "721.9 kg"],
+    ["Power", "Three radioisotope thermoelectric generators (RTGs) using plutonium-238: about 470 W at launch, about 4 W less every year"],
+    ["Main antenna", "3.7 m high-gain dish"],
+    ["Magnetometer boom", "13 m long"],
+    ["Flybys", "Jupiter on 5 Mar 1979; Titan and Saturn on 12 Nov 1980"],
+    ["Speed", "About 17 km/s (61,000 km/h) relative to the Sun, or about 3.5 AU a year"],
+    ["Heading", "Towards the constellation Ophiuchus, about 35° north of the plane of the planets"],
+    ["Computers", "Six computers with about 69 KB of memory between them, running about 8,000 instructions a second"],
+    ["Still working (2026)", "Magnetometer and plasma wave subsystem"],
+    ["Signal travel time", `About ${lightTime(now.lightSeconds)} one way`],
+    ["Today", "Still flying, still talking to Earth, in interstellar space"],
+  ],
+  timeline: [
+    { when: "20 Aug 1977", title: "Voyager 2 goes first", text: "The twin spacecraft launches on a slower path that will take it past all four giant planets." },
+    { when: "5 Sep 1977 · 12:56 UTC", title: "Launch", text: "Voyager 1 lifts off from Launch Complex 41 at Cape Canaveral on a Titan IIIE-Centaur rocket, on a faster path to Jupiter and Saturn.", photo: "PIA21747" },
+    { when: "18 Sep 1977", title: "Earth and Moon in one picture", text: "From 11.66 million km away, Voyager 1 takes the first photograph of the whole Earth and Moon together in a single frame.", photo: "PIA00013" },
+    { when: "5 Mar 1979 · 12:05 UTC", title: "Closest to Jupiter", text: "After months of photographing Jupiter's storms and moons, Voyager 1 passes about 280,000 km from the planet's cloud tops.", photo: "PIA00144" },
+    { when: "9 Mar 1979", title: "Volcanoes on Io", text: "Navigation engineer Linda Morabito spots a plume rising from the edge of Io: the first volcano ever seen erupting beyond Earth.", photo: "PIA00010" },
+    { when: "12 Nov 1980 · 23:46 UTC", title: "Closest to Saturn", text: "Earlier the same day Voyager 1 flies close past Titan, whose gravity bends its path up and out of the plane of the planets. It then passes about 126,000 km from Saturn.", photo: "PIA00024" },
+    { when: "14 Feb 1990", title: "The Pale Blue Dot", text: "From about 6 billion km, Voyager 1 takes 60 pictures for a portrait of the solar system, with Earth as a single pale dot. Its cameras are then switched off for good.", photo: "PIA00452" },
+    { when: "17 Feb 1998", title: "Farthest of all", text: "At 69.4 AU from the Sun, Voyager 1 overtakes Pioneer 10 and becomes the most distant object ever made by people." },
+    { when: "16 Dec 2004", title: "The termination shock", text: "About 94 AU out, the solar wind around Voyager 1 suddenly slows down. It has entered the heliosheath, the outer layer of the Sun's bubble." },
+    { when: "25 Aug 2012", title: "Interstellar space", text: "About 121 AU from the Sun, Voyager 1 crosses the heliopause and becomes the first spacecraft to reach interstellar space.", photo: "PIA17460" },
+    { when: "28 Nov 2017", title: "Old thrusters wake up", text: "Engineers fire four backup thrusters that had not been used since November 1980. They still work, and the team switches to them to keep the dish pointed at Earth." },
+    { when: "14 Nov 2023", title: "Nonsense from deep space", text: "A failed memory chip in the flight data computer makes Voyager 1 send back unreadable data." },
+    { when: "20 Apr 2024", title: "Fixed from 24 billion km away", text: "The team moves the affected code into other parts of the memory, and readable engineering data arrives again. Science data follows over the next weeks." },
+    { when: "25 Feb 2025", title: "Saving power", text: "The cosmic ray subsystem is switched off to save electricity." },
+    { when: "17 Apr 2026", title: "Two instruments left", text: "The low-energy charged particle instrument is switched off. The magnetometer and the plasma wave instrument keep working." },
+    lightDayReached
+      ? { when: "18 Nov 2026 · 10:16 UTC", title: "One light-day from Earth", text: "Voyager 1 reaches 25.902 billion km from Earth, so far that its radio signals take a full 24 hours to arrive. No spacecraft had ever been this far." }
+      : { when: "18 Nov 2026 · 10:16 UTC", upcoming: true, title: "One light-day from Earth", text: "Voyager 1 is due to be 25.902 billion km from Earth, so far that its radio signals will take a full 24 hours to arrive. No spacecraft has ever been this far." },
+  ],
+  model: {
+    src: "/models/voyager.glb",
+    credit: "3D model: NASA 3D Resources (public domain)",
+    fit: 3.1,
+    yaw: -Math.PI / 4,
+    floating: true,
+    // The NASA model stands on a frame; Voyager has no legs in space, so the viewer hides it.
+    clipBelow: -0.0135,
+    target: [0, 0.02, 0.03],
+    span: [0.2, 0.14],
+    parts: [
+      { id: "dish", name: "High-gain antenna", at: [0, 0.036, 0], view: { azimuth: Math.PI / 2, polar: Math.PI * 0.27 }, text: "A 3.7-metre dish that always points back at Earth. It sends Voyager's data home and receives the team's commands." },
+      { id: "record", name: "Golden Record", at: [0.0342, 0.0007, 0], view: { azimuth: Math.PI / 2, polar: Math.PI * 0.47 }, text: "Fixed to the side of the body inside its protective cover, which carries instructions for playing it. It holds the sounds and pictures of Earth." },
+      { id: "cameras", name: "Cameras and scan platform", at: [0.005, 0.004, -0.095], view: { azimuth: Math.PI * 0.78, polar: Math.PI * 0.42 }, text: "A turntable at the end of the science boom. It aimed the two TV cameras and other instruments at Jupiter, Saturn and their moons. The cameras were switched off in 1990." },
+      { id: "rtg", name: "Nuclear power generators", at: [0, -0.012, 0.085], view: { azimuth: Math.PI * 0.36, polar: Math.PI * 0.45 }, text: "Three RTGs on their own boom, kept away from the instruments. They turn heat from plutonium-238 into electricity, about 4 watts less every year." },
+      { id: "mag", name: "Magnetometer boom", at: [0, 0.08, 0.12], view: { azimuth: Math.PI / 2, polar: Math.PI * 0.42 }, text: "A 13-metre boom that holds magnetic field sensors far from the spacecraft's own electronics. The magnetometer is one of the two instruments still working." },
+      { id: "bus", name: "Ten-sided body", at: [-0.031, -0.006, 0], view: { azimuth: -Math.PI / 2, polar: Math.PI * 0.45 }, text: "The main body holds the computers, the radio, the tape recorder and the fuel tank for the thrusters." },
+    ],
+  },
+  where: {
+    nav: "Where it is now",
+    title: "Where it is now",
+    text: [
+      "Eagle and Viking 1 rest where they landed. Voyager 1 is still on the move, heading out of the solar system towards the constellation Ophiuchus, about 35° above the plane where the planets orbit.",
+      "It crossed the termination shock, where the solar wind suddenly slows, in December 2004, and the heliopause, the edge of the Sun's bubble, in August 2012. Now it measures the magnetic fields and the waves in the gas between the stars.",
+    ],
+  },
+  leftBehindNav: "On board",
+  leftBehindTitle: "What it carries",
+  scienceTitle: "What Voyager 1 discovered",
+  science: [
+    { title: "Volcanoes on Io", text: "Pictures of Jupiter's moon Io showed volcanoes erupting at that very moment: the first active volcanoes found anywhere beyond Earth. Io is now known as the most volcanic world in the solar system." },
+    { title: "A ring around Jupiter", text: "Voyager 1 discovered a thin, faint ring around Jupiter and two small new moons, Thebe and Metis. It also filmed the clouds swirling around the Great Red Spot, a storm bigger than Earth." },
+    { title: "Saturn's rings and moons", text: "Up close, Saturn's rings broke up into hundreds of narrow ringlets. Voyager 1 found five new moons and a new ring, now called the G ring." },
+    { title: "Titan's thick air", text: "Titan, Saturn's largest moon, has a dense, hazy atmosphere that is about 90% nitrogen, with more pressure at the ground than the air on Earth." },
+  ],
+  leftBehind: [
+    { name: "The Golden Record", text: "A 30 cm gold-plated copper record with 115 images, sounds of nature, spoken greetings in 55 languages and 90 minutes of music. A committee chaired by Carl Sagan chose what went on it." },
+    { name: "Instructions on the cover", text: "Engraved drawings show how to play the record, and a map of 14 pulsars shows where the Sun is." },
+    { name: "A uranium clock", text: "A tiny sample of uranium-238 is plated onto the cover. Half of it decays every 4.51 billion years, so a finder could work out how long ago Voyager left." },
+    { name: "Three nuclear power generators", text: "RTGs that turn the heat of decaying plutonium-238 into electricity. Together they made about 470 watts at launch, and they lose about 4 watts a year." },
+    { name: "A 3.7-metre dish", text: "The high-gain antenna stays pointed at Earth to send data home and receive commands." },
+    { name: "Two working instruments", text: "The magnetometer on its 13 m boom and the plasma wave subsystem, which picks up waves rippling through the gas between the stars." },
+    { name: "Thrusters and fuel", text: "Small hydrazine thrusters keep the dish pointed at Earth. In 2017 the team woke up backup thrusters last used in 1980." },
+    { name: "Two sleeping cameras", text: "The TV cameras on the scan platform, switched off since 1990 after taking the Pale Blue Dot." },
+  ],
+  gallery: [
+    { nasa: "PIA21747", caption: "Voyager 1 lifts off on a Titan IIIE-Centaur rocket, 5 September 1977." },
+    { nasa: "PIA21478", caption: "Engineers build the ten-sided body of Voyager 2, Voyager 1's twin, in 1977." },
+    { nasa: "PIA21741", caption: "The Golden Record being prepared for installation on Voyager 1, 1977." },
+    { nasa: "PIA00013", caption: "Earth and the Moon in one frame, 18 September 1977, from 11.66 million km." },
+    { nasa: "PIA00144", caption: "Jupiter with its moons Io and Europa, 13 February 1979." },
+    { nasa: "PIA00014", caption: "Jupiter's Great Red Spot, a storm bigger than Earth, 25 February 1979." },
+    { nasa: "PIA00010", caption: "Io, with a volcanic plume rising from its edge." },
+    { nasa: "PIA00024", caption: "Saturn with its moons Tethys and Dione, 3 November 1980." },
+    { nasa: "ARC-1980-AC80-7007", caption: "Titan's thick orange haze, from 12 million km away, 18 October 1980." },
+    { nasa: "PIA00451", caption: "The family portrait: 60 frames showing the Sun and six planets, 14 February 1990." },
+    { nasa: "PIA00452", caption: "The Pale Blue Dot: Earth as a speck in a sunbeam, about 6 billion km away." },
+    { nasa: "PIA17460", caption: "Artist's concept of the Sun's bubble and interstellar space beyond it." },
+    { nasa: "PIA13277", caption: "A 70 m Deep Space Network dish at Goldstone, California, one of the antennas that listen for Voyager." },
+    { nasa: "PIA21839", caption: "Artist's concept of Voyager in deep space." },
+  ],
+  videos: [
+    {
+      nasa: "JPL-20240425-VOYAGEf-0001-Voyager 1 Team Reacts to Receiving Engineering Data From Spacecraft",
+      title: "The team cheers",
+      caption: "Voyager's team at JPL on 20 April 2024, when readable data arrived again.",
+    },
+    { nasa: "GSFC_20170905_Solar_m12639_System", title: "Where does the solar system end?", caption: "A short NASA video about the edge of the Sun's bubble." },
+  ],
+  next: { name: "Eagle", path: "/eagle/mission" },
+  libraryQuery: "Voyager 1",
+  libraryHint: "Try “Golden Record”, “Io volcano” or “Pale Blue Dot”.",
+  sources: [
+    { title: "Voyager 1", publisher: "NASA Science", url: "https://science.nasa.gov/mission/voyager/voyager-1/" },
+    { title: "Voyager 1 (1977-084A)", publisher: "NASA Space Science Data Coordinated Archive", url: "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1977-084A" },
+    { title: "Where Are Voyager 1 and Voyager 2 Now?", publisher: "NASA Science", url: "https://science.nasa.gov/mission/voyager/where-are-voyager-1-and-voyager-2-now/" },
+    { title: "Voyager Frequently Asked Questions", publisher: "NASA Science", url: "https://science.nasa.gov/mission/voyager/frequently-asked-questions/" },
+    { title: "Golden Record: contents and cover", publisher: "NASA Science", url: "https://science.nasa.gov/mission/voyager/golden-record-contents/" },
+    { title: "Voyager 1 Fires Up Thrusters After 37 Years", publisher: "NASA (December 2017)", url: "https://science.nasa.gov/missions/voyager-program/voyager-1-fires-up-thrusters-after-37-years" },
+    { title: "NASA's Voyager 1 Resumes Sending Engineering Updates to Earth", publisher: "NASA JPL (April 2024)", url: "https://www.jpl.nasa.gov/news/nasas-voyager-1-resumes-sending-engineering-updates-to-earth/" },
+    { title: "NASA Turns Off 2 Voyager Science Instruments to Extend Mission", publisher: "NASA Science (March 2025)", url: "https://science.nasa.gov/blogs/voyager/2025/03/05/nasa-turns-off-2-voyager-science-instruments-to-extend-mission/" },
+    { title: "NASA Shuts Off Instrument on Voyager 1 to Keep Spacecraft Operating", publisher: "NASA Science (April 2026)", url: "https://science.nasa.gov/blogs/voyager/2026/04/17/nasa-shuts-off-instrument-on-voyager-1-to-keep-spacecraft-operating/" },
+    { title: "NASA Image and Video Library", publisher: "NASA (all photos and videos on this page)", url: "https://images.nasa.gov/" },
+    { title: "NASA 3D Resources: Voyager", publisher: "NASA (3D model)", url: "https://github.com/nasa/NASA-3D-Resources" },
+  ],
+};

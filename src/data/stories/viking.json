@@ -1,0 +1,238 @@
+{
+  "id": "viking",
+  "book": 2,
+  "title": "Viking 1",
+  "subtitle": "The robot under the pink sky",
+  "tagline": "A bedtime story from Mars",
+  "voice": "af_heart",
+  "theme": "mars",
+  "missionPath": "/viking-1/mission",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Viking 1",
+      "scene": "viking-cover",
+      "narration": "Sleeping Beauties presents... Viking 1. The robot under the pink sky. A bedtime story from Mars."
+    },
+    {
+      "id": "asleep",
+      "title": "Asleep on the Plains of Gold",
+      "scene": "viking-asleep",
+      "text": [
+        "Hush. Let's travel somewhere much, much farther away than the Moon.",
+        "On Mars, the red planet, there is a wide, rocky plain with a beautiful name: [Chryse Planitia]{/kɹˈaɪsi plənˈɪʃiə/}. It means “the Plains of Gold.”",
+        "Standing there, under a dusty pink sky, is a robot about the size of a small car. It has three legs, a big dish-shaped ear, two round camera eyes, and a long arm, folded up neatly.",
+        "It has been asleep since nineteen eighty-two.",
+        "Its name is Viking 1. It was the first spacecraft to land safely on Mars and get to work exploring.",
+        "This is its story."
+      ],
+      "photo": {
+        "nasa": "PIA03163",
+        "caption": "The real view from Viking 1: a morning on the Plains of Gold, stitched together from the lander's pictures.",
+        "credit": "NASA / JPL · PIA03163",
+        "pos": "tl"
+      },
+      "fact": "A day on Mars is called a sol. It lasts about 40 minutes longer than a day on Earth."
+    },
+    {
+      "id": "twins",
+      "title": "Twins, Baked in an Oven",
+      "scene": "viking-twins",
+      "text": [
+        "Viking 1 had a twin, called Viking 2. And each twin came in two parts: an orbiter, to circle Mars and take pictures from above, and a lander, to drop down onto the ground.",
+        "Before they left Earth, the landers were cleaned very, very carefully. Then they were baked in a giant oven, like a cake! Why? To kill any germs from Earth. The scientists didn't want to bring tiny hitchhikers along to Mars.",
+        "On August twentieth, nineteen seventy-five, Viking 1 blasted off from Florida on top of a powerful Titan rocket. Its twin followed about three weeks later."
+      ],
+      "photo": {
+        "nasa": "9141929",
+        "caption": "Viking 1 lifts off on a Titan III-Centaur rocket from Cape Canaveral, Florida, on August 20, 1975.",
+        "credit": "NASA · 9141929"
+      },
+      "fact": "Each Viking lander had a small American flag painted on its side, along with the emblem of America's two-hundredth birthday."
+    },
+    {
+      "id": "journey",
+      "title": "Ten Months and a Hard Choice",
+      "scene": "viking-journey",
+      "text": [
+        "Mars is very, very far away, so the journey took ten whole months.",
+        "In June nineteen seventy-six, Viking 1 finally arrived and began to circle the red planet. The plan was to land on July fourth, America's two-hundredth birthday.",
+        "But when the orbiter's cameras looked down at the landing spot, the scientists got a shock. It was much too rough and rocky!",
+        "So they waited, and searched, and argued, for weeks. At last, they picked a safer place, out on the Plains of Gold.",
+        "The new landing day? July twentieth. Exactly seven years after Eagle landed on the Moon."
+      ],
+      "photo": {
+        "nasa": "101-ksc-76p-300",
+        "caption": "Mars, photographed by Viking 1 as it approached the red planet in June 1976.",
+        "credit": "NASA · 101-KSC-76P-300"
+      },
+      "fact": "Earth and Mars both travel around the Sun, so Viking didn't fly in a straight line. It followed a long, curving path to meet Mars where it would be ten months later."
+    },
+    {
+      "id": "landing",
+      "title": "Fire, Parachute, Rockets!",
+      "scene": "viking-landing",
+      "text": [
+        "On landing day, the lander let go of the orbiter and fell toward Mars, tucked inside a protective shell.",
+        "First came the fire. Rushing into the thin Martian air, its heat shield glowed hot.",
+        "Then, pop! A giant parachute opened up and slowed it down.",
+        "Last came the rockets. Viking had three of them, and each one had eighteen little nozzles that spread the exhaust out, like a shower head, so the robot wouldn't scorch the soil it had come to study.",
+        "And then... thump. Viking 1 was standing on Mars!",
+        "But nobody on Earth knew it yet. Its radio message took about nineteen minutes to travel home."
+      ],
+      "photo": {
+        "nasa": "101-ksc-76pc-303",
+        "caption": "A 1970s painting of the plan: heat shield first, then the parachute, then the landing rockets.",
+        "credit": "NASA · 101-KSC-76PC-303",
+        "pos": "bl"
+      },
+      "fact": "Viking's parachute was 16 meters wide. That's wider than a tennis court!"
+    },
+    {
+      "id": "cheese",
+      "title": "Say Cheese!",
+      "scene": "viking-footpad",
+      "text": [
+        "Just twenty-five seconds after landing, Viking 1 did something amazing. It took a picture.",
+        "Its camera didn't snap a photo all at once, like a phone. It scanned slowly, one thin stripe at a time, from left to right.",
+        "Back on Earth, the team crowded around their screens and watched the picture appear, stripe by stripe by stripe.",
+        "And what was the very first thing Viking photographed on Mars?",
+        "Its own foot!",
+        "The engineers chose that on purpose. They wanted a close look at the ground, and at how well their robot was standing. There it was: a round footpad, resting firmly among the pebbles and dust. The first photograph ever taken on the surface of Mars."
+      ],
+      "photo": {
+        "nasa": "PIA00381",
+        "caption": "The first photograph ever taken on the surface of Mars, July 20, 1976. Can you find Viking's footpad?",
+        "credit": "NASA / JPL · PIA00381",
+        "pos": "bl"
+      },
+      "fact": "It took several minutes for the whole picture to arrive, one stripe at a time."
+    },
+    {
+      "id": "sky",
+      "title": "What Color Is the Sky?",
+      "scene": "viking-sky",
+      "text": [
+        "The next day, Viking took the very first color picture on Mars: reddish rocks, orange dust... and a pale blue sky, just like Earth's!",
+        "But wait. Something wasn't right.",
+        "The scientists checked the colors again, carefully, using little color charts painted on the lander itself. And they realized the colors were off. The real Martian sky isn't blue at all.",
+        "It's the color of butterscotch: a soft, pinkish tan, because the thin air is full of fine red dust.",
+        "Imagine looking up at a pink sky every day. And here's the strangest part: on Mars, sunsets glow blue!"
+      ],
+      "photo": {
+        "nasa": "PIA00563",
+        "caption": "Viking 1's first color picture of Mars, taken on July 21, 1976.",
+        "credit": "NASA / JPL · PIA00563",
+        "pos": "tr"
+      },
+      "fact": "Fine dust in the Martian air spreads reddish light all over the sky. But close to the Sun, the dust lets blue light shine through. That's why sunsets on Mars look blue."
+    },
+    {
+      "id": "bigjoe",
+      "title": "A Lucky Landing",
+      "scene": "viking-bigjoe",
+      "text": [
+        "When Viking looked all around, it saw a rolling desert, covered in rocks and drifts of sand.",
+        "Not far away sat a big boulder, about two meters across. The scientists gave it a friendly name: Big Joe.",
+        "Later, they realized just how lucky they had been. If Viking had come down on top of Big Joe, it could have tipped over, and the whole mission might have ended right there.",
+        "Sometimes exploring takes careful planning... and a little bit of luck."
+      ],
+      "photo": {
+        "nasa": "PIA00382",
+        "caption": "Viking 1's first look all around its landing site, taken minutes after the footpad picture.",
+        "credit": "NASA / JPL · PIA00382",
+        "pos": "tl"
+      },
+      "fact": "Viking's two cameras could spin all the way around, so the robot could look in every direction without moving at all."
+    },
+    {
+      "id": "lab",
+      "title": "The Robot Scientist",
+      "scene": "viking-lab",
+      "text": [
+        "Viking 1 was more than a camera on legs. It was a whole science laboratory!",
+        "Its long arm could reach out, scoop up some Martian soil, and pour it into tiny ovens and test chambers inside the lander.",
+        "The big question was: is anything alive on Mars?",
+        "The answers were puzzling. One experiment saw gas fizzing out of the soil, a little like something breathing. But another, very sensitive test couldn't find any of the carbon-based building blocks that life on Earth is made of.",
+        "Most scientists decided the soil just had some very unusual chemistry. But a few weren't so sure. People are still discussing those results today!"
+      ],
+      "photo": {
+        "nasa": "PIA00389",
+        "caption": "A trench dug by Viking 1's robotic arm, so its instruments could test soil from below the surface.",
+        "credit": "NASA / JPL · PIA00389",
+        "pos": "tl"
+      },
+      "fact": "In 2008, another lander called Phoenix found a salt called perchlorate in Martian soil. It may explain some of Viking's mysterious results."
+    },
+    {
+      "id": "weather",
+      "title": "The Weather Reporter",
+      "scene": "viking-weather",
+      "text": [
+        "Viking also carried a little weather station, perched on a pole. Every day it measured the wind, the air pressure, and the temperature.",
+        "And brrr! In the middle of a summer day, it reached about minus fourteen degrees Celsius. Before dawn, it dropped to about minus seventy-seven. That's colder than most winter nights at the South Pole!",
+        "Viking was the first weather station on Mars. It watched dust storms dim the Sun, and the seasons slowly change.",
+        "Not everything worked perfectly, though. Its quake detector, called a seismometer, got stuck when it tried to unlock itself. So Viking 1 never felt a single marsquake."
+      ],
+      "photo": {
+        "nasa": "PIA00392",
+        "caption": "Viking 1's weather instruments, sticking out on their boom.",
+        "credit": "NASA / JPL · PIA00392",
+        "pos": "tr"
+      },
+      "fact": "A year on Mars lasts 687 Earth days, so every season lasts about twice as long as it does on Earth."
+    },
+    {
+      "id": "sunsets",
+      "title": "Six Years of Sunsets",
+      "scene": "viking-sunsets",
+      "text": [
+        "Viking 1 was built to work for ninety days. Can you guess how long it actually kept going?",
+        "More than six years!",
+        "Its power came from two small nuclear generators that stayed warm day and night, so it never ran out of energy, even in the darkest dust storms.",
+        "Viking watched more than two thousand Martian sunrises and sunsets. It sent home weather reports and pictures, week after week, long after its twin and both orbiters had gone silent.",
+        "For more than two years, it was the only working explorer on Mars."
+      ],
+      "photo": {
+        "nasa": "PIA00567",
+        "caption": "A sunset at the Viking 1 landing site, photographed by the lander itself.",
+        "credit": "NASA / JPL · PIA00567",
+        "pos": "bl"
+      },
+      "fact": "Viking 1 kept working for 2,245 sols, which is about 2,306 Earth days."
+    },
+    {
+      "id": "mistake",
+      "title": "One Tiny Mistake",
+      "scene": "viking-mistake",
+      "text": [
+        "In November nineteen eighty-two, the team on Earth sent Viking a software update, to help it look after its batteries.",
+        "But there was a tiny mistake in the message. By accident, it changed the instructions that told Viking where to point its dish-shaped antenna.",
+        "Viking turned its ear away from Earth... and the conversation stopped.",
+        "The engineers tried to call it back for months. But Viking couldn't hear them anymore.",
+        "It's a good lesson for every explorer, and every programmer: always check your work twice."
+      ],
+      "fact": "Viking's faint signals crossed hundreds of millions of kilometers of space. Giant dish antennas on Earth, part of NASA's Deep Space Network, listened for them."
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Viking",
+      "scene": "viking-goodnight",
+      "text": [
+        "Viking 1 is still there, on the Plains of Gold. In nineteen eighty-one, it was given a new name: the Thomas Mutch Memorial Station, in honor of the scientist who led its camera team.",
+        "In two thousand six, a powerful camera on a spacecraft orbiting Mars spotted the little lander from high above. Scientists think they can even see its heat shield and parachute, lying nearby.",
+        "Today, newer robots explore Mars. They are bigger and smarter. But Viking 1 was the first to show us the ground and the sky of the red planet.",
+        "So tonight, if you see a bright, reddish star, it might be Mars.",
+        "Give it a wave, and whisper: Goodnight, Viking."
+      ],
+      "photo": {
+        "nasa": "PIA01881",
+        "caption": "Viking 1, seen from orbit by the HiRISE camera on NASA's Mars Reconnaissance Orbiter in December 2006.",
+        "credit": "NASA / JPL / University of Arizona · PIA01881",
+        "pos": "tl"
+      },
+      "fact": "Mars is only about half as wide as Earth, but its biggest volcano, Olympus Mons, is more than twice as tall as Mount Everest!"
+    }
+  ]
+}

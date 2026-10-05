@@ -7,6 +7,8 @@ const SpacePage = lazy(() => import("./pages/SpacePage"));
 const MoonPage = lazy(() => import("./pages/MoonPage"));
 const MarsPage = lazy(() => import("./pages/MarsPage"));
 const EaglePage = lazy(() => import("./pages/EaglePage"));
+const VikingPage = lazy(() => import("./pages/VikingPage"));
+const VoyagerPage = lazy(() => import("./pages/VoyagerPage"));
 
 const fill = {
   minHeight: "100dvh",
@@ -53,6 +55,13 @@ export default function App() {
           <Route path="/moon" element={<MoonPage />} />
           <Route path="/mars" element={<MarsPage />} />
           <Route path="/eagle" element={<EaglePage />} />
+          <Route path="/eagle/mission" element={<EaglePage mode="mission" />} />
+          <Route path="/viking-1" element={<VikingPage />} />
+          <Route path="/viking-1/mission" element={<VikingPage mode="mission" />} />
+          <Route path="/viking" element={<Navigate to="/viking-1" replace />} />
+          <Route path="/voyager-1" element={<VoyagerPage />} />
+          <Route path="/voyager-1/mission" element={<VoyagerPage mode="mission" />} />
+          <Route path="/voyager" element={<Navigate to="/voyager-1" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>

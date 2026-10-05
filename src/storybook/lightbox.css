@@ -1,0 +1,126 @@
+/* Full-screen viewer for NASA photos and videos, shared by the storybooks, the mission
+   files and the home page. */
+
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 40px);
+}
+.lb-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(2, 3, 9, 0.88);
+  backdrop-filter: blur(6px);
+  cursor: zoom-out;
+  animation: lb-fade 0.25s both;
+}
+.lb-frame {
+  position: relative;
+  margin: 0;
+  max-width: min(1200px, 100%);
+  max-height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 14px;
+  animation: lb-pop 0.35s both cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes lb-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+.lb-media {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+.lb-media img,
+.lb-media video {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100dvh - 190px);
+  border-radius: 10px;
+  background: #111;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.lb-media video {
+  width: min(1100px, 100%);
+}
+.lb-media img.is-loading {
+  min-width: min(70vw, 600px);
+  min-height: 40vh;
+}
+.lb-caption {
+  display: grid;
+  gap: 6px;
+  max-width: 75ch;
+  color: #eef1fb;
+  font-family: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.lb-caption strong {
+  font-size: 18px;
+}
+.lb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  color: #b9c1d8;
+  font-size: 14px;
+}
+.lb-meta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #ffd57a;
+  font-weight: 700;
+  text-decoration: none;
+}
+.lb-meta a:hover {
+  text-decoration: underline;
+}
+.lb-close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #111 !important;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.nasa-missing {
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  min-height: 120px;
+  background: repeating-linear-gradient(135deg, #20253a 0 10px, #1a1e30 10px 20px);
+  color: #dfe5f8;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+}
+
+@keyframes lb-fade {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lb-scrim,
+  .lb-frame {
+    animation: none;
+  }
+}

@@ -6,12 +6,15 @@ Sleeping Beauties is an interactive space archive built with React, Vite, Three.
 
 ## Features
 
-- **Landing page (`/`)** — a minimal introduction with “Abandoned but not forgotten” and “Explore the Sleeping Beauties”.
+- **Home (`/`)** — the sleeping beauties on a turning ring (drag, swipe, arrow keys or thumbnails), the three worlds, the three storybooks, and *Lost in space*, a carousel of real NASA photographs of the machines that stayed behind.
+- **Storybooks** — illustrated, narrated bedtime stories for readers aged 9–15, where everything really happened, with read-along word highlighting, page-turn animation, gentle music, a fact on every page and real NASA photos:
+  - **Eagle (`/eagle`)** — *The little lander who stayed* (Apollo 11, 14 pages, about 11 minutes).
+  - **Viking 1 (`/viking-1`)** — *The robot under the pink sky* (Mars, 12 pages, about 9 minutes).
+  - **Voyager 1 (`/voyager-1`)** — *The traveller who kept going* (deep space, 13 pages, about 9 minutes).
+- **Mission files (`/eagle/mission`, `/viking-1/mission`, `/voyager-1/mission`)** — the real documentation: fact sheet, timeline in UTC, an interactive NASA 3D model with labelled parts, where it rests (or, for Voyager 1, a live map of where it is now), what was left behind or carried, NASA photos and video, a live search of NASA's Image and Video Library, and sources. Mission files open in a bright reading mode; the moon/sun button in the top bar switches to dark and the choice is remembered.
+- **Finding your way back:** every storybook and mission file has a home button and a link back to its world: Eagle to the Moon (`/moon`), Viking 1 to Mars (`/mars`), Voyager 1 to Space (`/space?object=voyager-1`).
 - **Deep Space (`/space`)** — an interactive solar-system experience with selectable destinations.
-- **Moon (`/moon`)** — an interactive 3D Moon experience and Apollo 11 landing-site marker.
-- **Mars (`/mars`)** — an interactive 3D Mars experience and Viking 1 landing-site marker.
-- **Eagle (`/eagle`)** — a chapter-based Apollo Lunar Module story.
-- **Shared visual language** — starry space backgrounds and cinematic transitions between destinations.
+- **Moon (`/moon`)** and **Mars (`/mars`)** — interactive 3D globes with landing-site markers.
 
 ## Technology
 
@@ -27,38 +30,60 @@ Sleeping Beauties is an interactive space archive built with React, Vite, Three.
 ```text
 sleeping-beauties/
 ├── src/
-│   ├── App.jsx                  # Route table
+│   ├── App.jsx                  # Route table (every page loads on demand)
 │   ├── pages/                   # Route entry points
-│   │   ├── HomePage.jsx         # Landing page
-│   │   ├── SpacePage.jsx        # Interactive deep-space page
-│   │   ├── MoonPage.jsx
-│   │   ├── MarsPage.jsx
-│   │   └── EaglePage.jsx
-│   ├── app/
-│   │   └── LegacyPages.jsx      # Existing page implementations
-│   ├── components/
-│   │   └── MoonMap.jsx          # Moon and Mars 3D visualizations
-│   ├── services/
-│   │   └── archiveApi.js        # Browser API client
+│   │   ├── HomePage.jsx         # Home page
+│   │   ├── EaglePage.jsx        # Eagle storybook + mission file
+│   │   ├── VikingPage.jsx       # Viking 1 storybook + mission file
+│   │   ├── VoyagerPage.jsx      # Voyager 1 storybook + mission file
+│   │   ├── SpacePage.jsx, MoonPage.jsx, MarsPage.jsx
+│   ├── home/                    # Home page parts (object ring, photo carousel, content, styles)
+│   ├── storybook/               # Book engine: page turns, narration, read-along, illustrations
+│   │   └── scenes/              # Hand-drawn SVG illustrations for each page
+│   ├── mission/                 # Mission files: 3D model viewer, site map, Voyager's live map, NASA library search
 │   ├── data/
-│   │   └── eagle.json           # Eagle offline/fallback content
+│   │   ├── stories/             # Story text (eagle.json, viking.json, voyager.json) and narration timings
+│   │   ├── missions/            # Mission-file facts, timelines, photos and sources
+│   │   └── *.json               # Moon and Mars explorer data
+│   ├── lib/nasa.js              # NASA Image and Video Library helpers
+│   ├── lib/voyagerDistance.js   # Estimates Voyager 1's distance right now
+│   ├── styles/fonts.css         # Self-hosted typefaces
+│   ├── app/LegacyPages.jsx      # Deep Space, Moon and Mars page implementations
 │   └── styles.css
-├── server/
-│   ├── src/
-│   │   ├── index.js             # API bootstrap and middleware
-│   │   ├── db.js                # MySQL connection pool
-│   │   └── routes/
-│   │       └── archive.js       # Archive read endpoints
-│   └── .env.example
-├── database/
-│   ├── sleeping_beauties_mysql.sql
-│   └── migrations/
+├── tools/
+│   ├── narration/               # Rebuild the narrator audio and word timings (see its README)
+│   └── music/                   # Rebuild the background lullabies (Moon, Mars, deep space)
+├── server/                      # Express API
+├── database/                    # MySQL schema and migrations
 └── public/
+    ├── audio/stories/           # Narration, one MP3 per page
+    ├── audio/music/             # Background lullabies
+    ├── fonts/                   # Jost, Atkinson Hyperlegible Next, Fraunces, Literata (OFL)
+    ├── images/                  # Object renders, book covers, planet textures
     ├── models/                  # 3D GLB assets
-    └── audio/                   # Audio assets
+    └── draco/                   # Local Draco decoder for compressed models
 ```
 
-`src/pages/` provides clear route entry points. The current page implementations are still largely kept in `src/app/LegacyPages.jsx` to preserve the existing experience; they can be extracted into smaller feature components incrementally.
+## Storybooks, narration and NASA media
+
+- **Editing a story:** change the text in `src/data/stories/eagle.json`, `viking.json` or `voyager.json`, then rebuild the narration so the audio and the highlighted words match. Instructions are in `tools/narration/README.md`.
+- **Adding a book:** each storybook is one page file in `src/pages/` that brings together its story, narration timings, illustrations, music, theme, the world it links back to and its mission file. Shared routes live in `src/storybook/books.js`.
+- **Illustrations** are React SVG components in `src/storybook/scenes/` (one per page, named in each page's `scene` field).
+- **Mission files** read from `src/data/missions/`. Each part of the 3D model has an `at` position in model units and an optional camera `view`. A model can also be marked `floating` (no ground shadow), hide a display stand with `clipBelow`, and frame part of itself with `target` and `span`.
+- **Voyager 1's live distance** is an estimate anchored to NASA's published milestone (25.902 billion km from Earth, one light-day, on 18 November 2026 at 10:16 UTC) and its speed of about 17 km/s, with Earth's position on its orbit added in. It agrees with NASA's figures for 1998, 2004, 2012 and 2024 to within about 0.3 AU.
+- **NASA photos and videos** are loaded straight from `images-assets.nasa.gov` by their NASA ID, trying smaller sizes if one is missing. Swap a picture by changing its ID. The *Search NASA's library* panel calls the public `images-api.nasa.gov` (no key needed).
+- **Accessibility:** every control works from the keyboard, the narrator can be slowed down or sped up, text can be enlarged, and animations calm down when the device asks for reduced motion.
+
+### Credits
+
+- Photos and videos: [NASA Image and Video Library](https://images.nasa.gov/) (public domain).
+- 3D models: [NASA 3D Resources](https://github.com/nasa/NASA-3D-Resources) (Apollo Lunar Module, Viking Lander, Voyager, and the object renders on the home page).
+- Moon and Mars textures: [Solar System Scope](https://www.solarsystemscope.com/textures/) (CC BY 4.0).
+- Narrator voice: [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) (Apache 2.0), run locally.
+- Background music: original, synthesized by `tools/music/make_lullabies.py`.
+- Typefaces: Jost, Atkinson Hyperlegible Next, Fraunces and Literata (SIL Open Font License, `public/fonts/OFL.txt`).
+
+Sleeping Beauties is an independent project for the NASA Space Apps Challenge 2026 and is not endorsed by NASA.
 
 ## Requirements
 
@@ -137,7 +162,7 @@ The current API is read-only. Any future content-management interface should use
 - **API endpoints and SQL queries:** `server/src/routes/`.
 - **Database connection:** `server/src/db.js` and local `server/.env`.
 - **SQL schema and seed data:** `database/sleeping_beauties_mysql.sql`.
-- **Eagle fallback content:** `src/data/eagle.json`.
+- **Eagle fallback content (legacy API demo):** `src/data/eagle.json`.
 - **3D and audio assets:** `public/models/` and `public/audio/`.
 
 Keep pull requests focused on one page, component, API change, or migration. Avoid adding duplicate large assets.

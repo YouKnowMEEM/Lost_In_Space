@@ -1,0 +1,286 @@
+{
+  "id": "eagle",
+  "book": 1,
+  "title": "Eagle",
+  "subtitle": "The little lander who stayed",
+  "tagline": "A bedtime story from the Moon",
+  "voice": "af_heart",
+  "theme": "moon",
+  "missionPath": "/eagle/mission",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Eagle",
+      "scene": "eagle-cover",
+      "narration": "Sleeping Beauties presents... Eagle. The little lander who stayed. A bedtime story from the Moon."
+    },
+    {
+      "id": "asleep",
+      "title": "Hush, Something Is Sleeping",
+      "scene": "eagle-asleep",
+      "text": [
+        "Hush. Can you hear that?",
+        "That is the sound of the Moon. No wind. No rain. No birds. Just silence, stretching on for miles and miles.",
+        "But look closely at a wide, grey plain called the Sea of Tranquility. Something is standing there. Something golden, with four long legs and a ladder. It has been asleep for more than fifty years.",
+        "Its name is Eagle. And once, it did something no machine had ever done before. It carried two people down to the surface of another world.",
+        "This is its story."
+      ],
+      "fact": "The dark “seas” on the Moon have no water at all. They are huge plains of old, hardened lava. Long ago, astronomers thought they might be oceans, and the names stuck."
+    },
+    {
+      "id": "strange",
+      "title": "Not a Bird, Not a Plane",
+      "scene": "eagle-blueprint",
+      "text": [
+        "Eagle was the strangest-looking spaceship ever built.",
+        "It had no wings, because there is no air on the Moon to fly through. It had no pointy nose and no wheels. Instead, it had four spidery legs, two triangle-shaped windows, and a coat of shiny, gold-colored foil to protect it from the fierce heat of the Sun and the deep cold of the shadows.",
+        "In some places, its metal walls were about as thin as three sheets of paper!",
+        "And here is its biggest secret. Eagle was really two spaceships stacked together. The bottom half had the legs and a landing engine. The top half had a tiny cabin, and a second engine for the trip back up."
+      ],
+      "photo": {
+        "nasa": "as11-44-6581",
+        "caption": "The real Eagle, flying above the Moon on July 20, 1969. Michael Collins took this photo from the spaceship Columbia.",
+        "credit": "NASA · AS11-44-6581",
+        "pos": "tl"
+      },
+      "fact": "The astronauts flew Eagle standing up! There were no seats, just straps and handholds to keep them steady."
+    },
+    {
+      "id": "launch",
+      "title": "The Biggest Rocket in the World",
+      "scene": "eagle-launch",
+      "text": [
+        "On the morning of July sixteenth, nineteen sixty-nine, three astronauts rode an elevator to the top of a gigantic rocket called the Saturn Five. It was as tall as a thirty-six-story building.",
+        "Their names were Neil Armstrong, Buzz Aldrin, and Michael Collins.",
+        "Eagle came along too, folded up inside a cone-shaped garage, just below the astronauts' spaceship.",
+        "At nine thirty-two in the morning, the engines lit. The ground shook for miles around. Flames as bright as the Sun poured out, and the rocket began to climb, slowly... then faster... and faster, until it was just a speck of fire in the sky."
+      ],
+      "photo": {
+        "nasa": "S69-39961",
+        "caption": "Liftoff! The Saturn V rocket carrying Apollo 11 leaves Kennedy Space Center in Florida on July 16, 1969.",
+        "credit": "NASA · S69-39961"
+      },
+      "video": {
+        "nasa": "KSC_69-71212-sRGB",
+        "title": "Watch the real launch",
+        "caption": "Apollo 11 launch, restored from 70mm film.",
+        "credit": "NASA · KSC_69-71212"
+      },
+      "fact": "About a million people gathered near the launch site to watch, and millions more watched on TV."
+    },
+    {
+      "id": "wings",
+      "title": "The Eagle Has Wings",
+      "scene": "eagle-wings",
+      "text": [
+        "For three days, the astronauts sailed through space. Out of the window, the Earth shrank into a glowing blue marble, while the Moon grew bigger, and bigger, and bigger.",
+        "On the fourth day, they swung into orbit around the Moon.",
+        "The next day, Neil and Buzz squeezed through a tunnel into Eagle. Michael stayed behind in the main spaceship, called Columbia, to keep it circling safely overhead.",
+        "Then the two spacecraft unlatched, and slowly drifted apart.",
+        "“The Eagle has wings!” said Neil."
+      ],
+      "photo": {
+        "nasa": "as11-36-5355",
+        "caption": "Our home, seen by the Apollo 11 crew on their way to the Moon. Can you spot Africa?",
+        "credit": "NASA · AS11-36-5355"
+      },
+      "fact": "When Columbia flew behind the Moon, Michael Collins was cut off from every other human being. He later wrote that he didn't feel lonely at all, just excited and confident."
+    },
+    {
+      "id": "alarm",
+      "title": "Beep! Beep! [1202]{twelve-oh-two}!",
+      "scene": "eagle-alarm",
+      "text": [
+        "Down went Eagle, its engine firing to slow it down. The grey ground was rushing closer.",
+        "Suddenly, an alarm light flashed, and a warning tone beeped in the astronauts' headsets. The computer showed a strange code: [1202]{twelve-oh-two}. Then another one: [1201]{twelve-oh-one}.",
+        "Was something broken? Should they turn back?",
+        "Back on Earth, in Mission Control, a young engineer named Steve Bales had only seconds to decide. His team knew the computer was simply too busy, juggling too many jobs at once. But it had been cleverly programmed to drop the less important jobs and keep flying.",
+        "“We're go on that alarm!” came the answer from Houston. The landing could go on."
+      ],
+      "photo": {
+        "nasa": "S69-39593",
+        "caption": "Mission Control in Houston, where hundreds of experts helped guide Apollo 11 through every step.",
+        "credit": "NASA · S69-39593",
+        "pos": "tr"
+      },
+      "fact": "The software that saved the day was written by a team at MIT led by a computer scientist named Margaret Hamilton. Eagle's whole memory was smaller than a single photo on a phone today."
+    },
+    {
+      "id": "boulders",
+      "title": "Rocks Ahead!",
+      "scene": "eagle-boulders",
+      "text": [
+        "Then Neil looked out of his triangle window and saw a new problem. The computer was steering them straight toward a crater full of boulders, some as big as cars!",
+        "So Neil took over and flew Eagle himself. He skimmed over the rocks like a helicopter, searching for a smooth, flat place to land.",
+        "But there was another worry: fuel. The landing engine was gulping it fast.",
+        "“Sixty seconds,” Mission Control warned.",
+        "Buzz called out the numbers, how high and how fast, as dust began to swirl beneath them like grey fog.",
+        "“Thirty seconds.”",
+        "All around the world, people held their breath..."
+      ],
+      "fact": "Engineers later worked out that Eagle had a little more fuel than the gauge showed, because the fuel was sloshing around in its tanks. But nobody knew that at the time!"
+    },
+    {
+      "id": "landed",
+      "title": "The Eagle Has Landed",
+      "scene": "eagle-landed",
+      "text": [
+        "Then, very gently, one of the long, thin probes hanging under Eagle's feet touched the ground.",
+        "“Contact light,” said Buzz.",
+        "The engine went quiet. The dust settled. Everything was still.",
+        "And then Neil spoke the words the whole world was waiting for: “Houston, Tranquility Base here. The Eagle has landed.”",
+        "In Mission Control, people cheered and clapped and wiped their eyes. “You got a bunch of guys about to turn blue,” came the reply. “We're breathing again!”",
+        "It was July twentieth, nineteen sixty-nine. For the very first time, people had landed on another world."
+      ],
+      "photo": {
+        "nasa": "as11-40-5948",
+        "caption": "Eagle standing on the Moon, with Buzz Aldrin setting up science experiments nearby.",
+        "credit": "NASA · AS11-40-5948"
+      },
+      "video": {
+        "nasa": "Apollo_11_Intro_720p",
+        "title": "Watch Apollo 11 highlights",
+        "caption": "From liftoff in Florida to leaving the Moon, in about two minutes.",
+        "credit": "NASA"
+      },
+      "fact": "Eagle touched down at 20:17:40, Coordinated Universal Time. In Houston, it was 3:17 in the afternoon."
+    },
+    {
+      "id": "step",
+      "title": "One Small Step",
+      "scene": "eagle-step",
+      "text": [
+        "About six and a half hours later, Eagle's little door swung open. Neil wiggled out backwards onto the porch, and climbed slowly down the ladder on Eagle's front leg.",
+        "At the bottom, he stood for a moment on Eagle's big, round footpad. Then he stepped off, onto the Moon.",
+        "“That's one small step for man,” he said, “one giant leap for mankind.”",
+        "About six hundred million people were watching on TV.",
+        "Twenty minutes later, Buzz climbed down too. He looked around at the grey hills under the black sky, and found two perfect words for it: “Magnificent desolation.”"
+      ],
+      "photo": {
+        "nasa": "as11-40-5878",
+        "caption": "A real footprint in the moon dust, photographed by Buzz Aldrin. Without wind or rain, prints like this can last for a very long time.",
+        "credit": "NASA · AS11-40-5878",
+        "pos": "bl"
+      },
+      "video": {
+        "nasa": "Apollo_11_moonwalk_montage_720p",
+        "title": "Watch the moonwalk",
+        "caption": "Neil Armstrong and Buzz Aldrin on the Moon, restored film footage.",
+        "credit": "NASA"
+      },
+      "fact": "Neil Armstrong's first step on the Moon happened at 02:56 Coordinated Universal Time on July 21, 1969."
+    },
+    {
+      "id": "busy",
+      "title": "A Busy Day on the Moon",
+      "scene": "eagle-busy",
+      "text": [
+        "Walking on the Moon was strange and wonderful. Everything weighed only one-sixth as much as on Earth, so the astronauts bounced and hopped like kangaroos.",
+        "They had lots of work to do, and only about two and a half hours to do it.",
+        "They planted a flag. They scooped up rocks and dust, almost twenty-two kilograms of it, to bring home for scientists. They set up a machine to feel for moonquakes, and a special mirror that could bounce laser beams back to Earth.",
+        "And everywhere they went, their boots left crisp, deep footprints in the powdery ground.",
+        "Eagle stood quietly by, watching over them."
+      ],
+      "photo": {
+        "nasa": "as11-40-5875",
+        "caption": "Buzz Aldrin beside the flag. The pole had a bar along the top to hold the flag out, because there is no wind on the Moon.",
+        "credit": "NASA · AS11-40-5875",
+        "pos": "tl"
+      },
+      "fact": "The Moon rocks taught scientists about three brand-new minerals. One of them is named after this very place: tranquillityite!"
+    },
+    {
+      "id": "plaque",
+      "title": "A Message on Eagle's Leg",
+      "scene": "eagle-plaque",
+      "text": [
+        "Before they left, Neil read aloud from a shiny metal plaque fixed to Eagle's front leg. Here is what it says:",
+        "“Here men from the planet Earth first set foot upon the Moon, July nineteen sixty-nine, [A.D.]{A D}. We came in peace for all mankind.”",
+        "The astronauts also left some small gifts. A golden olive branch, as a symbol of peace. A tiny disc carrying messages of goodwill from the leaders of seventy-three countries. And badges and medals to remember space explorers who had lost their lives.",
+        "That plaque is still on Eagle's leg today, like a name tag that says: someone from Earth was here."
+      ],
+      "photo": {
+        "nasa": "as11-40-5899",
+        "caption": "The real plaque on Eagle's leg, photographed on the Moon in 1969.",
+        "credit": "NASA · AS11-40-5899"
+      },
+      "video": {
+        "nasa": "Apollo_11_Plaque_Comparison_720p",
+        "title": "Hear Neil read the plaque",
+        "caption": "Neil Armstrong reads the plaque aloud, live from the Moon.",
+        "credit": "NASA"
+      },
+      "fact": "The letters on the plaque are in a typeface called Futura. So this font has been to the Moon!"
+    },
+    {
+      "id": "pen",
+      "title": "The Broken Switch",
+      "scene": "eagle-pen",
+      "text": [
+        "Back inside Eagle, the astronauts were tired, dusty, and very happy. But then Buzz spotted something lying on the floor.",
+        "It was the end of a switch, called a circuit breaker, that had snapped right off! And not just any switch. This one helped turn on the engine that would carry them home.",
+        "Uh-oh.",
+        "Buzz thought for a moment. Then he took out... a felt-tip pen. He poked the pen into the little hole where the switch had been, and pushed.",
+        "Click! It worked.",
+        "Sometimes, being a great astronaut means solving problems with whatever you have in your pocket."
+      ],
+      "photo": {
+        "nasa": "as11-36-5390",
+        "caption": "Buzz Aldrin inside Eagle. The cabin was about the size of a small closet.",
+        "credit": "NASA · AS11-36-5390"
+      },
+      "fact": "Buzz Aldrin kept that felt-tip pen as a souvenir of the day it helped bring him home."
+    },
+    {
+      "id": "liftoff",
+      "title": "Liftoff!",
+      "scene": "eagle-liftoff",
+      "text": [
+        "After twenty-one and a half hours on the Moon, it was time to go home.",
+        "Now Eagle's secret came true. The top half fired its engine and lifted off. Whoosh! It used the bottom half as its very own launch pad.",
+        "As they rose, Buzz looked down and saw the flag tip over, blown flat by the blast of the engine.",
+        "Below them, the bottom half of Eagle stood alone on the Moon, with its four legs planted, its plaque shining, and footprints all around it.",
+        "It had done its job perfectly. And now, its long sleep was about to begin."
+      ],
+      "fact": "There was no launch tower and no ground crew on the Moon. Eagle's bottom half was the only launch pad they needed."
+    },
+    {
+      "id": "reunion",
+      "title": "Hello Again, Columbia!",
+      "scene": "eagle-reunion",
+      "text": [
+        "High above, Michael was watching through his window. And there it was: a tiny dot growing bigger. Eagle's top half, with the Earth hanging in the black sky behind it.",
+        "The two spacecraft gently clicked together. Neil and Buzz floated through the tunnel with their precious boxes of moon rocks, and the three friends were together again.",
+        "Then they let Eagle's top half go, to circle the Moon on its own. Where did it end up? Nobody knows for sure! It probably crashed into the Moon long ago, but some scientists think it might still be up there, going around and around.",
+        "Three days later, Columbia splashed down in the Pacific Ocean. The astronauts were home."
+      ],
+      "photo": {
+        "nasa": "as11-44-6642",
+        "caption": "Eagle's top half returning to Columbia, with the Earth behind it. Michael Collins took this picture.",
+        "credit": "NASA · AS11-44-6642"
+      },
+      "fact": "Every human being alive in 1969, except Michael Collins, was either inside that little spacecraft or on the Earth behind it, all in one photo!"
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Eagle",
+      "scene": "eagle-goodnight",
+      "text": [
+        "And Eagle's bottom half? It is still there, at Tranquility Base.",
+        "There is no wind on the Moon to blow its footprints away, and no rain to rust its legs. So Eagle sleeps, under a black sky, with the blue Earth glowing above it.",
+        "In two thousand nine, a NASA spacecraft called the Lunar Reconnaissance Orbiter flew over and took pictures from above. In them, you can see Eagle, its long shadow, and even faint trails left by the astronauts' boots.",
+        "And scientists on Earth still shine lasers at the mirror Neil and Buzz left behind, to measure how far away the Moon is.",
+        "So tonight, find the Moon. Look for the dark patch called the Sea of Tranquility.",
+        "Then whisper: Goodnight, Eagle."
+      ],
+      "photo": {
+        "nasa": "PIA12909",
+        "caption": "Eagle's landing site, photographed from orbit by NASA's Lunar Reconnaissance Orbiter in 2009. The bright dot with a long shadow is Eagle.",
+        "credit": "NASA / GSFC / Arizona State University · PIA12909",
+        "pos": "tl"
+      },
+      "fact": "Thanks to the laser mirror, we know the Moon is drifting away from Earth by about 3.8 centimeters every year. That's about as fast as your fingernails grow!"
+    }
+  ]
+}
