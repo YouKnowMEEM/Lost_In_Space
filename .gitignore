@@ -11,3 +11,5 @@ server/node_modules/
 # Narration model files (large, downloaded separately)
 tools/narration/models/
 __pycache__/
+
+.vercel

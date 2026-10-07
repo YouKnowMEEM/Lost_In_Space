@@ -51,8 +51,8 @@ function Topbar() {
   );
 }
 
-function Shell({ children, immersive = false }) {
-  return <div className={`app-shell ${immersive ? "immersive-shell" : ""}`}><SpaceBackdrop/><Topbar/>{children}</div>;
+function Shell({ children, immersive = false, className = "" }) {
+  return <div className={`app-shell ${immersive ? "immersive-shell" : ""} ${className}`}><SpaceBackdrop/><Topbar/>{children}</div>;
 }
 
 function EntryGate({ onEnter }) {
@@ -573,9 +573,9 @@ export function LandingPage() {
 }
 
 export function MoonPage() {
-  return <Shell immersive><MoonExplorer /></Shell>;
+  return <Shell immersive className="home-sky-shell"><MoonExplorer /></Shell>;
 }
-export function MarsPage() { return <Shell immersive><MarsExplorer /></Shell>; }
+export function MarsPage() { return <Shell immersive className="home-sky-shell"><MarsExplorer /></Shell>; }
 
 
 function Lander3D({ year }) {
