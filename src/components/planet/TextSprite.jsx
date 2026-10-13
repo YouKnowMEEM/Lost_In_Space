@@ -45,7 +45,7 @@ function makeTextTexture(text, kind, selected, inactive) {
   return texture;
 }
 
-export default function TextSprite({ text, kind = "region", position = [0, 0, 0], size = 0.105, selected = false, inactive = false, markerAnchor = false, onClick, onPointerOver, onPointerOut }) {
+export default function TextSprite({ text, kind = "region", position = [0, 0, 0], size = 0.105, opacity = 1, selected = false, inactive = false, markerAnchor = false, onClick, onPointerOver, onPointerOut }) {
   const texture = useMemo(() => makeTextTexture(text, kind, selected, inactive), [text, kind, selected, inactive]);
   useEffect(() => () => texture.dispose(), [texture]);
   const aspect = texture.image.width / texture.image.height;
@@ -58,6 +58,6 @@ export default function TextSprite({ text, kind = "region", position = [0, 0, 0]
     onPointerOut={onPointerOut}
     renderOrder={12}
   >
-    <spriteMaterial map={texture} transparent depthTest depthWrite={false} toneMapped={false}/>
+    <spriteMaterial map={texture} transparent opacity={opacity} depthTest depthWrite={false} toneMapped={false}/>
   </sprite>;
 }

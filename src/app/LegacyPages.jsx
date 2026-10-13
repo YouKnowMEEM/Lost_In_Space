@@ -118,10 +118,28 @@ export function Home() {
   const [distanceToSelected, setDistanceToSelected] = useState(null);
   const audioRef = useRef(null);
   const cameraRef = useRef(null);
+  const sunAnchorRef = useRef(null);
+  const mercuryAnchorRef = useRef(null);
+  const venusAnchorRef = useRef(null);
+  const earthAnchorRef = useRef(null);
   const moonAnchorRef = useRef(null);
   const marsAnchorRef = useRef(null);
-  const earthAnchorRef = useRef(null);
-  const sunAnchorRef = useRef(null);
+  const jupiterAnchorRef = useRef(null);
+  const saturnAnchorRef = useRef(null);
+  const uranusAnchorRef = useRef(null);
+  const neptuneAnchorRef = useRef(null);
+  const planetAnchors = {
+    sun: sunAnchorRef,
+    mercury: mercuryAnchorRef,
+    venus: venusAnchorRef,
+    earth: earthAnchorRef,
+    moon: moonAnchorRef,
+    mars: marsAnchorRef,
+    jupiter: jupiterAnchorRef,
+    saturn: saturnAnchorRef,
+    uranus: uranusAnchorRef,
+    neptune: neptuneAnchorRef
+  };
   const probesRefs = useRef({});
   const [journey, setJourney] = useState(null);
   useEffect(() => {
@@ -190,16 +208,23 @@ export function Home() {
   }, [audioOn]);
 
   const searchable = [
+    { name: "Sun", detail: "Central star of our solar system", type: "STAR", action: () => setSelected("sun") },
+    { name: "Mercury", detail: "First planet from the Sun", type: "WORLD", action: () => setSelected("mercury") },
+    { name: "Venus", detail: "Second planet from the Sun", type: "WORLD", action: () => setSelected("venus") },
+    { name: "Earth", detail: "Our home world", type: "WORLD", action: () => setSelected("earth") },
     { name: "Moon", detail: "Explore the lunar archive", type: "WORLD", action: () => setSelected("moon") },
     { name: "Apollo 11 · Eagle", detail: "The first lunar landing module", type: "ARTIFACT", action: () => navigate("/eagle") },
     { name: "Mars", detail: "The red planet · collection coming later", type: "WORLD", action: () => setSelected("mars") },
+    { name: "Jupiter", detail: "The gas giant · largest planet in our solar system", type: "WORLD", action: () => setSelected("jupiter") },
+    { name: "Saturn", detail: "The ringed planet", type: "WORLD", action: () => setSelected("saturn") },
+    { name: "Uranus", detail: "Ice giant planet with retrograde rotation", type: "WORLD", action: () => setSelected("uranus") },
+    { name: "Neptune", detail: "Outermost ice giant planet", type: "WORLD", action: () => setSelected("neptune") },
     { name: "Deep Space", detail: "Interplanetary and heliocentric objects", type: "ARCHIVE", action: () => setSelected("deep") },
-    { name: "Earth", detail: "Our home world", type: "WORLD", action: () => setSelected("earth") },
-    { name: "Voyager 1", detail: "Interstellar probe launched in 1977", type: "SPACECRAFT", action: () => setSelected("voyager-1") },
-    { name: "Voyager 2", detail: "Outer-planet explorer launched in 1977", type: "SPACECRAFT", action: () => setSelected("voyager-2") },
-    { name: "Pioneer 10", detail: "Jupiter flyby mission launched in 1972", type: "SPACECRAFT", action: () => setSelected("pioneer-10") },
-    { name: "Pioneer 11", detail: "Jupiter and Saturn flyby mission launched in 1973", type: "SPACECRAFT", action: () => setSelected("pioneer-11") },
-    { name: "New Horizons", detail: "Pluto and Kuiper Belt explorer launched in 2006", type: "SPACECRAFT", action: () => setSelected("new-horizons") }
+    { name: "Voyager 1", detail: "Interstellar probe launched in 1977 · Currently at ~172 AU", type: "SPACECRAFT", action: () => setSelected("voyager-1") },
+    { name: "Voyager 2", detail: "Outer-planet explorer launched in 1977 · Currently at ~144 AU", type: "SPACECRAFT", action: () => setSelected("voyager-2") },
+    { name: "Pioneer 10", detail: "Jupiter flyby mission launched in 1972 · Currently at ~142 AU", type: "SPACECRAFT", action: () => setSelected("pioneer-10") },
+    { name: "Pioneer 11", detail: "Jupiter and Saturn flyby mission launched in 1973 · Currently at ~119 AU", type: "SPACECRAFT", action: () => setSelected("pioneer-11") },
+    { name: "New Horizons", detail: "Pluto and Kuiper Belt explorer launched in 2006 · Currently at ~66 AU", type: "SPACECRAFT", action: () => setSelected("new-horizons") }
   ];
   const matches = query.trim()
       ? searchable.filter(item => `${item.name} ${item.detail} ${item.type}`.toLowerCase().includes(query.trim().toLowerCase()))
@@ -213,27 +238,27 @@ export function Home() {
     </AnimatePresence>
     <audio ref={audioRef} loop src="/audio/home-audio.mp3" preload="auto"/>
     <div className="solar-home-scene">
-      <Canvas shadows camera={{ position: [0, 5.5, 13.5], fov: 42, near: 0.1, far: 500 }} dpr={[1, 1.75]}>
+      <Canvas shadows camera={{ position: [0, 18, 38], fov: 44, near: 0.1, far: 1200 }} dpr={[1, 1.75]}>
         <color attach="background" args={["#030712"]}/>
-        <ambientLight intensity={0.12}/>
+        <ambientLight intensity={0.18}/>
         <pointLight
             position={[0, 0, 0]}
-            intensity={180}
+            intensity={220}
             distance={0}
-            decay={2}
+            decay={1.2}
             castShadow
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
             shadow-camera-near={0.05}
-            shadow-camera-far={24}
+            shadow-camera-far={120}
             shadow-bias={-0.00008}
             shadow-normalBias={0.006}
         />
-        <MovingStarfield/>
+        <SpaceStarsBackdrop/>
         <Suspense fallback={null}>
-          <SolarSystem selected={selected} onSelect={setSelected} moonAnchorRef={moonAnchorRef} marsAnchorRef={marsAnchorRef} earthAnchorRef={earthAnchorRef} sunAnchorRef={sunAnchorRef} probesRefs={probesRefs} paused={!!journey} speedModifier={speedModifier} cameraRef={cameraRef} onDistanceChange={setDistanceToSelected}/>
+          <SolarSystem selected={selected} onSelect={setSelected} planetAnchors={planetAnchors} probesRefs={probesRefs} paused={!!journey} speedModifier={speedModifier} cameraRef={cameraRef} onDistanceChange={setDistanceToSelected}/>
         </Suspense>
-        <CameraControls ref={cameraRef} makeDefault minDistance={1.5} maxDistance={80} smoothTime={0.6} dollyToCursor={false}/>
+        <CameraControls ref={cameraRef} makeDefault minDistance={1.0} maxDistance={350} smoothTime={0.6} dollyToCursor={false}/>
       </Canvas>
     </div>
 
@@ -276,9 +301,15 @@ export function Home() {
 }
 
 const PLANET_TEXTURES = {
+  mercury: "/models/2k_mercury.jpeg",
+  venus: "/models/2k_venus_atmosphere.jpeg",
   earth: "/models/2k_earth.jpeg",
+  moon: "/models/2k_moon.jpeg",
   mars: "/models/2k_mars.jpeg",
-  moon: "/models/2k_moon.jpeg"
+  jupiter: "/models/2k_jupiter.jpeg",
+  saturn: "/models/2k_saturn.jpeg",
+  uranus: "/models/2k_uranus.jpeg",
+  neptune: "/models/2k_neptune.jpeg"
 };
 
 function SunModel({ onClick, hovered, setHovered }) {
@@ -327,6 +358,7 @@ useGLTF.preload("/models/sun.glb");
 function CelestialModel({ radius, onClick, name, hovered, setHovered }) {
   const spin = useRef();
   const texture = useTexture(PLANET_TEXTURES[name]);
+  const ringTexture = name === "saturn" ? useTexture("/models/2k_saturn_ring_alpha.png") : null;
   useFrame((_, delta) => {
     // Keep the Moon tidally locked in this schematic: its position orbits Earth,
     // while the visible face stays fixed instead of rotating around its axis.
@@ -339,65 +371,83 @@ function CelestialModel({ radius, onClick, name, hovered, setHovered }) {
           <sphereGeometry args={[radius, 64, 32]} />
           <meshStandardMaterial map={texture} roughness={1} />
         </mesh>
+        {name === "saturn" && ringTexture && (
+          <mesh rotation={[Math.PI / 2.35, 0, 0]}>
+            <ringGeometry args={[radius * 1.35, radius * 2.45, 64]} />
+            <meshStandardMaterial map={ringTexture} transparent side={THREE.DoubleSide} opacity={0.92} roughness={0.8} />
+          </mesh>
+        )}
       </group>
     </group>
   );
 }
 
-function MovingStarfield() {
-  const far = useRef();
-  const near = useRef();
-  useFrame((_, delta) => {
-    if (far.current) far.current.rotation.y += delta * 0.0025;
-    if (near.current) near.current.rotation.y -= delta * 0.006;
-  });
-  return <>
-    <group ref={far}><Stars radius={180} depth={120} count={9500} factor={1.25} saturation={0.06} fade speed={0.025}/></group>
-    <group ref={near}><Stars radius={85} depth={55} count={1800} factor={2.0} saturation={0.1} fade speed={0.045}/></group>
-  </>;
+function SpaceStarsBackdrop() {
+  const texture = useTexture("/models/stars.jpeg");
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return <mesh scale={[-450,450,450]}>
+    <sphereGeometry args={[1,64,48]}/>
+    <meshBasicMaterial map={texture} side={THREE.BackSide} depthWrite={false}/>
+  </mesh>;
 }
 
 const PROBE_DATA = [
-  { id:"voyager-1", label:"Voyager 1", color:"#c9b98f", position:[8.7*2.2, .55*2.2, -1.2*2.2], style:"voyager" },
-  { id:"voyager-2", label:"Voyager 2", color:"#c9b98f", position:[-7.8*2.2, -.35*2.2, 2.6*2.2], style:"voyager" },
-  { id:"pioneer-10", label:"Pioneer 10", color:"#d9b34f", position:[-1.8*2.2, .4*2.2, 6.9*2.2], style:"pioneer" },
-  { id:"pioneer-11", label:"Pioneer 11", color:"#d9b34f", position:[2.8*2.2, -.55*2.2, -7.6*2.2], style:"pioneer" },
-  { id:"new-horizons", label:"New Horizons", color:"#aeb9c7", position:[-5.8*2.2, .9*2.2, -7.3*2.2], style:"new-horizons" }
+  { id:"voyager-1", label:"Voyager 1", color:"#c9b98f", position:[-19.1, 57.5, -79.6], style:"voyager" },
+  { id:"voyager-2", label:"Voyager 2", color:"#c9b98f", position:[22.9, -54.8, -64.9], style:"voyager" },
+  { id:"pioneer-10", label:"Pioneer 10", color:"#d9b34f", position:[15.3, 4.5, 85.5], style:"pioneer" },
+  { id:"pioneer-11", label:"Pioneer 11", color:"#d9b34f", position:[17.5, 18.2, -71.7], style:"pioneer" },
+  { id:"new-horizons", label:"New Horizons", color:"#aeb9c7", position:[16.6, 1.9, -52.4], style:"new-horizons" }
 ];
+
+const PROBE_MODELS = {
+  voyager: "/models/voyager.glb",
+  pioneer: "/models/pioneer.glb",
+  "new-horizons": "/models/New_Horizons.glb"
+};
 
 function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef }) {
   const group = useRef();
-  const isPioneer = probe.style === "pioneer";
-  const isNH = probe.style === "new-horizons";
-  const metal = useMemo(() => new THREE.MeshStandardMaterial({color:probe.color, metalness:.72, roughness:.34}), [probe.color]);
-  const gold = useMemo(() => new THREE.MeshStandardMaterial({color:"#b89a55", metalness:.62, roughness:.42, side:THREE.DoubleSide}), []);
-  useFrame((_,delta) => {
-    if (group.current) group.current.rotation.y += delta * (isPioneer ? .055 : .035);
+  const [labelHidden, setLabelHidden] = useState(false);
+  const lastLabelHidden = useRef(false);
+  const { scene } = useGLTF(PROBE_MODELS[probe.style]);
+  const model = useMemo(() => {
+    const clone = scene.clone(true);
+    const bounds = new THREE.Box3().setFromObject(clone);
+    const size = bounds.getSize(new THREE.Vector3());
+    const center = bounds.getCenter(new THREE.Vector3());
+    const longestSide = Math.max(size.x, size.y, size.z) || 1;
+    clone.traverse((node) => {
+      if (node.isMesh) {
+        node.castShadow = true;
+        node.receiveShadow = true;
+      }
+    });
+    return { scene: clone, scale: 0.85 / longestSide, center };
+  }, [scene]);
+  useFrame((state) => {
+    if (group.current) {
+      const cameraDistance = state.camera.position.distanceTo(group.current.getWorldPosition(new THREE.Vector3()));
+      const nextHidden = lastLabelHidden.current ? cameraDistance < 7 : cameraDistance < 5.5;
+      if (nextHidden !== lastLabelHidden.current) {
+        lastLabelHidden.current = nextHidden;
+        setLabelHidden(nextHidden);
+      }
+    }
   });
   return <group position={probe.position} ref={(node) => { group.current = node; if (anchorRef) anchorRef(node); }} rotation={[.24,.4,-.18]}
                 onClick={(e)=>{e.stopPropagation();onClick(probe.id)}}
                 onPointerOver={(e)=>{e.stopPropagation();setHovered(probe.id)}}
                 onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
     <mesh><sphereGeometry args={[.27,16,12]}/><meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false}/></mesh>
-    {isPioneer ? <>
-      <mesh rotation={[Math.PI/2,0,0]} material={gold}><circleGeometry args={[.23,32]}/></mesh>
-      <mesh position={[0,0,.09]}><cylinderGeometry args={[.055,.07,.18,10]}/><primitive object={metal} attach="material"/></mesh>
-      <mesh position={[0,.22,0]}><cylinderGeometry args={[.009,.009,.42,6]}/><primitive object={gold} attach="material"/></mesh>
-    </> : <>
-      <mesh position={[0,0,0]} material={metal}><boxGeometry args={isNH?[.13,.15,.17]:[.12,.12,.13]}/></mesh>
-      <mesh position={[0,.12,0]} rotation={[Math.PI/2,0,0]} material={metal}><circleGeometry args={[isNH ? .12 : .21,32]}/></mesh>
-      <mesh position={[0,.01,-.19]} rotation={[0,0,Math.PI/2]}><cylinderGeometry args={[.008,.008,.42,6]}/><primitive object={gold} attach="material"/></mesh>
-      {!isNH && [-1,1].map(side=><group key={side} position={[side*.22,-.01,-.12]} rotation={[0,0,side*.04]}>
-        <mesh material={gold}><boxGeometry args={[.24,.012,.27]}/></mesh>
-        {[0,1,2,3].map(i=><mesh key={i} position={[-.09+i*.06,.009,0]}><boxGeometry args={[.006,.006,.25]}/><meshStandardMaterial color="#6d7890" metalness={0.25} roughness={0.7}/></mesh>)}
-      </group>)}
-    {isNH && <mesh position={[.19,-.015,-.1]} material={gold}><boxGeometry args={[.3,.012,.22]}/></mesh>}
-    </>}
-    <Html position={[0,.48,0]} center distanceFactor={12} zIndexRange={[30,0]}>
-      <span className="deep-space-probe-label">{probe.label}</span>
-    </Html>
+    <group scale={model.scale} position={[-model.center.x * model.scale,-model.center.y * model.scale,-model.center.z * model.scale]}>
+      <primitive object={model.scene}/>
+    </group>
+    {!labelHidden && <Html position={[0,.48,0]} center distanceFactor={12} zIndexRange={[30,0]}>
+      <button type="button" className="deep-space-probe-label" onClick={(e)=>{e.stopPropagation();onClick(probe.id)}} aria-label={`Zoom to ${probe.label}`} title={`Zoom to ${probe.label}`}>{probe.label}</button>
+    </Html>}
   </group>;
 }
+Object.values(PROBE_MODELS).forEach((path) => useGLTF.preload(path));
 
 function solveKepler(meanAnomaly, eccentricity) {
   let eccentricAnomaly = meanAnomaly;
@@ -424,86 +474,159 @@ function EllipticalOrbit({ semiMajor, eccentricity, inclination = 0, color = "#9
   return <group rotation={[inclination,0,0]}><primitive object={line}/></group>;
 }
 
-function SolarSystem({ selected, onSelect, moonAnchorRef, marsAnchorRef, earthAnchorRef, sunAnchorRef, probesRefs, paused, speedModifier, cameraRef, onDistanceChange }) {
-  const [hovered,setHovered] = useState(null);
+function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, speedModifier, cameraRef, onDistanceChange }) {
+  const [hovered, setHovered] = useState(null);
   const elapsed = useRef(0);
+
+  // Position refs for orbiting bodies
+  const mercuryPosition = useRef();
+  const venusPosition = useRef();
   const earthPosition = useRef();
-  const marsPosition = useRef();
   const moonPosition = useRef();
+  const marsPosition = useRef();
+  const jupiterPosition = useRef();
+  const saturnPosition = useRef();
+  const uranusPosition = useRef();
+  const neptunePosition = useRef();
+
+  // Orbital plane refs for inclination tilts
+  const mercuryPlane = useRef();
+  const venusPlane = useRef();
   const earthPlane = useRef();
-  const marsPlane = useRef();
   const moonPlane = useRef();
+  const marsPlane = useRef();
+  const jupiterPlane = useRef();
+  const saturnPlane = useRef();
+  const uranusPlane = useRef();
+  const neptunePlane = useRef();
+
   const moonWorld = useMemo(() => new THREE.Vector3(), []);
-  const earthA = 5.0, marsA = 5.0 * 1.523679, moonA = 0.85;
-  const earthE = .0167, marsE = .0934, moonE = .0549;
-  const earthPeriod = 365.256, marsPeriod = 686.98, moonPeriod = 27.3217;
-  const inclinationMars = THREE.MathUtils.degToRad(1.85);
-  const inclinationMoon = THREE.MathUtils.degToRad(5.145);
+
+  // Semi-major axes (visually proportional spacing)
+  // Mercury: 0.39 AU, Venus: 0.72 AU, Earth: 1.0 AU, Mars: 1.52 AU, Jupiter: 5.2 AU, Saturn: 9.5 AU, Uranus: 19.2 AU, Neptune: 30.1 AU
+  const mercuryA = 2.4, venusA = 3.6, earthA = 5.0, moonA = 0.85, marsA = 7.6;
+  const jupiterA = 14.5, saturnA = 21.5, uranusA = 29.5, neptuneA = 38.0;
+
+  // Real orbital eccentricities
+  const mercuryE = 0.2056, venusE = 0.0067, earthE = 0.0167, moonE = 0.0549, marsE = 0.0934;
+  const jupiterE = 0.0489, saturnE = 0.0565, uranusE = 0.0463, neptuneE = 0.0095;
+
+  // Real orbital periods in days
+  const mercuryPeriod = 87.97, venusPeriod = 224.7, earthPeriod = 365.256, moonPeriod = 27.3217, marsPeriod = 686.98;
+  const jupiterPeriod = 4332.6, saturnPeriod = 10759.2, uranusPeriod = 30685.4, neptunePeriod = 60189.0;
+
+  // Real orbital inclinations in radians
+  const incMercury = THREE.MathUtils.degToRad(7.0);
+  const incVenus = THREE.MathUtils.degToRad(3.4);
+  const incMars = THREE.MathUtils.degToRad(1.85);
+  const incMoon = THREE.MathUtils.degToRad(5.145);
+  const incJupiter = THREE.MathUtils.degToRad(1.3);
+  const incSaturn = THREE.MathUtils.degToRad(2.49);
+  const incUranus = THREE.MathUtils.degToRad(0.77);
+  const incNeptune = THREE.MathUtils.degToRad(1.77);
+
   const targetPos = useMemo(() => new THREE.Vector3(), []);
   const camPos = useMemo(() => new THREE.Vector3(), []);
   const prevSelected = useRef(null);
   const distFrameCount = useRef(0);
 
-  const RADII = { sun: 1.05, earth: .31, moon: .105, mars: .24 };
-  const ZOOM_DISTANCES = { sun: 3.5, earth: 1.4, moon: 0.6, mars: 1.1 };
+  // Visually proportional sizes
+  const RADII = {
+    sun: 1.25,
+    mercury: 0.16,
+    venus: 0.28,
+    earth: 0.31,
+    moon: 0.105,
+    mars: 0.24,
+    jupiter: 0.72,
+    saturn: 0.60,
+    uranus: 0.42,
+    neptune: 0.40
+  };
+
+  const ZOOM_DISTANCES = {
+    sun: 4.2,
+    mercury: 0.85,
+    venus: 1.25,
+    earth: 1.4,
+    moon: 0.6,
+    mars: 1.1,
+    jupiter: 3.2,
+    saturn: 3.5,
+    uranus: 2.1,
+    neptune: 2.0
+  };
 
   const getTargetRef = (sel) => {
-    if (sel === "earth") return earthAnchorRef;
-    if (sel === "mars") return marsAnchorRef;
-    if (sel === "moon") return moonAnchorRef;
-    if (sel === "sun") return sunAnchorRef;
+    if (planetAnchors && planetAnchors[sel]) return planetAnchors[sel];
     if (probesRefs && probesRefs.current[sel]) return { current: probesRefs.current[sel] };
     return null;
   };
 
   useFrame((state, delta) => {
     if (paused) return;
-    elapsed.current += Math.min(delta, .05) * 3 * speedModifier;
+    elapsed.current += Math.min(delta, 0.05) * 3 * speedModifier;
     const days = elapsed.current;
-    const earthEccentric = solveKepler((days / earthPeriod) * Math.PI * 2 + .3, earthE);
-    const marsEccentric = solveKepler((days / marsPeriod) * Math.PI * 2 + 2.1, marsE);
-    const moonEccentric = solveKepler((days / moonPeriod) * Math.PI * 2 + .7, moonE);
-    if (earthPosition.current) earthPosition.current.position.set(earthA * (Math.cos(earthEccentric) - earthE), 0, earthA * Math.sqrt(1-earthE*earthE) * Math.sin(earthEccentric));
-    if (marsPosition.current) marsPosition.current.position.set(marsA * (Math.cos(marsEccentric) - marsE), 0, marsA * Math.sqrt(1-marsE*marsE) * Math.sin(marsEccentric));
-    if (moonPosition.current) moonPosition.current.position.set(moonA * (Math.cos(moonEccentric) - moonE), 0, moonA * Math.sqrt(1-moonE*moonE) * Math.sin(moonEccentric));
-    if (moonAnchorRef?.current) moonAnchorRef.current.getWorldPosition(moonWorld);
-    
+    // Outer planet periods are compressed so their orbital motion is visible in the model.
+    const outerOrbitDays = days * 120;
+
+    // Kepler equation solver for all planets
+    const mercuryEcc = solveKepler((days / mercuryPeriod) * Math.PI * 2 + 1.2, mercuryE);
+    const venusEcc = solveKepler((days / venusPeriod) * Math.PI * 2 + 0.8, venusE);
+    const earthEcc = solveKepler((days / earthPeriod) * Math.PI * 2 + 0.3, earthE);
+    const moonEcc = solveKepler((days / moonPeriod) * Math.PI * 2 + 0.7, moonE);
+    const marsEcc = solveKepler((days / marsPeriod) * Math.PI * 2 + 2.1, marsE);
+    const jupiterEcc = solveKepler((outerOrbitDays / jupiterPeriod) * Math.PI * 2 + 4.2, jupiterE);
+    const saturnEcc = solveKepler((outerOrbitDays / saturnPeriod) * Math.PI * 2 + 1.6, saturnE);
+    const uranusEcc = solveKepler((outerOrbitDays / uranusPeriod) * Math.PI * 2 + 3.1, uranusE);
+    const neptuneEcc = solveKepler((outerOrbitDays / neptunePeriod) * Math.PI * 2 + 5.0, neptuneE);
+
+    if (mercuryPosition.current) mercuryPosition.current.position.set(mercuryA * (Math.cos(mercuryEcc) - mercuryE), 0, mercuryA * Math.sqrt(1 - mercuryE * mercuryE) * Math.sin(mercuryEcc));
+    if (venusPosition.current) venusPosition.current.position.set(venusA * (Math.cos(venusEcc) - venusE), 0, venusA * Math.sqrt(1 - venusE * venusE) * Math.sin(venusEcc));
+    if (earthPosition.current) earthPosition.current.position.set(earthA * (Math.cos(earthEcc) - earthE), 0, earthA * Math.sqrt(1 - earthE * earthE) * Math.sin(earthEcc));
+    if (moonPosition.current) moonPosition.current.position.set(moonA * (Math.cos(moonEcc) - moonE), 0, moonA * Math.sqrt(1 - moonE * moonE) * Math.sin(moonEcc));
+    if (marsPosition.current) marsPosition.current.position.set(marsA * (Math.cos(marsEcc) - marsE), 0, marsA * Math.sqrt(1 - marsE * marsE) * Math.sin(marsEcc));
+    if (jupiterPosition.current) jupiterPosition.current.position.set(jupiterA * (Math.cos(jupiterEcc) - jupiterE), 0, jupiterA * Math.sqrt(1 - jupiterE * jupiterE) * Math.sin(jupiterEcc));
+    if (saturnPosition.current) saturnPosition.current.position.set(saturnA * (Math.cos(saturnEcc) - saturnE), 0, saturnA * Math.sqrt(1 - saturnE * saturnE) * Math.sin(saturnEcc));
+    if (uranusPosition.current) uranusPosition.current.position.set(uranusA * (Math.cos(uranusEcc) - uranusE), 0, uranusA * Math.sqrt(1 - uranusE * uranusE) * Math.sin(uranusEcc));
+    if (neptunePosition.current) neptunePosition.current.position.set(neptuneA * (Math.cos(neptuneEcc) - neptuneE), 0, neptuneA * Math.sqrt(1 - neptuneE * neptuneE) * Math.sin(neptuneEcc));
+
+    if (planetAnchors?.moon?.current) planetAnchors.moon.current.getWorldPosition(moonWorld);
+
     const controls = cameraRef?.current;
     if (!controls) return;
 
-    // Selection changed — fire a one-shot fly-to animation
+    // Selection changed — fire smooth fly-to animation
     if (selected !== prevSelected.current) {
       prevSelected.current = selected;
-      
-      const tRef = selected ? getTargetRef(selected) : sunAnchorRef;
+
+      const tRef = selected ? getTargetRef(selected) : planetAnchors?.sun;
       if (tRef && tRef.current) {
         tRef.current.getWorldPosition(targetPos);
         const radius = RADII[selected] || 0.3;
         const zoomDist = ZOOM_DISTANCES[selected] || (radius * 4.5);
-        
-        // Compute a destination camera position: offset from target
+
         controls.getPosition(camPos);
         const dir = camPos.clone().sub(targetPos);
         if (dir.lengthSq() < 0.001) dir.set(0, 0.4, 1);
         dir.normalize().multiplyScalar(zoomDist);
         const dest = targetPos.clone().add(dir);
-        
-        // Set clipping distance — generous padding so you can never enter the sphere
-        controls.minDistance = radius * 3;
-        
-        // Smooth fly-to animation (setLookAt with smooth=true)
+
+        // Safe minDistance preventing entering inside the sphere
+        controls.minDistance = radius * 2.8;
+
         controls.setLookAt(
           dest.x, dest.y, dest.z,
           targetPos.x, targetPos.y, targetPos.z,
           true
         );
       } else if (!selected) {
-        controls.minDistance = 1.5;
-        controls.setLookAt(0, 5.5, 13.5, 0, 0, 0, true);
+        controls.minDistance = 1.0;
+        controls.setLookAt(0, 18, 38, 0, 0, 0, true);
       }
     }
-    
-    // For orbiting objects: continuously update the controls target to follow them
+
+    // Follow moving orbital target continuously
     if (selected) {
       const tRef = getTargetRef(selected);
       if (tRef && tRef.current) {
@@ -511,12 +634,12 @@ function SolarSystem({ selected, onSelect, moonAnchorRef, marsAnchorRef, earthAn
         controls.moveTo(targetPos.x, targetPos.y, targetPos.z, false);
       }
     }
-    
-    // Distance calculation (throttle to every ~10 frames for perf)
+
+    // Distance calculation for HUD
     distFrameCount.current++;
     if (onDistanceChange && distFrameCount.current % 10 === 0) {
       controls.getPosition(camPos);
-      const tRef = selected ? getTargetRef(selected) : sunAnchorRef;
+      const tRef = selected ? getTargetRef(selected) : planetAnchors?.sun;
       if (tRef && tRef.current) {
         tRef.current.getWorldPosition(targetPos);
         const dist = camPos.distanceTo(targetPos);
@@ -524,41 +647,111 @@ function SolarSystem({ selected, onSelect, moonAnchorRef, marsAnchorRef, earthAn
       }
     }
   });
+
   const select = (name) => (event) => { event.stopPropagation(); onSelect(name); };
+
   return <>
-    <group ref={sunAnchorRef}>
+    {/* Sun */}
+    <group ref={planetAnchors?.sun}>
       <SunModel hovered={hovered} setHovered={setHovered} onClick={select("sun")} />
     </group>
-    <EllipticalOrbit semiMajor={earthA} eccentricity={earthE}/>
-    <EllipticalOrbit semiMajor={marsA} eccentricity={marsE} inclination={inclinationMars}/>
+
+    {/* Orbit lines */}
+    <EllipticalOrbit semiMajor={mercuryA} eccentricity={mercuryE} inclination={incMercury} color="#e8edf5" opacity={0.22} />
+    <EllipticalOrbit semiMajor={venusA} eccentricity={venusE} inclination={incVenus} color="#e8edf5" opacity={0.22} />
+    <EllipticalOrbit semiMajor={earthA} eccentricity={earthE} color="#e8edf5" opacity={0.25} />
+    <EllipticalOrbit semiMajor={marsA} eccentricity={marsE} inclination={incMars} color="#e8edf5" opacity={0.22} />
+    <EllipticalOrbit semiMajor={jupiterA} eccentricity={jupiterE} inclination={incJupiter} color="#e8edf5" opacity={0.2} />
+    <EllipticalOrbit semiMajor={saturnA} eccentricity={saturnE} inclination={incSaturn} color="#e8edf5" opacity={0.2} />
+    <EllipticalOrbit semiMajor={uranusA} eccentricity={uranusE} inclination={incUranus} color="#e8edf5" opacity={0.18} />
+    <EllipticalOrbit semiMajor={neptuneA} eccentricity={neptuneE} inclination={incNeptune} color="#e8edf5" opacity={0.18} />
+
+    {/* Deep Space Probes */}
     {PROBE_DATA.map(probe =>
-        <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect} anchorRef={(node) => { if (probesRefs) probesRefs.current[probe.id] = node; }}/>
+      <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect} anchorRef={(node) => { if (probesRefs) probesRefs.current[probe.id] = node; }}/>
     )}
+
+    {/* Mercury */}
+    <group ref={mercuryPlane} rotation={[incMercury, 0, 0]}>
+      <group ref={mercuryPosition}>
+        <group ref={planetAnchors?.mercury}>
+          <CelestialModel radius={RADII.mercury} name="mercury" hovered={hovered} setHovered={setHovered} onClick={select("mercury")} />
+        </group>
+      </group>
+    </group>
+
+    {/* Venus */}
+    <group ref={venusPlane} rotation={[incVenus, 0, 0]}>
+      <group ref={venusPosition}>
+        <group ref={planetAnchors?.venus}>
+          <CelestialModel radius={RADII.venus} name="venus" hovered={hovered} setHovered={setHovered} onClick={select("venus")} />
+        </group>
+      </group>
+    </group>
+
+    {/* Earth & Moon */}
     <group ref={earthPlane}>
       <group ref={earthPosition}>
-        <group ref={earthAnchorRef}>
-          <CelestialModel radius={.31} name="earth" hovered={hovered} setHovered={setHovered} onClick={select("earth")} />
+        <group ref={planetAnchors?.earth}>
+          <CelestialModel radius={RADII.earth} name="earth" hovered={hovered} setHovered={setHovered} onClick={select("earth")} />
         </group>
-        <EllipticalOrbit semiMajor={moonA} eccentricity={moonE} inclination={inclinationMoon} color="#aabbd0" opacity={.25}/>
-        <group ref={moonPlane} rotation={[inclinationMoon,0,0]}>
+        <EllipticalOrbit semiMajor={moonA} eccentricity={moonE} inclination={incMoon} color="#e8edf5" opacity={0.25}/>
+        <group ref={moonPlane} rotation={[incMoon, 0, 0]}>
           <group ref={moonPosition}>
-            <group ref={moonAnchorRef}>
-              <CelestialModel radius={.105} name="moon" hovered={hovered} setHovered={setHovered} onClick={select("moon")} />
+            <group ref={planetAnchors?.moon}>
+              <CelestialModel radius={RADII.moon} name="moon" hovered={hovered} setHovered={setHovered} onClick={select("moon")} />
             </group>
           </group>
         </group>
       </group>
     </group>
-    <group ref={marsPlane} rotation={[inclinationMars,0,0]}>
+
+    {/* Mars */}
+    <group ref={marsPlane} rotation={[incMars, 0, 0]}>
       <group ref={marsPosition}>
-        <group ref={marsAnchorRef}>
-          <CelestialModel radius={.24} name="mars" hovered={hovered} setHovered={setHovered} onClick={select("mars")} />
+        <group ref={planetAnchors?.mars}>
+          <CelestialModel radius={RADII.mars} name="mars" hovered={hovered} setHovered={setHovered} onClick={select("mars")} />
+        </group>
+      </group>
+    </group>
+
+    {/* Jupiter */}
+    <group ref={jupiterPlane} rotation={[incJupiter, 0, 0]}>
+      <group ref={jupiterPosition}>
+        <group ref={planetAnchors?.jupiter}>
+          <CelestialModel radius={RADII.jupiter} name="jupiter" hovered={hovered} setHovered={setHovered} onClick={select("jupiter")} />
+        </group>
+      </group>
+    </group>
+
+    {/* Saturn */}
+    <group ref={saturnPlane} rotation={[incSaturn, 0, 0]}>
+      <group ref={saturnPosition}>
+        <group ref={planetAnchors?.saturn}>
+          <CelestialModel radius={RADII.saturn} name="saturn" hovered={hovered} setHovered={setHovered} onClick={select("saturn")} />
+        </group>
+      </group>
+    </group>
+
+    {/* Uranus */}
+    <group ref={uranusPlane} rotation={[incUranus, 0, 0]}>
+      <group ref={uranusPosition}>
+        <group ref={planetAnchors?.uranus}>
+          <CelestialModel radius={RADII.uranus} name="uranus" hovered={hovered} setHovered={setHovered} onClick={select("uranus")} />
+        </group>
+      </group>
+    </group>
+
+    {/* Neptune */}
+    <group ref={neptunePlane} rotation={[incNeptune, 0, 0]}>
+      <group ref={neptunePosition}>
+        <group ref={planetAnchors?.neptune}>
+          <CelestialModel radius={RADII.neptune} name="neptune" hovered={hovered} setHovered={setHovered} onClick={select("neptune")} />
         </group>
       </group>
     </group>
   </>;
 }
-
 
 export function LandingPage() {
   const navigate = useNavigate();

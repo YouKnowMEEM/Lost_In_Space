@@ -79,7 +79,7 @@ function MoonScene({ onOpen }) {
           dpr={[1, 1.75]}
           gl={{ antialias: true, alpha: false }}
       >
-        <color attach="background" args={["#050912"]} />
+        <color attach="background" args={["#000000"]} />
         {/* Uniform illumination keeps the entire Moon visible; no day/night terminator. */}
         <ambientLight intensity={1.35} />
         <ArchiveStarfield/>
@@ -136,7 +136,7 @@ function MarsScene() {
   const controls = useRef(null);
   useEffect(() => { controls.current?.setLookAt(0,.25,12.4,0,0,0,false); }, []);
   return <Canvas camera={{position:[0,.25,12.4],fov:38,near:.1,far:100}} dpr={[1,1.75]} gl={{antialias:true,alpha:false}}>
-    <color attach="background" args={["#030712"]}/><ArchiveStarfield/>
+    <color attach="background" args={["#000000"]}/><ArchiveStarfield/>
     {/* Uniform illumination keeps the entire Mars globe visible; no day/night terminator. */}
     <ambientLight intensity={1.35}/>
     <Suspense fallback={null}><MarsModel/><VikingMarker/></Suspense>

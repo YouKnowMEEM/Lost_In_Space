@@ -10,6 +10,7 @@ export default function PlanetExplorer({ planet, texturePath, artifacts, regions
   const [status, setStatus] = useState("all");
   const [year, setYear] = useState(2030);
   const [selected, setSelected] = useState(null);
+  const [clickOrigin, setClickOrigin] = useState(null);
   const [selectedOrbit, setSelectedOrbit] = useState(null);
   const [controlsOpen, setControlsOpen] = useState(false);
   const [notice, setNotice] = useState(false);
@@ -25,8 +26,9 @@ export default function PlanetExplorer({ planet, texturePath, artifacts, regions
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [controlsOpen]);
 
-  const selectArtifact = (artifact) => {
+  const selectArtifact = (artifact, origin) => {
     setControlsOpen(false);
+    setClickOrigin(origin || null);
     setSelected(artifact);
   };
 
@@ -50,7 +52,7 @@ export default function PlanetExplorer({ planet, texturePath, artifacts, regions
       {visible.map((artifact) => <button type="button" key={artifact.id} aria-pressed={selected?.id === artifact.id} onClick={() => selectArtifact(artifact)}>{artifact.name}</button>)}
       {orbits.map((orbit) => <button type="button" key={orbit.id} aria-pressed={selectedOrbit === orbit.id} onClick={() => setSelectedOrbit(selectedOrbit === orbit.id ? null : orbit.id)}>Highlight {orbit.name} orbit</button>)}
     </div>
-    <EquipmentSidebar artifact={selected} equipmentHeading={equipmentHeading} onClose={() => setSelected(null)} onSurfaceMode={() => { setNotice(true); window.setTimeout(() => setNotice(false), 2600); }}/>
+    <EquipmentSidebar artifact={selected} origin={clickOrigin} equipmentHeading={equipmentHeading} onClose={() => { setSelected(null); setClickOrigin(null); }} onSurfaceMode={() => { setNotice(true); window.setTimeout(() => setNotice(false), 2600); }}/>
     {notice && <div className="moon-mode-notice" role="status">3D Surface Mode is planned for a future update.</div>}
   </main>;
 }

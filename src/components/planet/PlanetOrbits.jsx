@@ -40,7 +40,8 @@ function OrbitObject({ orbit, selected, onSelect }) {
       text={orbit.name}
       kind="orbit"
       position={marker.toArray()}
-      size={0.12}
+      size={0.105}
+      opacity={0.78}
       markerAnchor
       selected={selected}
       inactive={inactive}

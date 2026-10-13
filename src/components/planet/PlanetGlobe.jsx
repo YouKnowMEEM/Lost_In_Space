@@ -9,13 +9,30 @@ import PlanetOrbits from "./PlanetOrbits";
 function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect }) {
   const texture = useTexture(texturePath);
   useEffect(() => { texture.colorSpace = THREE.SRGBColorSpace; texture.needsUpdate = true; }, [texture]);
+  const isMars = texturePath.toLowerCase().includes("mars");
+  const atmosphereColor = isMars ? "#e06c45" : "#6bb8ff";
+
   return <group rotation={[0, -Math.PI / 2, 0]}>
+    {/* Main planet globe */}
     <mesh onClick={(event) => event.stopPropagation()}>
       <sphereGeometry args={[radius, 96, 64]}/>
       <meshStandardMaterial map={texture} roughness={1} metalness={0}/>
     </mesh>
+
+    {isMars && <mesh>
+      <sphereGeometry args={[radius * 1.045, 64, 48]}/>
+      <meshBasicMaterial
+        color={atmosphereColor}
+        transparent
+        opacity={0.35}
+        side={THREE.BackSide}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </mesh>}
+
     <PlanetOrbits orbits={orbits} selectedOrbit={selectedOrbit} onSelect={onOrbitSelect}/>
-    <RegionLabels regions={regions} surfaceRadius={radius}/>
+    <RegionLabels regions={regions} surfaceRadius={radius} opacity={0.68}/>
     {artifacts.map((artifact) => <EquipmentMarker key={artifact.id} artifact={artifact} surfaceRadius={radius + 0.025} selected={selected?.id === artifact.id} onSelect={onSelect}/>) }
   </group>;
 }
@@ -23,7 +40,6 @@ function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selec
 export default function PlanetGlobe({ texturePath, radius = 3.2, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect }) {
   const controls = useRef(null);
   useEffect(() => { controls.current?.setLookAt(0, 0.12, 8.3, 0, 0, 0, false); }, []);
-  // Transparent canvas: the page behind it paints the same night sky as the homepage.
   return <Canvas className="moon-globe-canvas" camera={{ position: [0, 0.12, 8.3], fov: 39, near: 0.1, far: 100 }} dpr={[1, 1.5]} gl={{ antialias: true, alpha: true }}>
     <ambientLight intensity={0.42}/>
     <directionalLight position={[0, 2, 8]} intensity={2.3}/>
