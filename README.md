@@ -14,7 +14,9 @@ Sleeping Beauties is an interactive space archive built with React, Vite, Three.
 - **Mission files (`/eagle/mission`, `/viking-1/mission`, `/voyager-1/mission`)** — the real documentation: fact sheet, timeline in UTC, an interactive NASA 3D model with labelled parts, where it rests (or, for Voyager 1, a live map of where it is now), what was left behind or carried, NASA photos and video, a live search of NASA's Image and Video Library, and sources. Mission files open in a bright reading mode; the moon/sun button in the top bar switches to dark and the choice is remembered.
 - **Finding your way back:** every storybook and mission file has a home button and a link back to its world: Eagle to the Moon (`/moon`), Viking 1 to Mars (`/mars`), Voyager 1 to Space (`/space?object=voyager-1`).
 - **Deep Space (`/space`)** — an interactive solar-system experience with selectable destinations.
-- **Moon (`/moon`)** and **Mars (`/mars`)** — interactive 3D globes with landing-site markers.
+- **Moon (`/moon`)** and **Mars (`/mars`)** — interactive 3D globes with landing-site markers. The globes are sized to stay fully visible within the viewport.
+- **Navigation** — each world gets its own branding in the header: "THE MOON", "THE MARS" or "DEEP SPACE". The navigation bar has three items: Home, Worlds (dropdown: Deep Space, Moon, Mars), and Objects (page-specific: Eagle for Moon, Viking 1 for Mars, Voyager 1 for Space). The topbar is transparent so the page content shows through.
+- **Loading transitions** — navigating between pages shows an animated rocket launch sequence (with flame exhaust, smoke particles and scrolling stars) instead of a static loading message.
 
 ## Technology
 
@@ -30,7 +32,7 @@ Sleeping Beauties is an interactive space archive built with React, Vite, Three.
 ```text
 sleeping-beauties/
 ├── src/
-│   ├── App.jsx                  # Route table (every page loads on demand)
+│   ├── App.jsx                  # Route table (lazy-loaded pages) and rocket loading animation
 │   ├── pages/                   # Route entry points
 │   │   ├── HomePage.jsx         # Home page
 │   │   ├── EaglePage.jsx        # Eagle storybook + mission file
@@ -48,8 +50,8 @@ sleeping-beauties/
 │   ├── lib/nasa.js              # NASA Image and Video Library helpers
 │   ├── lib/voyagerDistance.js   # Estimates Voyager 1's distance right now
 │   ├── styles/fonts.css         # Self-hosted typefaces
-│   ├── app/LegacyPages.jsx      # Deep Space, Moon and Mars page implementations
-│   └── styles.css
+│   ├── app/LegacyPages.jsx      # Deep Space, Moon and Mars page implementations; shared Topbar and Shell
+│   └── styles.css               # All styles including rocket loading animation and transparent topbar
 ├── tools/
 │   ├── narration/               # Rebuild the narrator audio and word timings (see its README)
 │   └── music/                   # Rebuild the background lullabies (Moon, Mars, deep space)
@@ -157,7 +159,9 @@ The current API is read-only. Any future content-management interface should use
 ## Working with the code
 
 - **Routes:** `src/App.jsx` and the matching file in `src/pages/`.
-- **Moon and Mars 3D scenes:** `src/components/MoonMap.jsx`.
+- **Navigation bar:** the `Topbar` component in `src/app/LegacyPages.jsx`. Per-page branding is derived from the current route. The `topbar-transparent` CSS class makes the background see-through.
+- **Loading animation:** the `RocketLoading` component in `src/App.jsx` and the `.rocket-*` CSS classes at the bottom of `src/styles.css`.
+- **Moon and Mars 3D globes:** `src/components/planet/PlanetGlobe.jsx`. Camera distance and field of view control how large the globe appears.
 - **Page implementation:** `src/app/LegacyPages.jsx` (until individual features are extracted).
 - **API endpoints and SQL queries:** `server/src/routes/`.
 - **Database connection:** `server/src/db.js` and local `server/.env`.

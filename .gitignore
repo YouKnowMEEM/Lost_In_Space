@@ -13,3 +13,4 @@ tools/narration/models/
 __pycache__/
 
 .vercel
+.env*

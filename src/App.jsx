@@ -44,11 +44,38 @@ class Boundary extends Component {
   }
 }
 
+function RocketLoading() {
+  return (
+    <div style={fill} role="status" aria-label="Loading page">
+      <div className="rocket-loading">
+        <div className="rocket-scene">
+          <div className="rocket-smoke rocket-smoke-1" />
+          <div className="rocket-smoke rocket-smoke-2" />
+          <div className="rocket-smoke rocket-smoke-3" />
+          <div className="rocket-body">
+            <div className="rocket-nose" />
+            <div className="rocket-fuselage" />
+            <div className="rocket-window" />
+            <div className="rocket-fin rocket-fin-left" />
+            <div className="rocket-fin rocket-fin-right" />
+            <div className="rocket-flame">
+              <div className="flame-core" />
+              <div className="flame-outer" />
+            </div>
+          </div>
+          <div className="rocket-stars" />
+        </div>
+        <span className="rocket-status">Launching&hellip;</span>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const { pathname } = useLocation();
   return (
     <Boundary key={pathname}>
-      <Suspense fallback={<div style={fill} role="status">Loading…</div>}>
+      <Suspense fallback={<RocketLoading />}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/space" element={<SpacePage />} />

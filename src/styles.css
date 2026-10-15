@@ -801,6 +801,138 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
 .home-sky-shell .space-backdrop:before{display:none}
 .home-sky-shell .moon-explorer,
 .home-sky-shell .moon-atlas{background:transparent}
+
 .home-sky-shell .moon-explorer{position:fixed;inset:72px 0 0;margin:0;height:auto;min-height:0}
 @media(max-width:760px){.home-sky-shell .moon-explorer{top:64px}}
 @media(max-width:560px){.home-sky-shell .moon-explorer{top:60px}}
+
+/* Transparent topbar variant */
+.topbar.topbar-transparent{
+  background:transparent!important;
+  backdrop-filter:none;
+  border-bottom-color:rgba(147,193,228,.08);
+}
+
+/* ─────────── ROCKET LAUNCH LOADING ANIMATION ─────────── */
+.rocket-loading{
+  display:flex;flex-direction:column;align-items:center;gap:28px;
+  animation:rocketFadeIn .4s ease both;
+}
+.rocket-scene{
+  position:relative;width:120px;height:200px;overflow:visible;
+}
+.rocket-body{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:36px;height:110px;
+  animation:rocketLaunch 1.6s ease-in-out infinite;
+}
+.rocket-nose{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:0;height:0;
+  border-left:14px solid transparent;border-right:14px solid transparent;
+  border-bottom:24px solid #e8f0ff;
+  filter:drop-shadow(0 -4px 10px rgba(140,200,255,.35));
+}
+.rocket-fuselage{
+  position:absolute;top:23px;left:50%;transform:translateX(-50%);
+  width:28px;height:52px;
+  background:linear-gradient(180deg,#d6e6f8 0%,#b0c8e4 40%,#8aa6c6 100%);
+  border-radius:3px;
+  box-shadow:inset -4px 0 8px rgba(0,0,0,.12),0 0 18px rgba(130,190,255,.18);
+}
+.rocket-window{
+  position:absolute;top:36px;left:50%;transform:translateX(-50%);
+  width:10px;height:10px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#a6e8ff,#3e8ec2);
+  border:1.5px solid #e0f0ff;
+  box-shadow:0 0 10px rgba(100,200,255,.6);
+}
+.rocket-fin{
+  position:absolute;bottom:4px;width:0;height:0;
+}
+.rocket-fin-left{
+  left:-4px;
+  border-top:16px solid transparent;border-right:14px solid #7396b8;border-bottom:6px solid #7396b8;
+}
+.rocket-fin-right{
+  right:-4px;
+  border-top:16px solid transparent;border-left:14px solid #7396b8;border-bottom:6px solid #7396b8;
+}
+.rocket-flame{
+  position:absolute;bottom:-28px;left:50%;transform:translateX(-50%);
+  width:20px;height:30px;display:flex;flex-direction:column;align-items:center;
+}
+.flame-core{
+  width:10px;height:22px;
+  background:linear-gradient(180deg,#fff8e0 0%,#ffb830 35%,#ff6622 70%,transparent 100%);
+  border-radius:0 0 50% 50%;
+  animation:flameFlicker .12s ease-in-out infinite alternate;
+  box-shadow:0 6px 20px rgba(255,120,20,.7),0 2px 8px rgba(255,200,50,.5);
+}
+.flame-outer{
+  position:absolute;top:2px;width:16px;height:28px;
+  background:linear-gradient(180deg,rgba(255,200,60,.55) 0%,rgba(255,90,20,.4) 45%,transparent 100%);
+  border-radius:0 0 50% 50%;
+  animation:flameFlicker .18s ease-in-out infinite alternate-reverse;
+}
+.rocket-smoke{
+  position:absolute;bottom:15px;left:50%;width:14px;height:14px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(180,200,220,.5),transparent 70%);
+  animation:smokeRise 1.8s ease-out infinite;
+  opacity:0;
+}
+.rocket-smoke-1{animation-delay:0s;left:calc(50% - 4px)}
+.rocket-smoke-2{animation-delay:.6s;left:calc(50% + 6px);width:10px;height:10px}
+.rocket-smoke-3{animation-delay:1.2s;left:calc(50% - 10px);width:12px;height:12px}
+
+.rocket-stars{
+  position:absolute;inset:-30px;pointer-events:none;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%,#fff 60%,transparent),
+    radial-gradient(1px 1px at 75% 35%,rgba(160,210,255,.8) 60%,transparent),
+    radial-gradient(1px 1px at 42% 80%,#fff 60%,transparent),
+    radial-gradient(1px 1px at 88% 70%,rgba(160,210,255,.7) 60%,transparent),
+    radial-gradient(1px 1px at 60% 10%,#fff 60%,transparent),
+    radial-gradient(1px 1px at 25% 65%,rgba(200,220,255,.6) 60%,transparent);
+  background-size:180px 160px;
+  animation:starsScroll 2s linear infinite;
+  opacity:.55;
+}
+
+.rocket-status{
+  font:800 13px/1.2 "Nunito Sans",system-ui,sans-serif;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:#9fcbef;text-shadow:0 0 18px rgba(130,200,255,.45);
+  animation:statusPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes rocketFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes rocketLaunch{
+  0%,100%{transform:translate(-50%,-50%) translateY(0)}
+  25%{transform:translate(-50%,-50%) translateY(-6px)}
+  50%{transform:translate(-50%,-50%) translateY(2px)}
+  75%{transform:translate(-50%,-50%) translateY(-4px)}
+}
+@keyframes flameFlicker{
+  0%{transform:scaleX(1) scaleY(1)}
+  100%{transform:scaleX(1.25) scaleY(1.12)}
+}
+@keyframes smokeRise{
+  0%{transform:translateY(0) scale(.6);opacity:0}
+  20%{opacity:.45}
+  100%{transform:translateY(60px) scale(2.2);opacity:0}
+}
+@keyframes starsScroll{
+  0%{background-position-y:0}
+  100%{background-position-y:160px}
+}
+@keyframes statusPulse{
+  0%,100%{opacity:.6}
+  50%{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  .rocket-body,.flame-core,.flame-outer,.rocket-smoke,.rocket-stars,.rocket-status,.rocket-loading{
+    animation:none!important;
+  }
+}

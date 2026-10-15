@@ -24,9 +24,10 @@ function SpaceBackdrop() {
 function Topbar() {
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(null);
-  const isMars = location.pathname.startsWith("/mars");
+  const isMars = location.pathname.startsWith("/mars") || location.pathname.startsWith("/viking");
   const isMoon = location.pathname.startsWith("/moon") || location.pathname.startsWith("/eagle");
-  const world = isMars ? "MARS" : "THE MOON";
+  const isSpace = location.pathname.startsWith("/space") || location.pathname.startsWith("/voyager");
+  const brandText = isMars ? "THE MARS" : isMoon ? "THE MOON" : isSpace ? "DEEP SPACE" : "SLEEPING BEAUTIES";
   useEffect(() => { setOpenMenu(null); }, [location.pathname]);
   useEffect(() => {
     const closeOnEscape = (event) => { if (event.key === "Escape") setOpenMenu(null); };
@@ -35,17 +36,16 @@ function Topbar() {
   }, []);
   const toggleMenu = (name) => setOpenMenu(current => current === name ? null : name);
   return (
-      <header className="topbar">
+      <header className="topbar topbar-transparent">
         <a className="skip-link" href="#main-content">Skip to content</a>
         <Link className="brand" to="/" aria-label="Sleeping Beauties home">
           <span className="brand-mark"><Orbit size={21}/></span>
-          <span><strong>{isMoon || isMars ? `${world} — Explore the Sleeping Beauties.` : "SLEEPING BEAUTIES"}</strong>{!(isMoon || isMars) && <small>THE FORGOTTEN SPACE EXPLORERS</small>}</span>
+          <span><strong>{brandText}</strong></span>
         </Link>
         <nav aria-label="Main navigation">
           <Link className={location.pathname === "/" ? "nav-active" : ""} to="/">Home</Link>
-          <Link className={location.pathname === "/space" ? "nav-active" : ""} to="/space">Deep Space</Link>
-          <div className={`nav-dropdown ${openMenu === "explore" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "explore"} className={location.pathname.startsWith("/moon") || location.pathname.startsWith("/mars") ? "nav-active" : ""} onClick={()=>toggleMenu("explore")}>Explore <ChevronDown size={13}/></button><div className="nav-dropdown-menu"><Link to="/moon" onClick={()=>setOpenMenu(null)}>Moon</Link><Link to="/mars" onClick={()=>setOpenMenu(null)}>Mars</Link><Link to="/space" onClick={()=>setOpenMenu(null)}>Deep Space</Link></div></div>
-          {(isMoon || isMars || location.pathname.startsWith("/space")) && <div className={`nav-dropdown ${openMenu === "objects" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "objects"} className={openMenu === "objects" ? "nav-active" : ""} onClick={()=>toggleMenu("objects")}>Objects <ChevronDown size={13}/></button><div className="nav-dropdown-menu">{location.pathname.startsWith("/space") ? <><Link to="/space?object=voyager-1" onClick={()=>setOpenMenu(null)}>Voyager 1</Link><Link to="/space?object=voyager-2" onClick={()=>setOpenMenu(null)}>Voyager 2</Link><Link to="/space?object=pioneer-10" onClick={()=>setOpenMenu(null)}>Pioneer 10</Link><Link to="/space?object=pioneer-11" onClick={()=>setOpenMenu(null)}>Pioneer 11</Link><Link to="/space?object=new-horizons" onClick={()=>setOpenMenu(null)}>New Horizons</Link></> : isMars ? <Link to="/mars" onClick={()=>setOpenMenu(null)}>Vikings</Link> : <Link to="/eagle" onClick={()=>setOpenMenu(null)}>Eagle</Link>}</div></div>}
+          <div className={`nav-dropdown ${openMenu === "worlds" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "worlds"} className={isMoon || isMars || isSpace ? "nav-active" : ""} onClick={()=>toggleMenu("worlds")}>Worlds <ChevronDown size={13}/></button><div className="nav-dropdown-menu"><Link to="/space" onClick={()=>setOpenMenu(null)}>Deep Space</Link><Link to="/moon" onClick={()=>setOpenMenu(null)}>Moon</Link><Link to="/mars" onClick={()=>setOpenMenu(null)}>Mars</Link></div></div>
+          {(isMoon || isMars || isSpace) && <div className={`nav-dropdown ${openMenu === "objects" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "objects"} className={openMenu === "objects" ? "nav-active" : ""} onClick={()=>toggleMenu("objects")}>Objects <ChevronDown size={13}/></button><div className="nav-dropdown-menu">{isSpace ? <Link to="/voyager-1" onClick={()=>setOpenMenu(null)}>Voyager 1</Link> : isMars ? <Link to="/viking-1" onClick={()=>setOpenMenu(null)}>Viking 1</Link> : <Link to="/eagle" onClick={()=>setOpenMenu(null)}>Eagle</Link>}</div></div>}
         </nav>
       </header>
   );

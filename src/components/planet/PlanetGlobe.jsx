@@ -39,8 +39,15 @@ function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selec
 
 export default function PlanetGlobe({ texturePath, radius = 3.2, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect }) {
   const controls = useRef(null);
-  useEffect(() => { controls.current?.setLookAt(0, 0.12, 8.3, 0, 0, 0, false); }, []);
-  return <Canvas className="moon-globe-canvas" camera={{ position: [0, 0.12, 8.3], fov: 39, near: 0.1, far: 100 }} dpr={[1, 1.5]} gl={{ antialias: true, alpha: true }}>
+  useEffect(() => {
+    controls.current?.setLookAt(0, 0.12, 11.5, 0, 0, 0, false);
+  }, []);
+  return <Canvas
+      className="moon-globe-canvas"
+      camera={{ position: [0, 0.12, 11.5], fov: 42, near: 0.1, far: 100 }}
+      dpr={[1, 1.5]}
+      gl={{ antialias: true, alpha: true }}
+  >
     <ambientLight intensity={0.42}/>
     <directionalLight position={[0, 2, 8]} intensity={2.3}/>
     <Suspense fallback={null}><TexturedPlanet texturePath={texturePath} radius={radius} artifacts={artifacts} regions={regions} orbits={orbits} selected={selected} onSelect={onSelect} selectedOrbit={selectedOrbit} onOrbitSelect={onOrbitSelect}/></Suspense>
