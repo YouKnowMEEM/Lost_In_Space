@@ -102,7 +102,7 @@ function World({ world }) {
   );
 }
 
-export default function HomePage() {
+export default function HomePage({ onStartTutorial }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -137,6 +137,9 @@ export default function HomePage() {
             <span className="hp-nav-short">Stories</span>
           </a>
           <a href="#photos">Photos</a>
+          <button type="button" className="hp-nav-tutorial" onClick={onStartTutorial}>
+            Tutorial
+          </button>
         </nav>
       </header>
 

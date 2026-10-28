@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import * as THREE from "three";
 
-function makeTextTexture(text, kind, selected, inactive) {
+function makeTextTexture(text, kind, selected, inactive, color) {
   const canvas = document.createElement("canvas");
   canvas.height = 64;
   const context = canvas.getContext("2d");
@@ -14,7 +14,7 @@ function makeTextTexture(text, kind, selected, inactive) {
   const ctx = canvas.getContext("2d");
   ctx.font = font;
   ctx.textBaseline = "middle";
-  ctx.fillStyle = inactive ? "#87919c" : selected ? "#f4fbff" : isOrbit ? "#c4d0dc" : "#e5e8eb";
+  ctx.fillStyle = inactive ? "#87919c" : selected ? "#f4fbff" : isOrbit ? color || "#c4d0dc" : "#e5e8eb";
   ctx.shadowColor = "rgba(0, 0, 0, .95)";
   ctx.shadowBlur = 8;
   ctx.shadowOffsetY = 2;
@@ -24,8 +24,8 @@ function makeTextTexture(text, kind, selected, inactive) {
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(Math.PI / 4);
-    ctx.fillStyle = inactive ? "#707b86" : selected ? "#effbff" : "#a9c1d1";
-    ctx.strokeStyle = inactive ? "#a0aab3" : selected ? "#ffffff" : "#d9e8f0";
+    ctx.fillStyle = inactive ? "#707b86" : selected ? "#effbff" : color || "#a9c1d1";
+    ctx.strokeStyle = inactive ? "#a0aab3" : selected ? "#ffffff" : color || "#d9e8f0";
     ctx.lineWidth = 3;
     ctx.fillRect(-7, -7, 14, 14);
     ctx.strokeRect(-7, -7, 14, 14);
@@ -45,8 +45,8 @@ function makeTextTexture(text, kind, selected, inactive) {
   return texture;
 }
 
-export default function TextSprite({ text, kind = "region", position = [0, 0, 0], size = 0.105, opacity = 1, selected = false, inactive = false, markerAnchor = false, onClick, onPointerOver, onPointerOut }) {
-  const texture = useMemo(() => makeTextTexture(text, kind, selected, inactive), [text, kind, selected, inactive]);
+export default function TextSprite({ text, kind = "region", position = [0, 0, 0], size = 0.105, opacity = 1, selected = false, inactive = false, color, markerAnchor = false, onClick, onPointerOver, onPointerOut }) {
+  const texture = useMemo(() => makeTextTexture(text, kind, selected, inactive, color), [text, kind, selected, inactive, color]);
   useEffect(() => () => texture.dispose(), [texture]);
   const aspect = texture.image.width / texture.image.height;
   const spritePosition = markerAnchor ? [position[0] + size * (aspect / 2 - 20 / 64), position[1], position[2]] : position;

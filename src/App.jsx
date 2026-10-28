@@ -1,4 +1,4 @@
-import React, { Component, Suspense, lazy } from "react";
+import React, { Component, Suspense, lazy, useState } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 // Each page loads on demand, so the homepage no longer downloads the 3D libraries up front.
@@ -9,6 +9,7 @@ const MarsPage = lazy(() => import("./pages/MarsPage"));
 const EaglePage = lazy(() => import("./pages/EaglePage"));
 const VikingPage = lazy(() => import("./pages/VikingPage"));
 const VoyagerPage = lazy(() => import("./pages/VoyagerPage"));
+const TutorialOverlay = lazy(() => import("./components/TutorialOverlay"));
 
 const fill = {
   minHeight: "100dvh",
@@ -73,11 +74,13 @@ function RocketLoading() {
 
 export default function App() {
   const { pathname } = useLocation();
+  const [tutorialRequest, setTutorialRequest] = useState(0);
   return (
-    <Boundary key={pathname}>
-      <Suspense fallback={<RocketLoading />}>
+    <>
+      <Boundary key={pathname}>
+        <Suspense fallback={<RocketLoading />}>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<LandingPage onStartTutorial={() => setTutorialRequest((request) => request + 1)} />} />
           <Route path="/space" element={<SpacePage />} />
           <Route path="/moon" element={<MoonPage />} />
           <Route path="/mars" element={<MarsPage />} />
@@ -91,7 +94,9 @@ export default function App() {
           <Route path="/voyager" element={<Navigate to="/voyager-1" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </Suspense>
-    </Boundary>
+        </Suspense>
+      </Boundary>
+      <Suspense fallback={null}><TutorialOverlay startRequest={tutorialRequest} /></Suspense>
+    </>
   );
 }

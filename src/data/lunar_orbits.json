@@ -1,5 +1,6 @@
 [
-  { "id": "lro", "name": "LRO", "type": "circular", "radius": 3.45, "inclination": 0.34, "markerAngle": 1.05 },
-  { "id": "artemis-p1", "name": "ARTEMIS P1", "type": "elliptical", "periapsis": 3.4, "apoapsis": 10.96, "inclination": 0.6981317008, "ascendingNode": 0.7853981634, "argumentOfPeriapsis": 0.2617993878, "markerAngle": 1 },
-  { "id": "artemis-p2", "name": "ARTEMIS P2", "type": "elliptical", "periapsis": 3.4, "apoapsis": 10.96, "inclination": -0.6981317008, "ascendingNode": 2.3561944902, "argumentOfPeriapsis": 2.879793266, "markerAngle": 0 }
+  { "id": "lro", "name": "LRO", "type": "circular", "radius": 3.45, "inclination": 0.34, "markerAngle": 1.05, "statusCategory": "active", "program": "Mapping", "year": 2009 },
+  { "id": "artemis-p1", "name": "ARTEMIS P1", "type": "elliptical", "periapsis": 3.4, "apoapsis": 10.96, "inclination": 0.6981317008, "ascendingNode": 0.7853981634, "argumentOfPeriapsis": 0.2617993878, "markerAngle": 1, "statusCategory": "active", "program": "Modern Missions", "year": 2011 },
+  { "id": "artemis-p2", "name": "ARTEMIS P2", "type": "elliptical", "periapsis": 3.4, "apoapsis": 10.96, "inclination": -0.6981317008, "ascendingNode": 2.3561944902, "argumentOfPeriapsis": 2.879793266, "markerAngle": 0, "statusCategory": "active", "program": "Modern Missions", "year": 2011 },
+  { "id": "artemis-iv", "name": "ARTEMIS IV (planned)", "type": "circular", "radius": 4.4, "inclination": 0.35, "markerAngle": 0.6, "statusCategory": "future", "program": "Modern Missions", "year": 2028, "schematic": true }
 ]

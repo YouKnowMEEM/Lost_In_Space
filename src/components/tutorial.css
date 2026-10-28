@@ -1,0 +1,276 @@
+/* ==========================================================================
+   Tutorial overlay
+   1. Overlay + cards   2. Buttons   3. Guide (astronaut + speech bubble)
+   4. Tour target highlight   5. Responsive   6. Reduced motion
+   ========================================================================== */
+
+/* ---------- 1. Overlay + cards ---------- */
+.tutorial-shade {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(2, 8, 20, .68);
+  backdrop-filter: blur(5px);
+}
+.tutorial-skip-confirm { z-index: 10002; }
+
+.tutorial-video-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  background: #000;
+}
+.tutorial-video-screen video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+.tutorial-card {
+  position: relative;
+  width: min(520px, 100%);
+  padding: 34px;
+  border: 1px solid rgba(176, 216, 255, .3);
+  border-radius: 12px;
+  background: rgba(8, 19, 38, .88);
+  color: #f3f7ff;
+  box-shadow: 0 24px 90px #0009;
+}
+.tutorial-card h2 {
+  margin: 6px 0 10px;
+  font-size: clamp(22px, 4vw, 32px);
+  color: #fff;
+}
+.tutorial-card p {
+  line-height: 1.55;
+  color: #d1def2;
+}
+.tutorial-kicker {
+  font-size: 11px;
+  letter-spacing: .16em;
+  color: #9ccaff;
+}
+.tutorial-astronaut {
+  position: absolute;
+  right: 20px;
+  top: -84px;
+  width: 126px;
+  height: 126px;
+  object-fit: contain;
+  animation: tutorial-float 3s ease-in-out infinite;
+}
+.tutorial-skip-confirm .tutorial-card { width: min(440px, 100%); padding: 28px; }
+.tutorial-skip-confirm .tutorial-card h2 { font-size: 24px; }
+.tutorial-skip-confirm .tutorial-actions { flex-wrap: wrap; }
+
+/* ---------- 2. Buttons ---------- */
+.tutorial-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+.tutorial-finished-actions { justify-content: flex-end; flex-wrap: wrap; }
+.tutorial-finished-actions .tutorial-skip { margin-left: 0; }
+.tutorial-primary,
+.tutorial-skip {
+  font: inherit;
+  cursor: pointer;
+}
+.tutorial-primary {
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #c8e7ff;
+  color: #08172a;
+  font-weight: 700;
+}
+.tutorial-skip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  margin-left: auto;
+  padding: 0 15px;
+  border: 1px solid rgba(176, 216, 255, .38);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .035);
+  color: #e0ebf8;
+  text-decoration: none;
+}
+.tutorial-skip:hover {
+  border-color: rgba(176, 216, 255, .75);
+  background: rgba(176, 216, 255, .1);
+}
+.tutorial-close {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(176, 216, 255, .28);
+  border-radius: 50%;
+  background: rgba(5, 15, 31, .85);
+  color: #e0ebf8;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.tutorial-close:hover {
+  border-color: rgba(176, 216, 255, .7);
+  background: rgba(176, 216, 255, .14);
+}
+.tutorial-primary:focus-visible,
+.tutorial-skip:focus-visible,
+.tutorial-close:focus-visible {
+  outline: 2px solid #9bd9ff;
+  outline-offset: 2px;
+}
+
+/* ---------- 3. Guide: astronaut + speech bubble ---------- */
+.tutorial-guide {
+  position: fixed;
+  right: clamp(14px, 4vw, 56px);
+  bottom: 20px;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  max-width: min(540px, calc(100vw - 28px));
+  pointer-events: none;
+}
+.tutorial-guide button { pointer-events: auto; }
+.tutorial-guide-left { left: clamp(8px, 1.5vw, 20px); right: auto; }
+
+.tutorial-guide-astronaut {
+  width: 112px;
+  height: 150px; /* fixed box so every avatar sits at the same height */
+  object-fit: contain;
+  object-position: bottom;
+  animation: tutorial-float 3s ease-in-out infinite;
+}
+
+/* The bubble is a single element. Its tail is a tilted funnel (SVG, 30.6 x 39.3):
+   wide where it joins the bubble, narrowing up and to the left, ending in a flat
+   cap that faces the astronaut's head. It is anchored to the top-left of the
+   bubble, so it looks the same on every step whatever the bubble's height.
+   Tune: --tail-anchor (how far down the bubble edge it starts), --tail-s (size),
+   margin-left (gap to the astronaut). */
+.tutorial-bubble {
+  --bubble-bg: rgba(7, 18, 36, .94);
+  --bubble-line: rgba(177, 215, 255, .38);
+  --lift: 0px;
+  --tail-anchor: calc(16px + var(--lift));
+  --tail-s: 1;
+  position: relative;
+  max-width: 300px;
+  margin-left: 6px;
+  padding: 12px 15px;
+  border: 1px solid var(--bubble-line);
+  border-radius: 14px;
+  background: var(--bubble-bg);
+  color: #fff;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .45);
+  pointer-events: auto;
+  transform-origin: 0 0;
+  animation: tutorial-bubble-in .26s cubic-bezier(.2, .8, .2, 1) both;
+}
+.tutorial-bubble::before {
+  /* Keep the SVG colours in sync with --bubble-bg / --bubble-line above. */
+  content: "";
+  position: absolute;
+  width: calc(30.6px * var(--tail-s));
+  height: calc(39.3px * var(--tail-s));
+  left: calc(1px - 30.6px * var(--tail-s));
+  top: calc(min(var(--tail-anchor), 100% - 26px * var(--tail-s) - 14px) - 11.8px * var(--tail-s));
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30.6 39.3'%3E%3Cpath d='M30.6 11.8Q18.1 9.4 0 0Q18.1 21.9 30.6 37.8Z' fill='rgb(7,18,36)' fill-opacity='.94'/%3E%3Cpath d='M30.6 11.8Q18.1 9.4 0 0Q18.1 21.9 30.6 37.8' fill='none' stroke='rgb(177,215,255)' stroke-opacity='.38' stroke-width='1.2' stroke-linecap='butt' stroke-linejoin='miter'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  pointer-events: none;
+}
+.tutorial-bubble h2 {
+  margin: 0 0 6px;
+  padding-right: 25px; /* room for the close button */
+  font-size: 18px;
+  color: #fff;
+}
+.tutorial-bubble p {
+  margin: 0 0 9px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #d1def2;
+  white-space: pre-line;
+}
+.tutorial-bubble .tutorial-primary { padding: 8px 13px; font-size: 12px; }
+
+.tutorial-bubble-raised { --lift: 25px; translate: 0 -25px; }
+.tutorial-guide-avatar-large .tutorial-guide-astronaut { scale: 1.42; transform-origin: bottom center; }
+.tutorial-guide-avatar-small .tutorial-guide-astronaut { scale: .8; transform-origin: bottom center; }
+
+.tutorial-guide-compact .tutorial-bubble { max-width: 250px; padding: 10px 12px; }
+.tutorial-guide-compact .tutorial-bubble h2 { font-size: 16px; }
+.tutorial-guide-compact .tutorial-bubble p { font-size: 11px; line-height: 1.4; }
+
+/* ---------- 4. Tour target highlight ----------
+   The highlight uses !important to win over page styles, which also stops
+   keyframes from changing it. So the pulse animates a registered custom
+   property (--tour-i, 0 to 1) that the !important values read from. */
+@property --tour-i {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+.tutorial-tour-target {
+  position: relative !important;
+  z-index: 9998 !important;
+  outline: 3px solid color-mix(in srgb, #9bd9ff, #fff calc(var(--tour-i, 0) * 100%)) !important;
+  outline-offset: 4px !important;
+  box-shadow:
+    0 0 0 calc(7px + 3px * var(--tour-i, 0)) rgba(98, 185, 255, calc(.19 + .05 * var(--tour-i, 0))),
+    0 0 calc(28px + 8px * var(--tour-i, 0)) rgba(102, 190, 255, calc(.68 + .22 * var(--tour-i, 0))) !important;
+  animation: tutorial-pulse 1.6s ease-in-out infinite;
+}
+
+/* ---------- Motion ---------- */
+@keyframes tutorial-float { 50% { transform: translateY(-9px) rotate(2deg); } }
+@keyframes tutorial-pulse { 50% { --tour-i: 1; } }
+@keyframes tutorial-bubble-in {
+  from { opacity: 0; transform: translateX(-8px) scale(.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- 5. Responsive ---------- */
+@media (max-width: 560px) {
+  .tutorial-card { padding: 27px 22px; }
+
+  .tutorial-guide { left: 12px; right: 12px; bottom: 12px; max-width: none; }
+  .tutorial-guide-left { left: 8px; right: auto; }
+  .tutorial-guide-astronaut { width: 70px; height: 100px; }
+
+  .tutorial-bubble {
+    --tail-s: .8;
+    max-width: min(280px, calc(100vw - 95px));
+    margin-left: 4px;
+    padding: 10px 12px;
+  }
+  .tutorial-bubble h2 { font-size: 16px; }
+  .tutorial-bubble p { font-size: 11px; }
+
+  .tutorial-guide-compact .tutorial-bubble {
+    max-width: min(235px, calc(100vw - 90px));
+    padding: 9px 11px;
+  }
+}
+
+/* ---------- 6. Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .tutorial-astronaut,
+  .tutorial-guide-astronaut,
+  .tutorial-tour-target,
+  .tutorial-bubble { animation: none; }
+}

@@ -1,6 +1,6 @@
 import React from "react";
 
-const points = [[1959, "1959"], [1969, "1969"], [1972, "1972"], [2026, "Present"], [2030, "Future"]];
+const points = [[1959, "1959"], [1969, "1969"], [1972, "1972"], [2026, "Present"], [2028, "2028"], [2030, "Future"]];
 export default function Timeline({ year, setYear }) {
   return <section className="moon-timeline" aria-label="Mission timeline">
     <div className="moon-timeline-heading"><span>MISSION TIMELINE</span><strong>{year === 2030 ? "Future · 2030" : year === 2026 ? "Present · 2026" : year}</strong></div>

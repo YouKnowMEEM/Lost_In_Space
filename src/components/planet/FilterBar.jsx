@@ -1,7 +1,7 @@
 import React from "react";
 
 const lunarPrograms = ["All", "Apollo", "Mapping", "Modern Missions"];
-const statuses = [["All", "all"], ["Active", "active"], ["Impact / Crashed", "impact"], ["Intact", "intact"]];
+const statuses = [["All", "all"], ["Active", "active"], ["Impact / Crashed", "impact"], ["Intact", "intact"], ["Future", "future"]];
 
 function Chips({ label, options, value, onChange }) {
   return <div className="moon-filter-group" role="group" aria-label={label}>

@@ -25,6 +25,7 @@ function orbitPoint(orbit, angle) {
 
 function OrbitObject({ orbit, selected, onSelect }) {
   const inactive = orbit.status === "inactive";
+  const color = orbit.statusCategory === "future" ? "#c084fc" : "#93a0b0";
   const points = useMemo(() => {
     const result = [];
     const segments = 240;
@@ -35,7 +36,7 @@ function OrbitObject({ orbit, selected, onSelect }) {
   }, [orbit]);
   const marker = useMemo(() => orbitPoint(orbit, orbit.markerAngle), [orbit]);
   return <group>
-    <Line points={points} color={selected ? "#f1fbff" : inactive ? "#7b8794" : "#93a0b0"} lineWidth={selected ? 1.7 : 0.8} transparent opacity={selected ? 0.94 : inactive ? 0.19 : 0.34} depthTest renderOrder={9}/>
+    <Line points={points} color={selected ? "#f1fbff" : inactive ? "#7b8794" : color} lineWidth={selected ? 1.7 : 0.8} transparent opacity={selected ? 0.94 : inactive ? 0.19 : orbit.statusCategory === "future" ? 0.72 : 0.34} dashed={orbit.schematic} dashSize={0.14} gapSize={0.08} depthTest renderOrder={9}/>
     <TextSprite
       text={orbit.name}
       kind="orbit"
@@ -45,6 +46,7 @@ function OrbitObject({ orbit, selected, onSelect }) {
       markerAnchor
       selected={selected}
       inactive={inactive}
+      color={color}
       onPointerOver={() => { document.body.style.cursor = "pointer"; }}
       onPointerOut={() => { document.body.style.cursor = ""; }}
       onClick={(event) => { event.stopPropagation(); onSelect(selected ? null : orbit.id); }}

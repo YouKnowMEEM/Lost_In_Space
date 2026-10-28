@@ -5,10 +5,16 @@ import * as THREE from "three";
 import EquipmentMarker from "./EquipmentMarker";
 import RegionLabels from "./RegionLabels";
 import PlanetOrbits from "./PlanetOrbits";
+import { latLngToVector3 } from "./EquipmentMarker";
 
-function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect }) {
+function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect, focusedRegion, onReady }) {
   const texture = useTexture(texturePath);
-  useEffect(() => { texture.colorSpace = THREE.SRGBColorSpace; texture.needsUpdate = true; }, [texture]);
+  useEffect(() => {
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.needsUpdate = true;
+    const frame = window.requestAnimationFrame(onReady);
+    return () => window.cancelAnimationFrame(frame);
+  }, [texture, onReady]);
   const isMars = texturePath.toLowerCase().includes("mars");
   const atmosphereColor = isMars ? "#e06c45" : "#6bb8ff";
 
@@ -32,16 +38,22 @@ function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selec
     </mesh>}
 
     <PlanetOrbits orbits={orbits} selectedOrbit={selectedOrbit} onSelect={onOrbitSelect}/>
-    <RegionLabels regions={regions} surfaceRadius={radius} opacity={0.68}/>
+    <RegionLabels regions={regions} surfaceRadius={radius} opacity={0.68} selectedRegion={focusedRegion}/>
     {artifacts.map((artifact) => <EquipmentMarker key={artifact.id} artifact={artifact} surfaceRadius={radius + 0.025} selected={selected?.id === artifact.id} onSelect={onSelect}/>) }
   </group>;
 }
 
-export default function PlanetGlobe({ texturePath, radius = 3.2, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect }) {
+export default function PlanetGlobe({ texturePath, radius = 3.2, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect, focusedRegion, focusPoint, onReady }) {
   const controls = useRef(null);
   useEffect(() => {
     controls.current?.setLookAt(0, 0.12, 11.5, 0, 0, 0, false);
   }, []);
+  useEffect(() => {
+    if (!focusPoint || !controls.current) return;
+    const direction = latLngToVector3(focusPoint.lat, focusPoint.lon, 1).applyAxisAngle(new THREE.Vector3(0, 1, 0), -Math.PI / 2);
+    direction.multiplyScalar(focusPoint.focusDistance || 11.5);
+    controls.current.setLookAt(direction.x, direction.y, direction.z, 0, 0, 0, true);
+  }, [focusPoint]);
   return <Canvas
       className="moon-globe-canvas"
       camera={{ position: [0, 0.12, 11.5], fov: 42, near: 0.1, far: 100 }}
@@ -50,7 +62,7 @@ export default function PlanetGlobe({ texturePath, radius = 3.2, artifacts, regi
   >
     <ambientLight intensity={0.42}/>
     <directionalLight position={[0, 2, 8]} intensity={2.3}/>
-    <Suspense fallback={null}><TexturedPlanet texturePath={texturePath} radius={radius} artifacts={artifacts} regions={regions} orbits={orbits} selected={selected} onSelect={onSelect} selectedOrbit={selectedOrbit} onOrbitSelect={onOrbitSelect}/></Suspense>
+    <Suspense fallback={null}><TexturedPlanet texturePath={texturePath} radius={radius} artifacts={artifacts} regions={regions} orbits={orbits} selected={selected} onSelect={onSelect} selectedOrbit={selectedOrbit} onOrbitSelect={onOrbitSelect} focusedRegion={focusedRegion} onReady={onReady}/></Suspense>
     <CameraControls ref={controls} makeDefault minDistance={5.4} maxDistance={26} smoothTime={0.65} draggingSmoothTime={0.16} dollyToCursor={false} azimuthRotateSpeed={0.55} polarRotateSpeed={0.55} truckSpeed={0}/>
   </Canvas>;
 }

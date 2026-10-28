@@ -178,7 +178,7 @@ export function Home() {
   const enterMarsArchive = () => enterWorld("mars");
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setWelcomeVisible(false), 6600);
+    const timeout = window.setTimeout(() => setWelcomeVisible(false), 2000);
     return () => window.clearTimeout(timeout);
   }, []);
 
@@ -186,6 +186,17 @@ export function Home() {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = 0.45;
+    if (window.__sbTutorialAudioActive) {
+      audio.pause();
+      const resumeSolarAudio = () => {
+        if (audioOn) audio.play().catch(() => {});
+      };
+      window.addEventListener("sb:tutorial-audio-stop", resumeSolarAudio, { once: true });
+      return () => {
+        window.removeEventListener("sb:tutorial-audio-stop", resumeSolarAudio);
+        audio.pause();
+      };
+    }
     if (audioOn) {
       const attemptPlay = () => audio.play().catch(() => {});
       attemptPlay();
@@ -262,7 +273,7 @@ export function Home() {
       </Canvas>
     </div>
 
-    <div className="solar-scale-caption">Planetary orbit spacing uses a shared AU scale; the Moon orbit and deep-space probes are compressed for visibility.</div>
+    <div className="solar-scale-caption">Orbits and deep-space probes are not in actual scale.</div>
     {distanceToSelected && selected && <div style={{ position: "absolute", top: 20, left: 20, zIndex: 1000, background: "rgba(0,0,0,0.5)", padding: "8px 14px", borderRadius: "8px", color: "#afc8e8", fontFamily: "monospace", fontSize: "13px", backdropFilter: "blur(4px)", letterSpacing: "0.5px" }}>
       <span style={{ color: "#7a9cc6", fontSize: "11px" }}>DIST </span>{distanceToSelected} AU
     </div>}
@@ -273,7 +284,7 @@ export function Home() {
     <div className="solar-search-wrap">
       <label className="solar-search">
         <ScanLine size={18}/>
-        <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search the universe..." aria-label="Search space elements"/>
+        <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search the solar system..." aria-label="Search space elements"/>
         {query && <button type="button" aria-label="Clear search" onClick={()=>setQuery("")}>×</button>}
       </label>
       {matches.length > 0 && <div className="solar-search-results">
@@ -287,11 +298,17 @@ export function Home() {
     {selected && <div className="solar-explore-pop solar-explore-other">
       <strong>{selected === "deep" ? "DEEP SPACE" : selected.toUpperCase()}</strong>
       {selected === "sun" && <em>The heart of our solar system</em>}
+      {selected === "mercury" && <em>A cratered world, racing around the Sun in just 88 days.</em>}
+      {selected === "venus" && <em>Wrapped in thick clouds, Venus is the hottest planet in the solar system.</em>}
       {selected === "earth" && <em>The only place we know of inhabited by living things.</em>}
       {selected === "moon" && <><em>Earth's only natural satellite</em><button onClick={enterMoonArchive} disabled={!!journey}>Explore <ArrowRight size={16}/></button></>}
       {selected === "mars" && <><em>Dusty, cold, desert world with a very thin atmosphere.</em><button onClick={enterMarsArchive} disabled={!!journey}>Explore <ArrowRight size={16}/></button></>}
+      {selected === "jupiter" && <em>A massive gas giant.The Great Red Spot is a giant storm that has raged for centuries.</em>}
+      {selected === "saturn" && <em>Its spectacular rings are made mostly of countless icy particles.</em>}
+      {selected === "uranus" && <em>Uranus spins on its side, giving it some of the solar system's most extreme seasons.</em>}
+      {selected === "neptune" && <em>Supersonic winds sweep through Neptune's deep blue atmosphere.</em>}
       {selected === "deep" && <em>Interplanetary and heliocentric objects</em>}
-      {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em><small className="scale-note">Schematic deep-space placement · not to scale</small></>}
+      {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em><small className="scale-note"></small></>}
     </div>}
     <AnimatePresence>{journey?.phase === "fade" && <motion.div className={`moon-journey-fade journey-${journey.world}`} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.46}} aria-hidden="true"/>}</AnimatePresence>
     <button className="solar-audio-toggle" onClick={()=>setAudioOn(v=>!v)} aria-label={audioOn?"Mute ambient audio":"Play ambient audio"}>
