@@ -4,6 +4,63 @@ import { X } from "lucide-react";
 import "./tutorial.css";
 
 const TOUR_KEY = "sb-space-tour-seen";
+const TOUR_AUDIO_KEY = "__sbTutorialAudio";
+const TOUR_AUDIO_ACTIVE_KEY = "__sbTutorialAudioActive";
+const TOUR_AUDIO_RESUME_KEY = "__sbTutorialAudioResume";
+
+function clearTutorialAudioResume() {
+  const resume = window[TOUR_AUDIO_RESUME_KEY];
+  if (!resume) return;
+  window.removeEventListener("pointerdown", resume);
+  window.removeEventListener("keydown", resume);
+  delete window[TOUR_AUDIO_RESUME_KEY];
+}
+
+function startTutorialMusic() {
+  if (!window[TOUR_AUDIO_KEY]) {
+    const audio = new Audio("/audio/home-audio.mp3");
+    audio.loop = true;
+    audio.volume = 0.45;
+    window[TOUR_AUDIO_KEY] = audio;
+  }
+
+  const audio = window[TOUR_AUDIO_KEY];
+  const resumeOnGesture = () => {
+    clearTutorialAudioResume();
+    window[TOUR_AUDIO_ACTIVE_KEY] = true;
+    audio.play().then(() => {
+      if (window[TOUR_AUDIO_ACTIVE_KEY]) window.dispatchEvent(new Event("sb:tutorial-audio-start"));
+      else audio.pause();
+    }).catch(() => {
+      window[TOUR_AUDIO_ACTIVE_KEY] = false;
+      window.dispatchEvent(new Event("sb:tutorial-audio-stop"));
+    });
+  };
+
+  window[TOUR_AUDIO_ACTIVE_KEY] = true;
+  audio.play().then(() => {
+    if (window[TOUR_AUDIO_ACTIVE_KEY]) window.dispatchEvent(new Event("sb:tutorial-audio-start"));
+    else audio.pause();
+  }).catch(() => {
+    if (!window[TOUR_AUDIO_ACTIVE_KEY]) return;
+    window[TOUR_AUDIO_ACTIVE_KEY] = false;
+    window.dispatchEvent(new Event("sb:tutorial-audio-stop"));
+    window[TOUR_AUDIO_RESUME_KEY] = resumeOnGesture;
+    window.addEventListener("pointerdown", resumeOnGesture, { once: true });
+    window.addEventListener("keydown", resumeOnGesture, { once: true });
+  });
+}
+
+function stopTutorialMusic() {
+  clearTutorialAudioResume();
+  window[TOUR_AUDIO_ACTIVE_KEY] = false;
+  const audio = window[TOUR_AUDIO_KEY];
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+  window.dispatchEvent(new Event("sb:tutorial-audio-stop"));
+}
 
 // The tour follows real controls and waits for the visitor at each stop.
 const TOUR = [
@@ -68,6 +125,7 @@ export default function TutorialOverlay({ startRequest = 0 }) {
   }, [mode]);
 
   const finish = () => {
+    stopTutorialMusic();
     window.clearTimeout(pendingAdvance.current);
     pendingAdvance.current = null;
     setMode("finished");
@@ -183,6 +241,7 @@ export default function TutorialOverlay({ startRequest = 0 }) {
   }, [mode, step, current, location.pathname]);
 
   const skip = () => {
+    stopTutorialMusic();
     window.clearTimeout(pendingAdvance.current);
     pendingAdvance.current = null;
     setMode("closed");
@@ -193,7 +252,7 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     pendingAdvance.current = null;
     setMode("video");
   };
-  const enterTour = () => { setStep(0); setReadyStep(-1); setMode("tour"); navigate("/space"); };
+  const enterTour = () => { startTutorialMusic(); setStep(0); setReadyStep(-1); setMode("tour"); navigate("/space"); };
 
   if (mode === "closed") return null;
   if (mode === "welcome") return <div className="tutorial-shade"><section className="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tour-title"><img className="tutorial-astronaut" src="/images/astronaut.png" alt=""/><p className="tutorial-kicker">Lost in Space</p><h2 id="tour-title">New here? Take a space tour!</h2><p>Meet the worlds and discover what you can explore.</p><div className="tutorial-actions"><button className="tutorial-primary" onClick={begin}>Start Tutorial</button><button className="tutorial-skip" onClick={skip}>Skip</button></div></section></div>;

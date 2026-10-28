@@ -186,36 +186,38 @@ export function Home() {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = 0.45;
+    const pauseSolarAudio = () => audio.pause();
+    const resumeSolarAudio = () => { if (audioOn) audio.play().catch(() => {}); };
+    window.addEventListener("sb:tutorial-audio-start", pauseSolarAudio);
+    window.addEventListener("sb:tutorial-audio-stop", resumeSolarAudio);
+
+    let resumeOnGesture;
     if (window.__sbTutorialAudioActive) {
       audio.pause();
-      const resumeSolarAudio = () => {
-        if (audioOn) audio.play().catch(() => {});
-      };
-      window.addEventListener("sb:tutorial-audio-stop", resumeSolarAudio, { once: true });
-      return () => {
-        window.removeEventListener("sb:tutorial-audio-stop", resumeSolarAudio);
-        audio.pause();
-      };
-    }
-    if (audioOn) {
+    } else if (audioOn) {
       const attemptPlay = () => audio.play().catch(() => {});
       attemptPlay();
       // Browsers may block audible autoplay until the visitor interacts.
-      const resume = () => {
+      resumeOnGesture = () => {
         if (audioOn) attemptPlay();
-        window.removeEventListener("pointerdown", resume);
-        window.removeEventListener("keydown", resume);
+        window.removeEventListener("pointerdown", resumeOnGesture);
+        window.removeEventListener("keydown", resumeOnGesture);
       };
-      window.addEventListener("pointerdown", resume, { once: true });
-      window.addEventListener("keydown", resume, { once: true });
-      return () => {
-        window.removeEventListener("pointerdown", resume);
-        window.removeEventListener("keydown", resume);
-        audio.pause();
-      };
+      window.addEventListener("pointerdown", resumeOnGesture, { once: true });
+      window.addEventListener("keydown", resumeOnGesture, { once: true });
+    } else {
+      audio.pause();
     }
-    audio.pause();
-    return () => audio.pause();
+
+    return () => {
+      window.removeEventListener("sb:tutorial-audio-start", pauseSolarAudio);
+      window.removeEventListener("sb:tutorial-audio-stop", resumeSolarAudio);
+      if (resumeOnGesture) {
+        window.removeEventListener("pointerdown", resumeOnGesture);
+        window.removeEventListener("keydown", resumeOnGesture);
+      }
+      audio.pause();
+    };
   }, [audioOn]);
 
   const searchable = [

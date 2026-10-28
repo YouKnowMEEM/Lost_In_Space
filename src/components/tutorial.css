@@ -75,7 +75,7 @@
   gap: 14px;
   margin-top: 22px;
 }
-.tutorial-finished-actions { justify-content: flex-end; flex-wrap: wrap; }
+.tutorial-finished-actions { justify-content: space-between; flex-wrap: wrap; }
 .tutorial-finished-actions .tutorial-skip { margin-left: 0; }
 .tutorial-primary,
 .tutorial-skip {
