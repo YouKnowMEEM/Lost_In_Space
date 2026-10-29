@@ -205,6 +205,9 @@
   cursor: pointer;
   transition: color 0.2s, background-color 0.2s;
 }
+.hp-nav .hp-nav-game {
+  gap: 7px;
+}
 .hp-nav a:hover,
 .hp-nav button:hover {
   color: var(--hp-text);
@@ -1191,6 +1194,9 @@
   }
   .hp-nav button {
     font-size: 14px;
+  }
+  .hp-nav-game-label {
+    display: none;
   }
   /* Phones keep the first two sections and the tutorial action, with a shorter book label. */
   .hp-nav a:nth-child(n + 3) {

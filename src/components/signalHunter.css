@@ -1,0 +1,197 @@
+/* Signal Hunter HUD. Every class is prefixed "sh-" so nothing leaks into styles.css. */
+
+.sh-root {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-start;
+  padding: 12px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  pointer-events: none; /* the Moon stays draggable around the panel */
+  font-family: inherit;
+}
+
+.sh-panel {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 380px;
+  padding: 16px 18px 18px;
+  color: #e9e6dd;
+  background: rgba(10, 14, 22, 0.86);
+  border: 1px solid rgba(233, 230, 221, 0.14);
+  border-radius: 14px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-variant-numeric: tabular-nums;
+}
+
+.sh-title {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.sh-text {
+  margin: 0 0 14px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(233, 230, 221, 0.86);
+}
+
+.sh-muted {
+  color: rgba(233, 230, 221, 0.55);
+  font-size: 0.95rem;
+}
+
+.sh-score {
+  margin: 4px 0 8px;
+  font-size: 2.2rem;
+  font-weight: 650;
+}
+
+/* Header row */
+.sh-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  color: rgba(233, 230, 221, 0.7);
+}
+
+.sh-head-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sh-icon-btn {
+  min-height: 32px;
+  padding: 0 10px;
+  color: inherit;
+  background: transparent;
+  border: 1px solid rgba(233, 230, 221, 0.22);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* Clue + hint */
+.sh-clue {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.sh-hint {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  font-style: italic;
+  color: rgba(233, 230, 221, 0.72);
+}
+
+/* Signal meter */
+.sh-meter {
+  height: 8px;
+  margin-top: 12px;
+  overflow: hidden;
+  background: rgba(233, 230, 221, 0.12);
+  border-radius: 999px;
+}
+
+.sh-meter-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.35s ease, background 0.35s ease;
+}
+
+.sh-readout {
+  margin: 8px 0 10px;
+  min-height: 1.4em;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: rgba(233, 230, 221, 0.7);
+}
+
+/* Pings left */
+.sh-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.sh-dot {
+  width: 14px;
+  height: 14px;
+  background: transparent;
+  border: 2px solid rgba(233, 230, 221, 0.3);
+  border-radius: 50%;
+}
+
+/* Result block */
+.sh-result {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(233, 230, 221, 0.14);
+}
+
+.sh-result-title {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  font-weight: 650;
+}
+
+.sh-gain {
+  margin: -4px 0 12px;
+  font-weight: 650;
+  color: #7cffb2;
+}
+
+.sh-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Buttons */
+.sh-btn {
+  min-height: 44px;
+  padding: 0 18px;
+  color: #e9e6dd;
+  background: transparent;
+  border: 1px solid rgba(233, 230, 221, 0.3);
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sh-btn-primary {
+  color: #10141c;
+  background: #ffd166;
+  border-color: #ffd166;
+}
+
+.sh-btn:focus-visible,
+.sh-icon-btn:focus-visible {
+  outline: 2px solid #6ee7d8;
+  outline-offset: 2px;
+}
+
+@media (min-width: 720px) {
+  .sh-root {
+    padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sh-meter-fill {
+    transition: none;
+  }
+}

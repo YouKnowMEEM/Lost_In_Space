@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
+import PioneerTutorialScene from "./PioneerTutorialScene";
 import "./tutorial.css";
 
 const TOUR_KEY = "sb-space-tour-seen";
@@ -83,9 +84,12 @@ export default function TutorialOverlay({ startRequest = 0 }) {
   const [mode, setMode] = useState("closed");
   const [step, setStep] = useState(0);
   const [confirmSkip, setConfirmSkip] = useState(false);
+  const [confirmLeave, setConfirmLeave] = useState(false);
   const [readyStep, setReadyStep] = useState(-1);
   const videoRef = useRef(null);
   const pendingAdvance = useRef(null);
+  const pendingLeaveTarget = useRef(null);
+  const deferredClickTarget = useRef(null);
   const current = TOUR[step];
   const isHome = location.pathname === "/";
 
@@ -114,6 +118,18 @@ export default function TutorialOverlay({ startRequest = 0 }) {
   }, [confirmSkip]);
 
   useEffect(() => {
+    if (!confirmLeave) return undefined;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") {
+        pendingLeaveTarget.current = null;
+        setConfirmLeave(false);
+      }
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [confirmLeave]);
+
+  useEffect(() => {
     if (mode !== "video" || !videoRef.current) return;
     const video = videoRef.current;
     const play = video.play();
@@ -140,6 +156,12 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     }, current?.delay ?? 400);
   };
 
+  const advanceImmediately = (steps = 1) => {
+    window.clearTimeout(pendingAdvance.current);
+    pendingAdvance.current = null;
+    setStep((n) => n + steps);
+  };
+
   useEffect(() => {
     if (mode !== "tour" || !current) return undefined;
     let activeTarget = null;
@@ -164,11 +186,50 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     watch.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-globe-ready"] });
 
     const onClick = (event) => {
-      if (!current.target || location.pathname !== current.path) return;
-      const element = document.querySelector(current.target);
-      if (element && (event.target === element || element.contains(event.target))) {
-        advanceAfterPause();
+      const onEaglePage = current.path === "/eagle" || current.path === "/eagle/mission";
+      if ((!current.target && !current.waitForEvent && !onEaglePage) || location.pathname !== current.path) return;
+      if (event.target instanceof Element && event.target.closest(".tutorial-guide, .tutorial-shade")) return;
+      if (event.target === deferredClickTarget.current) {
+        deferredClickTarget.current = null;
+        return;
       }
+
+      const element = document.querySelector(current.target);
+      const clickTarget = event.target instanceof Element ? event.target : null;
+      const searchResult = clickTarget?.closest(".solar-search-results button, .moon-search-results button");
+      const matchingSearchResult = Boolean(
+        element instanceof HTMLInputElement &&
+        searchResult &&
+        current.inputIncludes &&
+        searchResult.textContent?.toLocaleLowerCase().includes(current.inputIncludes)
+      );
+
+      if (element instanceof HTMLInputElement) {
+        if (matchingSearchResult) {
+          advanceImmediately(2);
+          return;
+        }
+        if (clickTarget && element.parentElement?.contains(clickTarget)) return;
+      }
+
+      if (element && (event.target === element || element.contains(event.target))) {
+        if (TOUR[step + 1]?.waitForEvent) advanceImmediately();
+        else advanceAfterPause();
+        return;
+      }
+
+      const restrictedNav = clickTarget?.closest(onEaglePage
+        ? ".sbk-back .sbk-home, .sbk-back .sbk-world"
+        : ".topbar .brand, .topbar nav > a, .topbar .nav-dropdown > button, .topbar .nav-dropdown-menu a");
+      if (!restrictedNav) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      window.clearTimeout(pendingAdvance.current);
+      pendingAdvance.current = null;
+      pendingLeaveTarget.current = restrictedNav;
+      setConfirmLeave(true);
     };
     const onInput = (event) => {
       if ((!current.listenInput && !current.inputIncludes) || location.pathname !== current.path) return;
@@ -180,7 +241,7 @@ export default function TutorialOverlay({ startRequest = 0 }) {
       }
     };
     const onTourEvent = (event) => {
-      if (event.detail?.id === current.eventId) advanceAfterPause();
+      if (event.detail?.id === current.eventId) advanceImmediately();
     };
     const onKeyDown = (event) => {
       if (event.key !== "Enter" || event.isComposing || event.target.closest?.(".tutorial-bubble")) return;
@@ -247,6 +308,17 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     setMode("closed");
     try { sessionStorage.setItem(TOUR_KEY, "1"); } catch { /* storage may be disabled */ }
   };
+  const leaveTutorial = () => {
+    const target = pendingLeaveTarget.current;
+    pendingLeaveTarget.current = null;
+    deferredClickTarget.current = target;
+    setConfirmLeave(false);
+    skip();
+    window.setTimeout(() => {
+      if (target?.isConnected) target.click();
+      else deferredClickTarget.current = null;
+    }, 0);
+  };
   const begin = () => {
     window.clearTimeout(pendingAdvance.current);
     pendingAdvance.current = null;
@@ -256,8 +328,11 @@ export default function TutorialOverlay({ startRequest = 0 }) {
 
   if (mode === "closed") return null;
   if (mode === "welcome") return <div className="tutorial-shade"><section className="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tour-title"><img className="tutorial-astronaut" src="/images/astronaut.png" alt=""/><p className="tutorial-kicker">Lost in Space</p><h2 id="tour-title">New here? Take a space tour!</h2><p>Meet the worlds and discover what you can explore.</p><div className="tutorial-actions"><button className="tutorial-primary" onClick={begin}>Start Tutorial</button><button className="tutorial-skip" onClick={skip}>Skip</button></div></section></div>;
-  if (mode === "video") return <div className="tutorial-video-screen" role="dialog" aria-modal="true" aria-label="Space tour introduction"><video ref={videoRef} src="/video/supersonic_freefall%20(1).mp4" autoPlay playsInline onEnded={enterTour}/></div>;
+  if (mode === "video") return <div className="tutorial-video-screen" role="dialog" aria-modal="true" aria-label="Space tour introduction"><video ref={videoRef} src="/video/supersonic_freefall%20(1).mp4" autoPlay playsInline onEnded={() => { window.__sbPioneerIntroReady = false; setMode("pioneer"); navigate("/space?intro=pioneer"); }}/></div>;
+  if (mode === "pioneer") return <PioneerTutorialScene onComplete={enterTour} />;
   if (mode === "finished") return <div className="tutorial-shade"><section className="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tour-finished-title"><img className="tutorial-astronaut" src="/images/astronaut.png" alt=""/><p className="tutorial-kicker">TOUR COMPLETED :D </p><h2 id="tour-finished-title">You are ready, explorer</h2><p>There is more waiting for you: explore Mars and Deep space and meet the other characters in their storybooks.</p><div className="tutorial-actions tutorial-finished-actions"><button className="tutorial-skip" onClick={() => setMode("closed")}>Close / Exit</button><button className="tutorial-primary" onClick={() => { setMode("closed"); navigate("/"); }}>Back to homepage</button></div></section></div>;
+
+  if (confirmLeave) return <div className="tutorial-shade tutorial-skip-confirm tutorial-leave-confirm"><section className="tutorial-card" role="alertdialog" aria-modal="true" aria-labelledby="leave-tour-title" aria-describedby="leave-tour-warning"><h2 id="leave-tour-title">Leave the tutorial?</h2><p id="leave-tour-warning">This navigation leaves the tutorial. Do you want to leave the tutorial and continue?</p><div className="tutorial-actions"><button className="tutorial-primary" onClick={() => { pendingLeaveTarget.current = null; setConfirmLeave(false); }}>Stay in tutorial</button><button className="tutorial-skip" onClick={leaveTutorial}>Leave tutorial</button></div></section></div>;
 
   if (current?.waitForSelector && readyStep !== step) return null;
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, Clock3, FileText, Headphones } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, BookOpen, Clock3, FileText, Gamepad2, Headphones } from "lucide-react";
 import ObjectRing from "../home/ObjectRing";
 import PhotoCarousel from "../home/PhotoCarousel";
 import { BEAUTIES, PHOTOS, STORYBOOKS } from "../home/homeData";
@@ -104,6 +104,7 @@ function World({ world }) {
 
 export default function HomePage({ onStartTutorial }) {
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const previous = document.title;
@@ -128,7 +129,7 @@ export default function HomePage({ onStartTutorial }) {
       <header className={`hp-top${scrolled ? " is-scrolled" : ""}`}>
         <Link to="/" className="hp-brand">
           <Mark />
-          <span>Sleeping Beauties</span>
+          <span>Lost In Space</span>
         </Link>
         <nav className="hp-nav" aria-label="Sections">
           <a href="#worlds">Worlds</a>
@@ -137,6 +138,16 @@ export default function HomePage({ onStartTutorial }) {
             <span className="hp-nav-short">Stories</span>
           </a>
           <a href="#photos">Photos</a>
+          <button
+            type="button"
+            className="hp-nav-game"
+            aria-label="Start Signal Hunter on the Moon"
+            title="Play Signal Hunter"
+            onClick={() => navigate("/moon?game=signal-hunter")}
+          >
+            <Gamepad2 size={17} aria-hidden="true" />
+            <span className="hp-nav-game-label">Game</span>
+          </button>
           <button type="button" className="hp-nav-tutorial" onClick={onStartTutorial}>
             Tutorial
           </button>
@@ -226,6 +237,8 @@ export default function HomePage({ onStartTutorial }) {
             Photos and videos: <a href="https://images.nasa.gov/">NASA Image and Video Library</a> (public domain). 3D models:{" "}
             <a href="https://github.com/nasa/NASA-3D-Resources">NASA 3D Resources</a>. Moon and Mars textures:{" "}
             <a href="https://www.solarsystemscope.com/textures/">Solar System Scope</a>
+            <a> Music in bg =Interstellar</a>
+          
           </p>
         </div>
       </footer>

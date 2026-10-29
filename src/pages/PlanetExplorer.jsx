@@ -5,7 +5,7 @@ import FilterBar from "../components/planet/FilterBar";
 import PlanetGlobe from "../components/planet/PlanetGlobe";
 import Timeline from "../components/planet/Timeline";
 
-export default function PlanetExplorer({ planet, texturePath, artifacts, regions, orbits, programs, equipmentHeading }) {
+export default function PlanetExplorer({ planet, texturePath, artifacts, regions, orbits, programs, equipmentHeading, signalHunter }) {
   const [program, setProgram] = useState("All");
   const [status, setStatus] = useState("all");
   const [year, setYear] = useState(2030);
@@ -49,6 +49,16 @@ export default function PlanetExplorer({ planet, texturePath, artifacts, regions
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [controlsOpen]);
 
+  useEffect(() => {
+    if (!signalHunter?.active) return;
+    setSelected(null);
+    setClickOrigin(null);
+    setFocusedEquipment(null);
+    setFocusedRegion(null);
+    setSelectedOrbit(null);
+    setControlsOpen(false);
+  }, [signalHunter?.active]);
+
   const selectArtifact = (artifact, origin) => {
     setControlsOpen(false);
     setClickOrigin(origin || null);
@@ -89,7 +99,7 @@ export default function PlanetExplorer({ planet, texturePath, artifacts, regions
 
   return <main id="main-content" className="moon-explorer" tabIndex="-1">
     <section className={`moon-atlas${controlsOpen ? " has-controls" : ""}`} data-globe-ready={globeReady ? "true" : "false"} aria-label={`Interactive 3D ${planet} globe`}>
-      <PlanetGlobe texturePath={texturePath} artifacts={visible} regions={regions} orbits={visibleOrbits} selected={selected || focusedEquipment} onSelect={selectArtifact} selectedOrbit={selectedOrbit} onOrbitSelect={setSelectedOrbit} focusedRegion={focusedRegion} focusPoint={focusedEquipment || focusedRegion} onReady={markGlobeReady}/>
+      <PlanetGlobe texturePath={texturePath} artifacts={visible} regions={regions} orbits={visibleOrbits} selected={selected || focusedEquipment} onSelect={selectArtifact} selectedOrbit={selectedOrbit} onOrbitSelect={setSelectedOrbit} focusedRegion={focusedRegion} focusPoint={focusedEquipment || focusedRegion} onReady={markGlobeReady} signalHunter={signalHunter}/>
       <div className="moon-map-title"><span>{planet.toUpperCase()} ARCHIVE</span><h1>{planet} explorer</h1><p>Equipment and missions across the {planet.toLowerCase()} surface.</p><div className="moon-search-wrap"><label className="moon-search"><Search size={15} aria-hidden="true"/><input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search equipment, region, or orbit" aria-label={`Search ${planet} equipment, regions, or orbits`} aria-expanded={Boolean(search.trim())} aria-controls="moon-search-results"/><button type="button" aria-label="Clear search" onClick={() => setSearch("")} hidden={!search}><X size={14}/></button></label>{search.trim() && <div className="moon-search-results" id="moon-search-results" role="listbox">{searchResults.length ? searchResults.map((result) => <button type="button" role="option" key={`${result.kind}-${result.id}`} onClick={() => chooseSearchResult(result)}><span>{result.name}</span><small>{result.kind === "equipment" ? "Equipment" : result.kind === "region" ? "Region" : "Orbit"}</small></button>) : <p>No matching equipment, regions, or orbits.</p>}</div>}</div><button type="button" className="moon-control-toggle" aria-expanded={controlsOpen} aria-controls="planet-control-sidebar" onClick={() => setControlsOpen(true)}><SlidersHorizontal size={15}/> Filters &amp; timeline</button></div>
       <div className="moon-map-footer"><span>Total =</span><span>{visible.length + visibleOrbits.length} {visible.length + visibleOrbits.length === 1 ? "object" : "objects"}</span></div>
       {controlsOpen && <>

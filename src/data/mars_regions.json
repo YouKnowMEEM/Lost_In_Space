@@ -4,7 +4,6 @@
   { "id": "gale-crater", "name": "Gale Crater", "lat": -5.4, "lon": 137.8, "planet": "mars" },
   { "id": "hellas-planitia", "name": "Hellas Planitia", "lat": -42.7, "lon": 70.5, "planet": "mars" },
   { "id": "jezero-crater", "name": "Jezero Crater", "lat": 18.4, "lon": 77.5, "planet": "mars" },
-  
   { "id": "ascreus-mons", "name": "Ascraeus Mons", "lat": 11.9, "lon": -104.5, "planet": "mars" },
   { "id": "pavonis-mons", "name": "Pavonis Mons", "lat": 0.8, "lon": -113.4, "planet": "mars" },
   { "id": "arsia-mons", "name": "Arsia Mons", "lat": -8.4, "lon": -121.1, "planet": "mars" },
@@ -13,8 +12,8 @@
   { "id": "isidis-planitia", "name": "Isidis Planitia", "lat": 12.9, "lon": 87.0, "planet": "mars" },
   { "id": "utopia-planitia", "name": "Utopia Planitia", "lat": 46.7, "lon": 117.5, "planet": "mars" },
   { "id": "acidalia-planitia", "name": "Acidalia Planitia", "lat": 49.8, "lon": -20.7, "planet": "mars" },
-  { "id": "chryse-planitia", "name": "Chryse Planitia", "lat": 28.4, "lon": -31.9, "planet": "mars" },
-  { "id": "syrtis-major", "name": "Syrtis Major", "lat": 8.4, "lon": 69.5, "planet": "mars" },
+  { "id": "chryse-planitia", "name": "Chryse Planitia", "lat": 28.4, "lon": -40.3, "planet": "mars" },
+  { "id": "syrtis-major", "name": "Syrtis Major", "lat": 9.4, "lon": 69.5, "planet": "mars" },
   { "id": "meridiani-planum", "name": "Meridiani Planum", "lat": -0.2, "lon": -2.5, "planet": "mars" },
   { "id": "gusev-crater", "name": "Gusev Crater", "lat": -14.6, "lon": 175.4, "planet": "mars" },
   { "id": "argyre-planitia", "name": "Argyre Planitia", "lat": -49.7, "lon": -43.3, "planet": "mars" },

@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { CameraControls, Float, Html, Stars, useGLTF, useTexture } from "@react-three/drei";
+import { CameraControls, Float, Html, Stars, useAnimations, useGLTF, useTexture } from "@react-three/drei";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -51,8 +51,8 @@ function Topbar() {
   );
 }
 
-function Shell({ children, immersive = false, className = "" }) {
-  return <div className={`app-shell ${immersive ? "immersive-shell" : ""} ${className}`}><SpaceBackdrop/><Topbar/>{children}</div>;
+function Shell({ children, immersive = false, className = "", hideTopbar = false }) {
+  return <div className={`app-shell ${immersive ? "immersive-shell" : ""} ${className}`}><SpaceBackdrop/>{!hideTopbar && <Topbar/>}{children}</div>;
 }
 
 function EntryGate({ onEnter }) {
@@ -110,12 +110,16 @@ function MiniCanvas({ kind }) {
 export function Home() {
   const navigate = useNavigate();
   const location = useLocation();
+  const tutorialIntro = new URLSearchParams(location.search).get("intro") === "pioneer";
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(null);
   const [audioOn, setAudioOn] = useState(true);
   const [welcomeVisible, setWelcomeVisible] = useState(true);
   const [speedModifier, setSpeedModifier] = useState(1);
   const [distanceToSelected, setDistanceToSelected] = useState(null);
+  const [introYaw, setIntroYaw] = useState(0);
+  const [introYawImmediate, setIntroYawImmediate] = useState(false);
+  const [introFlying, setIntroFlying] = useState(false);
   const audioRef = useRef(null);
   const cameraRef = useRef(null);
   const sunAnchorRef = useRef(null);
@@ -147,6 +151,26 @@ export function Home() {
     const valid = ["voyager-1", "voyager-2", "pioneer-10", "pioneer-11", "new-horizons"];
     if (valid.includes(object)) setSelected(object);
   }, [location.search]);
+  useEffect(() => {
+    if (!tutorialIntro) {
+      setIntroYaw(0);
+      setIntroYawImmediate(false);
+      setIntroFlying(false);
+      window.__sbPioneerIntroReady = false;
+      return undefined;
+    }
+    const onView = (event) => {
+      setIntroYaw(Number(event.detail?.yaw) || 0);
+      setIntroYawImmediate(Boolean(event.detail?.immediate));
+    };
+    const onFlight = () => setIntroFlying(true);
+    window.addEventListener("sb:pioneer-intro-view", onView);
+    window.addEventListener("sb:pioneer-intro-flight", onFlight);
+    return () => {
+      window.removeEventListener("sb:pioneer-intro-view", onView);
+      window.removeEventListener("sb:pioneer-intro-flight", onFlight);
+    };
+  }, [tutorialIntro]);
   const enterWorld = async (world) => {
     if (journey) return;
     setJourney({ world, phase: "approach" });
@@ -243,9 +267,9 @@ export function Home() {
       ? searchable.filter(item => `${item.name} ${item.detail} ${item.type}`.toLowerCase().includes(query.trim().toLowerCase()))
       : [];
 
-  return <Shell><main className="solar-home" id="main-content" tabIndex="-1">
+  return <Shell immersive hideTopbar={tutorialIntro}><main className={`solar-home${tutorialIntro ? " is-tutorial-intro" : ""}`} id="main-content" tabIndex="-1">
     <AnimatePresence>
-      {welcomeVisible && <motion.div className="solar-welcome" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:0.35}}>
+      {!tutorialIntro && welcomeVisible && <motion.div className="solar-welcome" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:0.35}}>
         <motion.span initial={{y:8}} animate={{y:0}} exit={{y:-5}} transition={{duration:0.55}}>Welcome to the Space</motion.span>
       </motion.div>}
     </AnimatePresence>
@@ -267,23 +291,24 @@ export function Home() {
             shadow-bias={-0.00008}
             shadow-normalBias={0.006}
         />
+        {tutorialIntro && <pointLight position={[17.5, 20.5, -68.8]} intensity={26} distance={14} decay={2} color="#b9ddff"/>}
         <SpaceStarsBackdrop/>
         <Suspense fallback={null}>
-          <SolarSystem selected={selected} onSelect={setSelected} planetAnchors={planetAnchors} probesRefs={probesRefs} paused={!!journey} speedModifier={speedModifier} cameraRef={cameraRef} onDistanceChange={setDistanceToSelected}/>
+          <SolarSystem selected={selected} onSelect={setSelected} planetAnchors={planetAnchors} probesRefs={probesRefs} paused={!!journey} speedModifier={speedModifier} cameraRef={cameraRef} onDistanceChange={setDistanceToSelected} tutorialIntro={tutorialIntro} introYaw={introYaw} introYawImmediate={introYawImmediate} introFlying={introFlying}/>
         </Suspense>
-        <CameraControls ref={cameraRef} makeDefault minDistance={1.0} maxDistance={350} smoothTime={0.6} dollyToCursor={false}/>
+        <CameraControls ref={cameraRef} makeDefault enabled={!tutorialIntro} minDistance={1.0} maxDistance={350} smoothTime={0.6} dollyToCursor={false}/>
       </Canvas>
     </div>
 
-    <div className="solar-scale-caption">Orbits and deep-space probes are not in actual scale.</div>
-    {distanceToSelected && selected && <div style={{ position: "absolute", top: 20, left: 20, zIndex: 1000, background: "rgba(0,0,0,0.5)", padding: "8px 14px", borderRadius: "8px", color: "#afc8e8", fontFamily: "monospace", fontSize: "13px", backdropFilter: "blur(4px)", letterSpacing: "0.5px" }}>
+    {!tutorialIntro && <div className="solar-scale-caption">Orbits and deep-space probes are not in actual scale.</div>}
+    {!tutorialIntro && distanceToSelected && selected && <div style={{ position: "absolute", top: 20, left: 20, zIndex: 1000, background: "rgba(0,0,0,0.5)", padding: "8px 14px", borderRadius: "8px", color: "#afc8e8", fontFamily: "monospace", fontSize: "13px", backdropFilter: "blur(4px)", letterSpacing: "0.5px" }}>
       <span style={{ color: "#7a9cc6", fontSize: "11px" }}>DIST </span>{distanceToSelected} AU
     </div>}
-    <div className="solar-controls-panel" style={{ position: "absolute", bottom: 20, right: 20, zIndex: 1000, background: "rgba(0,0,0,0.5)", padding: "10px", borderRadius: "8px", color: "white", display: "flex", flexDirection: "column", gap: "10px", backdropFilter: "blur(4px)" }}>
+    {!tutorialIntro && <div className="solar-controls-panel" style={{ position: "absolute", bottom: 20, right: 20, zIndex: 1000, background: "rgba(0,0,0,0.5)", padding: "10px", borderRadius: "8px", color: "white", display: "flex", flexDirection: "column", gap: "10px", backdropFilter: "blur(4px)" }}>
       
       <label style={{ display: "flex", alignItems: "flex-start", gap: "8px", flexDirection: "column" }}>Simulation Speed <input type="range" min="0" max="5" step="0.1" value={speedModifier} onChange={e => setSpeedModifier(parseFloat(e.target.value))} style={{ width: "150px" }} /></label>
-    </div>
-    <div className="solar-search-wrap">
+    </div>}
+    {!tutorialIntro && <div className="solar-search-wrap">
       <label className="solar-search">
         <ScanLine size={18}/>
         <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search the solar system..." aria-label="Search space elements"/>
@@ -295,9 +320,9 @@ export function Home() {
         </button>)}
       </div>}
       {query.trim() && matches.length===0 && <div className="solar-search-empty">No space objects found. Try “Moon”, “Mars” or “Voyager”.</div>}
-    </div>
+    </div>}
 
-    {selected && <div className="solar-explore-pop solar-explore-other">
+    {!tutorialIntro && selected && <div className="solar-explore-pop solar-explore-other">
       <strong>{selected === "deep" ? "DEEP SPACE" : selected.toUpperCase()}</strong>
       {selected === "sun" && <em>The heart of our solar system</em>}
       {selected === "mercury" && <em>A cratered world, racing around the Sun in just 88 days.</em>}
@@ -313,9 +338,9 @@ export function Home() {
       {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em><small className="scale-note"></small></>}
     </div>}
     <AnimatePresence>{journey?.phase === "fade" && <motion.div className={`moon-journey-fade journey-${journey.world}`} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.46}} aria-hidden="true"/>}</AnimatePresence>
-    <button className="solar-audio-toggle" onClick={()=>setAudioOn(v=>!v)} aria-label={audioOn?"Mute ambient audio":"Play ambient audio"}>
+    {!tutorialIntro && <button className="solar-audio-toggle" onClick={()=>setAudioOn(v=>!v)} aria-label={audioOn?"Mute ambient audio":"Play ambient audio"}>
       {audioOn?<Volume2 size={17}/>:<VolumeX size={17}/> }
-    </button>
+    </button>}
   </main></Shell>;
 }
 
@@ -418,17 +443,27 @@ const PROBE_DATA = [
   { id:"new-horizons", label:"New Horizons", color:"#aeb9c7", position:[16.6, 1.9, -52.4], style:"new-horizons" }
 ];
 
+function getTutorialCameraPosition(pioneerPosition) {
+  const toSolarSystem = new THREE.Vector3(-pioneerPosition.x, 0, -pioneerPosition.z).normalize();
+  const cameraRight = new THREE.Vector3(-toSolarSystem.z, 0, toSolarSystem.x);
+  return pioneerPosition.clone()
+      .addScaledVector(toSolarSystem, -7.8)
+      .addScaledVector(cameraRight, 2.2)
+      .add(new THREE.Vector3(0, 0.75, 0));
+}
+
 const PROBE_MODELS = {
   voyager: "/models/voyager.glb",
   pioneer: "/models/pioneer.glb",
   "new-horizons": "/models/New_Horizons.glb"
 };
 
-function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef }) {
+function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef, tutorialIntro = false }) {
   const group = useRef();
   const [labelHidden, setLabelHidden] = useState(false);
   const lastLabelHidden = useRef(false);
   const { scene } = useGLTF(PROBE_MODELS[probe.style]);
+  const tutorialScale = tutorialIntro && probe.id === "pioneer-11" ? 3.1 : 1;
   const model = useMemo(() => {
     const clone = scene.clone(true);
     const bounds = new THREE.Box3().setFromObject(clone);
@@ -458,15 +493,76 @@ function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef }) {
                 onPointerOver={(e)=>{e.stopPropagation();setHovered(probe.id)}}
                 onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
     <mesh><sphereGeometry args={[.27,16,12]}/><meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false}/></mesh>
-    <group scale={model.scale} position={[-model.center.x * model.scale,-model.center.y * model.scale,-model.center.z * model.scale]}>
+    {tutorialIntro && probe.id === "pioneer-11" && <pointLight position={[0, 0.25, 0.6]} intensity={8} distance={5} color="#b9ddff"/>}
+    <group scale={model.scale * tutorialScale} position={[-model.center.x * model.scale * tutorialScale,-model.center.y * model.scale * tutorialScale,-model.center.z * model.scale * tutorialScale]}>
       <primitive object={model.scene}/>
     </group>
     {!labelHidden && <Html position={[0,.48,0]} center distanceFactor={12} zIndexRange={[30,0]}>
-      <button type="button" className="deep-space-probe-label" onClick={(e)=>{e.stopPropagation();onClick(probe.id)}} aria-label={`Zoom to ${probe.label}`} title={`Zoom to ${probe.label}`}>{probe.label}</button>
+      <button type="button" className={`deep-space-probe-label${tutorialIntro && probe.id === "pioneer-11" ? " tutorial-pioneer-label" : ""}`} onClick={(e)=>{e.stopPropagation();onClick(probe.id)}} aria-label={`Zoom to ${probe.label}`} title={`Zoom to ${probe.label}`}>{probe.label}</button>
     </Html>}
   </group>;
 }
 Object.values(PROBE_MODELS).forEach((path) => useGLTF.preload(path));
+
+function TutorialAstronaut({ position, flying }) {
+  const { scene, animations } = useGLTF("/models/astronaut.glb");
+  const root = useRef();
+  const { actions, mixer } = useAnimations(animations, root);
+  const actionRef = useRef(null);
+  const flyingRef = useRef(flying);
+  const finishedRef = useRef(false);
+  const fit = useMemo(() => {
+    const bounds = new THREE.Box3().setFromObject(scene);
+    const size = bounds.getSize(new THREE.Vector3());
+    return {
+      center: bounds.getCenter(new THREE.Vector3()),
+      scale: 1.85 / (size.y || Math.max(size.x, size.z, 1)),
+    };
+  }, [scene]);
+
+  flyingRef.current = flying;
+  useEffect(() => {
+    const action = Object.values(actions)[0];
+    if (!action) return undefined;
+    actionRef.current = action;
+    action.reset();
+    action.setLoop(THREE.LoopOnce, 1);
+    action.clampWhenFinished = true;
+    action.play();
+    const onFinished = (event) => {
+      if (event.action !== actionRef.current || !flyingRef.current || finishedRef.current) return;
+      finishedRef.current = true;
+      window.dispatchEvent(new Event("sb:pioneer-intro-complete"));
+    };
+    mixer.addEventListener("finished", onFinished);
+    return () => {
+      mixer.removeEventListener("finished", onFinished);
+      action.stop();
+      actionRef.current = null;
+    };
+  }, [actions, mixer]);
+
+  useEffect(() => {
+    if (!flying || !actionRef.current) return;
+    actionRef.current.paused = false;
+    actionRef.current.play();
+  }, [flying]);
+
+  useFrame(() => {
+    const action = actionRef.current;
+    if (!flyingRef.current && action && action.time >= 6.9) {
+      action.time = 6.9;
+      action.paused = true;
+    }
+  });
+
+  return (
+    <group ref={root} position={position} rotation={[0, 0.15, 0]} scale={fit.scale}>
+      <primitive object={scene} position={[-fit.center.x, -fit.center.y, -fit.center.z]} />
+    </group>
+  );
+}
+useGLTF.preload("/models/astronaut.glb");
 
 function solveKepler(meanAnomaly, eccentricity) {
   let eccentricAnomaly = meanAnomaly;
@@ -493,7 +589,7 @@ function EllipticalOrbit({ semiMajor, eccentricity, inclination = 0, color = "#9
   return <group rotation={[inclination,0,0]}><primitive object={line}/></group>;
 }
 
-function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, speedModifier, cameraRef, onDistanceChange }) {
+function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, speedModifier, cameraRef, onDistanceChange, tutorialIntro = false, introYaw = 0, introYawImmediate = false, introFlying = false }) {
   const [hovered, setHovered] = useState(null);
   const elapsed = useRef(0);
 
@@ -546,8 +642,22 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
 
   const targetPos = useMemo(() => new THREE.Vector3(), []);
   const camPos = useMemo(() => new THREE.Vector3(), []);
+  const tutorialAstronautPosition = useMemo(() => {
+    const pioneer = PROBE_DATA.find((probe) => probe.id === "pioneer-11");
+    const cameraPosition = getTutorialCameraPosition(new THREE.Vector3(...pioneer.position));
+    const forward = cameraPosition.clone().negate().normalize();
+    const cameraRight = new THREE.Vector3(-forward.z, 0, forward.x).normalize();
+    return cameraPosition.addScaledVector(forward, 9.6).addScaledVector(cameraRight, 3.8).toArray();
+  }, []);
   const prevSelected = useRef(null);
   const distFrameCount = useRef(0);
+  const introCamera = useRef({
+    active: false,
+    yaw: null,
+    flying: false,
+    position: new THREE.Vector3(),
+    lookAt: new THREE.Vector3(),
+  });
 
   // Visually proportional sizes
   const RADII = {
@@ -583,8 +693,8 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
   };
 
   useFrame((state, delta) => {
-    if (paused) return;
-    elapsed.current += Math.min(delta, 0.05) * 3 * speedModifier;
+    if (paused && !tutorialIntro) return;
+    if (!paused) elapsed.current += Math.min(delta, 0.05) * 3 * speedModifier;
     const days = elapsed.current;
     // Outer planet periods are compressed so their orbital motion is visible in the model.
     const outerOrbitDays = days * 120;
@@ -614,6 +724,59 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
 
     const controls = cameraRef?.current;
     if (!controls) return;
+
+    const intro = introCamera.current;
+    if (tutorialIntro) {
+      const pioneer = probesRefs?.current?.["pioneer-11"];
+      if (!pioneer) return;
+      pioneer.getWorldPosition(targetPos);
+
+      if (!intro.active) {
+        intro.active = true;
+        intro.position.copy(getTutorialCameraPosition(targetPos));
+        intro.yaw = null;
+        intro.flying = false;
+        controls.enabled = false;
+        controls.setPosition(intro.position.x, intro.position.y, intro.position.z, false);
+      }
+
+      if (intro.yaw !== introYaw) {
+        intro.lookAt.set(-intro.position.x, -intro.position.y, -intro.position.z).normalize();
+        intro.lookAt.applyAxisAngle(new THREE.Vector3(0, 1, 0), THREE.MathUtils.degToRad(introYaw));
+        intro.lookAt.multiplyScalar(80).add(intro.position);
+        controls.setTarget(intro.lookAt.x, intro.lookAt.y, intro.lookAt.z, intro.yaw !== null && !introYawImmediate);
+        intro.yaw = introYaw;
+        if (intro.yaw === introYaw && !window.__sbPioneerIntroReady) {
+          window.__sbPioneerIntroReady = true;
+          window.dispatchEvent(new Event("sb:pioneer-intro-ready"));
+        }
+      }
+
+      if (introFlying && !intro.flying) {
+        intro.flying = true;
+        const forward = intro.lookAt.clone().sub(intro.position).normalize().multiplyScalar(1.4);
+        intro.position.add(forward);
+        controls.setLookAt(
+          intro.position.x, intro.position.y, intro.position.z,
+          intro.lookAt.x, intro.lookAt.y, intro.lookAt.z,
+          true
+        );
+      }
+      return;
+    }
+
+    if (intro.active) {
+      intro.active = false;
+      intro.yaw = null;
+      intro.flying = false;
+      controls.enabled = true;
+      controls.minDistance = 1.0;
+      controls.maxDistance = 350;
+      prevSelected.current = selected;
+      window.__sbPioneerIntroReady = false;
+      controls.setLookAt(0, 18, 38, 0, 0, 0, true);
+      return;
+    }
 
     // Selection changed — fire smooth fly-to animation
     if (selected !== prevSelected.current) {
@@ -687,8 +850,9 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
 
     {/* Deep Space Probes */}
     {PROBE_DATA.map(probe =>
-      <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect} anchorRef={(node) => { if (probesRefs) probesRefs.current[probe.id] = node; }}/>
+      <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect} anchorRef={(node) => { if (probesRefs) probesRefs.current[probe.id] = node; }} tutorialIntro={tutorialIntro}/>
     )}
+    {tutorialIntro && <TutorialAstronaut position={tutorialAstronautPosition} flying={introFlying}/>}
 
     {/* Mercury */}
     <group ref={mercuryPlane} rotation={[incMercury, 0, 0]}>

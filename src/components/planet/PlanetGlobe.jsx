@@ -6,8 +6,9 @@ import EquipmentMarker from "./EquipmentMarker";
 import RegionLabels from "./RegionLabels";
 import PlanetOrbits from "./PlanetOrbits";
 import { latLngToVector3 } from "./EquipmentMarker";
+import { SignalLayer } from "../SignalHunter";
 
-function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect, focusedRegion, onReady }) {
+function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect, focusedRegion, onReady, signalHunter }) {
   const texture = useTexture(texturePath);
   useEffect(() => {
     texture.colorSpace = THREE.SRGBColorSpace;
@@ -39,11 +40,13 @@ function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selec
 
     <PlanetOrbits orbits={orbits} selectedOrbit={selectedOrbit} onSelect={onOrbitSelect}/>
     <RegionLabels regions={regions} surfaceRadius={radius} opacity={0.68} selectedRegion={focusedRegion}/>
-    {artifacts.map((artifact) => <EquipmentMarker key={artifact.id} artifact={artifact} surfaceRadius={radius + 0.025} selected={selected?.id === artifact.id} onSelect={onSelect}/>) }
+    {signalHunter?.active
+      ? <SignalLayer game={signalHunter} radius={radius + 0.045}/>
+      : artifacts.map((artifact) => <EquipmentMarker key={artifact.id} artifact={artifact} surfaceRadius={radius + 0.025} selected={selected?.id === artifact.id} onSelect={onSelect}/>)}
   </group>;
 }
 
-export default function PlanetGlobe({ texturePath, radius = 3.2, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect, focusedRegion, focusPoint, onReady }) {
+export default function PlanetGlobe({ texturePath, radius = 3.2, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect, focusedRegion, focusPoint, onReady, signalHunter }) {
   const controls = useRef(null);
   useEffect(() => {
     controls.current?.setLookAt(0, 0.12, 11.5, 0, 0, 0, false);
@@ -62,7 +65,7 @@ export default function PlanetGlobe({ texturePath, radius = 3.2, artifacts, regi
   >
     <ambientLight intensity={0.42}/>
     <directionalLight position={[0, 2, 8]} intensity={2.3}/>
-    <Suspense fallback={null}><TexturedPlanet texturePath={texturePath} radius={radius} artifacts={artifacts} regions={regions} orbits={orbits} selected={selected} onSelect={onSelect} selectedOrbit={selectedOrbit} onOrbitSelect={onOrbitSelect} focusedRegion={focusedRegion} onReady={onReady}/></Suspense>
+    <Suspense fallback={null}><TexturedPlanet texturePath={texturePath} radius={radius} artifacts={artifacts} regions={regions} orbits={orbits} selected={selected} onSelect={onSelect} selectedOrbit={selectedOrbit} onOrbitSelect={onOrbitSelect} focusedRegion={focusedRegion} onReady={onReady} signalHunter={signalHunter}/></Suspense>
     <CameraControls ref={controls} makeDefault minDistance={5.4} maxDistance={26} smoothTime={0.65} draggingSmoothTime={0.16} dollyToCursor={false} azimuthRotateSpeed={0.55} polarRotateSpeed={0.55} truckSpeed={0}/>
   </Canvas>;
 }

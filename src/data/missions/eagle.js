@@ -36,7 +36,7 @@ export const eagleMission = {
     ["Ascent engine", "Fixed thrust, about 15,000 N"],
     ["Surface walk", "2 h 31 min 40 s · about 250 m walked in total"],
     ["Samples returned", "21.55 kg of lunar rock and soil"],
-    ["Today", "Descent stage at Tranquility Base; ascent stage fate unknown"],
+    ["Today", "Descent stage at Tranquility Base"],
   ],
   timeline: [
     { when: "16 Jul 1969 · 13:32 UTC", title: "Launch", text: "Apollo 11 lifts off from Launch Complex 39A on a Saturn V. Eagle rides folded inside the adapter below Columbia.", photo: "S69-39961" },

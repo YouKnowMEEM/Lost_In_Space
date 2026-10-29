@@ -221,7 +221,7 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
 }
 .solar-brand strong{display:block;font-size:13px;letter-spacing:.12em;font-weight:900}
 .solar-brand small{display:block;margin-top:3px;font-size:9px;letter-spacing:.15em;color:#9baabd;font-weight:700}
-.solar-search-wrap{position:absolute;z-index:10;top:24px;left:50%;transform:translateX(-50%);width:min(390px,calc(100% - 300px))}
+.solar-search-wrap{position:absolute;z-index:110;top:24px;left:50%;transform:translateX(-50%);width:min(390px,calc(100% - 300px))}
 .solar-search{
   height:46px;display:flex;align-items:center;gap:10px;padding:0 14px;
   border:1px solid rgba(181,207,236,.22);border-radius:14px;
@@ -456,6 +456,7 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
 .nav-dropdown-menu a:hover{background:rgba(113,188,239,.13);color:white}
 .planet-hover-word{display:block;white-space:nowrap;color:#f5f8ff;font:800 12px "Nunito Sans",system-ui,sans-serif;letter-spacing:.18em;text-shadow:0 2px 12px #000,0 0 16px #a6d8ff;pointer-events:none}
 .deep-space-probe-label{display:block;padding:7px 10px;border:1px solid rgba(151,208,250,.65);border-radius:7px;background:rgba(3,10,20,.94);box-shadow:0 2px 14px rgba(0,0,0,.72),0 0 17px rgba(94,178,240,.3);color:#f0f7ff;font:800 13px/1.2 "Nunito Sans",system-ui,sans-serif;letter-spacing:.04em;text-shadow:0 1px 4px #000;white-space:nowrap;pointer-events:auto;cursor:pointer}
+.deep-space-probe-label.tutorial-pioneer-label{padding:4px 6px;border-radius:5px;font-size:9px}
 .solar-explore-pop{left:auto;right:clamp(22px,5vw,78px);top:50%;bottom:auto;transform:translateY(-50%);width:min(280px,calc(100% - 40px));padding:22px 24px;background:rgba(7,16,31,.82);border-color:rgba(165,211,248,.28)}
 .solar-explore-pop>strong{font-size:23px;letter-spacing:.12em}
 .solar-explore-pop>em{color:#d0d9e6;font:italic 15px/1.55 Georgia,serif}
@@ -748,8 +749,8 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
 .landing-explore:hover{background:rgba(56,102,151,.36);border-color:rgba(205,231,255,.8);transform:translateY(-2px)}
 @keyframes landing-drift{from{transform:translate3d(-1%,0,0) scale(1)}to{transform:translate3d(1%,.5%,0) scale(1.04)}}
 @media(prefers-reduced-motion:reduce){.landing-stars{animation:none}.landing-explore{transition:none}}
-.solar-home{height:calc(100vh - 72px);min-height:480px}
-@media(max-width:700px){.solar-home{height:calc(100svh - 64px);min-height:420px}}
+.solar-home{height:100vh;min-height:480px}
+@media(max-width:700px){.solar-home{height:100svh;min-height:420px}}
 
 
 /* Space explorer scale note */
