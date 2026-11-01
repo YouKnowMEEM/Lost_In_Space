@@ -132,6 +132,7 @@ export function Home() {
   const saturnAnchorRef = useRef(null);
   const uranusAnchorRef = useRef(null);
   const neptuneAnchorRef = useRef(null);
+  const plutoAnchorRef = useRef(null);
   const planetAnchors = {
     sun: sunAnchorRef,
     mercury: mercuryAnchorRef,
@@ -142,7 +143,8 @@ export function Home() {
     jupiter: jupiterAnchorRef,
     saturn: saturnAnchorRef,
     uranus: uranusAnchorRef,
-    neptune: neptuneAnchorRef
+    neptune: neptuneAnchorRef,
+    pluto: plutoAnchorRef
   };
   const probesRefs = useRef({});
   const [journey, setJourney] = useState(null);
@@ -256,6 +258,7 @@ export function Home() {
     { name: "Saturn", detail: "The ringed planet", type: "WORLD", action: () => setSelected("saturn") },
     { name: "Uranus", detail: "Ice giant planet with retrograde rotation", type: "WORLD", action: () => setSelected("uranus") },
     { name: "Neptune", detail: "Outermost ice giant planet", type: "WORLD", action: () => setSelected("neptune") },
+    { name: "Pluto", detail: "Dwarf planet in the Kuiper Belt · 248-year orbit", type: "DWARF PLANET", action: () => setSelected("pluto") },
     { name: "Deep Space", detail: "Interplanetary and heliocentric objects", type: "ARCHIVE", action: () => setSelected("deep") },
     { name: "Voyager 1", detail: "Interstellar probe launched in 1977 · Currently at ~172 AU", type: "SPACECRAFT", action: () => setSelected("voyager-1") },
     { name: "Voyager 2", detail: "Outer-planet explorer launched in 1977 · Currently at ~144 AU", type: "SPACECRAFT", action: () => setSelected("voyager-2") },
@@ -266,6 +269,16 @@ export function Home() {
   const matches = query.trim()
       ? searchable.filter(item => `${item.name} ${item.detail} ${item.type}`.toLowerCase().includes(query.trim().toLowerCase()))
       : [];
+  const selectSearchResult = (item) => {
+    item.action();
+    setQuery("");
+  };
+  const handleSearchKeyDown = (event) => {
+    if (event.key === "Enter" && matches.length > 0) {
+      event.preventDefault();
+      selectSearchResult(matches[0]);
+    }
+  };
 
   return <Shell immersive hideTopbar={tutorialIntro}><main className={`solar-home${tutorialIntro ? " is-tutorial-intro" : ""}`} id="main-content" tabIndex="-1">
     <AnimatePresence>
@@ -291,7 +304,7 @@ export function Home() {
             shadow-bias={-0.00008}
             shadow-normalBias={0.006}
         />
-        {tutorialIntro && <pointLight position={[17.5, 20.5, -68.8]} intensity={26} distance={14} decay={2} color="#b9ddff"/>}
+        {tutorialIntro && <pointLight position={[22.2, 23.1, -91.1]} intensity={26} distance={14} decay={2} color="#b9ddff"/>}
         <SpaceStarsBackdrop/>
         <Suspense fallback={null}>
           <SolarSystem selected={selected} onSelect={setSelected} planetAnchors={planetAnchors} probesRefs={probesRefs} paused={!!journey} speedModifier={speedModifier} cameraRef={cameraRef} onDistanceChange={setDistanceToSelected} tutorialIntro={tutorialIntro} introYaw={introYaw} introYawImmediate={introYawImmediate} introFlying={introFlying}/>
@@ -301,7 +314,7 @@ export function Home() {
     </div>
 
     {!tutorialIntro && <div className="solar-scale-caption">Orbits and deep-space probes are not in actual scale.</div>}
-    {!tutorialIntro && distanceToSelected && selected && <div style={{ position: "absolute", top: 20, left: 20, zIndex: 1000, background: "rgba(0,0,0,0.5)", padding: "8px 14px", borderRadius: "8px", color: "#afc8e8", fontFamily: "monospace", fontSize: "13px", backdropFilter: "blur(4px)", letterSpacing: "0.5px" }}>
+    {!tutorialIntro && distanceToSelected && selected && <div style={{ position: "absolute", top: 112, left: 20, zIndex: 90, background: "rgba(0,0,0,0.5)", padding: "8px 14px", borderRadius: "8px", color: "#afc8e8", fontFamily: "monospace", fontSize: "13px", backdropFilter: "blur(4px)", letterSpacing: "0.5px" }}>
       <span style={{ color: "#7a9cc6", fontSize: "11px" }}>DIST </span>{distanceToSelected} AU
     </div>}
     {!tutorialIntro && <div className="solar-controls-panel" style={{ position: "absolute", bottom: 20, right: 20, zIndex: 1000, background: "rgba(0,0,0,0.5)", padding: "10px", borderRadius: "8px", color: "white", display: "flex", flexDirection: "column", gap: "10px", backdropFilter: "blur(4px)" }}>
@@ -311,11 +324,11 @@ export function Home() {
     {!tutorialIntro && <div className="solar-search-wrap">
       <label className="solar-search">
         <ScanLine size={18}/>
-        <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search the solar system..." aria-label="Search space elements"/>
+        <input value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={handleSearchKeyDown} placeholder="Search the solar system..." aria-label="Search space elements"/>
         {query && <button type="button" aria-label="Clear search" onClick={()=>setQuery("")}>×</button>}
       </label>
       {matches.length > 0 && <div className="solar-search-results">
-        {matches.map(item=><button key={item.name} onClick={()=>{item.action();setQuery("");}}>
+        {matches.map(item=><button key={item.name} onClick={()=>selectSearchResult(item)}>
           <span><small>{item.type}</small><strong>{item.name}</strong><em>{item.detail}</em></span><ArrowRight size={16}/>
         </button>)}
       </div>}
@@ -334,6 +347,7 @@ export function Home() {
       {selected === "saturn" && <em>Its spectacular rings are made mostly of countless icy particles.</em>}
       {selected === "uranus" && <em>Uranus spins on its side, giving it some of the solar system's most extreme seasons.</em>}
       {selected === "neptune" && <em>Supersonic winds sweep through Neptune's deep blue atmosphere.</em>}
+      {selected === "pluto" && <em>Pluto is a dwarf planet in the Kuiper Belt, following an unusually eccentric, tilted orbit that takes 248 years.</em>}
       {selected === "deep" && <em>Interplanetary and heliocentric objects</em>}
       {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em><small className="scale-note"></small></>}
     </div>}
@@ -353,7 +367,8 @@ const PLANET_TEXTURES = {
   jupiter: "/models/2k_jupiter.jpeg",
   saturn: "/models/2k_saturn.jpeg",
   uranus: "/models/2k_uranus.jpeg",
-  neptune: "/models/2k_neptune.jpeg"
+  neptune: "/models/2k_neptune.jpeg",
+  pluto: "/models/2k_pluto.png"
 };
 
 function SunModel({ onClick, hovered, setHovered }) {
@@ -399,10 +414,11 @@ function SunModel({ onClick, hovered, setHovered }) {
 }
 useGLTF.preload("/models/sun.glb");
 
-function CelestialModel({ radius, onClick, name, hovered, setHovered }) {
+function CelestialModel({ radius, onClick, name, hovered, setHovered, selected }) {
   const spin = useRef();
   const texture = useTexture(PLANET_TEXTURES[name]);
   const ringTexture = name === "saturn" ? useTexture("/models/2k_saturn_ring_alpha.png") : null;
+  const shadowBody = name === "earth" || name === "moon";
   useFrame((_, delta) => {
     // Keep the Moon tidally locked in this schematic: its position orbits Earth,
     // while the visible face stays fixed instead of rotating around its axis.
@@ -411,7 +427,7 @@ function CelestialModel({ radius, onClick, name, hovered, setHovered }) {
   return (
     <group onClick={onClick} onPointerOver={(e)=>{e.stopPropagation();setHovered(name)}} onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
       <group ref={spin}>
-        <mesh castShadow receiveShadow>
+        <mesh castShadow={shadowBody} receiveShadow={shadowBody}>
           <sphereGeometry args={[radius, 64, 32]} />
           <meshStandardMaterial map={texture} roughness={1} />
         </mesh>
@@ -436,11 +452,11 @@ function SpaceStarsBackdrop() {
 }
 
 const PROBE_DATA = [
-  { id:"voyager-1", label:"Voyager 1", color:"#c9b98f", position:[-19.1, 57.5, -79.6], style:"voyager" },
-  { id:"voyager-2", label:"Voyager 2", color:"#c9b98f", position:[22.9, -54.8, -64.9], style:"voyager" },
-  { id:"pioneer-10", label:"Pioneer 10", color:"#d9b34f", position:[15.3, 4.5, 85.5], style:"pioneer" },
-  { id:"pioneer-11", label:"Pioneer 11", color:"#d9b34f", position:[17.5, 18.2, -71.7], style:"pioneer" },
-  { id:"new-horizons", label:"New Horizons", color:"#aeb9c7", position:[16.6, 1.9, -52.4], style:"new-horizons" }
+  { id:"voyager-1", label:"Voyager 1", color:"#c9b98f", position:[-23.1, 69.3, -95.9], style:"voyager" },
+  { id:"voyager-2", label:"Voyager 2", color:"#c9b98f", position:[28.2, -67.5, -79.9], style:"voyager" },
+  { id:"pioneer-10", label:"Pioneer 10", color:"#d9b34f", position:[18.9, 5.6, 105.5], style:"pioneer" },
+  { id:"pioneer-11", label:"Pioneer 11", color:"#d9b34f", position:[22.2, 23.1, -91.1], style:"pioneer" },
+  { id:"new-horizons", label:"New Horizons", color:"#aeb9c7", position:[20.5, 2.3, -64.6], style:"new-horizons" }
 ];
 
 function getTutorialCameraPosition(pioneerPosition) {
@@ -573,7 +589,7 @@ function solveKepler(meanAnomaly, eccentricity) {
   return eccentricAnomaly;
 }
 
-function EllipticalOrbit({ semiMajor, eccentricity, inclination = 0, color = "#9ba9bb", opacity = .18 }) {
+function EllipticalOrbit({ semiMajor, eccentricity, inclination = 0, longitudeOfAscendingNode = 0, argumentOfPerihelion = 0, color = "#9ba9bb", opacity = .18 }) {
   const line = useMemo(() => {
     const semiMinor = semiMajor * Math.sqrt(1 - eccentricity * eccentricity);
     const points = [];
@@ -586,7 +602,7 @@ function EllipticalOrbit({ semiMajor, eccentricity, inclination = 0, color = "#9
     return new THREE.LineLoop(geometry, material);
   }, [semiMajor, eccentricity, color, opacity]);
   useEffect(() => () => { line.geometry.dispose(); line.material.dispose(); }, [line]);
-  return <group rotation={[inclination,0,0]}><primitive object={line}/></group>;
+  return <group rotation={[0, longitudeOfAscendingNode, 0]}><group rotation={[inclination, 0, 0]}><group rotation={[0, argumentOfPerihelion, 0]}><primitive object={line}/></group></group></group>;
 }
 
 function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, speedModifier, cameraRef, onDistanceChange, tutorialIntro = false, introYaw = 0, introYawImmediate = false, introFlying = false }) {
@@ -603,6 +619,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
   const saturnPosition = useRef();
   const uranusPosition = useRef();
   const neptunePosition = useRef();
+  const plutoPosition = useRef();
 
   // Orbital plane refs for inclination tilts
   const mercuryPlane = useRef();
@@ -621,14 +638,20 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
   // Mercury: 0.39 AU, Venus: 0.72 AU, Earth: 1.0 AU, Mars: 1.52 AU, Jupiter: 5.2 AU, Saturn: 9.5 AU, Uranus: 19.2 AU, Neptune: 30.1 AU
   const mercuryA = 2.4, venusA = 3.6, earthA = 5.0, moonA = 0.85, marsA = 7.6;
   const jupiterA = 14.5, saturnA = 21.5, uranusA = 29.5, neptuneA = 38.0;
+  // Pluto's J2000 elements are from NASA NSSDCA; scale its semimajor axis against Neptune.
+  const plutoA = neptuneA * (39.48168677 / 30.1);
 
   // Real orbital eccentricities
   const mercuryE = 0.2056, venusE = 0.0067, earthE = 0.0167, moonE = 0.0549, marsE = 0.0934;
   const jupiterE = 0.0489, saturnE = 0.0565, uranusE = 0.0463, neptuneE = 0.0095;
+  const plutoE = 0.24880766;
 
   // Real orbital periods in days
   const mercuryPeriod = 87.97, venusPeriod = 224.7, earthPeriod = 365.256, moonPeriod = 27.3217, marsPeriod = 686.98;
   const jupiterPeriod = 4332.6, saturnPeriod = 10759.2, uranusPeriod = 30685.4, neptunePeriod = 60189.0;
+  const plutoPeriod = 90560;
+  // Compressed but correctly ordered: outer planets are slower than inner ones.
+  const visPeriod = (period) => 365.256 * Math.pow(period / 365.256, 0.35);
 
   // Real orbital inclinations in radians
   const incMercury = THREE.MathUtils.degToRad(7.0);
@@ -639,6 +662,10 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
   const incSaturn = THREE.MathUtils.degToRad(2.49);
   const incUranus = THREE.MathUtils.degToRad(0.77);
   const incNeptune = THREE.MathUtils.degToRad(1.77);
+  const plutoInclination = THREE.MathUtils.degToRad(17.14175);
+  const plutoAscendingNode = THREE.MathUtils.degToRad(110.30347);
+  const plutoArgumentOfPerihelion = THREE.MathUtils.degToRad(224.06676 - 110.30347);
+  const plutoMeanAnomalyAtEpoch = THREE.MathUtils.degToRad(238.92881 - 224.06676);
 
   const targetPos = useMemo(() => new THREE.Vector3(), []);
   const camPos = useMemo(() => new THREE.Vector3(), []);
@@ -670,7 +697,8 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     jupiter: 0.72,
     saturn: 0.60,
     uranus: 0.42,
-    neptune: 0.40
+    neptune: 0.40,
+    pluto: 0.08 // Scaled from Pluto's 2,377 km diameter using the existing visual size exaggeration.
   };
 
   const ZOOM_DISTANCES = {
@@ -683,7 +711,8 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     jupiter: 3.2,
     saturn: 3.5,
     uranus: 2.1,
-    neptune: 2.0
+    neptune: 2.0,
+    pluto: 0.65
   };
 
   const getTargetRef = (sel) => {
@@ -696,8 +725,6 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     if (paused && !tutorialIntro) return;
     if (!paused) elapsed.current += Math.min(delta, 0.05) * 3 * speedModifier;
     const days = elapsed.current;
-    // Outer planet periods are compressed so their orbital motion is visible in the model.
-    const outerOrbitDays = days * 120;
 
     // Kepler equation solver for all planets
     const mercuryEcc = solveKepler((days / mercuryPeriod) * Math.PI * 2 + 1.2, mercuryE);
@@ -705,10 +732,11 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     const earthEcc = solveKepler((days / earthPeriod) * Math.PI * 2 + 0.3, earthE);
     const moonEcc = solveKepler((days / moonPeriod) * Math.PI * 2 + 0.7, moonE);
     const marsEcc = solveKepler((days / marsPeriod) * Math.PI * 2 + 2.1, marsE);
-    const jupiterEcc = solveKepler((outerOrbitDays / jupiterPeriod) * Math.PI * 2 + 4.2, jupiterE);
-    const saturnEcc = solveKepler((outerOrbitDays / saturnPeriod) * Math.PI * 2 + 1.6, saturnE);
-    const uranusEcc = solveKepler((outerOrbitDays / uranusPeriod) * Math.PI * 2 + 3.1, uranusE);
-    const neptuneEcc = solveKepler((outerOrbitDays / neptunePeriod) * Math.PI * 2 + 5.0, neptuneE);
+    const jupiterEcc = solveKepler((days / visPeriod(jupiterPeriod)) * Math.PI * 2 + 4.2, jupiterE);
+    const saturnEcc = solveKepler((days / visPeriod(saturnPeriod)) * Math.PI * 2 + 1.6, saturnE);
+    const uranusEcc = solveKepler((days / visPeriod(uranusPeriod)) * Math.PI * 2 + 3.1, uranusE);
+    const neptuneEcc = solveKepler((days / visPeriod(neptunePeriod)) * Math.PI * 2 + 5.0, neptuneE);
+    const plutoEcc = solveKepler((days / visPeriod(plutoPeriod)) * Math.PI * 2 + plutoMeanAnomalyAtEpoch, plutoE);
 
     if (mercuryPosition.current) mercuryPosition.current.position.set(mercuryA * (Math.cos(mercuryEcc) - mercuryE), 0, mercuryA * Math.sqrt(1 - mercuryE * mercuryE) * Math.sin(mercuryEcc));
     if (venusPosition.current) venusPosition.current.position.set(venusA * (Math.cos(venusEcc) - venusE), 0, venusA * Math.sqrt(1 - venusE * venusE) * Math.sin(venusEcc));
@@ -719,6 +747,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     if (saturnPosition.current) saturnPosition.current.position.set(saturnA * (Math.cos(saturnEcc) - saturnE), 0, saturnA * Math.sqrt(1 - saturnE * saturnE) * Math.sin(saturnEcc));
     if (uranusPosition.current) uranusPosition.current.position.set(uranusA * (Math.cos(uranusEcc) - uranusE), 0, uranusA * Math.sqrt(1 - uranusE * uranusE) * Math.sin(uranusEcc));
     if (neptunePosition.current) neptunePosition.current.position.set(neptuneA * (Math.cos(neptuneEcc) - neptuneE), 0, neptuneA * Math.sqrt(1 - neptuneE * neptuneE) * Math.sin(neptuneEcc));
+    if (plutoPosition.current) plutoPosition.current.position.set(plutoA * (Math.cos(plutoEcc) - plutoE), 0, plutoA * Math.sqrt(1 - plutoE * plutoE) * Math.sin(plutoEcc));
 
     if (planetAnchors?.moon?.current) planetAnchors.moon.current.getWorldPosition(moonWorld);
 
@@ -828,7 +857,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
         onDistanceChange((dist * 0.2).toFixed(2));
       }
     }
-  });
+  },-2);
 
   const select = (name) => (event) => { event.stopPropagation(); onSelect(name); };
 
@@ -847,6 +876,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <EllipticalOrbit semiMajor={saturnA} eccentricity={saturnE} inclination={incSaturn} color="#e8edf5" opacity={0.2} />
     <EllipticalOrbit semiMajor={uranusA} eccentricity={uranusE} inclination={incUranus} color="#e8edf5" opacity={0.18} />
     <EllipticalOrbit semiMajor={neptuneA} eccentricity={neptuneE} inclination={incNeptune} color="#e8edf5" opacity={0.18} />
+    <EllipticalOrbit semiMajor={plutoA} eccentricity={plutoE} inclination={plutoInclination} longitudeOfAscendingNode={plutoAscendingNode} argumentOfPerihelion={plutoArgumentOfPerihelion} color="#e8edf5" opacity={0.18} />
 
     {/* Deep Space Probes */}
     {PROBE_DATA.map(probe =>
@@ -930,6 +960,19 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
       <group ref={neptunePosition}>
         <group ref={planetAnchors?.neptune}>
           <CelestialModel radius={RADII.neptune} name="neptune" hovered={hovered} setHovered={setHovered} onClick={select("neptune")} />
+        </group>
+      </group>
+    </group>
+
+    {/* Pluto's orbit uses NASA's J2000 orbital elements. */}
+    <group rotation={[0, plutoAscendingNode, 0]}>
+      <group rotation={[plutoInclination, 0, 0]}>
+        <group rotation={[0, plutoArgumentOfPerihelion, 0]}>
+          <group ref={plutoPosition}>
+            <group ref={planetAnchors?.pluto}>
+              <CelestialModel radius={RADII.pluto} name="pluto" hovered={hovered} setHovered={setHovered} onClick={select("pluto")} selected={selected} />
+            </group>
+          </group>
         </group>
       </group>
     </group>
