@@ -14,8 +14,15 @@
     "equipmentType": "Robotic Soft Lander",
     "mass": "572 kg",
     "description": "First successful long-term lander on Mars, operating in Chryse Planitia.",
-    "hardwareList": ["Lander Frame", "Surface Sampler Boom", "GCMS Instrument", "Seismometer", "RTG Power Unit"],
-    "readMoreUrl": "https://mars.nasa.gov/viking/"
+    "hardwareList": [
+      "Lander Frame",
+      "Surface Sampler Boom",
+      "GCMS Instrument",
+      "Seismometer",
+      "RTG Power Unit"
+    ],
+    "readMoreUrl": "https://mars.nasa.gov/viking/",
+    "storyPath": "/viking-1"
   },
   {
     "id": "viking-2",
@@ -28,12 +35,18 @@
     "status": "Landermodule on surface (Decommissioned)",
     "statusCategory": "intact",
     "lat": 48.27,
-    "lon": 134.00,
+    "lon": 134.0,
     "equipmentType": "Robotic Soft Lander",
     "mass": "572 kg",
     "description": "Landed in Utopia Planitia to search for signs of Martian life and analyze soil.",
-    "hardwareList": ["Lander Frame", "Surface Sampler Boom", "Cameras", "Meteorology Sensor Array"],
-    "readMoreUrl": "https://mars.nasa.gov/viking/"
+    "hardwareList": [
+      "Lander Frame",
+      "Surface Sampler Boom",
+      "Cameras",
+      "Meteorology Sensor Array"
+    ],
+    "readMoreUrl": "https://mars.nasa.gov/viking/",
+    "storyPath": "/object/viking-2"
   },
   {
     "id": "pathfinder-sojourner",
@@ -50,8 +63,14 @@
     "equipmentType": "Soft Lander + Micro-Rover",
     "mass": "470 kg",
     "description": "Demonstrated airbag landing technology and deployed Sojourner, the first wheeled rover on Mars.",
-    "hardwareList": ["Carl Sagan Memorial Base", "Sojourner Rover", "IMP Camera Mast", "Airbag Assembly Base"],
-    "readMoreUrl": "https://mars.nasa.gov/mars-exploration/missions/pathfinder/"
+    "hardwareList": [
+      "Carl Sagan Memorial Base",
+      "Sojourner Rover",
+      "IMP Camera Mast",
+      "Airbag Assembly Base"
+    ],
+    "readMoreUrl": "https://mars.nasa.gov/mars-exploration/missions/pathfinder/",
+    "storyPath": "/object/pathfinder-sojourner"
   },
   {
     "id": "spirit-mer-a",
@@ -68,8 +87,15 @@
     "equipmentType": "Robotic Exploration Rover",
     "mass": "185 kg",
     "description": "Explored Gusev Crater, confirming ancient liquid water activity before becoming stationary in 2009.",
-    "hardwareList": ["Spirit Rover Body", "Pancam", "Robotic Arm (IDD)", "Mössbauer Spectrometer", "Solar Panels"],
-    "readMoreUrl": "https://mars.nasa.gov/mer/"
+    "hardwareList": [
+      "Spirit Rover Body",
+      "Pancam",
+      "Robotic Arm (IDD)",
+      "Mössbauer Spectrometer",
+      "Solar Panels"
+    ],
+    "readMoreUrl": "https://mars.nasa.gov/mer/",
+    "storyPath": "/object/spirit-mer-a"
   },
   {
     "id": "opportunity-mer-b",
@@ -82,12 +108,18 @@
     "status": "Rover on surface (Decommissioned)",
     "statusCategory": "intact",
     "lat": -1.95,
-    "lon": -354.47,
+    "lon": -5.53,
     "equipmentType": "Robotic Exploration Rover",
     "mass": "185 kg",
     "description": "Traversed over 45 km across Meridiani Planum, operating for over 14 years.",
-    "hardwareList": ["Opportunity Rover Body", "Microscopic Imager", "Rock Abrasion Tool (RAT)", "Solar Array"],
-    "readMoreUrl": "https://mars.nasa.gov/mer/"
+    "hardwareList": [
+      "Opportunity Rover Body",
+      "Microscopic Imager",
+      "Rock Abrasion Tool (RAT)",
+      "Solar Array"
+    ],
+    "readMoreUrl": "https://mars.nasa.gov/mer/",
+    "storyPath": "/object/opportunity-mer-b"
   },
   {
     "id": "phoenix-lander",
@@ -104,8 +136,14 @@
     "equipmentType": "Robotic Polar Lander",
     "mass": "350 kg",
     "description": "Landed near the northern polar ice cap and verified the presence of water ice beneath the surface.",
-    "hardwareList": ["Lander Frame", "Robotic Arm with Trenching Scoop", "TEGA Analyzer", "MECA Suite"],
-    "readMoreUrl": "https://mars.nasa.gov/phoenix/"
+    "hardwareList": [
+      "Lander Frame",
+      "Robotic Arm with Trenching Scoop",
+      "TEGA Analyzer",
+      "MECA Suite"
+    ],
+    "readMoreUrl": "https://mars.nasa.gov/phoenix/",
+    "storyPath": "/object/phoenix-lander"
   },
   {
     "id": "curiosity-msl",
@@ -116,14 +154,21 @@
     "launchDate": "2011-11-26",
     "landingDate": "2012-08-06",
     "status": "Active operational rover",
-    "statusCategory": "intact",
+    "statusCategory": "active",
     "lat": -4.58,
     "lon": 137.44,
     "equipmentType": "Nuclear-Powered Science Laboratory Rover",
     "mass": "899 kg",
     "description": "Currently exploring Gale Crater and Mount Sharp to evaluate ancient habitable environments.",
-    "hardwareList": ["Curiosity Rover Body", "ChemCam Laser", "MMRTG Power Unit", "Mastcam", "SAM Instrument Suite"],
-    "readMoreUrl": "https://mars.nasa.gov/msl/"
+    "hardwareList": [
+      "Curiosity Rover Body",
+      "ChemCam Laser",
+      "MMRTG Power Unit",
+      "Mastcam",
+      "SAM Instrument Suite"
+    ],
+    "readMoreUrl": "https://mars.nasa.gov/msl/",
+    "storyPath": "/object/curiosity-msl"
   },
   {
     "id": "insight-lander",
@@ -135,13 +180,19 @@
     "landingDate": "2018-11-26",
     "status": "Landermodule & instruments on surface (Decommissioned)",
     "statusCategory": "intact",
-    "lat": 4.50,
+    "lat": 4.5,
     "lon": 135.62,
     "equipmentType": "Geophysical Station Lander",
     "mass": "358 kg",
     "description": "Measured marsquakes and internal heat flow in Elysium Planitia to probe Mars' internal structure.",
-    "hardwareList": ["InSight Lander Frame", "SEIS Seismometer", "HP3 Heat Flow Probe ('The Mole')", "Solar Panels"],
-    "readMoreUrl": "https://mars.nasa.gov/insight/"
+    "hardwareList": [
+      "InSight Lander Frame",
+      "SEIS Seismometer",
+      "HP3 Heat Flow Probe ('The Mole')",
+      "Solar Panels"
+    ],
+    "readMoreUrl": "https://mars.nasa.gov/insight/",
+    "storyPath": "/object/insight-lander"
   },
   {
     "id": "perseverance-mars-2020",
@@ -152,14 +203,21 @@
     "launchDate": "2020-07-30",
     "landingDate": "2021-02-18",
     "status": "Active operational rover",
-    "statusCategory": "intact",
+    "statusCategory": "active",
     "lat": 18.44,
     "lon": 77.45,
     "equipmentType": "Astrobiology Sample-Collecting Rover",
     "mass": "1025 kg",
     "description": "Exploring Jezero Crater for biosignatures and caching soil and rock cores for future sample return.",
-    "hardwareList": ["Perseverance Rover Body", "SuperCam", "MOXIE Oxygen Generator", "PIXL", "Sample Caching System"],
-    "readMoreUrl": "https://mars.nasa.gov/mars2020/"
+    "hardwareList": [
+      "Perseverance Rover Body",
+      "SuperCam",
+      "MOXIE Oxygen Generator",
+      "PIXL",
+      "Sample Caching System"
+    ],
+    "readMoreUrl": "https://mars.nasa.gov/mars2020/",
+    "storyPath": "/object/perseverance-mars-2020"
   },
   {
     "id": "ingenuity-helicopter",
@@ -176,7 +234,13 @@
     "equipmentType": "Autonomous Rotorcraft Drone",
     "mass": "1.8 kg",
     "description": "Completed 72 powered flights in Jezero Crater, proving controlled aerial flight on another planet.",
-    "hardwareList": ["Rotor Blade Assembly", "Solar Panel Cap", "Navigational Cameras", "Landing Legs"],
-    "readMoreUrl": "https://mars.nasa.gov/technology/helicopter/"
+    "hardwareList": [
+      "Rotor Blade Assembly",
+      "Solar Panel Cap",
+      "Navigational Cameras",
+      "Landing Legs"
+    ],
+    "readMoreUrl": "https://mars.nasa.gov/technology/helicopter/",
+    "storyPath": "/object/ingenuity-helicopter"
   }
 ]

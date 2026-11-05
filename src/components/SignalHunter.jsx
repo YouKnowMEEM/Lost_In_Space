@@ -8,7 +8,7 @@ import "./signalHunter.css";
 /* ------------------------------------------------------------------ */
 const ROUNDS = 5;
 const PINGS_PER_ROUND = 8;
-const FOUND_RADIUS_DEG = 4; // about 120 km on the Moon
+const FOUND_RADIUS_DEG = 4; // about 120 km on the Moon, 240 km on Mars
 const HINT_AFTER_PINGS = 3;
 
 // Closest band first. `max` is angular distance in degrees.
@@ -258,7 +258,7 @@ function RevealMark({ target, found, radius }) {
 /* ------------------------------------------------------------------ */
 /* HTML overlay. Render OUTSIDE the Canvas.                            */
 /* ------------------------------------------------------------------ */
-export function SignalHUD({ game, onOpenStory }) {
+export function SignalHUD({ game, onOpenStory, body = "the Moon" }) {
   const { phase, target, lastPing } = game;
 
   if (phase === "idle") {
@@ -267,7 +267,7 @@ export function SignalHUD({ game, onOpenStory }) {
         <section className="sh-panel">
           <h2 className="sh-title">Signal Hunter</h2>
           <p className="sh-text">
-            A forgotten piece of equipment is still sending a faint signal. Tap the Moon to send a
+            A forgotten piece of equipment is still sending a faint signal. Tap {body} to send a
             ping. The warmer the color, the closer you are. You have {PINGS_PER_ROUND} pings per
             target.
           </p>
@@ -333,7 +333,7 @@ export function SignalHUD({ game, onOpenStory }) {
           />
         </div>
         <p className="sh-readout" style={{ color: lastPing?.color }}>
-          {lastPing ? lastPing.label : "Tap the Moon to send your first ping."}
+          {lastPing ? lastPing.label : `Tap ${body} to send your first ping.`}
         </p>
 
         <div className="sh-dots" aria-label={`${game.pingsLeft} pings left`}>

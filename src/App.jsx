@@ -9,6 +9,11 @@ const MarsPage = lazy(() => import("./pages/MarsPage"));
 const EaglePage = lazy(() => import("./pages/EaglePage"));
 const VikingPage = lazy(() => import("./pages/VikingPage"));
 const VoyagerPage = lazy(() => import("./pages/VoyagerPage"));
+const AtlasPage = lazy(() => import("./pages/AtlasPage"));
+const ObjectPage = lazy(() => import("./pages/ObjectPage"));
+const PlayPage = lazy(() => import("./pages/PlayPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const TutorialOverlay = lazy(() => import("./components/TutorialOverlay"));
 
 const fill = {
@@ -92,7 +97,11 @@ export default function App() {
           <Route path="/voyager-1" element={<VoyagerPage />} />
           <Route path="/voyager-1/mission" element={<VoyagerPage mode="mission" />} />
           <Route path="/voyager" element={<Navigate to="/voyager-1" replace />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/atlas" element={<AtlasPage />} />
+          <Route path="/object/:id" element={<ObjectPage />} />
+          <Route path="/play" element={<PlayPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         </Suspense>
       </Boundary>

@@ -1,0 +1,383 @@
+// Field notes for the machines resting on the Moon. Facts were checked against NASA's NSSDCA
+// records, the Apollo Lunar Surface Journal, NASA Science and the NASA Image and Video Library.
+// "story" is written in the machine's imagined voice, built only from real events.
+
+export const MOON_NOTES = {
+  "apollo-12": {
+    short: "Intrepid",
+    mission: "Apollo 12",
+    tagline: "The lander that parked next to a robot.",
+    riddle: "I landed so close to a robot that was already waiting on the Moon that two astronauts could walk over and visit it.",
+    story: [
+      "My astronauts, Pete Conrad and Alan Bean, aimed me at one very small target: a robot called Surveyor 3, waiting in a crater since 1967. Nobody had ever landed on a spot chosen so exactly. I came down less than 200 metres away.",
+      "They climbed down, bounced across the dust and walked to the old robot. They snipped off its camera and its scoop and carried them home, so that scientists could see what two and a half years on the Moon had done to metal.",
+      "When the astronauts left, my upper half flew them away and was sent crashing back into the Moon on purpose. The Moon rang like a bell for almost an hour. My lower half stayed, with its legs in the dust, to keep watch over both of us.",
+    ],
+    whySent: "To prove that pilots could land exactly where scientists wanted, not just somewhere flat. Pinpoint landing made it possible to visit chosen places, like the lava plains of the Ocean of Storms.",
+    discoveries: [
+      { t: "Pinpoint landing worked", d: "Landing within walking distance of Surveyor 3 showed Apollo could reach one chosen spot on another world." },
+      { t: "Metal and wiring survived the Moon", d: "Parts of Surveyor 3 returned to Earth gave engineers a first look at how materials age in space." },
+      { t: "A moonquake like a ringing bell", d: "The crash of the empty ascent stage was recorded by the seismometer and rang for nearly an hour. Scientists learned that the Moon's outer layers are very dry and shattered, so waves keep bouncing around." },
+    ],
+    how: [
+      { t: "ALSEP: a science station with its own power plant", d: "Apollo 12 left behind the first full ALSEP. A small nuclear generator powered its instruments for years after the crew went home. NASA switched all the ALSEPs off on 30 September 1977." },
+      { t: "Descent stage as a launch pad", d: "The lower half carried the landing engine and the legs, then stayed behind as the platform for the ascent stage. That is why it is still there." },
+    ],
+    numbers: [{ v: "31½ h", l: "on the Moon" }, { v: "< 200 m", l: "from Surveyor 3" }, { v: "34 kg", l: "of rocks brought home" }, { v: "2", l: "moonwalks" }],
+    left: "The descent stage, and the ALSEP science station with its seismometer and nuclear power unit.",
+    fun: "Lightning struck the Saturn V rocket twice shortly after liftoff. The spacecraft kept flying. One of the most famous Apollo photographs shows Pete Conrad beside Surveyor 3, with Intrepid in the distance.",
+    library: "Apollo 12 Intrepid Surveyor 3",
+    nssdc: "1969-099C",
+  },
+
+  "apollo-14": {
+    short: "Antares",
+    mission: "Apollo 14",
+    tagline: "The lander that carried a golf club to the Moon.",
+    riddle: "A pilot who had been the first American in space used me to reach the Moon, then hit golf balls near my legs.",
+    story: [
+      "I was supposed to be a second chance. The mission before mine never reached the Moon, so my crew, Alan Shepard and Edgar Mitchell, were sent to the same place: the rolling hills of Fra Mauro, made of rock thrown out by a giant impact.",
+      "They pulled a little two-wheeled cart across the dust, the Modular Equipment Transporter, nicknamed the Moon rickshaw. It carried tools, cameras and rocks. They climbed towards Cone crater and collected samples from material dug deep out of the Moon.",
+      "Before leaving, Shepard took out a golf club head he had brought in his personal kit, attached it to a sampling handle and hit two golf balls. Then the two men flew home and I stayed at Fra Mauro, quiet, with my legs in the dust.",
+    ],
+    whySent: "To visit Fra Mauro, the target of the interrupted Apollo 13 mission, where deep, old rock thrown out by a huge impact lay on the surface for astronauts to pick up.",
+    discoveries: [
+      { t: "Rocks from deep inside the Moon", d: "The 42 kg of samples included breccias, rocks made of broken pieces glued together by impacts, which helped date the huge impact that made the Imbrium basin." },
+      { t: "Thumping the ground", d: "A hand-held thumper fired small charges into the soil while a line of listening devices recorded the echoes, to map the layers beneath the surface." },
+      { t: "Moon trees", d: "Command pilot Stuart Roosa carried tree seeds around the Moon. Seedlings grown from them were later planted in many places on Earth." },
+    ],
+    how: [
+      { t: "A cart to carry science", d: "The hand-pulled MET let two people bring more tools and bring home more rocks than they could carry in their arms. The next missions solved the same problem with a Moon car." },
+      { t: "Active Seismic Experiment", d: "The thumper let scientists make their own tiny moonquakes on demand and read the echoes, instead of waiting for natural ones." },
+    ],
+    numbers: [{ v: "33½ h", l: "on the Moon" }, { v: "42 kg", l: "of rocks brought home" }, { v: "2", l: "moonwalks" }, { v: "47", l: "age of Shepard, the oldest Moon walker" }],
+    left: "The descent stage, an ALSEP science station, the MET cart, and a couple of golf balls.",
+    fun: "Because of his stiff spacesuit, Alan Shepard had to swing his golf club with one hand.",
+    library: "Apollo 14 Antares Fra Mauro",
+    nssdc: "1971-008C",
+  },
+
+  "apollo-15": {
+    short: "Falcon",
+    mission: "Apollo 15",
+    tagline: "The lander that brought a car.",
+    riddle: "I was the first lunar module to carry a car, and my crew dropped a hammer and a feather to prove an old idea right.",
+    story: [
+      "I was bigger and stronger than the landers before me, built to stay for almost three days. I came down beside Hadley Rille, a winding valley next to tall mountains, with astronauts David Scott and James Irwin.",
+      "Folded against my side was a surprise: the first Lunar Roving Vehicle. Once unfolded, it carried the two men some 28 kilometres across the Moon, much farther than anyone had been able to walk away from a lander.",
+      "Scott dropped a hammer and a feather together, and in the Moon's vacuum they landed at the same moment, just as Galileo had predicted. The crew also left a tiny aluminium sculpture of a fallen astronaut, in memory of the people who died in the race to space.",
+    ],
+    whySent: "Apollo 15 was the first of three 'J' missions: longer stays and a Moon car, so the crew could explore a mountain-and-valley site far beyond walking range.",
+    discoveries: [
+      { t: "The Genesis Rock", d: "A pale rock from the mountain base was more than 4 billion years old, a piece of the Moon's earliest crust." },
+      { t: "Galileo was right on the Moon", d: "The hammer and feather fell at the same speed in the vacuum, live on TV." },
+      { t: "A small satellite", d: "From orbit, the crew released a small satellite that studied the Moon's magnetic field and its lumpy gravity for more than a year." },
+    ],
+    how: [
+      { t: "A folding car", d: "The rover folded flat to fit in a tiny storage bay in my side, then unfolded on the Moon. Its wheels were wire mesh, because rubber tyres would not survive the heat and cold." },
+      { t: "A TV camera you could steer from Earth", d: "The rover carried a camera that engineers in Mission Control could aim, so the world could watch the liftoff from the surface." },
+    ],
+    numbers: [{ v: "67 h", l: "on the Moon" }, { v: "28 km", l: "driven in the rover" }, { v: "77 kg", l: "of rocks brought home" }, { v: "3", l: "moonwalks" }],
+    left: "The descent stage, the Lunar Roving Vehicle parked nearby, an ALSEP station, and the small 'Fallen Astronaut' sculpture with its plaque.",
+    fun: "The rover was parked so its TV camera could film the liftoff of my upper half.",
+    library: "Apollo 15 Hadley Rille Falcon",
+    nssdc: "1971-063C",
+  },
+
+  "apollo-16": {
+    short: "Orion",
+    mission: "Apollo 16",
+    tagline: "The lander that went to the highlands.",
+    riddle: "My astronauts were the first to land in the bright lunar highlands, and their Moon car sped downhill at about 17 kilometres an hour.",
+    story: [
+      "I carried John Young and Charles Duke to the Descartes Highlands, bright, rugged country far from the dark plains where earlier landers had touched down. Scientists were sure the hills were volcanic. They wanted proof.",
+      "The astronauts drove their rover almost 27 kilometres across the hills. Going downhill, Young reached about 17 kilometres an hour, which felt very fast in such low gravity and bumpy ground. (Apollo 17's crew later went a little faster.)",
+      "On the last day, Duke left a small photograph of his family on the dust. When we were gone, a camera I had carried was still sitting on a hillside, a telescope looking at the stars with nobody to look through it.",
+    ],
+    whySent: "To sample the lunar highlands, the old bright mountains, and test whether they were made of volcanic rock.",
+    discoveries: [
+      { t: "The highlands were not volcanic", d: "The rocks turned out to be breccias, shattered by billions of years of impacts, not lava. Scientists had to change their picture of how the highlands formed." },
+      { t: "The first observatory on the Moon", d: "A camera placed on the surface photographed Earth's glowing upper atmosphere and faint stars in ultraviolet light, which is blocked by our air." },
+      { t: "Almost 96 kg of samples", d: "Most were breccias and other highland rocks, material that earlier missions to the dark plains could not reach." },
+    ],
+    how: [
+      { t: "A telescope without air", d: "The Far Ultraviolet Camera/Spectrograph was built to see light that Earth's atmosphere absorbs. The Moon, with almost no air, was the perfect place to set it up." },
+      { t: "Wire-mesh wheels, four motors", d: "Each wheel of the rover had its own electric motor, and it could steer with front and rear wheels. Wire mesh coped with the Moon's extreme heat and cold." },
+    ],
+    numbers: [{ v: "71 h", l: "on the Moon" }, { v: "96 kg", l: "of rocks brought home" }, { v: "27 km", l: "driven in the rover" }, { v: "17 km/h", l: "top rover speed" }],
+    left: "The descent stage, the rover, an ALSEP station, a small ultraviolet camera, and a family photograph in a plastic cover.",
+    fun: "The ultraviolet camera was designed by George Carruthers, an astrophysicist from the Naval Research Laboratory.",
+    library: "Apollo 16 Orion Descartes",
+    nssdc: "1972-031C",
+  },
+
+  "apollo-17": {
+    short: "Challenger",
+    mission: "Apollo 17",
+    tagline: "The last lander, so far, to carry people.",
+    riddle: "I was the last lunar module to carry astronauts to the Moon, and my crew included a geologist who found orange soil.",
+    story: [
+      "I am the last human-carrying lander to touch the Moon so far. I came down in the Taurus–Littrow valley, a deep valley between mountains, with Eugene Cernan, Harrison Schmitt, a geologist, and Ronald Evans waiting above.",
+      "Schmitt was the first scientist to walk on the Moon. Near a small crater he stopped and said the soil was orange. It was made of tiny glass beads from an ancient volcanic eruption, a clue that the Moon's inside once erupted in fire fountains.",
+      "A plaque on one of my legs says that we came in peace for all mankind. Cernan read it aloud before climbing the ladder for the last time. Then my upper half lifted off, and the Moon has been without visitors since.",
+    ],
+    whySent: "To spend the longest time on the Moon, with a trained geologist on the crew, in a valley chosen to sample both old highland rock and young volcanic material.",
+    discoveries: [
+      { t: "Orange volcanic glass", d: "Tiny beads of glass about 3.6 billion years old came from fire fountains, showing the Moon's interior held more volatile material than expected." },
+      { t: "A record haul", d: "About 110 kg of rocks and soil, the most of any Apollo mission." },
+      { t: "Echoes under the valley", d: "Small explosive charges recorded by listening devices revealed the layers beneath the valley floor." },
+    ],
+    how: [
+      { t: "Three long moonwalks", d: "Three outings added up to more than 22 hours outside, with the rover carrying the astronauts about 36 km, the farthest any crew has driven on the Moon." },
+      { t: "A nighttime launch", d: "Apollo 17 was the only Saturn V launched at night. On the way to the Moon the crew took the famous 'Blue Marble' photograph of the whole Earth, lit by the Sun behind them." },
+    ],
+    numbers: [{ v: "75 h", l: "on the Moon" }, { v: "110 kg", l: "of rocks brought home" }, { v: "22 h", l: "of moonwalks" }, { v: "36 km", l: "driven in the rover" }],
+    left: "The descent stage with its plaque, the rover parked where its TV camera filmed the liftoff, an ALSEP station and science experiments.",
+    fun: "The 'Blue Marble' photograph of Earth, one of the most-reproduced images in history, was taken by the crew of Apollo 17.",
+    library: "Apollo 17 Challenger Taurus-Littrow",
+    nssdc: "1972-096C",
+  },
+
+  "surveyor-1": {
+    short: "Surveyor 1",
+    mission: "Surveyor 1",
+    tagline: "The first American robot to land softly on the Moon.",
+    riddle: "I was the first American spacecraft to land gently on another world, and I did it on my first try.",
+    story: [
+      "Before me, American spacecraft that went to the Moon crashed into it, on purpose or by accident. I was supposed to do something much harder: touch down gently, on three legs, and stay in one piece.",
+      "My engines slowed me down almost to a stop a few metres above the ground. I settled onto the plain of the Ocean of Storms in June 1966 and, within minutes, sent home the first pictures from the surface. Nobody knew for sure what the ground would be like.",
+      "I sent back more than 11,000 pictures. Engineers learned that the dust was firm enough to stand on. I kept working through the lunar night and stayed quiet in the cold when my power faded in early 1967.",
+    ],
+    whySent: "To find out whether the Moon's surface could hold a spacecraft, and to practise soft landings before Apollo tried to land people.",
+    discoveries: [
+      { t: "The Moon was solid enough", d: "Some scientists feared the Moon was covered in dust so deep that a lander would sink. Surveyor 1's footpads and pictures showed the ground was firm." },
+      { t: "A view for Apollo planners", d: "Over 11,000 photographs gave the first close look at the rocks, dust and sky from the surface." },
+      { t: "Surviving the lunar night", d: "It endured the extreme cold of the two-week night and woke up, proof that machines could last on the Moon." },
+    ],
+    how: [
+      { t: "Throttle and radar", d: "A radar measured height and speed, and a throttleable rocket slowed the lander to a gentle stop. The same idea, bigger, landed Apollo's lunar module." },
+      { t: "Strain gauges in the legs", d: "Sensors in the legs measured how hard the lander hit and how deep the pads sank, which told scientists how strong the ground was." },
+    ],
+    numbers: [{ v: "2 Jun 1966", l: "touchdown" }, { v: "11,000+", l: "pictures sent" }, { v: "294 kg", l: "landed mass" }, { v: "1st", l: "U.S. soft landing" }],
+    left: "The whole lander: three legs, a camera, a solar panel and an antenna, now resting in the Ocean of Storms.",
+    fun: "NASA's Lunar Reconnaissance Orbiter has photographed several Surveyor landing sites from orbit.",
+    library: "Surveyor 1 lunar lander",
+    nssdc: "1966-045A",
+  },
+
+  "surveyor-3": {
+    short: "Surveyor 3",
+    mission: "Surveyor 3",
+    tagline: "The robot that got a visit from astronauts.",
+    riddle: "I bounced twice on landing and dug trenches in the soil. Two and a half years later, astronauts snipped off my camera.",
+    story: [
+      "I landed badly, on purpose or not. My engines did not shut off when they should have, and I bounced twice before I settled on the slope of a crater. I was crooked, but still working.",
+      "I had a little scoop on a folding arm. I dug trenches, pressed on the ground and pushed against small clumps, so scientists could learn how the dust behaved when something pushed or dug into it.",
+      "In November 1969 two astronauts from Apollo 12 walked over, snipped off my camera, my scoop and a length of tubing, and carried them to Earth. It is the only time people have visited an old robot on another world and brought home pieces of it.",
+    ],
+    whySent: "To test how the lunar soil carries weight and how it digs, so that engineers could design Apollo's feet, boots and tools.",
+    discoveries: [
+      { t: "How Moon soil behaves", d: "The scoop dug trenches and pressed on the ground. It showed that the soil sticks together like damp sand and is strong enough to support a lander." },
+      { t: "Earth eclipsing the Sun", d: "In April 1967 the camera photographed the Sun going behind Earth, a total solar eclipse seen from the Moon." },
+      { t: "Parts returned to Earth", d: "Apollo 12 brought back its TV camera and scoop, so scientists could study space-weathered hardware." },
+    ],
+    how: [
+      { t: "A robot hand", d: "The arm and scoop were a small 'soil mechanics' laboratory. It could push, scrape, dig and drop, and the camera recorded every move." },
+      { t: "Camera with a mirror", d: "A TV camera looked into a tilting, turning mirror. By moving the mirror, it could see in every direction without moving the whole lander." },
+    ],
+    numbers: [{ v: "20 Apr 1967", l: "touchdown" }, { v: "6,000+", l: "pictures sent" }, { v: "2", l: "bounces on landing" }, { v: "20 Nov 1969", l: "visited by Apollo 12" }],
+    left: "The lander minus the camera, scoop and tubing that Apollo 12 took home. It sits at the Surveyor crater site, a short walk from Intrepid.",
+    fun: "Surveyor 3's landing crater is now called Surveyor crater. Intrepid stands on its rim less than 200 metres away.",
+    library: "Surveyor 3 Apollo 12 Conrad Bean",
+    nssdc: "1967-035A",
+  },
+
+  "surveyor-5": {
+    short: "Surveyor 5",
+    mission: "Surveyor 5",
+    tagline: "The robot chemist that landed 25 km from Eagle's future home.",
+    riddle: "I was the first spacecraft to analyse the Moon's chemistry on the spot, and I landed near the place where Eagle would land.",
+    story: [
+      "On the way to the Moon, a leak sprang in my helium tank. My controllers improvised a new landing plan, and I came down on a steep slope inside a small crater, sliding a little before I stopped.",
+      "I was the first robot with a tiny chemistry lab on board. A piece of curium, a radioactive metal, shot particles at the soil. By counting the particles that bounced back, I could tell which elements were in the dust.",
+      "My site was in the Sea of Tranquility, only about 25 kilometres from where Eagle would land 22 months later. Without knowing it, I was scouting the first human landing.",
+    ],
+    whySent: "To analyse the chemistry of the Moon's soil for the first time, and to check the Sea of Tranquility as a landing zone for Apollo.",
+    discoveries: [
+      { t: "The Moon's dark plains are like basalt", d: "The soil was rich in elements found in volcanic rock on Earth, showing the Moon's 'seas' are old lava plains." },
+      { t: "Engine plume test", d: "A short firing of the small rocket engines showed how much dust the exhaust kicked up, important for landing Apollo." },
+      { t: "A neighbourhood for Eagle", d: "More than 18,000 pictures showed that this part of the Sea of Tranquility was smooth enough for Apollo to try a landing." },
+    ],
+    how: [
+      { t: "Alpha-scattering instrument", d: "A radioactive source fires alpha particles at the soil. The energy of the particles that bounce back is a fingerprint of the atoms they hit." },
+      { t: "Fixing a problem in flight", d: "Controllers changed the landing sequence on the way, using the small engines in a way they were never meant to be used. It worked." },
+    ],
+    numbers: [{ v: "11 Sep 1967", l: "touchdown" }, { v: "18,000+", l: "pictures sent" }, { v: "~25 km", l: "from Tranquility Base" }, { v: "20°", l: "slope it landed on" }],
+    left: "The whole lander, tilted on a slope inside a small crater in the Sea of Tranquility.",
+    fun: "Surveyor 5 and Eagle are only about 25 km apart: a short drive in a Moon car.",
+    library: "Surveyor 5 Mare Tranquillitatis",
+    nssdc: "1967-084A",
+  },
+
+  "surveyor-6": {
+    short: "Surveyor 6",
+    mission: "Surveyor 6",
+    tagline: "The robot that hopped.",
+    riddle: "I am the only spacecraft ever to lift off from the Moon and land again a few metres away, all by myself.",
+    story: [
+      "I landed in the middle of the near side, in a plain called Sinus Medii, the Central Bay. My cameras sent home about 30,000 pictures. My chemistry experiment showed that the soil was again like basalt.",
+      "Then my controllers tried something nobody had done: they told me to fire my rocket engines for two and a half seconds. I rose about three metres, moved sideways, and set myself down again.",
+      "It was the first time anything had lifted off from the surface of another world. With cameras on before and after, scientists could see exactly how the engines disturbed the dust, and look at my first landing site from a new angle.",
+    ],
+    whySent: "To land in a possible Apollo site, to study the soil chemistry, and to test lifting off from the surface of the Moon.",
+    discoveries: [
+      { t: "First liftoff from another world", d: "In November 1967 Surveyor 6 fired its engines and hopped, a rehearsal for Apollo's ascent." },
+      { t: "Stereo pictures", d: "Pictures taken before and after the hop gave a 3D view of the ground." },
+      { t: "More proof of basalt", d: "Its chemical analysis agreed with Surveyor 5: the plains are basalt." },
+    ],
+    how: [
+      { t: "Vernier engines", d: "Small rockets used to fine-tune the landing were reused for the hop. Engineers fired them for about 2.5 seconds, just enough to lift the lander a few metres." },
+      { t: "Same camera, new view", d: "Because the lander moved by only a couple of metres, its camera saw the same rocks from a different angle, like having two eyes." },
+    ],
+    numbers: [{ v: "10 Nov 1967", l: "touchdown" }, { v: "30,000", l: "pictures sent" }, { v: "~3 m", l: "height of the hop" }, { v: "1st", l: "liftoff from another world" }],
+    left: "The lander at its second spot in Sinus Medii, a few metres from the marks of its first landing.",
+    fun: "The lander moved only a few metres, but it is still counted as the first liftoff from the surface of another world.",
+    library: "Surveyor 6 Sinus Medii hop",
+    nssdc: "1967-112A",
+  },
+
+  "surveyor-7": {
+    short: "Surveyor 7",
+    mission: "Surveyor 7",
+    tagline: "The last Surveyor, in the mountains, lit by lasers from Earth.",
+    riddle: "I was the last of my family, I landed in the highlands near Tycho crater, and two laser beams from Earth found me.",
+    story: [
+      "I was the final Surveyor, sent to a very different place: the hills just north of the bright crater Tycho. Apollo needed to know whether the highlands, the pale mountains, were made of the same stuff as the dark plains.",
+      "My little chemistry lab said no. The highland soil had less iron and was lighter in colour. It helped scientists work out that the highlands are the Moon's oldest crust, while the plains are younger lava.",
+      "In January 1968, astronomers in Arizona and California aimed two powerful lasers at me. My camera saw the beams as bright spots, the first time anyone had seen lasers from Earth on the surface of the Moon.",
+    ],
+    whySent: "To land in the Moon's highlands, test the chemistry of old crust, and complete the Surveyor series before Apollo.",
+    discoveries: [
+      { t: "Highlands differ from plains", d: "The soil had less iron and more of other light elements. Highlands and plains are different kinds of rock." },
+      { t: "Lasers from Earth", d: "Two beams, one in Arizona and one in California, were seen on the Moon for the first time." },
+      { t: "21,000 photographs", d: "Pictures of a landscape littered with rocks thrown out by the impact that made Tycho." },
+    ],
+    how: [
+      { t: "Alpha-scattering again", d: "A small chemistry instrument measured the soil by bouncing alpha particles. Three Surveyors carried one, and each result added to the same picture." },
+      { t: "Robot arm for scooping", d: "The arm dug trenches and moved rocks, and its camera recorded the way the soil flowed and broke." },
+    ],
+    numbers: [{ v: "10 Jan 1968", l: "touchdown" }, { v: "21,000+", l: "pictures sent" }, { v: "5 of 7", l: "Surveyors that landed successfully" }, { v: "41° S", l: "near Tycho crater" }],
+    left: "The last Surveyor, standing on a field of boulders on the debris thrown out by Tycho's impact.",
+    fun: "The program sent seven Surveyors to the Moon. Five landed and worked.",
+    library: "Surveyor 7 Tycho",
+    nssdc: "1968-001A",
+  },
+
+  "ranger-7": {
+    short: "Ranger 7",
+    mission: "Ranger 7",
+    tagline: "The last picture show before a planned crash.",
+    riddle: "I took thousands of pictures of the Moon as I fell towards it, and my last one was taken seconds before I hit.",
+    story: [
+      "Six Rangers before me failed. Rockets stopped, cameras froze, one missed the Moon completely. The programme had a reputation for failing. I was the seventh, and it was my turn.",
+      "I flew straight towards the Moon with six TV cameras switched on. In the last 17 minutes I took more than 4,000 pictures, each sharper than the last, until the final frame showed features as small as half a metre across.",
+      "Then I hit the Moon on purpose, in a plain that was later named the Sea of Known Things, Mare Cognitum. My crash site was my last picture. My pictures helped choose where astronauts would land.",
+    ],
+    whySent: "To take close-up pictures of the Moon during its final descent, to see whether the surface was smooth or covered in boulders and deep dust.",
+    discoveries: [
+      { t: "First close-ups from an American spacecraft", d: "The final frames were about 1,000 times sharper than Earth-based telescope photographs." },
+      { t: "The surface was not deep dust", d: "Craters of every size, down to about half a metre across, covered the ground." },
+      { t: "A region got a new name", d: "The area where Ranger 7 crashed was renamed Mare Cognitum, the sea that has become known." },
+    ],
+    how: [
+      { t: "Cameras as the whole mission", d: "Ranger had no engine for landing. Its job was to take pictures and send them home, live, until it hit. Six cameras, two wide and four narrow, took turns." },
+      { t: "Solar panels and a dish", d: "Two big panels powered the cameras and a dish sent the pictures straight to Earth in real time." },
+    ],
+    numbers: [{ v: "31 Jul 1964", l: "impact" }, { v: "4,316", l: "pictures sent" }, { v: "17 min", l: "of final pictures" }, { v: "6", l: "Rangers failed before it" }],
+    left: "Fragments of the spacecraft in a small crater in Mare Cognitum. There is almost nothing left to see: it hit at several kilometres per second.",
+    fun: "Rangers 7, 8 and 9 together sent about 17,000 pictures of the Moon.",
+    library: "Ranger 7 Mare Cognitum",
+    nssdc: "1964-041A",
+  },
+
+  "ranger-8": {
+    short: "Ranger 8",
+    mission: "Ranger 8",
+    tagline: "A scout for the Sea of Tranquility.",
+    riddle: "I crashed into the Sea of Tranquility four years before people landed there.",
+    story: [
+      "I was the second Ranger to succeed, and my target was a place that sounds peaceful: the Sea of Tranquility. Apollo planners thought it might be a good place to land, and I was sent to look.",
+      "As I fell, I took more than 7,000 pictures and sent them all home before my crash. Engineers measured the number and size of craters and the slopes of the ground.",
+      "I hit the Moon on 20 February 1965. In July 1969 Eagle landed in the same sea. The people who flew there had looked at my photographs.",
+    ],
+    whySent: "To photograph a possible Apollo landing site, the Sea of Tranquility, as it approached the surface.",
+    discoveries: [
+      { t: "A smooth, safe plain", d: "Pictures from 7,137 frames showed a plain with few large boulders." },
+      { t: "Crater counts", d: "Counting craters of different sizes gave scientists a way to estimate the age of the surface." },
+      { t: "Pictures became maps", d: "Frames taken at different heights were combined into maps of the plain, from wide views down to close-ups." },
+    ],
+    how: [
+      { t: "Live pictures, no storage", d: "The cameras sent their pictures as they were taken. If the radio failed, they were lost. That is why Ranger took many pictures from many angles." },
+      { t: "Aiming across 380,000 km", d: "Controllers made a small course correction on the way, to point the spacecraft at one chosen patch of the Moon." },
+    ],
+    numbers: [{ v: "20 Feb 1965", l: "impact" }, { v: "7,137", l: "pictures sent" }, { v: "4 years", l: "before Eagle landed in the same sea" }, { v: "2.7° N", l: "latitude of impact" }],
+    left: "Debris from a planned impact, in the Sea of Tranquility.",
+    fun: "Ranger 8 hit the Moon in the same dark plain where Eagle landed in 1969.",
+    library: "Ranger 8 Mare Tranquillitatis",
+    nssdc: "1965-010A",
+  },
+
+  "ranger-9": {
+    short: "Ranger 9",
+    mission: "Ranger 9",
+    tagline: "The crash everyone watched live.",
+    riddle: "My final minutes were shown on television as they happened, as I fell into a crater called Alphonsus.",
+    story: [
+      "I was the last Ranger. My target was Alphonsus, a big crater with a mountain in the middle. In 1958 an astronomer had reported seeing a puff of gas there, and scientists wondered whether the Moon was still active.",
+      "As I fell, my pictures went live on American television. Millions of people watched the Moon rush up to meet my cameras until the screen went blank.",
+      "I crashed almost exactly where I was aimed. My pictures showed dark-ringed craters on the crater floor, which look like old volcanic vents.",
+    ],
+    whySent: "To photograph the crater Alphonsus, a place that looked volcanic, and to finish the Ranger series.",
+    discoveries: [
+      { t: "Signs of volcanic activity", d: "Dark-halo craters on Alphonsus' floor looked like vents where gas or ash escaped long ago." },
+      { t: "5,814 pictures", d: "They were sent in the final minutes of the descent, over the crater floor and its central peak." },
+      { t: "First live TV from a spacecraft falling to the Moon", d: "The world watched a descent in real time for the first time." },
+    ],
+    how: [
+      { t: "Aimed at a crater", d: "Ranger 9 was steered towards the floor of Alphonsus, so its cameras looked at the central peak and the dark-ringed craters on the way down." },
+      { t: "Real-time relay", d: "Signals from the spacecraft reached the Goldstone antenna, were converted to TV pictures, and were broadcast to the public." },
+    ],
+    numbers: [{ v: "24 Mar 1965", l: "impact" }, { v: "5,814", l: "pictures sent" }, { v: "3", l: "successful Rangers in a row" }, { v: "≈ 17,000", l: "pictures from Rangers 7, 8 and 9" }],
+    left: "Fragments of a spacecraft on the floor of the crater Alphonsus.",
+    fun: "It was the last of nine Rangers. The first six failed and the last three delivered.",
+    library: "Ranger 9 Alphonsus",
+    nssdc: "1965-018A",
+  },
+
+  "lunar-prospector": {
+    short: "Lunar Prospector",
+    mission: "Lunar Prospector",
+    tagline: "The little drum that found hydrogen at the poles.",
+    riddle: "I was a small spinning drum that circled the Moon from pole to pole, then crashed on purpose into a crater that never sees sunlight.",
+    story: [
+      "I was small, cheap and quick to build: a drum about 1.4 metres across, with three long arms sticking out. I spun like a top as I circled the Moon, from one pole to the other, for 19 months.",
+      "My instruments counted neutrons, gamma rays and magnetic fields to map what the Moon is made of. At both poles, my neutron detector found a lot of hydrogen, just where craters lie in permanent shadow. It might be water ice.",
+      "At the end, I was sent to crash into a crater near the south pole. I carried some of the ashes of the geologist Eugene Shoemaker, who had always wanted to go to the Moon.",
+    ],
+    whySent: "To map the Moon's composition, its gravity and magnetism, and to look for water ice at the poles, from an orbit that passed over both.",
+    discoveries: [
+      { t: "Hydrogen at the poles", d: "Neutron measurements suggested water ice hidden in dark craters that never see the Sun. In 2009 NASA's LCROSS mission confirmed water in the crater Cabeus." },
+      { t: "A map of the Moon's elements", d: "Gamma-ray maps showed where iron, thorium and other elements are." },
+      { t: "A small metal core", d: "Magnetic and gravity data suggested a small iron-rich core." },
+    ],
+    how: [
+      { t: "Neutron spectrometer", d: "Cosmic rays hitting the Moon knock out neutrons. Hydrogen slows neutrons down, so fewer fast neutrons means more hydrogen below the surface." },
+      { t: "Spin for stability", d: "Spinning the whole spacecraft kept it pointing steadily without complicated motors." },
+    ],
+    numbers: [{ v: "19 months", l: "in orbit" }, { v: "31 Jul 1999", l: "planned impact" }, { v: "~$63 M", l: "cost, small for a NASA mission" }, { v: "2", l: "poles mapped" }],
+    left: "Spacecraft debris in a crater near the south pole, 87.7° S, in permanent shadow.",
+    fun: "It carried a small capsule with some of Eugene Shoemaker's ashes, making him the first person whose remains were taken to the Moon.",
+    library: "Lunar Prospector",
+    nssdc: "1998-001A",
+  },
+};

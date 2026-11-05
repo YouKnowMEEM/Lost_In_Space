@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import EquipmentSidebar from "../components/planet/EquipmentSidebar";
 import FilterBar from "../components/planet/FilterBar";
@@ -17,7 +18,7 @@ export default function PlanetExplorer({ planet, texturePath, artifacts, regions
   const [focusedRegion, setFocusedRegion] = useState(null);
   const [focusedEquipment, setFocusedEquipment] = useState(null);
   const [globeReady, setGlobeReady] = useState(false);
-  const [notice, setNotice] = useState(false);
+  const location = useLocation();
   const visible = useMemo(() => artifacts.filter((item) =>
     (program === "All" || item.program === program) &&
     (status === "all" || item.statusCategory === status) && Number(item.year) <= year
@@ -48,6 +49,18 @@ export default function PlanetExplorer({ planet, texturePath, artifacts, regions
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [controlsOpen]);
+
+  // Links such as /moon?focus=apollo-12 (from a field-notes page) open straight on that machine.
+  useEffect(() => {
+    const id = new URLSearchParams(location.search).get("focus");
+    const item = id && artifacts.find((a) => a.id === id);
+    if (!item) return undefined;
+    const timer = window.setTimeout(() => {
+      setFocusedEquipment({ ...item, focusDistance: 8.4 });
+      setSelected(item);
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [location.search, artifacts]);
 
   useEffect(() => {
     if (!signalHunter?.active) return;
@@ -100,7 +113,7 @@ export default function PlanetExplorer({ planet, texturePath, artifacts, regions
   return <main id="main-content" className="moon-explorer" tabIndex="-1">
     <section className={`moon-atlas${controlsOpen ? " has-controls" : ""}`} data-globe-ready={globeReady ? "true" : "false"} aria-label={`Interactive 3D ${planet} globe`}>
       <PlanetGlobe texturePath={texturePath} artifacts={visible} regions={regions} orbits={visibleOrbits} selected={selected || focusedEquipment} onSelect={selectArtifact} selectedOrbit={selectedOrbit} onOrbitSelect={setSelectedOrbit} focusedRegion={focusedRegion} focusPoint={focusedEquipment || focusedRegion} onReady={markGlobeReady} signalHunter={signalHunter}/>
-      <div className="moon-map-title"><span>{planet.toUpperCase()} ARCHIVE</span><h1>{planet} explorer</h1><p>Equipment and missions across the {planet.toLowerCase()} surface.</p><div className="moon-search-wrap"><label className="moon-search"><Search size={15} aria-hidden="true"/><input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search equipment, region, or orbit" aria-label={`Search ${planet} equipment, regions, or orbits`} aria-expanded={Boolean(search.trim())} aria-controls="moon-search-results"/><button type="button" aria-label="Clear search" onClick={() => setSearch("")} hidden={!search}><X size={14}/></button></label>{search.trim() && <div className="moon-search-results" id="moon-search-results" role="listbox">{searchResults.length ? searchResults.map((result) => <button type="button" role="option" key={`${result.kind}-${result.id}`} onClick={() => chooseSearchResult(result)}><span>{result.name}</span><small>{result.kind === "equipment" ? "Equipment" : result.kind === "region" ? "Region" : "Orbit"}</small></button>) : <p>No matching equipment, regions, or orbits.</p>}</div>}</div><button type="button" className="moon-control-toggle" aria-expanded={controlsOpen} aria-controls="planet-control-sidebar" onClick={() => setControlsOpen(true)}><SlidersHorizontal size={15}/> Filters &amp; timeline</button></div>
+      <div className="moon-map-title"><span>{planet.toUpperCase()} ARCHIVE</span><h1>{planet} explorer</h1><p>Equipment and missions across the surface of {planet === "Moon" ? "the Moon" : planet}.</p><div className="moon-search-wrap"><label className="moon-search"><Search size={15} aria-hidden="true"/><input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search equipment, region, or orbit" aria-label={`Search ${planet} equipment, regions, or orbits`} aria-expanded={Boolean(search.trim())} aria-controls="moon-search-results"/><button type="button" aria-label="Clear search" onClick={() => setSearch("")} hidden={!search}><X size={14}/></button></label>{search.trim() && <div className="moon-search-results" id="moon-search-results" role="listbox">{searchResults.length ? searchResults.map((result) => <button type="button" role="option" key={`${result.kind}-${result.id}`} onClick={() => chooseSearchResult(result)}><span>{result.name}</span><small>{result.kind === "equipment" ? "Equipment" : result.kind === "region" ? "Region" : "Orbit"}</small></button>) : <p>No matching equipment, regions, or orbits.</p>}</div>}</div><button type="button" className="moon-control-toggle" aria-expanded={controlsOpen} aria-controls="planet-control-sidebar" onClick={() => setControlsOpen(true)}><SlidersHorizontal size={15}/> Filters &amp; timeline</button></div>
       <div className="moon-map-footer"><span>Total =</span><span>{visible.length + visibleOrbits.length} {visible.length + visibleOrbits.length === 1 ? "object" : "objects"}</span></div>
       {controlsOpen && <>
         <aside className="moon-control-sidebar" id="planet-control-sidebar" aria-label={`${planet} explorer controls`}>
@@ -116,7 +129,6 @@ export default function PlanetExplorer({ planet, texturePath, artifacts, regions
       {visible.map((artifact) => <button type="button" key={artifact.id} aria-pressed={selected?.id === artifact.id} onClick={() => selectArtifact(artifact)}>{artifact.name}</button>)}
       {visibleOrbits.map((orbit) => <button type="button" key={orbit.id} aria-pressed={selectedOrbit === orbit.id} onClick={() => setSelectedOrbit(selectedOrbit === orbit.id ? null : orbit.id)}>Highlight {orbit.name} orbit</button>)}
     </div>
-    <EquipmentSidebar artifact={selected} origin={clickOrigin} equipmentHeading={equipmentHeading} onClose={() => { setSelected(null); setClickOrigin(null); }} onSurfaceMode={() => { setNotice(true); window.setTimeout(() => setNotice(false), 2600); }}/>
-    {notice && <div className="moon-mode-notice" role="status">3D Surface Mode is planned for a future update.</div>}
+    <EquipmentSidebar artifact={selected} origin={clickOrigin} equipmentHeading={equipmentHeading} onClose={() => { setSelected(null); setClickOrigin(null); }}/>
   </main>;
 }

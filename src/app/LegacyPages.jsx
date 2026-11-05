@@ -13,6 +13,11 @@ import { getArtifact } from "../services/archiveApi";
 import MoonExplorer from "../pages/MoonExplorer";
 import MarsExplorer from "../pages/MarsExplorer";
 
+// Draco-compressed models decode with the copy in /public/draco, so the 3D pages work
+// offline and never depend on gstatic.com. (Set here, not in main.jsx, so the home page
+// does not download three.js up front.)
+useGLTF.setDecoderPath("/draco/");
+
 const SPACE_BG = "/images/HomeBG.png";
 const VOYAGER_AUDIO = "https://www.nasa.gov/wp-content/uploads/2015/01/voyager-plasma-waves.mp3";
 const QUINDAR_AUDIO = "https://www.nasa.gov/wp-content/uploads/2015/01/quindar_tones.mp3";
@@ -27,7 +32,8 @@ function Topbar() {
   const isMars = location.pathname.startsWith("/mars") || location.pathname.startsWith("/viking");
   const isMoon = location.pathname.startsWith("/moon") || location.pathname.startsWith("/eagle");
   const isSpace = location.pathname.startsWith("/space") || location.pathname.startsWith("/voyager");
-  const brandText = isMars ? "THE MARS" : isMoon ? "THE MOON" : isSpace ? "DEEP SPACE" : "SLEEPING BEAUTIES";
+  const brandText = isMars ? "MARS" : isMoon ? "THE MOON" : isSpace ? "DEEP SPACE" : "SLEEPING BEAUTIES";
+  const worldKey = isMars ? "mars" : isSpace ? "deep" : "moon";
   useEffect(() => { setOpenMenu(null); }, [location.pathname]);
   useEffect(() => {
     const closeOnEscape = (event) => { if (event.key === "Escape") setOpenMenu(null); };
@@ -45,7 +51,9 @@ function Topbar() {
         <nav aria-label="Main navigation">
           <Link className={location.pathname === "/" ? "nav-active" : ""} to="/">Home</Link>
           <div className={`nav-dropdown ${openMenu === "worlds" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "worlds"} className={isMoon || isMars || isSpace ? "nav-active" : ""} onClick={()=>toggleMenu("worlds")}>Worlds <ChevronDown size={13}/></button><div className="nav-dropdown-menu"><Link to="/space" onClick={()=>setOpenMenu(null)}>Deep Space</Link><Link to="/moon" onClick={()=>setOpenMenu(null)}>Moon</Link><Link to="/mars" onClick={()=>setOpenMenu(null)}>Mars</Link></div></div>
-          {(isMoon || isMars || isSpace) && <div className={`nav-dropdown ${openMenu === "objects" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "objects"} className={openMenu === "objects" ? "nav-active" : ""} onClick={()=>toggleMenu("objects")}>Objects <ChevronDown size={13}/></button><div className="nav-dropdown-menu">{isSpace ? <Link to="/voyager-1" onClick={()=>setOpenMenu(null)}>Voyager 1</Link> : isMars ? <Link to="/viking-1" onClick={()=>setOpenMenu(null)}>Viking 1</Link> : <Link to="/eagle" onClick={()=>setOpenMenu(null)}>Eagle</Link>}</div></div>}
+          {(isMoon || isMars || isSpace) && <div className={`nav-dropdown ${openMenu === "objects" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "objects"} className={openMenu === "objects" ? "nav-active" : ""} onClick={()=>toggleMenu("objects")}>Objects <ChevronDown size={13}/></button><div className="nav-dropdown-menu">{isSpace ? <Link to="/voyager-1" onClick={()=>setOpenMenu(null)}>Voyager 1 (storybook)</Link> : isMars ? <Link to="/viking-1" onClick={()=>setOpenMenu(null)}>Viking 1 (storybook)</Link> : <Link to="/eagle" onClick={()=>setOpenMenu(null)}>Eagle (storybook)</Link>}<Link to={`/atlas?world=${worldKey}`} onClick={()=>setOpenMenu(null)}>All machines here</Link></div></div>}
+          <Link to="/atlas">Atlas</Link>
+          <Link to="/play">Play</Link>
         </nav>
       </header>
   );
@@ -113,6 +121,10 @@ export function Home() {
   const tutorialIntro = new URLSearchParams(location.search).get("intro") === "pioneer";
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(null);
+  const probeParam = new URLSearchParams(location.search).get("probe");
+  useEffect(() => {
+    if (probeParam && ["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(probeParam)) setSelected(probeParam);
+  }, [probeParam]);
   const [audioOn, setAudioOn] = useState(true);
   const [welcomeVisible, setWelcomeVisible] = useState(true);
   const [speedModifier, setSpeedModifier] = useState(1);
@@ -253,7 +265,7 @@ export function Home() {
     { name: "Earth", detail: "Our home world", type: "WORLD", action: () => setSelected("earth") },
     { name: "Moon", detail: "Explore the lunar archive", type: "WORLD", action: () => setSelected("moon") },
     { name: "Apollo 11 · Eagle", detail: "The first lunar landing module", type: "ARTIFACT", action: () => navigate("/eagle") },
-    { name: "Mars", detail: "The red planet · collection coming later", type: "WORLD", action: () => setSelected("mars") },
+    { name: "Mars", detail: "The red planet · explore the Mars archive", type: "WORLD", action: () => setSelected("mars") },
     { name: "Jupiter", detail: "The gas giant · largest planet in our solar system", type: "WORLD", action: () => setSelected("jupiter") },
     { name: "Saturn", detail: "The ringed planet", type: "WORLD", action: () => setSelected("saturn") },
     { name: "Uranus", detail: "Ice giant planet with retrograde rotation", type: "WORLD", action: () => setSelected("uranus") },
@@ -286,7 +298,7 @@ export function Home() {
         <motion.span initial={{y:8}} animate={{y:0}} exit={{y:-5}} transition={{duration:0.55}}>Welcome to the Space</motion.span>
       </motion.div>}
     </AnimatePresence>
-    <audio ref={audioRef} loop src="/audio/home-audio.mp3" preload="auto"/>
+    <audio ref={audioRef} loop src="/audio/music/deep-lullaby.mp3" preload="auto"/>
     <div className="solar-home-scene">
       <Canvas shadows camera={{ position: [0, 18, 38], fov: 44, near: 0.1, far: 1200 }} dpr={[1, 1.75]}>
         <color attach="background" args={["#030712"]}/>
@@ -349,7 +361,7 @@ export function Home() {
       {selected === "neptune" && <em>Supersonic winds sweep through Neptune's deep blue atmosphere.</em>}
       {selected === "pluto" && <em>Pluto is a dwarf planet in the Kuiper Belt, following an unusually eccentric, tilted orbit that takes 248 years.</em>}
       {selected === "deep" && <em>Interplanetary and heliocentric objects</em>}
-      {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em><small className="scale-note"></small></>}
+      {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em><Link className="solar-story-link" to={selected === "voyager-1" ? "/voyager-1" : `/object/${selected}`}>Read the story <ArrowRight size={16}/></Link><small className="scale-note"></small></>}
     </div>}
     <AnimatePresence>{journey?.phase === "fade" && <motion.div className={`moon-journey-fade journey-${journey.world}`} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.46}} aria-hidden="true"/>}</AnimatePresence>
     {!tutorialIntro && <button className="solar-audio-toggle" onClick={()=>setAudioOn(v=>!v)} aria-label={audioOn?"Mute ambient audio":"Play ambient audio"}>
@@ -368,7 +380,7 @@ const PLANET_TEXTURES = {
   saturn: "/models/2k_saturn.jpeg",
   uranus: "/models/2k_uranus.jpeg",
   neptune: "/models/2k_neptune.jpeg",
-  pluto: "/models/2k_pluto.png"
+  pluto: "/models/2k_pluto.jpeg"
 };
 
 function SunModel({ onClick, hovered, setHovered }) {
