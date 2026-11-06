@@ -290,6 +290,17 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
 }
 .solar-home-hint svg{color:#9ccdf0}
 .solar-home-hint span{color:#4b637a}
+.solar-controls-panel{
+  position:absolute;z-index:1000;right:20px;bottom:20px;max-width:calc(100% - 32px);
+  padding:10px 12px;border:1px solid rgba(181,207,236,.14);border-radius:10px;
+  background:rgba(35,49,66,.22);backdrop-filter:blur(8px);
+  color:rgba(226,237,248,.82);font-size:11px;
+}
+.solar-speed-control{display:flex;flex-direction:column;gap:7px}
+.solar-speed-control input{
+  display:block;width:clamp(110px,18vw,150px);max-width:100%;
+  margin:0;accent-color:#91b9d8;opacity:.78;cursor:pointer;
+}
 @media(max-width:700px){
   .solar-home{min-height:560px}
   .solar-brand{top:16px;left:16px}
@@ -305,6 +316,8 @@ body,button,input,textarea,select{font-family:"Nunito Sans",system-ui,sans-serif
   .solar-home-caption p{font-size:12px}
   .solar-explore-pop{bottom:190px}
   .solar-home-hint{left:22px;right:auto;bottom:22px;font-size:8px}
+  .solar-controls-panel{right:12px;bottom:12px;padding:8px 10px}
+  .solar-speed-control input{width:min(150px,calc(100vw - 56px))}
 }
 
 /* Keep the home explorer intentionally uncluttered: no masthead, footer or hero copy. */

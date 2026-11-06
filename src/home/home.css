@@ -1198,8 +1198,8 @@
   .hp-nav-game-label {
     display: none;
   }
-  /* Phones keep the first two sections and the tutorial action, with a shorter book label. */
-  .hp-nav a:nth-child(n + 3) {
+  /* Free space in the nav by hiding Worlds before Photos on phones. */
+  .hp-nav a[href="#worlds"] {
     display: none;
   }
   .hp-nav-long {
@@ -1286,8 +1286,8 @@
     transition-duration: 0.01ms !important;
   }
 }
-@media (max-width: 370px) {
-  .hp-nav a:first-child {
+@media (max-width: 380px) {
+  .hp-nav a[href="#photos"] {
     display: none;
   }
 }

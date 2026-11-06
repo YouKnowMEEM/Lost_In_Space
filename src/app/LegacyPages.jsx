@@ -313,13 +313,12 @@ export function Home() {
       </Canvas>
     </div>
 
-    {!tutorialIntro && <div className="solar-scale-caption">Orbits and deep-space probes are not in actual scale.</div>}
+    {!tutorialIntro && <div className="solar-scale-caption">Planets, Orbits & Probes not in actual scale. Checkout NASA's Eye on Solar System</div>}
     {!tutorialIntro && distanceToSelected && selected && <div style={{ position: "absolute", top: 112, left: 20, zIndex: 90, background: "rgba(0,0,0,0.5)", padding: "8px 14px", borderRadius: "8px", color: "#afc8e8", fontFamily: "monospace", fontSize: "13px", backdropFilter: "blur(4px)", letterSpacing: "0.5px" }}>
       <span style={{ color: "#7a9cc6", fontSize: "11px" }}>DIST </span>{distanceToSelected} AU
     </div>}
-    {!tutorialIntro && <div className="solar-controls-panel" style={{ position: "absolute", bottom: 20, right: 20, zIndex: 1000, background: "rgba(0,0,0,0.5)", padding: "10px", borderRadius: "8px", color: "white", display: "flex", flexDirection: "column", gap: "10px", backdropFilter: "blur(4px)" }}>
-      
-      <label style={{ display: "flex", alignItems: "flex-start", gap: "8px", flexDirection: "column" }}>Simulation Speed <input type="range" min="0" max="5" step="0.1" value={speedModifier} onChange={e => setSpeedModifier(parseFloat(e.target.value))} style={{ width: "150px" }} /></label>
+    {!tutorialIntro && <div className="solar-controls-panel">
+      <label className="solar-speed-control">Simulation Speed <input type="range" min="0" max="5" step="0.1" value={speedModifier} onChange={e => setSpeedModifier(parseFloat(e.target.value))} /></label>
     </div>}
     {!tutorialIntro && <div className="solar-search-wrap">
       <label className="solar-search">
@@ -573,7 +572,7 @@ function TutorialAstronaut({ position, flying }) {
   });
 
   return (
-    <group ref={root} position={position} rotation={[0, 0.15, 0]} scale={fit.scale}>
+    <group ref={root} position={position} rotation={[0, 2.54, 0]} scale={fit.scale}>
       <primitive object={scene} position={[-fit.center.x, -fit.center.y, -fit.center.z]} />
     </group>
   );
@@ -690,14 +689,14 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
   const RADII = {
     sun: 1.25,
     mercury: 0.16,
-    venus: 0.28,
+    venus: 0.29,
     earth: 0.31,
-    moon: 0.105,
+    moon: 0.08,
     mars: 0.24,
-    jupiter: 0.72,
-    saturn: 0.60,
-    uranus: 0.42,
-    neptune: 0.40,
+    jupiter: 0.86,
+    saturn: 0.75,
+    uranus: 0.52,
+    neptune: 0.50,
     pluto: 0.08 // Scaled from Pluto's 2,377 km diameter using the existing visual size exaggeration.
   };
 
