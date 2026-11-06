@@ -4,6 +4,46 @@
 
 Sleeping Beauties is an interactive space archive built with React, Vite, Three.js, and a small Express API. It explores celestial destinations and forgotten space-exploration hardware through immersive 3D experiences and archival stories.
 
+## What is new in this revision
+
+**New pages**
+
+- **The Atlas (`/atlas`)** lists all 30 machines on one interactive timeline, with search and filters by world and by status (*still awake*, *asleep*, *planned crash*, *adrift*). Filters live in the URL, so a link such as `/atlas?world=mars&state=awake` can be shared.
+- **Field notes (`/object/:id`)** exist for the 27 machines that do not have a storybook: a story in the machine's own voice, why it was sent, what it discovered, how its hardware made that possible ("engineering meets science"), a map or distance ruler showing where it is now, live NASA photographs, and sources.
+- **Play (`/play`)** has *Signal Hunter* (now on Mars as well as the Moon: `/mars?game=signal-hunter`) and a new riddle game, *Who am I?*.
+- **About (`/about`)** explains who the project is for, how the facts were checked, what was corrected, the accessibility features, ideas for teachers, and every credit and licence.
+- **A real 404 page** ("Lost in space") replaces the silent redirect to the home page.
+
+**Improvements to what was already here**
+
+- One shared header with a phone menu, used on every non-3D page, and a shared footer with a full sitemap.
+- Every machine on the Moon and Mars maps now opens a real story page. Before, five Apollo links and all the Surveyor, Ranger and Mars links pointed at pages that did not exist.
+- Deep links: `/moon?focus=apollo-12`, `/mars?focus=curiosity-msl` and `/space?probe=voyager-2` open the globe already pointed at that machine.
+- The 3D pages had labels of 7 to 11 px. `src/styles/worlds.css` lifts every label to at least 12 px, body text to 14 px or more, and adds a visible keyboard focus ring.
+- Mars gets a soft atmosphere glow (it was a flat brown disc), and the header says "MARS", not "THE MARS".
+- The sidebar's "3D Surface Mode is planned for a future update" button is replaced with a link to NASA's data record for the machine.
+- Fonts are all self-hosted (the Moon, Mars and Deep Space pages used to pull Nunito Sans from Google Fonts), and the 3D models load the Draco decoder from `public/draco` instead of gstatic.com, so the site works offline once loaded.
+- The 2.6 MB Pluto texture is now a 360 KB JPEG.
+- Favicon, social-share image, page descriptions and per-page titles; `vercel.json` rewrites so deep links work on refresh.
+
+**Data corrections** (also listed on the About page)
+
+| Item | Problem | Fix |
+| --- | --- | --- |
+| Opportunity | Longitude stored as -354.47, which plots about 11 degrees east of the real site | 5.53 W (354.47 E) |
+| Lunar Prospector | Impact longitude had the wrong sign | 87.7 S, 42.1 E |
+| Curiosity, Perseverance | Marked `intact`, so the *Active* filter on Mars was empty | `active` |
+| Moon and Mars `storyPath` | Pointed at routes that did not exist | Every machine opens `/object/:id`, or its storybook |
+
+**Licensing note.** `public/audio/home-audio.mp3` was credited in the old footer as music from *Interstellar*, which is copyrighted. The tutorial and Deep Space page now play the project's own synthesized `deep-lullaby.mp3` instead. The original file and the unused `previous.mp3` were moved to `_not-deployed/`, outside `public/`, so they are not published. Delete that folder if you do not need them.
+
+### Adding a machine
+
+1. Add it to `src/data/lunar_artifacts.json` or `mars_artifacts.json` (or to `DEEP` in `src/data/catalog.js` for a deep-space probe). Use `storyPath: "/object/<id>"`.
+2. Add its field notes to `src/data/notes/moon.js` or `mars.js`, keyed by the same `id`. Every entry needs `short`, `mission`, `tagline`, `riddle`, three `story` paragraphs, `whySent`, three `discoveries`, two `how` items, four `numbers`, `left`, `fun`, a `library` search phrase and the `nssdc` COSPAR id.
+3. Give it a picture: add a render to `ART` in `catalog.js`, or a drawn portrait name to `GLYPH` (the portraits are in `src/site/Glyphs.jsx`).
+4. It then appears in the Atlas, the timeline, the riddle game and the map sidebar without any other change.
+
 ## Features
 
 - **Home (`/`)** — the sleeping beauties on a turning ring (drag, swipe, arrow keys or thumbnails), the three worlds, the three storybooks, and *Lost in space*, a carousel of real NASA photographs of the machines that stayed behind.
@@ -15,7 +55,7 @@ Sleeping Beauties is an interactive space archive built with React, Vite, Three.
 - **Finding your way back:** every storybook and mission file has a home button and a link back to its world: Eagle to the Moon (`/moon`), Viking 1 to Mars (`/mars`), Voyager 1 to Space (`/space?object=voyager-1`).
 - **Deep Space (`/space`)** — an interactive solar-system experience with selectable destinations.
 - **Moon (`/moon`)** and **Mars (`/mars`)** — interactive 3D globes with landing-site markers. The globes are sized to stay fully visible within the viewport.
-- **Navigation** — each world gets its own branding in the header: "THE MOON", "THE MARS" or "DEEP SPACE". The navigation bar has three items: Home, Worlds (dropdown: Deep Space, Moon, Mars), and Objects (page-specific: Eagle for Moon, Viking 1 for Mars, Voyager 1 for Space). The topbar is transparent so the page content shows through.
+- **Navigation** — each 3D world gets its own branding in the header: "THE MOON", "MARS" or "DEEP SPACE". The navigation bar has three items: Home, Worlds (dropdown: Deep Space, Moon, Mars), and Objects (page-specific: Eagle for Moon, Viking 1 for Mars, Voyager 1 for Space). The topbar is transparent so the page content shows through.
 - **Loading transitions** — navigating between pages shows an animated rocket launch sequence (with flame exhaust, smoke particles and scrolling stars) instead of a static loading message.
 
 ## Technology
@@ -40,12 +80,15 @@ sleeping-beauties/
 │   │   ├── VoyagerPage.jsx      # Voyager 1 storybook + mission file
 │   │   ├── SpacePage.jsx, MoonPage.jsx, MarsPage.jsx
 │   ├── home/                    # Home page parts (object ring, photo carousel, content, styles)
+│   ├── site/                    # Shared header/footer, Atlas helpers, glyph portraits, map and ruler widgets, riddle game
 │   ├── storybook/               # Book engine: page turns, narration, read-along, illustrations
 │   │   └── scenes/              # Hand-drawn SVG illustrations for each page
 │   ├── mission/                 # Mission files: 3D model viewer, site map, Voyager's live map, NASA library search
 │   ├── data/
 │   │   ├── stories/             # Story text (eagle.json, viking.json, voyager.json) and narration timings
 │   │   ├── missions/            # Mission-file facts, timelines, photos and sources
+│   │   ├── notes/               # Field notes for the 27 machines without a storybook (moon.js, mars.js)
+│   │   ├── catalog.js           # One catalog of all 30 machines: the Atlas, games and sidebars read from it
 │   │   └── *.json               # Moon and Mars explorer data
 │   ├── lib/nasa.js              # NASA Image and Video Library helpers
 │   ├── lib/voyagerDistance.js   # Estimates Voyager 1's distance right now

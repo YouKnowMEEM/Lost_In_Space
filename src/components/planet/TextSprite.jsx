@@ -6,7 +6,7 @@ function makeTextTexture(text, kind, selected, inactive, color) {
   canvas.height = 64;
   const context = canvas.getContext("2d");
   const isOrbit = kind === "orbit";
-  const font = `600 42px "Nunito Sans", Arial, sans-serif`;
+  const font = `600 42px "Atkinson Hyperlegible Next", Arial, sans-serif`;
   context.font = font;
   const textWidth = Math.ceil(context.measureText(text).width);
   canvas.width = Math.max(96, textWidth + (isOrbit ? 66 : 28));

@@ -14,7 +14,13 @@
     "equipmentType": "Lunar Module Descent Stage",
     "mass": "2034 kg",
     "description": "First crewed lunar landing site in Mare Tranquillitatis.",
-    "hardwareList": ["Eagle Descent Stage", "EASEP", "Laser Ranging Retroreflector", "Passive Seismic Experiment Package", "U.S. Flag"],
+    "hardwareList": [
+      "Eagle Descent Stage",
+      "EASEP",
+      "Laser Ranging Retroreflector",
+      "Passive Seismic Experiment Package",
+      "U.S. Flag"
+    ],
     "storyPath": "/eagle"
   },
   {
@@ -32,8 +38,12 @@
     "equipmentType": "Lunar Module Descent Stage",
     "mass": "2211 kg",
     "description": "Landed in Oceanus Procellarum near Surveyor 3.",
-    "hardwareList": ["Intrepid Descent Stage", "ALSEP", "Surveyor 3 Parts Removed"],
-    "storyPath": "/intrepid"
+    "hardwareList": [
+      "Intrepid Descent Stage",
+      "ALSEP",
+      "Surveyor 3 Parts Removed"
+    ],
+    "storyPath": "/object/apollo-12"
   },
   {
     "id": "apollo-14",
@@ -50,8 +60,12 @@
     "equipmentType": "Lunar Module Descent Stage",
     "mass": "2144 kg",
     "description": "Landed in Fra Mauro region.",
-    "hardwareList": ["Antares Descent Stage", "ALSEP", "Modular Equipment Transporter (MET)"],
-    "storyPath": "/antares"
+    "hardwareList": [
+      "Antares Descent Stage",
+      "ALSEP",
+      "Modular Equipment Transporter (MET)"
+    ],
+    "storyPath": "/object/apollo-14"
   },
   {
     "id": "apollo-15",
@@ -68,8 +82,12 @@
     "equipmentType": "Lunar Module Descent Stage + Lunar Roving Vehicle",
     "mass": "3023 kg",
     "description": "Landed near Hadley Rille with the first Lunar Roving Vehicle (LRV).",
-    "hardwareList": ["Falcon Descent Stage", "Lunar Roving Vehicle (LRV-1)", "ALSEP"],
-    "storyPath": "/falcon"
+    "hardwareList": [
+      "Falcon Descent Stage",
+      "Lunar Roving Vehicle (LRV-1)",
+      "ALSEP"
+    ],
+    "storyPath": "/object/apollo-15"
   },
   {
     "id": "apollo-16",
@@ -82,12 +100,16 @@
     "status": "Landermodule Descent Stage & Rover on surface",
     "statusCategory": "intact",
     "lat": -8.973,
-    "lon": 15.500,
+    "lon": 15.5,
     "equipmentType": "Lunar Module Descent Stage + Lunar Roving Vehicle",
     "mass": "3165 kg",
     "description": "Landed in Descartes Highlands.",
-    "hardwareList": ["Orion Descent Stage", "Lunar Roving Vehicle (LRV-2)", "ALSEP"],
-    "storyPath": "/orion"
+    "hardwareList": [
+      "Orion Descent Stage",
+      "Lunar Roving Vehicle (LRV-2)",
+      "ALSEP"
+    ],
+    "storyPath": "/object/apollo-16"
   },
   {
     "id": "apollo-17",
@@ -104,8 +126,12 @@
     "equipmentType": "Lunar Module Descent Stage + Lunar Roving Vehicle",
     "mass": "3328 kg",
     "description": "Final Apollo crewed mission to Taurus-Littrow valley.",
-    "hardwareList": ["Challenger Descent Stage", "Lunar Roving Vehicle (LRV-3)", "ALSEP"],
-    "storyPath": "/challenger"
+    "hardwareList": [
+      "Challenger Descent Stage",
+      "Lunar Roving Vehicle (LRV-3)",
+      "ALSEP"
+    ],
+    "storyPath": "/object/apollo-17"
   },
   {
     "id": "surveyor-1",
@@ -122,7 +148,12 @@
     "equipmentType": "Robotic Soft Lander",
     "mass": "294 kg",
     "description": "First operational U.S. soft lunar lander.",
-    "hardwareList": ["Lander Frame", "TV Camera", "Solar Panel Array"]
+    "hardwareList": [
+      "Lander Frame",
+      "TV Camera",
+      "Solar Panel Array"
+    ],
+    "storyPath": "/object/surveyor-1"
   },
   {
     "id": "surveyor-3",
@@ -139,7 +170,11 @@
     "equipmentType": "Robotic Soft Lander",
     "mass": "281 kg",
     "description": "Soft lander in Oceanus Procellarum, examined by Apollo 12 astronauts.",
-    "hardwareList": ["Lander Frame", "Soil Mechanics Surface Sampler"]
+    "hardwareList": [
+      "Lander Frame",
+      "Soil Mechanics Surface Sampler"
+    ],
+    "storyPath": "/object/surveyor-3"
   },
   {
     "id": "surveyor-5",
@@ -156,7 +191,11 @@
     "equipmentType": "Robotic Soft Lander",
     "mass": "283 kg",
     "description": "Landed in Mare Tranquillitatis.",
-    "hardwareList": ["Lander Frame", "Alpha Backscattering Instrument"]
+    "hardwareList": [
+      "Lander Frame",
+      "Alpha Backscattering Instrument"
+    ],
+    "storyPath": "/object/surveyor-5"
   },
   {
     "id": "surveyor-6",
@@ -169,11 +208,16 @@
     "status": "Landed soft — intact",
     "statusCategory": "intact",
     "lat": 0.473,
-    "lon": -1.480,
+    "lon": -1.48,
     "equipmentType": "Robotic Soft Lander",
     "mass": "282 kg",
     "description": "Landed in Sinus Medii; first spacecraft to lift off from the lunar surface.",
-    "hardwareList": ["Lander Frame", "TV Camera", "Alpha Scattering Instrument"]
+    "hardwareList": [
+      "Lander Frame",
+      "TV Camera",
+      "Alpha Scattering Instrument"
+    ],
+    "storyPath": "/object/surveyor-6"
   },
   {
     "id": "surveyor-7",
@@ -190,7 +234,12 @@
     "equipmentType": "Robotic Soft Lander",
     "mass": "290 kg",
     "description": "Landed on the rim crater of Tycho.",
-    "hardwareList": ["Lander Frame", "Surface Sampler", "Alpha Scattering Instrument"]
+    "hardwareList": [
+      "Lander Frame",
+      "Surface Sampler",
+      "Alpha Scattering Instrument"
+    ],
+    "storyPath": "/object/surveyor-7"
   },
   {
     "id": "ranger-7",
@@ -207,7 +256,11 @@
     "equipmentType": "Lunar Impact Probe",
     "mass": "365 kg",
     "description": "Returned the first high-resolution images of the Moon prior to impact.",
-    "hardwareList": ["Spacecraft Debris", "Imaging System"]
+    "hardwareList": [
+      "Spacecraft Debris",
+      "Imaging System"
+    ],
+    "storyPath": "/object/ranger-7"
   },
   {
     "id": "ranger-8",
@@ -224,7 +277,10 @@
     "equipmentType": "Lunar Impact Probe",
     "mass": "367 kg",
     "description": "Impacted Mare Tranquillitatis returning 7,137 high-res images.",
-    "hardwareList": ["Spacecraft Debris"]
+    "hardwareList": [
+      "Spacecraft Debris"
+    ],
+    "storyPath": "/object/ranger-8"
   },
   {
     "id": "ranger-9",
@@ -241,7 +297,10 @@
     "equipmentType": "Lunar Impact Probe",
     "mass": "366 kg",
     "description": "Impacted Alphonsus crater.",
-    "hardwareList": ["Spacecraft Debris"]
+    "hardwareList": [
+      "Spacecraft Debris"
+    ],
+    "storyPath": "/object/ranger-9"
   },
   {
     "id": "lunar-prospector",
@@ -254,10 +313,14 @@
     "status": "Controlled Impact",
     "statusCategory": "impact",
     "lat": -87.7,
-    "lon": -42.0,
+    "lon": 42.1,
     "equipmentType": "Orbiter / Impact Probe",
     "mass": "158 kg",
     "description": "Intentionally crashed near the South Pole to search for water ice.",
-    "hardwareList": ["Spacecraft Debris", "Gamma Ray Spectrometer"]
+    "hardwareList": [
+      "Spacecraft Debris",
+      "Gamma Ray Spectrometer"
+    ],
+    "storyPath": "/object/lunar-prospector"
   }
 ]

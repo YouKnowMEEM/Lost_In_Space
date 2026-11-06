@@ -2,14 +2,16 @@ import React, { useMemo } from "react";
 import { ArrowUpRight, MapPin, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { BY_ID, NSSDC_URL } from "../../data/catalog";
 
 function Detail({ label, children }) {
   return <div className="moon-detail"><span>{label}</span><strong>{children || "Not provided"}</strong></div>;
 }
 
-export default function EquipmentSidebar({ artifact, origin, onClose, onSurfaceMode, equipmentHeading = "NASA LUNAR EQUIPMENT" }) {
+export default function EquipmentSidebar({ artifact, origin, onClose, equipmentHeading = "NASA LUNAR EQUIPMENT" }) {
   const story = artifact?.storyPath;
-  const readMore = artifact?.readMoreUrl;
+  const record = artifact ? BY_ID[artifact.id]?.nssdc : null;
+  const latLon = (lat, lon) => `${Math.abs(Number(lat)).toFixed(2)}° ${Number(lat) >= 0 ? "N" : "S"}, ${Math.abs(Number(lon)).toFixed(2)}° ${Number(lon) >= 0 ? "E" : "W"}`;
 
   // Calculate starting offset from click origin relative to the docked sidebar position
   const initialAnimation = useMemo(() => {
@@ -81,15 +83,15 @@ export default function EquipmentSidebar({ artifact, origin, onClose, onSurfaceM
               <Detail label="Equipment type">{artifact.equipmentType}</Detail>
               <Detail label="Launch date">{artifact.launchDate}</Detail>
               <Detail label="Touchdown date">{artifact.landingDate}</Detail>
-              <Detail label="Coordinates"><span className="coords"><MapPin size={12}/>{Number(artifact.lat).toFixed(2)}°, {Number(artifact.lon).toFixed(2)}°</span></Detail>
+              <Detail label="Coordinates"><span className="coords"><MapPin size={12}/>{latLon(artifact.lat, artifact.lon)}</span></Detail>
             </div>
             <div className="moon-hardware">
               <span>HARDWARE LEFT ON SURFACE</span>
               <ul>{(artifact.hardwareList || []).map((item, i) => <li key={`${item}-${i}`}>{item}</li>)}</ul>
             </div>
             <div className="moon-sidebar-actions">
-              {story ? <Link className="moon-read-more" to={story}>Read the story <ArrowUpRight size={15}/></Link> : readMore ? <a className="moon-read-more" href={readMore} target="_blank" rel="noreferrer">Read more <ArrowUpRight size={15}/></a> : <button className="moon-read-more is-unavailable" type="button" disabled>Read more</button>}
-              <button className="moon-surface-mode" type="button" onClick={onSurfaceMode}>View in 3D Surface Mode <ArrowUpRight size={15}/></button>
+              {story && <Link className="moon-read-more" to={story}>Read the story <ArrowUpRight size={15}/></Link>}
+              {record && <a className="moon-surface-mode" href={NSSDC_URL(record)} target="_blank" rel="noreferrer">NASA data record <ArrowUpRight size={15}/></a>}
             </div>
           </motion.aside>
         </>

@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef } from "react";
+import React, { Suspense, useEffect, useMemo, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { CameraControls, useTexture } from "@react-three/drei";
 import * as THREE from "three";
@@ -17,7 +17,8 @@ function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selec
     return () => window.cancelAnimationFrame(frame);
   }, [texture, onReady]);
   const isMars = texturePath.toLowerCase().includes("mars");
-  const atmosphereColor = isMars ? "#e06c45" : "#6bb8ff";
+  const atmosphereColor = isMars ? "#f08a5d" : "#6bb8ff";
+  const glowUniforms = useMemo(() => ({ glow: { value: new THREE.Color(atmosphereColor) } }), [atmosphereColor]);
 
   return <group rotation={[0, -Math.PI / 2, 0]}>
     {/* Main planet globe */}
@@ -26,15 +27,17 @@ function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selec
       <meshStandardMaterial map={texture} roughness={1} metalness={0}/>
     </mesh>
 
-    {isMars && <mesh>
-      <sphereGeometry args={[radius * 1.045, 64, 48]}/>
-      <meshBasicMaterial
-        color={atmosphereColor}
+    {/* Mars's thin atmosphere: a soft glow that fades out from the planet's edge. */}
+    {isMars && <mesh raycast={() => null}>
+      <sphereGeometry args={[radius * 1.14, 64, 48]}/>
+      <shaderMaterial
         transparent
-        opacity={0.35}
+        depthWrite={false}
         side={THREE.BackSide}
         blending={THREE.AdditiveBlending}
-        depthWrite={false}
+        uniforms={glowUniforms}
+        vertexShader={"varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }"}
+        fragmentShader={"uniform vec3 glow; varying vec3 vN; void main(){ float i = pow(max(0.0, 0.64 - dot(vN, vec3(0.0, 0.0, 1.0))), 3.0); gl_FragColor = vec4(glow * i * 1.6, i); }"}
       />
     </mesh>}
 

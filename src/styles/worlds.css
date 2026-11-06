@@ -1,0 +1,88 @@
+/* =====================================================================
+   Readability floor for the 3D world pages (Moon, Mars, Deep space).
+   The original interface used 7 to 11 px labels, which are too small for
+   young readers. These rules lift every label to at least 12 px and body
+   text to 14 px or more. They sit under .app-shell so they win over
+   styles.css without needing !important.
+   ===================================================================== */
+
+.app-shell .brand strong { font-size: 14px; }
+.app-shell .brand small { font-size: 12px; }
+.app-shell .topbar nav a,
+.app-shell .topbar nav > a,
+.app-shell .nav-dropdown > button,
+.app-shell .nav-dropdown-menu a { font-size: 15px; }
+
+/* title block and search */
+.app-shell .moon-map-title p { font-size: 16px; }
+.app-shell .moon-search-results button small { font-size: 12.5px; }
+.app-shell .moon-search-results p { font-size: 14px; }
+.app-shell .moon-control-toggle { font-size: 14px; }
+.app-shell .moon-map-footer,
+.app-shell .moon-map-footer span { font-size: 13px; }
+.app-shell .moon-map-key { font-size: 12.5px; }
+
+/* filters, legend, timeline */
+.app-shell .moon-control-sidebar .moon-filter-group > span,
+.app-shell .moon-filter-group > span,
+.app-shell .moon-control-sidebar .moon-timeline-heading > span { font-size: 12.5px; }
+.app-shell .moon-filter-group button,
+.app-shell .moon-control-sidebar .moon-filter-group button { font-size: 14px; }
+.app-shell .moon-timeline-points button { font-size: 13px; }
+.app-shell .moon-timeline-heading strong { font-size: 14px; }
+.app-shell .moon-control-legend > div { font-size: 14px; }
+.app-shell .moon-control-legend > span { font-size: 12.5px; }
+.app-shell .moon-control-hint { font-size: 14px; line-height: 1.5; }
+
+/* machine detail sidebar */
+.app-shell .moon-program-badge { font-size: 12.5px; }
+.app-shell .moon-status { font-size: 14px; }
+.app-shell .moon-sidebar-description { font-size: 15px; line-height: 1.55; }
+.app-shell .moon-detail > span,
+.app-shell .moon-hardware > span { font-size: 12.5px; }
+.app-shell .moon-detail strong { font-size: 14.5px; }
+.app-shell .moon-hardware li { font-size: 14.5px; }
+.app-shell .moon-read-more,
+.app-shell .moon-surface-mode { font-size: 14.5px; min-height: 44px; }
+.app-shell .equipment-marker-label { font-size: 12px; }
+
+/* deep space page */
+.app-shell .solar-brand strong { font-size: 13px; }
+.app-shell .solar-brand small,
+.app-shell .solar-search-results small,
+.app-shell .solar-pop-kicker,
+.app-shell .solar-scale-caption { font-size: 12px; }
+.app-shell .solar-search-results em,
+.app-shell .solar-caption-kicker,
+.app-shell .solar-home-hint { font-size: 12.5px; }
+.app-shell .solar-search-empty { font-size: 14px; }
+.app-shell .solar-pop-note { font-size: 13.5px; }
+.app-shell .solar-home-caption p { font-size: 14px; }
+.app-shell .deep-space-probe-label.tutorial-pioneer-label { font-size: 12px; }
+
+/* a visible keyboard focus on every control of the world pages */
+.app-shell a:focus-visible,
+.app-shell button:focus-visible,
+.app-shell input:focus-visible,
+.app-shell select:focus-visible {
+  outline: 3px solid #f2b640;
+  outline-offset: 2px;
+}
+
+/* "Read the story" link inside the deep-space popup */
+.app-shell .solar-story-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  margin-top: 8px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(143, 211, 255, 0.5);
+  background: rgba(143, 211, 255, 0.12);
+  color: #d9f0ff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.app-shell .solar-story-link:hover { background: rgba(143, 211, 255, 0.22); }

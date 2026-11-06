@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ArrowRight, BookOpen, Clock3, FileText, Gamepad2, Headphones } from "lucide-react";
 import ObjectRing from "../home/ObjectRing";
 import PhotoCarousel from "../home/PhotoCarousel";
 import { BEAUTIES, PHOTOS, STORYBOOKS } from "../home/homeData";
+import { SiteFooter, SiteHeader } from "../site/SiteChrome";
+import { CATALOG, stateCounts } from "../data/catalog";
 import "../styles/fonts.css";
 import "../home/home.css";
+import "../site/site.css";
 
 /** A crescent Moon with a closed, sleeping eye. */
-function Mark() {
-  return (
-    <svg className="hp-mark" viewBox="0 0 32 32" aria-hidden="true">
-      <path d="M21.5 4.5A12.5 12.5 0 1 0 27.6 22 10 10 0 0 1 21.5 4.5Z" fill="currentColor" />
-      <path d="M10.2 17.4c1.5 1.7 3.9 1.7 5.4 0" fill="none" stroke="#070b1a" strokeWidth="1.7" strokeLinecap="round" />
-      <path d="M11 19.6l-.8 1.3M12.9 20.2v1.5M14.8 19.6l.8 1.3" stroke="#070b1a" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 function Book({ book }) {
   return (
     <article className={`hp-book is-${book.theme}`} aria-labelledby={`book-${book.id}`}>
@@ -103,8 +96,9 @@ function World({ world }) {
 }
 
 export default function HomePage({ onStartTutorial }) {
-  const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate();
+  const counts = stateCounts();
+  const resting = counts.asleep + counts.impact;
+  const firstYear = Math.min(...CATALOG.map((c) => c.year));
 
   useEffect(() => {
     const previous = document.title;
@@ -114,47 +108,14 @@ export default function HomePage({ onStartTutorial }) {
     };
   }, []);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <div className="hp">
       <a className="hp-skip" href="#hp-main">
         Skip to the content
       </a>
-      <header className={`hp-top${scrolled ? " is-scrolled" : ""}`}>
-        <Link to="/" className="hp-brand">
-          <Mark />
-          <span>Lost In Space</span>
-        </Link>
-        <nav className="hp-nav" aria-label="Sections">
-          <a href="#worlds">Worlds</a>
-          <a href="#storybooks" aria-label="Storybooks">
-            <span className="hp-nav-long">Storybooks</span>
-            <span className="hp-nav-short">Stories</span>
-          </a>
-          <a href="#photos">Photos</a>
-          <button
-            type="button"
-            className="hp-nav-game"
-            aria-label="Start Signal Hunter on the Moon"
-            title="Play Signal Hunter"
-            onClick={() => navigate("/moon?game=signal-hunter")}
-          >
-            <Gamepad2 size={17} aria-hidden="true" />
-            <span className="hp-nav-game-label">Game</span>
-          </button>
-          <button type="button" className="hp-nav-tutorial" onClick={onStartTutorial}>
-            Tutorial
-          </button>
-        </nav>
-      </header>
+      <SiteHeader onTutorial={onStartTutorial} />
 
-      <main id="hp-main">
+      <main id="hp-main" tabIndex={-1}>
         <section className="hp-hero" aria-labelledby="hp-title">
           <div className="hp-hero-copy">
             <h1 id="hp-title">Sleeping Beauties</h1>
@@ -164,6 +125,27 @@ export default function HomePage({ onStartTutorial }) {
             </p>
           </div>
           <ObjectRing items={BEAUTIES} />
+        </section>
+
+        <section className="hx-band-wrap" aria-label="The project at a glance">
+          <dl className="hx-band">
+            <div>
+              <dt>machines to meet</dt>
+              <dd>{CATALOG.length}</dd>
+            </div>
+            <div>
+              <dt>resting on the Moon and Mars</dt>
+              <dd>{resting}</dd>
+            </div>
+            <div>
+              <dt>still awake and exploring</dt>
+              <dd>{counts.awake}</dd>
+            </div>
+            <div>
+              <dt>years, from {firstYear} until today</dt>
+              <dd>{new Date().getFullYear() - firstYear}</dd>
+            </div>
+          </dl>
         </section>
 
         <section id="worlds" className="hp-section" aria-labelledby="worlds-title">
@@ -195,6 +177,38 @@ export default function HomePage({ onStartTutorial }) {
           </div>
         </section>
 
+        <section id="atlas" className="hp-section" aria-labelledby="atlas-title">
+          <div className="hp-section-head">
+            <h2 id="atlas-title">Meet them all</h2>
+            <p>Three storybooks are only the beginning. Every machine has its own page, and there are games for when you want to test what you have learned.</p>
+          </div>
+          <div className="hx-split">
+            <div className="hx-panel hx-panel-atlas">
+              <div className="hx-mini" aria-hidden="true">
+                <img src="/images/objects/eagle.webp" alt="" loading="lazy" />
+                <img src="/images/objects/opportunity.webp" alt="" loading="lazy" />
+                <img src="/images/objects/ingenuity.webp" alt="" loading="lazy" />
+                <img src="/images/objects/pioneer.webp" alt="" loading="lazy" />
+              </div>
+              <h3>The Atlas</h3>
+              <p>All {CATALOG.length} machines on one timeline. Filter by world or by whether they are awake, then open field notes: a story in the machine's own voice, what it discovered and how its hardware made that possible.</p>
+              <Link className="hp-btn hp-btn-primary" to="/atlas">
+                Open the Atlas <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </div>
+            <div className="hx-panel hx-panel-play">
+              <div className="hx-mini" aria-hidden="true">
+                <Gamepad2 size={54} />
+              </div>
+              <h3>Play</h3>
+              <p>Send radio pings to hunt for a lost lander on the Moon or Mars, or answer riddles spoken by the machines themselves.</p>
+              <Link className="hp-btn hp-btn-quiet" to="/play">
+                Start playing <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <section id="photos" className="hp-section" aria-labelledby="photos-title">
           <div className="hp-section-head">
             <h2 id="photos-title">Lost in space</h2>
@@ -204,44 +218,7 @@ export default function HomePage({ onStartTutorial }) {
         </section>
       </main>
 
-      <footer className="hp-foot">
-        <div className="hp-foot-inner">
-          <div className="hp-foot-about">
-            <p className="hp-brand hp-foot-brand">
-              <Mark />
-              <span>Sleeping Beauties</span>
-            </p>
-            <p>Made for the NASA Space Apps Challenge 2026. An independent project, not endorsed by NASA.</p>
-          </div>
-          <nav className="hp-foot-links" aria-label="Everything on this site">
-            <div>
-              <h2>Storybooks</h2>
-              <Link to="/eagle">Eagle</Link>
-              <Link to="/viking-1">Viking 1</Link>
-              <Link to="/voyager-1">Voyager 1</Link>
-            </div>
-            <div>
-              <h2>Mission files</h2>
-              <Link to="/eagle/mission">Eagle</Link>
-              <Link to="/viking-1/mission">Viking 1</Link>
-              <Link to="/voyager-1/mission">Voyager 1</Link>
-            </div>
-            <div>
-              <h2>Worlds</h2>
-              <Link to="/moon">The Moon</Link>
-              <Link to="/space">Deep space</Link>
-              <Link to="/mars">Mars</Link>
-            </div>
-          </nav>
-          <p className="hp-credits">
-            Photos and videos: <a href="https://images.nasa.gov/">NASA Image and Video Library</a> (public domain). 3D models:{" "}
-            <a href="https://github.com/nasa/NASA-3D-Resources">NASA 3D Resources</a>. Moon and Mars textures:{" "}
-            <a href="https://www.solarsystemscope.com/textures/">Solar System Scope</a>
-            <a> Music in bg =Interstellar</a>
-          
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
