@@ -114,7 +114,7 @@ export default function ObjectPage() {
                 </Suspense>
               </div>
             ) : <ObjectArt item={item} eager className="ob-art" />}
-            {["apollo-12", "apollo-14", "apollo-15", "apollo-16", "apollo-17"].includes(item.id) && <p className="ob-art-note">Picture: Eagle, the same lunar module design.</p>}
+            {["apollo-12", "apollo-14", "apollo-15", "apollo-16", "apollo-17"].includes(item.id) && <p className="ob-art-note">Picture: Similar to Eagle lunar module with slight modification.</p>}
             {item.id === "viking-2" && <p className="ob-art-note">Picture: Viking 1, Viking 2's identical twin.</p>}
             {item.id === "spirit-mer-a" && <p className="ob-art-note">Picture: Opportunity, Spirit's identical twin.</p>}
             {(item.id === "pioneer-11" || item.id === "pioneer-10") && <p className="ob-art-note">Picture: a Pioneer probe. Pioneer 10 and 11 were twins.</p>}

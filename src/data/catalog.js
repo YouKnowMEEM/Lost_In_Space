@@ -23,24 +23,33 @@ export const STATES = {
 
 // The three machines that already have narrated storybooks and mission files.
 const STORYBOOKS = {
-  "apollo-11": { story: "/eagle", mission: "/eagle/mission", art: "/images/objects/eagle.webp", short: "Eagle", mission_name: "Apollo 11" },
+  "apollo-11": { story: "/eagle", mission: "/eagle/mission", art: "/images/objects/eagle.webp", short: "Eagle", mission_name: "Apollo 11 (G-Class)" },
   "viking-1": { story: "/viking-1", mission: "/viking-1/mission", art: "/images/objects/viking.webp", short: "Viking 1", mission_name: "Viking 1 lander" },
   "voyager-1": { story: "/voyager-1", mission: "/voyager-1/mission", art: "/images/objects/voyager.webp", short: "Voyager 1", mission_name: "Voyager 1" },
 };
 
 // Pictures of the same design stand in for machines that have no render of their own.
 const ART = {
-  "apollo-12": "/images/objects/eagle.webp",
-  "apollo-14": "/images/objects/eagle.webp",
-  "apollo-15": "/images/objects/eagle.webp",
-  "apollo-16": "/images/objects/eagle.webp",
-  "apollo-17": "/images/objects/eagle.webp",
+  "apollo-12": "/images/objects/apollo12_13_14(H-Class).png",
+  "apollo-14": "/images/objects/apollo12_13_14(H-Class).png",
+  "apollo-15": "/images/objects/apollo15_16_17(J-Class).png",
+  "apollo-16": "/images/objects/apollo15_16_17(J-Class).png",
+  "apollo-17": "/images/objects/apollo15_16_17(J-Class).png",
   "viking-2": "/images/objects/viking.webp",
-  "spirit-mer-a": "/images/objects/opportunity.webp",
-  "opportunity-mer-b": "/images/objects/opportunity.webp",
+  "surveyor-1": "/images/objects/survenior_pathfinder.png",
+  "surveyor-3": "/images/objects/survenior_pathfinder.png",
+  "surveyor-5": "/images/objects/survenior_pathfinder.png",
+  "surveyor-6": "/images/objects/survenior_pathfinder.png",
+  "surveyor-7": "/images/objects/survenior_pathfinder.png",
+  "pathfinder-sojourner": "/images/objects/survenior_pathfinder.png",
+  "spirit-mer-a": "/images/objects/spirit_opportunity.png",
+  "opportunity-mer-b": "/images/objects/spirit_opportunity.png",
+  "curiosity-msl": "/images/objects/curiosity.png",
   "insight-lander": "/images/objects/insight.webp",
+  "lunar-prospector": "/images/objects/Lunar-Prospector.png",
+  "phoenix-lander": "/images/objects/phoenix.png",
   "ingenuity-helicopter": "/images/objects/ingenuity.webp",
-  "perseverance-mars-2020": "/images/perseverance.png",
+  "perseverance-mars-2020": "/images/objects/perseverance.png",
   "voyager-2": "/images/objects/voyager.webp",
   "pioneer-10": "/images/objects/pioneer.webp",
   "pioneer-11": "/images/objects/pioneer.webp",

@@ -63,11 +63,17 @@ function Timeline({ items }) {
 
 function AtlasCard({ c }) {
   const w = WORLDS[c.world];
+  const atlasArt = {
+    "new-horizons": "/images/objects/New_Horizons.png",
+    "voyager-1": "/images/objects/voyager_atlas.png",
+    "voyager-2": "/images/objects/voyager_atlas.png",
+  };
+  const art = atlasArt[c.id] ? { ...c, art: atlasArt[c.id] } : c;
   return (
     <li>
       <Link to={c.route} className="at-card" style={{ "--accent": w.accent }}>
         <div className="at-card-art">
-          <ObjectArt item={c} alt="" />
+          <ObjectArt item={art} alt="" />
           <span className="at-card-world">{w.short}</span>
         </div>
         <div className="at-card-body">

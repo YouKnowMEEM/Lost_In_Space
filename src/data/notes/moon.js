@@ -5,7 +5,7 @@
 export const MOON_NOTES = {
   "apollo-12": {
     short: "Intrepid",
-    mission: "Apollo 12",
+    mission: "Apollo 12 (H-Class)",
     tagline: "The lander that parked next to a robot.",
     riddle: "I landed so close to a robot that was already waiting on the Moon that two astronauts could walk over and visit it.",
     story: [
@@ -32,7 +32,7 @@ export const MOON_NOTES = {
 
   "apollo-14": {
     short: "Antares",
-    mission: "Apollo 14",
+    mission: "Apollo 14 (H-Class)",
     tagline: "The lander that carried a golf club to the Moon.",
     riddle: "A pilot who had been the first American in space used me to reach the Moon, then hit golf balls near my legs.",
     story: [
@@ -59,7 +59,7 @@ export const MOON_NOTES = {
 
   "apollo-15": {
     short: "Falcon",
-    mission: "Apollo 15",
+    mission: "Apollo 15 (J-Class)",
     tagline: "The lander that brought a car.",
     riddle: "I was the first lunar module to carry a car, and my crew dropped a hammer and a feather to prove an old idea right.",
     story: [
@@ -86,7 +86,7 @@ export const MOON_NOTES = {
 
   "apollo-16": {
     short: "Orion",
-    mission: "Apollo 16",
+    mission: "Apollo 16 (J-Class)",
     tagline: "The lander that went to the highlands.",
     riddle: "My astronauts were the first to land in the bright lunar highlands, and their Moon car sped downhill at about 17 kilometres an hour.",
     story: [
@@ -113,7 +113,7 @@ export const MOON_NOTES = {
 
   "apollo-17": {
     short: "Challenger",
-    mission: "Apollo 17",
+    mission: "Apollo 17 (J-Class)",
     tagline: "The last lander, so far, to carry people.",
     riddle: "I was the last lunar module to carry astronauts to the Moon, and my crew included a geologist who found orange soil.",
     story: [
