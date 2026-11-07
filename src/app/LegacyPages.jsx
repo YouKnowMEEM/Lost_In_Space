@@ -325,7 +325,7 @@ export function Home() {
       </Canvas>
     </div>
 
-    {!tutorialIntro && <div className="solar-scale-caption">Planets, Orbits & Probes not in actual scale. Checkout NASA's Eye on Solar System</div>}
+    {!tutorialIntro && <div className="solar-scale-caption">Planets, Orbits not in actual scale. Checkout NASA's Eye on Solar System</div>}
     {!tutorialIntro && distanceToSelected && selected && <div style={{ position: "absolute", top: 112, left: 20, zIndex: 90, background: "rgba(0,0,0,0.5)", padding: "8px 14px", borderRadius: "8px", color: "#afc8e8", fontFamily: "monospace", fontSize: "13px", backdropFilter: "blur(4px)", letterSpacing: "0.5px" }}>
       <span style={{ color: "#7a9cc6", fontSize: "11px" }}>DIST </span>{distanceToSelected} AU
     </div>}

@@ -706,6 +706,24 @@
 .ob-hero-art img.ob-art {
   max-width: 88%;
 }
+.ob-model-viewport {
+  position: relative;
+  width: 100%;
+  height: 340px;
+}
+.ob-model-viewport .mf-model-canvas {
+  position: absolute;
+  inset: 0;
+}
+.ob-model-status,
+.ob-model-viewport .mf-model-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: var(--hp-dim);
+}
 .ob-art-note {
   position: absolute;
   left: 16px;
@@ -1832,6 +1850,9 @@
   }
   .ob-hero-art .ob-art {
     max-height: 250px;
+  }
+  .ob-model-viewport {
+    height: 260px;
   }
   .ob-tagline {
     max-width: none;

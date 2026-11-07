@@ -40,6 +40,7 @@ const ART = {
   "opportunity-mer-b": "/images/objects/opportunity.webp",
   "insight-lander": "/images/objects/insight.webp",
   "ingenuity-helicopter": "/images/objects/ingenuity.webp",
+  "perseverance-mars-2020": "/images/perseverance.png",
   "voyager-2": "/images/objects/voyager.webp",
   "pioneer-10": "/images/objects/pioneer.webp",
   "pioneer-11": "/images/objects/pioneer.webp",

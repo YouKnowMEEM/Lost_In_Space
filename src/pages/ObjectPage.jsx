@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, BookOpen, ExternalLink, Lightbulb, MapPin, Wrench } from "lucide-react";
 import Page from "../site/SiteChrome";
@@ -8,6 +8,34 @@ import StateBadge from "../site/StateBadge";
 import Lightbox from "../storybook/Lightbox";
 import { BY_ID, NASA_LIBRARY_URL, NSSDC_URL, STATES, WORLDS, neighbours } from "../data/catalog";
 import NotFoundPage from "./NotFoundPage";
+
+const ModelViewer = lazy(() => import("../mission/ModelViewer"));
+const FIELD_NOTE_MODELS = {
+  "new-horizons": {
+    src: "/models/New_Horizons.glb",
+    label: "New Horizons",
+  },
+  "voyager-2": {
+    src: "/models/voyager.glb",
+    label: "Voyager 2",
+  },
+  "pioneer-10": {
+    src: "/models/pioneer.glb",
+    label: "Pioneer 10",
+  },
+  "pioneer-11": {
+    src: "/models/pioneer.glb",
+    label: "Pioneer 11",
+  },
+};
+
+const makeFieldNoteModel = ({ src }) => ({
+  src,
+  fit: 3.1,
+  yaw: -Math.PI / 4,
+  floating: true,
+  parts: [],
+});
 
 export const mapLink = (item) => {
   if (item.world === "deep") return `/space?probe=${item.id}`;
@@ -40,6 +68,7 @@ export default function ObjectPage() {
   if (!n) return <NotFoundPage what="machine" />;
 
   const world = WORLDS[item.world];
+  const fieldNoteModel = FIELD_NOTE_MODELS[item.id];
   const { prev, next } = neighbours(item.id);
   const state = STATES[item.state];
   const year = item.year;
@@ -78,12 +107,18 @@ export default function ObjectPage() {
           </div>
           <div className="ob-hero-art">
             <div className="ob-art-glow" aria-hidden="true" />
-            <ObjectArt item={item} eager className="ob-art" />
+            {fieldNoteModel ? (
+              <div className="ob-model-viewport" aria-label={`Interactive ${fieldNoteModel.label} 3D model`}>
+                <Suspense fallback={<p className="ob-model-status">Loading 3D model…</p>}>
+                  <ModelViewer model={makeFieldNoteModel(fieldNoteModel)} />
+                </Suspense>
+              </div>
+            ) : <ObjectArt item={item} eager className="ob-art" />}
             {["apollo-12", "apollo-14", "apollo-15", "apollo-16", "apollo-17"].includes(item.id) && <p className="ob-art-note">Picture: Eagle, the same lunar module design.</p>}
             {item.id === "viking-2" && <p className="ob-art-note">Picture: Viking 1, Viking 2's identical twin.</p>}
             {item.id === "spirit-mer-a" && <p className="ob-art-note">Picture: Opportunity, Spirit's identical twin.</p>}
             {(item.id === "pioneer-11" || item.id === "pioneer-10") && <p className="ob-art-note">Picture: a Pioneer probe. Pioneer 10 and 11 were twins.</p>}
-            {item.id === "voyager-2" && <p className="ob-art-note">Picture: Voyager 1, Voyager 2's twin.</p>}
+            {fieldNoteModel && <p className="ob-art-note">NASA 3D model · Drag to rotate; scroll to zoom.</p>}
           </div>
         </section>
 

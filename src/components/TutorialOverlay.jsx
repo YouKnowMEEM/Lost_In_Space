@@ -245,7 +245,7 @@ export default function TutorialOverlay({ startRequest = 0 }) {
 
       const restrictedNav = clickTarget?.closest(onEaglePage
         ? ".sbk-back .sbk-home, .sbk-back .sbk-world"
-        : ".topbar .brand, .topbar nav > a, .topbar .nav-dropdown > button, .topbar .nav-dropdown-menu a");
+        : ".topbar .brand, .topbar nav > a, .topbar .nav-dropdown > button, .topbar .nav-dropdown-menu a, .solar-story-link");
       if (!restrictedNav) return;
 
       event.preventDefault();
