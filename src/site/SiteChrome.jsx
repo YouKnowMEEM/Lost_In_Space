@@ -69,7 +69,7 @@ export function SiteHeader({ onTutorial }) {
     <header className={`hp-top sx-top${scrolled || open ? " is-scrolled" : ""}${open ? " is-menu-open" : ""}`}>
       <Link to="/" className="hp-brand">
         <Mark />
-        <span>Sleeping Beauties</span>
+        <span>Lost In Space</span>  {/* Should be team name; not Sleeping Beauties */}
       </Link>
 
       <button type="button" className="sx-burger" aria-expanded={open} aria-controls="sx-nav" aria-label={open ? "Close the menu" : "Open the menu"} onClick={() => setOpen((v) => !v)}>
@@ -82,6 +82,13 @@ export function SiteHeader({ onTutorial }) {
             Worlds <ChevronDown size={16} aria-hidden="true" className={worlds ? "is-flipped" : ""} />
           </button>
           <div className={`sx-drop-panel${worlds ? " is-open" : ""}`}>
+            <Link to="/" className="sx-drop-item">
+              <span className="sx-home-icon" aria-hidden="true"><Mark /></span>
+              <span>
+                <strong>Homepage</strong>
+                <small>Back to the start</small>
+              </span>
+            </Link>
             {WORLD_LINKS.map((w) => (
               <Link key={w.to} to={w.to} className="sx-drop-item">
                 <span className="sx-dot" style={{ background: w.color }} aria-hidden="true" />
@@ -116,7 +123,7 @@ export function SiteFooter() {
         <div className="hp-foot-about">
           <p className="hp-brand hp-foot-brand">
             <Mark />
-            <span>Sleeping Beauties</span>
+            <span>Lost In Space</span>    {/* Should be team name; not Sleeping Beauties */}
           </p>
           <p>Stories of the machines NASA left behind on the Moon, on Mars and in deep space. Made for the NASA Space Apps Challenge 2026. An independent project, not endorsed by NASA.</p>
         </div>

@@ -27,13 +27,18 @@ const FIELD_NOTE_MODELS = {
     src: "/models/pioneer.glb",
     label: "Pioneer 11",
   },
+  "perseverance-mars-2020": {
+    src: "/models/perseverance.glb",
+    label: "Perseverance",
+    floating: false,
+  },
 };
 
-const makeFieldNoteModel = ({ src }) => ({
+const makeFieldNoteModel = ({ src, floating = true }) => ({
   src,
   fit: 3.1,
   yaw: -Math.PI / 4,
-  floating: true,
+  floating,
   parts: [],
 });
 

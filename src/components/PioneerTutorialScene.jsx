@@ -78,7 +78,7 @@ export default function PioneerTutorialScene({ onComplete }) {
         <span>PIONEER 11 · DEEP SPACE SIGNAL</span>
       </div>
 
-      {stage === "loading" && <p className="tutorial-look-hint">Tuning in to Pioneer 11…</p>}
+      {stage === "loading" && <p className="tutorial-look-hint">Loading Pioneer 11 and astronaut…</p>}
       {stage === "walk-message" && <p className="tutorial-look-hint">Can you walk in Space? Well.. You can always try !</p>}
       {stage === "turn-left" && (
         <>
@@ -102,7 +102,7 @@ export default function PioneerTutorialScene({ onComplete }) {
           <div className="tutorial-transmission-label"><span className="tutorial-waveform" /> INCOMING TRANSMISSION</div>
           <h1 id="pioneer-message-title">A signal from the pioneer</h1>
           <p>Look there, kiddo. That little probe was sent on a daring mission to Saturn more than 50 years ago. It crossed the plane of Saturn’s rings...and survived !</p>
-          <p>It discovered two new moons and a new ring, then sent data back to Earth for 22 years, when its expected lifespan was 21 months. Now it’s drifting out here in the dark, a pioneer that refused to die.</p>
+          <p>It discovered 2 new moons, a new ring & sent data back to Earth for 22 years (Expected lifespan was 21 months). Now it's drifting out here in the dark, a pioneer that refused to die.</p>
           <button type="button" className="tutorial-primary" onClick={() => setStage("go-delay")}>Continue</button>
         </section>
       )}
@@ -111,7 +111,7 @@ export default function PioneerTutorialScene({ onComplete }) {
         <section className="tutorial-transmission tutorial-transmission-short" aria-live="polite" aria-labelledby="pioneer-go-title">
           <div className="tutorial-transmission-label"><span className="tutorial-waveform" /> SIGNAL RECEIVED</div>
           <h1 id="pioneer-go-title">Let’s explore more</h1>
-          <p>There’s a whole solar system waiting for us. Who needs thrusters when you have zero gravity? Ready, kiddo?</p>
+          <p>Although Pioneer11's antenna no longer points at the earth, there's still others waiting for us. Let's fly, buddy.</p>
           <button type="button" className="tutorial-primary" onClick={startFlight}>Go</button>
         </section>
       )}

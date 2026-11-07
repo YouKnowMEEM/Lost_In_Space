@@ -132,6 +132,7 @@ export function Home() {
   const [introYaw, setIntroYaw] = useState(0);
   const [introYawImmediate, setIntroYawImmediate] = useState(false);
   const [introFlying, setIntroFlying] = useState(false);
+  const [introReady, setIntroReady] = useState(false);
   const audioRef = useRef(null);
   const cameraRef = useRef(null);
   const sunAnchorRef = useRef(null);
@@ -170,18 +171,24 @@ export function Home() {
       setIntroYaw(0);
       setIntroYawImmediate(false);
       setIntroFlying(false);
+      setIntroReady(false);
       window.__sbPioneerIntroReady = false;
       return undefined;
     }
+    setIntroReady(false);
     const onView = (event) => {
       setIntroYaw(Number(event.detail?.yaw) || 0);
       setIntroYawImmediate(Boolean(event.detail?.immediate));
     };
+    const onReady = () => setIntroReady(true);
     const onFlight = () => setIntroFlying(true);
     window.addEventListener("sb:pioneer-intro-view", onView);
+    window.addEventListener("sb:pioneer-intro-ready", onReady);
     window.addEventListener("sb:pioneer-intro-flight", onFlight);
+    if (window.__sbPioneerIntroReady) onReady();
     return () => {
       window.removeEventListener("sb:pioneer-intro-view", onView);
+      window.removeEventListener("sb:pioneer-intro-ready", onReady);
       window.removeEventListener("sb:pioneer-intro-flight", onFlight);
     };
   }, [tutorialIntro]);
@@ -271,12 +278,11 @@ export function Home() {
     { name: "Uranus", detail: "Ice giant planet with retrograde rotation", type: "WORLD", action: () => setSelected("uranus") },
     { name: "Neptune", detail: "Outermost ice giant planet", type: "WORLD", action: () => setSelected("neptune") },
     { name: "Pluto", detail: "Dwarf planet in the Kuiper Belt · 248-year orbit", type: "DWARF PLANET", action: () => setSelected("pluto") },
-    { name: "Deep Space", detail: "Interplanetary and heliocentric objects", type: "ARCHIVE", action: () => setSelected("deep") },
-    { name: "Voyager 1", detail: "Interstellar probe launched in 1977 · Currently at ~172 AU", type: "SPACECRAFT", action: () => setSelected("voyager-1") },
-    { name: "Voyager 2", detail: "Outer-planet explorer launched in 1977 · Currently at ~144 AU", type: "SPACECRAFT", action: () => setSelected("voyager-2") },
-    { name: "Pioneer 10", detail: "Jupiter flyby mission launched in 1972 · Currently at ~142 AU", type: "SPACECRAFT", action: () => setSelected("pioneer-10") },
-    { name: "Pioneer 11", detail: "Jupiter and Saturn flyby mission launched in 1973 · Currently at ~119 AU", type: "SPACECRAFT", action: () => setSelected("pioneer-11") },
-    { name: "New Horizons", detail: "Pluto and Kuiper Belt explorer launched in 2006 · Currently at ~66 AU", type: "SPACECRAFT", action: () => setSelected("new-horizons") }
+    { name: "Voyager 1", detail: "Interstellar probe launched in 1977.", type: "SPACECRAFT", action: () => setSelected("voyager-1") },
+    { name: "Voyager 2", detail: "Outer-planet explorer launched in 1977.", type: "SPACECRAFT", action: () => setSelected("voyager-2") },
+    { name: "Pioneer 10", detail: "Jupiter flyby mission launched in 1972.", type: "SPACECRAFT", action: () => setSelected("pioneer-10") },
+    { name: "Pioneer 11", detail: "Jupiter and Saturn flyby mission launched in 1973.", type: "SPACECRAFT", action: () => setSelected("pioneer-11") },
+    { name: "New Horizons", detail: "Pluto and Kuiper Belt explorer launched in 2006.", type: "SPACECRAFT", action: () => setSelected("new-horizons") }
   ];
   const matches = query.trim()
       ? searchable.filter(item => `${item.name} ${item.detail} ${item.type}`.toLowerCase().includes(query.trim().toLowerCase()))
@@ -319,7 +325,7 @@ export function Home() {
         {tutorialIntro && <pointLight position={[22.2, 23.1, -91.1]} intensity={26} distance={14} decay={2} color="#b9ddff"/>}
         <SpaceStarsBackdrop/>
         <Suspense fallback={null}>
-          <SolarSystem selected={selected} onSelect={setSelected} planetAnchors={planetAnchors} probesRefs={probesRefs} paused={!!journey} speedModifier={speedModifier} cameraRef={cameraRef} onDistanceChange={setDistanceToSelected} tutorialIntro={tutorialIntro} introYaw={introYaw} introYawImmediate={introYawImmediate} introFlying={introFlying}/>
+          <SolarSystem selected={selected} onSelect={setSelected} planetAnchors={planetAnchors} probesRefs={probesRefs} paused={!!journey || tutorialIntro} speedModifier={speedModifier} cameraRef={cameraRef} onDistanceChange={setDistanceToSelected} tutorialIntro={tutorialIntro} introYaw={introYaw} introYawImmediate={introYawImmediate} introFlying={introFlying} introReady={introReady}/>
         </Suspense>
         <CameraControls ref={cameraRef} makeDefault enabled={!tutorialIntro} minDistance={1.0} maxDistance={350} smoothTime={0.6} dollyToCursor={false}/>
       </Canvas>
@@ -382,7 +388,7 @@ const PLANET_TEXTURES = {
   pluto: "/models/2k_pluto.jpeg"
 };
 
-function SunModel({ onClick, hovered, setHovered }) {
+function SunModel({ onClick, hovered, setHovered, paused = false }) {
   const spin = useRef();
   const { scene } = useGLTF("/models/sun.glb");
   const model = useMemo(() => {
@@ -411,7 +417,7 @@ function SunModel({ onClick, hovered, setHovered }) {
   }, [model]);
 
   useFrame((_, delta) => {
-    if (spin.current) spin.current.rotation.y += delta * 0.11;
+    if (!paused && spin.current) spin.current.rotation.y += delta * 0.11;
   });
 
   return (
@@ -425,7 +431,7 @@ function SunModel({ onClick, hovered, setHovered }) {
 }
 useGLTF.preload("/models/sun.glb");
 
-function CelestialModel({ radius, onClick, name, hovered, setHovered, selected }) {
+function CelestialModel({ radius, onClick, name, hovered, setHovered, selected, paused = false }) {
   const spin = useRef();
   const texture = useTexture(PLANET_TEXTURES[name]);
   const ringTexture = name === "saturn" ? useTexture("/models/2k_saturn_ring_alpha.png") : null;
@@ -433,7 +439,7 @@ function CelestialModel({ radius, onClick, name, hovered, setHovered, selected }
   useFrame((_, delta) => {
     // Keep the Moon tidally locked in this schematic: its position orbits Earth,
     // while the visible face stays fixed instead of rotating around its axis.
-    if (name !== "moon" && spin.current) spin.current.rotation.y += delta * 0.11;
+    if (!paused && name !== "moon" && spin.current) spin.current.rotation.y += delta * 0.11;
   });
   return (
     <group onClick={onClick} onPointerOver={(e)=>{e.stopPropagation();setHovered(name)}} onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
@@ -485,7 +491,7 @@ const PROBE_MODELS = {
   "new-horizons": "/models/New_Horizons.glb"
 };
 
-function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef, tutorialIntro = false }) {
+function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef, planetOccluders, tutorialIntro = false }) {
   const group = useRef();
   const [labelHidden, setLabelHidden] = useState(false);
   const lastLabelHidden = useRef(false);
@@ -524,14 +530,14 @@ function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef, tutori
     <group scale={model.scale * tutorialScale} position={[-model.center.x * model.scale * tutorialScale,-model.center.y * model.scale * tutorialScale,-model.center.z * model.scale * tutorialScale]}>
       <primitive object={model.scene}/>
     </group>
-    {!labelHidden && <Html position={[0,.48,0]} center distanceFactor={12} zIndexRange={[30,0]}>
+    {!labelHidden && <Html position={[0,.48,0]} center distanceFactor={12} zIndexRange={[30,0]} occlude={planetOccluders}>
       <button type="button" className={`deep-space-probe-label${tutorialIntro && probe.id === "pioneer-11" ? " tutorial-pioneer-label" : ""}`} onClick={(e)=>{e.stopPropagation();onClick(probe.id)}} aria-label={`Zoom to ${probe.label}`} title={`Zoom to ${probe.label}`}>{probe.label}</button>
     </Html>}
   </group>;
 }
-Object.values(PROBE_MODELS).forEach((path) => useGLTF.preload(path));
+useGLTF.preload(PROBE_MODELS.pioneer);
 
-function TutorialAstronaut({ position, flying }) {
+function TutorialAstronaut({ position, flying, walking }) {
   const { scene, animations } = useGLTF("/models/astronaut.glb");
   const root = useRef();
   const { actions, mixer } = useAnimations(animations, root);
@@ -555,7 +561,6 @@ function TutorialAstronaut({ position, flying }) {
     action.reset();
     action.setLoop(THREE.LoopOnce, 1);
     action.clampWhenFinished = true;
-    action.play();
     const onFinished = (event) => {
       if (event.action !== actionRef.current || !flyingRef.current || finishedRef.current) return;
       finishedRef.current = true;
@@ -568,6 +573,11 @@ function TutorialAstronaut({ position, flying }) {
       actionRef.current = null;
     };
   }, [actions, mixer]);
+
+  useEffect(() => {
+    if (!walking || !actionRef.current) return;
+    actionRef.current.reset().play();
+  }, [walking]);
 
   useEffect(() => {
     if (!flying || !actionRef.current) return;
@@ -616,9 +626,37 @@ function EllipticalOrbit({ semiMajor, eccentricity, inclination = 0, longitudeOf
   return <group rotation={[0, longitudeOfAscendingNode, 0]}><group rotation={[inclination, 0, 0]}><group rotation={[0, argumentOfPerihelion, 0]}><primitive object={line}/></group></group></group>;
 }
 
-function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, speedModifier, cameraRef, onDistanceChange, tutorialIntro = false, introYaw = 0, introYawImmediate = false, introFlying = false }) {
+function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, speedModifier, cameraRef, onDistanceChange, tutorialIntro = false, introYaw = 0, introYawImmediate = false, introFlying = false, introReady = false }) {
   const [hovered, setHovered] = useState(null);
   const elapsed = useRef(0);
+  const planetOccluders = useMemo(() => [
+    planetAnchors?.sun,
+    planetAnchors?.mercury,
+    planetAnchors?.venus,
+    planetAnchors?.earth,
+    planetAnchors?.moon,
+    planetAnchors?.mars,
+    planetAnchors?.jupiter,
+    planetAnchors?.saturn,
+    planetAnchors?.uranus,
+    planetAnchors?.neptune,
+    planetAnchors?.pluto,
+  ].filter(Boolean), [
+    planetAnchors?.sun,
+    planetAnchors?.mercury,
+    planetAnchors?.venus,
+    planetAnchors?.earth,
+    planetAnchors?.moon,
+    planetAnchors?.mars,
+    planetAnchors?.jupiter,
+    planetAnchors?.saturn,
+    planetAnchors?.uranus,
+    planetAnchors?.neptune,
+    planetAnchors?.pluto,
+  ]);
+  const activePlanetOccluders = tutorialIntro
+    ? [planetAnchors?.sun].filter(Boolean)
+    : planetOccluders;
 
   // Position refs for orbiting bodies
   const mercuryPosition = useRef();
@@ -872,10 +910,30 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
 
   const select = (name) => (event) => { event.stopPropagation(); onSelect(name); };
 
+  if (tutorialIntro) {
+    const pioneer = PROBE_DATA.find((probe) => probe.id === "pioneer-11");
+    if (!pioneer) return null;
+    return <>
+      <group ref={planetAnchors?.sun}>
+        <SunModel hovered={hovered} setHovered={setHovered} onClick={select("sun")} paused />
+      </group>
+      <DeepSpaceProbe
+        probe={pioneer}
+        hovered={hovered}
+        setHovered={setHovered}
+        onClick={onSelect}
+        anchorRef={(node) => { if (probesRefs) probesRefs.current[pioneer.id] = node; }}
+        planetOccluders={activePlanetOccluders}
+        tutorialIntro
+      />
+      <TutorialAstronaut position={tutorialAstronautPosition} flying={introFlying} walking={introReady} />
+    </>;
+  }
+
   return <>
     {/* Sun */}
     <group ref={planetAnchors?.sun}>
-      <SunModel hovered={hovered} setHovered={setHovered} onClick={select("sun")} />
+      <SunModel hovered={hovered} setHovered={setHovered} onClick={select("sun")} paused={tutorialIntro} />
     </group>
 
     {/* Orbit lines */}
@@ -891,15 +949,13 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
 
     {/* Deep Space Probes */}
     {PROBE_DATA.map(probe =>
-      <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect} anchorRef={(node) => { if (probesRefs) probesRefs.current[probe.id] = node; }} tutorialIntro={tutorialIntro}/>
+      <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect} anchorRef={(node) => { if (probesRefs) probesRefs.current[probe.id] = node; }} planetOccluders={activePlanetOccluders} tutorialIntro={tutorialIntro}/>
     )}
-    {tutorialIntro && <TutorialAstronaut position={tutorialAstronautPosition} flying={introFlying}/>}
-
     {/* Mercury */}
     <group ref={mercuryPlane} rotation={[incMercury, 0, 0]}>
       <group ref={mercuryPosition}>
         <group ref={planetAnchors?.mercury}>
-          <CelestialModel radius={RADII.mercury} name="mercury" hovered={hovered} setHovered={setHovered} onClick={select("mercury")} />
+          <CelestialModel radius={RADII.mercury} name="mercury" hovered={hovered} setHovered={setHovered} onClick={select("mercury")} paused={tutorialIntro} />
         </group>
       </group>
     </group>
@@ -908,7 +964,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={venusPlane} rotation={[incVenus, 0, 0]}>
       <group ref={venusPosition}>
         <group ref={planetAnchors?.venus}>
-          <CelestialModel radius={RADII.venus} name="venus" hovered={hovered} setHovered={setHovered} onClick={select("venus")} />
+          <CelestialModel radius={RADII.venus} name="venus" hovered={hovered} setHovered={setHovered} onClick={select("venus")} paused={tutorialIntro} />
         </group>
       </group>
     </group>
@@ -917,13 +973,13 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={earthPlane}>
       <group ref={earthPosition}>
         <group ref={planetAnchors?.earth}>
-          <CelestialModel radius={RADII.earth} name="earth" hovered={hovered} setHovered={setHovered} onClick={select("earth")} />
+          <CelestialModel radius={RADII.earth} name="earth" hovered={hovered} setHovered={setHovered} onClick={select("earth")} paused={tutorialIntro} />
         </group>
         <EllipticalOrbit semiMajor={moonA} eccentricity={moonE} inclination={incMoon} color="#e8edf5" opacity={0.25}/>
         <group ref={moonPlane} rotation={[incMoon, 0, 0]}>
           <group ref={moonPosition}>
             <group ref={planetAnchors?.moon}>
-              <CelestialModel radius={RADII.moon} name="moon" hovered={hovered} setHovered={setHovered} onClick={select("moon")} />
+              <CelestialModel radius={RADII.moon} name="moon" hovered={hovered} setHovered={setHovered} onClick={select("moon")} paused={tutorialIntro} />
             </group>
           </group>
         </group>
@@ -934,7 +990,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={marsPlane} rotation={[incMars, 0, 0]}>
       <group ref={marsPosition}>
         <group ref={planetAnchors?.mars}>
-          <CelestialModel radius={RADII.mars} name="mars" hovered={hovered} setHovered={setHovered} onClick={select("mars")} />
+          <CelestialModel radius={RADII.mars} name="mars" hovered={hovered} setHovered={setHovered} onClick={select("mars")} paused={tutorialIntro} />
         </group>
       </group>
     </group>
@@ -943,7 +999,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={jupiterPlane} rotation={[incJupiter, 0, 0]}>
       <group ref={jupiterPosition}>
         <group ref={planetAnchors?.jupiter}>
-          <CelestialModel radius={RADII.jupiter} name="jupiter" hovered={hovered} setHovered={setHovered} onClick={select("jupiter")} />
+          <CelestialModel radius={RADII.jupiter} name="jupiter" hovered={hovered} setHovered={setHovered} onClick={select("jupiter")} paused={tutorialIntro} />
         </group>
       </group>
     </group>
@@ -952,7 +1008,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={saturnPlane} rotation={[incSaturn, 0, 0]}>
       <group ref={saturnPosition}>
         <group ref={planetAnchors?.saturn}>
-          <CelestialModel radius={RADII.saturn} name="saturn" hovered={hovered} setHovered={setHovered} onClick={select("saturn")} />
+          <CelestialModel radius={RADII.saturn} name="saturn" hovered={hovered} setHovered={setHovered} onClick={select("saturn")} paused={tutorialIntro} />
         </group>
       </group>
     </group>
@@ -961,7 +1017,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={uranusPlane} rotation={[incUranus, 0, 0]}>
       <group ref={uranusPosition}>
         <group ref={planetAnchors?.uranus}>
-          <CelestialModel radius={RADII.uranus} name="uranus" hovered={hovered} setHovered={setHovered} onClick={select("uranus")} />
+          <CelestialModel radius={RADII.uranus} name="uranus" hovered={hovered} setHovered={setHovered} onClick={select("uranus")} paused={tutorialIntro} />
         </group>
       </group>
     </group>
@@ -970,7 +1026,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={neptunePlane} rotation={[incNeptune, 0, 0]}>
       <group ref={neptunePosition}>
         <group ref={planetAnchors?.neptune}>
-          <CelestialModel radius={RADII.neptune} name="neptune" hovered={hovered} setHovered={setHovered} onClick={select("neptune")} />
+          <CelestialModel radius={RADII.neptune} name="neptune" hovered={hovered} setHovered={setHovered} onClick={select("neptune")} paused={tutorialIntro} />
         </group>
       </group>
     </group>
@@ -981,7 +1037,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
         <group rotation={[0, plutoArgumentOfPerihelion, 0]}>
           <group ref={plutoPosition}>
             <group ref={planetAnchors?.pluto}>
-              <CelestialModel radius={RADII.pluto} name="pluto" hovered={hovered} setHovered={setHovered} onClick={select("pluto")} selected={selected} />
+              <CelestialModel radius={RADII.pluto} name="pluto" hovered={hovered} setHovered={setHovered} onClick={select("pluto")} selected={selected} paused={tutorialIntro} />
             </group>
           </group>
         </group>

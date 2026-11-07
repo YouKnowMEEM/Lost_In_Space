@@ -76,8 +76,11 @@ const TOUR = [
   { path: "/moon", waitForEvent: "sb:tutorial-artifact-selected", eventId: "apollo-11", title: "Open the Apollo 11 details", text: "That's 1 small step for man, one giant leap for mankind.", side: "left", compact: true, avatar: "/images/happyAstronaut.png" },
   { path: "/moon", target: ".moon-read-more", title: "Read the Eagle story", text: "Check out the co-ordinates, launch time. Scroll down for the story !!", side: "left", compact: true },
   { path: "/eagle", target: '.sbk-modes a[href="/eagle/mission"]', title: "The Eagle storybook", text: "Enjoy the story :) then open its Mission File.", side: "right", compact: true, bubbleRaised: true, avatar: "/images/astronautApollo11.png" },
-  { path: "/eagle/mission", target: 'a[href="#spacecraft"]', title: "Explore the 3D Eagle", text: "Jump to the interactive 3D model.", bubbleRaised: true },
-  { path: "/eagle/mission", finishOnGallery: true, tailLowered: true, avatarLarge: true, title: "Take a look around", text: "Scroll through the photos and video. I will finish the tour :( once the top menu moves on to the Photos & Videos." },
+  { path: "/eagle/mission", target: 'a[href="#spacecraft"]', advanceOnSection: "#spacecraft", title: "Explore the 3D Eagle", text: "Jump to the interactive 3D model.", bubbleRaised: true },
+  { path: "/eagle/mission", advanceOnGallery: true, tailLowered: true, avatarLarge: true, title: "Take a look around", text: "Scroll through the photos and video. When you reach them, we'll visit the Atlas." },
+  { path: "/eagle/mission", avatarAtlasLarge: true, title: "Explore the Atlas", text: "Let’s visit the Atlas and find Perseverance, the rover packing samples for a future trip back to Earth.", continueLabel: "Go to Atlas", continueTo: "/atlas" },
+  { path: "/atlas", target: '.at-card[href="/object/perseverance-mars-2020"]', title: "Find Perseverance", text: "Scroll down through the Atlas to find Perseverance, then select it to check the 3D rover model.", immediateOnTargetClick: true, avatarPerseveranceLarge: true, avatar: "/images/presentation pose to left.png" },
+  { path: "/object/perseverance-mars-2020", finishOnPath: true },
 ];
 
 export default function TutorialOverlay({ startRequest = 0 }) {
@@ -150,6 +153,10 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     try { sessionStorage.setItem(TOUR_KEY, "1"); } catch { /* storage may be disabled */ }
   };
 
+  useEffect(() => {
+    if (mode === "tour" && current?.finishOnPath && location.pathname === current.path) finish();
+  }, [mode, current, location.pathname]);
+
   const advanceAfterPause = () => {
     if (pendingAdvance.current !== null) return;
     pendingAdvance.current = window.setTimeout(() => {
@@ -162,6 +169,15 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     window.clearTimeout(pendingAdvance.current);
     pendingAdvance.current = null;
     setStep((n) => n + steps);
+  };
+
+  const continueCurrent = () => {
+    if (!current?.continueTo) {
+      advanceAfterPause();
+      return;
+    }
+    advanceImmediately();
+    navigate(current.continueTo);
   };
 
   const showPromptThenAdvance = (delay) => {
@@ -202,7 +218,9 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     };
     const timer = window.setTimeout(() => {
       findTarget();
-      if (location.pathname === current.path && current.path === "/eagle/mission" && current.target) {
+      if (location.pathname === current.path && current.scrollTargetIntoView && current.target) {
+        document.querySelector(current.target)?.scrollIntoView({ block: "center", behavior: "smooth" });
+      } else if (location.pathname === current.path && current.path === "/eagle/mission" && current.target) {
         document.querySelector(current.target)?.scrollIntoView({ block: "center", behavior: "smooth" });
       }
     }, 350);
@@ -239,6 +257,7 @@ export default function TutorialOverlay({ startRequest = 0 }) {
 
       if (element && (event.target === element || element.contains(event.target))) {
         if (TOUR[step + 1]?.waitForEvent) advanceImmediately();
+        else if (current.immediateOnTargetClick) advanceImmediately();
         else advanceAfterPause();
         return;
       }
@@ -272,14 +291,14 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     const onKeyDown = (event) => {
       if (event.key !== "Enter" || event.isComposing || event.target.closest?.(".tutorial-bubble")) return;
       if (current.waitForEvent) return;
-      if (current.finishOnGallery) {
+      if (current.advanceOnGallery) {
         event.preventDefault();
-        finish();
+        advanceImmediately();
         return;
       }
       if (!current.target) {
         event.preventDefault();
-        advanceAfterPause();
+        continueCurrent();
         return;
       }
       const target = document.querySelector(current.target);
@@ -313,22 +332,29 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     if (current.waitForEvent) window.addEventListener(current.waitForEvent, onTourEvent);
 
     let navObserver;
-    const sectionNav = current.finishOnGallery && location.pathname === current.path ? document.querySelector(".mf-subnav") : null;
-    const finishAfterGallery = () => {
+    let sectionAdvanced = false;
+    const sectionNav = (current.advanceOnGallery || current.advanceOnSection) && location.pathname === current.path ? document.querySelector(".mf-subnav") : null;
+    const advanceFromSection = () => {
+      if (sectionAdvanced) return;
       const activeSection = sectionNav?.querySelector("a.is-active")?.getAttribute("href");
-      if (activeSection === "#library" || activeSection === "#sources") finish();
+      const reachedGalleryEnd = current.advanceOnGallery && (activeSection === "#library" || activeSection === "#sources");
+      if (reachedGalleryEnd || (current.advanceOnSection && activeSection === current.advanceOnSection)) {
+        sectionAdvanced = true;
+        advanceImmediately();
+      }
     };
     if (sectionNav) {
-      navObserver = new MutationObserver(finishAfterGallery);
+      navObserver = new MutationObserver(advanceFromSection);
       navObserver.observe(sectionNav, { attributes: true, attributeFilter: ["class"], subtree: true });
-      window.addEventListener("scroll", finishAfterGallery, { passive: true });
+      window.addEventListener("scroll", advanceFromSection, { passive: true });
+      advanceFromSection();
     }
 
     return () => {
       window.clearTimeout(timer);
       watch.disconnect();
       navObserver?.disconnect();
-      window.removeEventListener("scroll", finishAfterGallery);
+      window.removeEventListener("scroll", advanceFromSection);
       activeTarget?.classList.remove("tutorial-tour-target");
       document.removeEventListener("click", onClick, true);
       document.removeEventListener("input", onInput, true);
@@ -367,7 +393,7 @@ export default function TutorialOverlay({ startRequest = 0 }) {
   if (mode === "welcome") return <div className="tutorial-shade tutorial-welcome-shade"><section className="tutorial-card tutorial-welcome-card" role="dialog" aria-modal="true" aria-labelledby="tour-title"><button type="button" className="tutorial-close" aria-label="Skip tutorial" title="Skip tutorial" onClick={skip}><X size={15}/></button><img className="tutorial-astronaut" src="/images/astronaut.png" alt=""/><p className="tutorial-kicker">Sleeping Beauties</p><h2 id="tour-title">New here? Take a space tour!</h2><p>Meet the worlds and discover what you can explore.</p><div className="tutorial-actions tutorial-welcome-actions"><button className="tutorial-primary" onClick={begin}>Start Tutorial</button></div></section></div>;
   if (mode === "video") return <div className="tutorial-video-screen" role="dialog" aria-modal="true" aria-label="Space tour introduction"><video ref={videoRef} src="/video/supersonic_freefall%20(1).mp4" autoPlay playsInline onEnded={enterPioneerIntro}/><button type="button" className="tutorial-video-skip" onClick={enterPioneerIntro}>Skip video</button></div>;
   if (mode === "pioneer") return <PioneerTutorialScene onComplete={enterTour} />;
-  if (mode === "finished") return <div className="tutorial-shade"><section className="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tour-finished-title"><img className="tutorial-astronaut" src="/images/astronaut.png" alt=""/><p className="tutorial-kicker">TOUR COMPLETED :D </p><h2 id="tour-finished-title">You are ready, explorer</h2><p>There is more waiting for you: explore Mars, Deep space probes and meet the other characters in their storybooks.</p><div className="tutorial-actions tutorial-finished-actions"><button className="tutorial-skip" onClick={() => setMode("closed")}>Close / Exit</button><button className="tutorial-primary" onClick={() => { setMode("closed"); navigate("/"); }}>Back to homepage</button></div></section></div>;
+  if (mode === "finished") return <div className="tutorial-shade"><section className="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tour-finished-title"><img className="tutorial-astronaut" src="/images/astronaut.png" alt=""/><p className="tutorial-kicker">TOUR COMPLETED :D </p><h2 id="tour-finished-title">You are ready, explorer</h2><p>There is more waiting for you: explore Mars, Deep space probes and meet the other characters in their storybooks. Take a quiz, if you feel confident.</p><div className="tutorial-actions tutorial-finished-actions"><button className="tutorial-skip" onClick={() => setMode("closed")}>Close</button></div></section></div>;
 
   if (confirmLeave) return <div className="tutorial-shade tutorial-skip-confirm tutorial-leave-confirm"><section className="tutorial-card" role="alertdialog" aria-modal="true" aria-labelledby="leave-tour-title" aria-describedby="leave-tour-warning"><h2 id="leave-tour-title">Leave the tutorial?</h2><p id="leave-tour-warning">This navigation leaves the tutorial. Do you want to leave the tutorial and continue?</p><div className="tutorial-actions"><button className="tutorial-primary" onClick={() => { pendingLeaveTarget.current = null; setConfirmLeave(false); }}>Stay in tutorial</button><button className="tutorial-skip" onClick={leaveTutorial}>Leave tutorial</button></div></section></div>;
 
@@ -375,9 +401,9 @@ export default function TutorialOverlay({ startRequest = 0 }) {
 
   if (confirmSkip) return <div className="tutorial-shade tutorial-skip-confirm"><section className="tutorial-card" role="alertdialog" aria-modal="true" aria-labelledby="skip-tour-title" aria-describedby="skip-tour-warning"><h2 id="skip-tour-title">Skip the tutorial?</h2><p id="skip-tour-warning">Your tour progress will be stopped. You can start the tutorial again from the homepage.</p><div className="tutorial-actions"><button className="tutorial-primary" onClick={() => setConfirmSkip(false)}>Keep going</button><button className="tutorial-skip" onClick={skip}>Skip tutorial</button></div></section></div>;
 
-  const canContinue = !current.target && !current.waitForEvent && !current.finishOnGallery;
-  return <aside className={`tutorial-guide${current.side === "left" ? " tutorial-guide-left" : ""}${current.compact ? " tutorial-guide-compact" : ""}${current.raised ? " tutorial-guide-raised" : ""}${current.avatarLarge ? " tutorial-guide-avatar-large" : ""}${current.avatarSmall ? " tutorial-guide-avatar-small" : ""}`} aria-live="polite">
+  const canContinue = !current.target && !current.waitForEvent && !current.advanceOnGallery;
+  return <aside className={`tutorial-guide${current.side === "left" ? " tutorial-guide-left" : ""}${current.compact ? " tutorial-guide-compact" : ""}${current.raised ? " tutorial-guide-raised" : ""}${current.avatarLarge ? " tutorial-guide-avatar-large" : ""}${current.avatarAtlasLarge ? " tutorial-guide-avatar-atlas-large" : ""}${current.avatarPerseveranceLarge ? " tutorial-guide-avatar-perseverance-large" : ""}${current.avatarSmall ? " tutorial-guide-avatar-small" : ""}`} aria-live="polite">
     <img className="tutorial-guide-astronaut" src={current.avatar || "/images/astronaut.png"} alt="Astronaut guide"/>
-    <div key={step} className={`tutorial-bubble${current.bubbleRaised ? " tutorial-bubble-raised" : ""}${current.tailLowered ? " tutorial-bubble-tail-lowered" : ""}`}><button type="button" className="tutorial-close" aria-label="Skip tutorial" title="Skip tutorial" onClick={() => setConfirmSkip(true)}><X size={15}/></button><h2>{current.title}</h2><p>{current.text}</p>{canContinue && <button className="tutorial-primary" onClick={advanceAfterPause}>Continue</button>}{current.finishOnGallery && <button className="tutorial-primary" onClick={finish}>Finish tour</button>}</div>
+    <div key={step} className={`tutorial-bubble${current.bubbleRaised ? " tutorial-bubble-raised" : ""}${current.tailLowered ? " tutorial-bubble-tail-lowered" : ""}`}><button type="button" className="tutorial-close" aria-label="Skip tutorial" title="Skip tutorial" onClick={() => setConfirmSkip(true)}><X size={15}/></button><h2>{current.title}</h2><p>{current.text}</p>{canContinue && <button className="tutorial-primary" onClick={continueCurrent}>{current.continueLabel || "Continue"}</button>}</div>
   </aside>;
 }

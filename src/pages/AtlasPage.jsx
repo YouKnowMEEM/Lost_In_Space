@@ -249,19 +249,6 @@ export default function AtlasPage() {
         )}
       </section>
 
-      <section className="at-section at-key" aria-labelledby="key-title">
-        <h2 id="key-title" className="at-h2">
-          What the status words mean
-        </h2>
-        <ul className="at-key-grid">
-          {Object.values(STATES).map((s) => (
-            <li key={s.id} style={{ "--state": s.color }}>
-              <StateBadge state={s.id} />
-              <p>{s.long}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
     </Page>
   );
 }
