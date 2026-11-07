@@ -19,6 +19,11 @@
 .tutorial-welcome-shade {
   background:
     radial-gradient(ellipse at 50% 42%, rgba(52, 104, 161, .2), transparent 58%),
+    radial-gradient(circle at 5% 48%, rgba(218, 237, 255, .48) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 96% 32%, rgba(218, 237, 255, .52) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 42% 6%, rgba(218, 237, 255, .42) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 61% 95%, rgba(218, 237, 255, .45) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 97% 84%, rgba(218, 237, 255, .4) 0 1px, transparent 1.5px),
     radial-gradient(circle at 14% 22%, rgba(218, 237, 255, .72) 0 1px, transparent 1.5px),
     radial-gradient(circle at 82% 18%, rgba(218, 237, 255, .58) 0 1px, transparent 1.5px),
     radial-gradient(circle at 75% 73%, rgba(218, 237, 255, .5) 0 1px, transparent 1.5px),
@@ -26,6 +31,8 @@
     linear-gradient(155deg, #07111f, #0b1c31 55%, #050c17);
   backdrop-filter: none;
 }
+.tutorial-welcome-card .tutorial-close { top: 12px; right: 12px; }
+.tutorial-welcome-actions { justify-content: center; }
 
 .tutorial-video-screen {
   position: fixed;
