@@ -1,0 +1,141 @@
+/* Story guide: a floating astronaut beside the storybook that points to the Mission File. */
+.sg {
+  position: fixed;
+  z-index: 35;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  pointer-events: none;
+}
+.sg > * { pointer-events: auto; }
+
+.sg .sg-astronaut {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  animation: sg-float 6s ease-in-out infinite;
+}
+.sg-astronaut img {
+  display: block;
+  width: auto;
+  height: min(210px, 28vh);
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .45));
+}
+.sg-astronaut:focus-visible { outline: 3px solid #ffd66e; outline-offset: 4px; border-radius: 16px; }
+
+.sg-bubble {
+  position: relative;
+  width: min(270px, calc(100% - 36px));
+  padding: 16px 18px 14px;
+  border: 2px solid #ffd59c;
+  border-radius: 20px;
+  background: #fff6e2;
+  color: #2b1d3a;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .4), 5px 5px 0 #f0a35e;
+  animation: sg-pop .45s cubic-bezier(.2, 1.4, .4, 1) both;
+}
+.sg-bubble::after {
+  /* tail pointing down to the astronaut */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 0;
+  height: 0;
+  margin-left: -11px;
+  border: 11px solid transparent;
+  border-top-color: #fff6e2;
+  filter: drop-shadow(0 2px 0 #ffd59c);
+}
+.sg-bubble strong {
+  display: block;
+  padding-right: 22px;
+  font: 800 18px/1.2 "Jost", system-ui, sans-serif;
+}
+.sg-bubble p {
+  margin: 6px 0 10px;
+  font: 15px/1.45 "Atkinson Hyperlegible Next", system-ui, sans-serif;
+}
+.sg .sg-ok {
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #2b1d3a;
+  color: #ffe9c4;
+  font: 700 13px "Jost", system-ui, sans-serif;
+  cursor: pointer;
+}
+.sg .sg-ok:hover { background: #45305a; }
+.sg .sg-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(43, 29, 58, .08);
+  color: #2b1d3a;
+  cursor: pointer;
+}
+.sg .sg-close:hover { background: rgba(43, 29, 58, .16); }
+.sg-ok:focus-visible,
+.sg-close:focus-visible { outline: 2px solid #2b1d3a; outline-offset: 2px; }
+
+/* Narrow margin (book open on a laptop): small astronaut, bubble opens to its left over the page edge. */
+.sg-narrow .sg-astronaut img { height: min(140px, 20vh); }
+.sg-narrow .sg-bubble {
+  position: absolute;
+  right: calc(100% - 22px);
+  top: 50%;
+  width: 250px;
+  transform: translateY(-62%);
+}
+.sg-narrow .sg-bubble::after {
+  left: 100%;
+  top: 58%;
+  margin: -11px 0 0;
+  border-color: transparent;
+  border-left-color: #fff6e2;
+  filter: drop-shadow(2px 0 0 #ffd59c);
+}
+
+/* No margin (phones): the astronaut waits just under the Mission File button, the bubble opens to its left. */
+.sg-tiny { align-items: flex-end; justify-content: flex-start; }
+.sg-tiny .sg-astronaut img { height: 86px; }
+.sg-tiny .sg-bubble {
+  position: absolute;
+  right: calc(100% + 4px);
+  top: 6px;
+  width: min(250px, calc(100vw - 104px));
+  padding: 13px 14px 12px;
+}
+.sg-tiny .sg-bubble strong { font-size: 16px; }
+.sg-tiny .sg-bubble p { font-size: 14px; }
+.sg-tiny .sg-bubble::after {
+  left: 100%;
+  top: 26px;
+  margin: 0;
+  border-color: transparent;
+  border-left-color: #fff6e2;
+  filter: drop-shadow(2px 0 0 #ffd59c);
+}
+
+@keyframes sg-float {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+@keyframes sg-pop { from { opacity: 0; transform: translateY(8px) scale(.9); } to { opacity: 1; transform: none; } }
+.sg-narrow .sg-bubble { animation-name: sg-pop-side; }
+@keyframes sg-pop-side { from { opacity: 0; transform: translate(8px, -62%) scale(.92); } to { opacity: 1; transform: translateY(-62%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sg-astronaut, .sg-bubble { animation: none; }
+}

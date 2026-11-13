@@ -16,24 +16,6 @@
   backdrop-filter: blur(5px);
 }
 .tutorial-skip-confirm { z-index: 10002; }
-.tutorial-welcome-shade {
-  background:
-    radial-gradient(ellipse at 50% 42%, rgba(52, 104, 161, .2), transparent 58%),
-    radial-gradient(circle at 5% 48%, rgba(218, 237, 255, .48) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 96% 32%, rgba(218, 237, 255, .52) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 42% 6%, rgba(218, 237, 255, .42) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 61% 95%, rgba(218, 237, 255, .45) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 97% 84%, rgba(218, 237, 255, .4) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 14% 22%, rgba(218, 237, 255, .72) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 82% 18%, rgba(218, 237, 255, .58) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 75% 73%, rgba(218, 237, 255, .5) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 23% 78%, rgba(218, 237, 255, .45) 0 1px, transparent 1.5px),
-    linear-gradient(155deg, #07111f, #0b1c31 55%, #050c17);
-  backdrop-filter: none;
-}
-.tutorial-welcome-card .tutorial-close { top: 12px; right: 12px; }
-.tutorial-welcome-actions { justify-content: center; }
-
 .tutorial-video-screen {
   position: fixed;
   inset: 0;
@@ -47,13 +29,70 @@
   object-fit: cover;
   background: #000;
 }
+/* Same size and position as the film (object-fit: cover), so the answer sits on the film's own bubble. */
+.tutorial-video-frame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+/* "Yes! I'd love to!" - matches the film's answer bubble (1280x720: x 460-820, y 533-615). */
+.tutorial-video-answer {
+  position: absolute;
+  left: 50%;
+  top: 74%;
+  width: 28.4%;
+  height: 11.6%;
+  padding: 0;
+  border: 0;
+  border-radius: calc(var(--fh) * .032);
+  background: #ffe8bb;
+  color: #26285e;
+  font: 800 calc(var(--fh) * .043)/1 "Jost", "Arial Rounded MT Bold", system-ui, sans-serif;
+  letter-spacing: .005em;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: calc(var(--fh) * .007) calc(var(--fh) * .008) 0 #ec9a4f, 0 0 0 0 rgba(255, 232, 187, .7);
+  transform: translateX(-50%);
+  animation: tutorial-answer-in .45s cubic-bezier(.2, 1.5, .4, 1) both, tutorial-answer-call 1.6s ease-in-out .6s infinite;
+}
+.tutorial-video-answer::after {
+  /* the bubble's tail, pointing down to the child */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% - 1px);
+  border: calc(var(--fh) * .026) solid transparent;
+  border-top: calc(var(--fh) * .05) solid #ffe8bb;
+  border-bottom: 0;
+  transform: translateX(-50%);
+}
+.tutorial-video-answer:hover { background: #fff1d3; }
+.tutorial-video-answer:focus-visible { outline: 3px solid #fff; outline-offset: 5px; }
+.tutorial-video-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+@keyframes tutorial-answer-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(14px) scale(.7); }
+  to   { opacity: 1; transform: translateX(-50%); }
+}
+@keyframes tutorial-answer-call {
+  0%, 100% { box-shadow: calc(var(--fh) * .007) calc(var(--fh) * .008) 0 #ec9a4f, 0 0 0 0 rgba(255, 232, 187, .65); translate: 0 0; }
+  50% { box-shadow: calc(var(--fh) * .007) calc(var(--fh) * .008) 0 #ec9a4f, 0 0 0 calc(var(--fh) * .02) rgba(255, 232, 187, 0); translate: 0 calc(var(--fh) * -.008); }
+}
 .tutorial-video-skip {
   position: absolute;
   right: clamp(16px, 3vw, 36px);
   bottom: clamp(16px, 3vh, 32px);
-  padding: 10px 18px;
+  padding: 10px 22px;
   border: 1px solid rgba(220, 237, 255, .38);
-  border-radius: 8px;
+  border-radius: 999px;
   color: #f4f8ff;
   background: rgba(9, 20, 38, .42);
   backdrop-filter: blur(8px);
@@ -77,6 +116,7 @@
   background: transparent;
   color: #edf6ff;
 }
+.app-shell .deep-space-probe-label.tutorial-pioneer-label { display: none; }
 .tutorial-pioneer-canvas,
 .tutorial-pioneer-canvas canvas {
   position: absolute;
@@ -229,8 +269,6 @@
   color: #f3f7ff;
   box-shadow: 0 24px 90px #0009;
 }
-.tutorial-welcome-card .tutorial-close { top: 12px; right: 12px; }
-.tutorial-welcome-actions { justify-content: center; }
 .tutorial-card h2 {
   margin: 6px 0 10px;
   font-size: clamp(22px, 4vw, 32px);
@@ -397,12 +435,23 @@
   white-space: pre-line;
 }
 .tutorial-bubble .tutorial-primary { padding: 8px 13px; font-size: 12px; }
+.tutorial-bubble.is-title-only h2 { margin: 2px 0; }
+.tutorial-bubble-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.tutorial-link {
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: #b9d2ee;
+  font: inherit;
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.tutorial-link:hover { color: #fff; }
 
 .tutorial-bubble-raised { --lift: 25px; translate: 0 -25px; }
-.tutorial-guide-avatar-large .tutorial-guide-astronaut { scale: 1; transform-origin: bottom center; }
-.tutorial-guide-avatar-atlas-large .tutorial-guide-astronaut { scale: 1.42; transform-origin: bottom center; }
-.tutorial-guide-avatar-perseverance-large .tutorial-guide-astronaut { scale: 1.2; transform-origin: bottom center; }
-.tutorial-guide-avatar-small .tutorial-guide-astronaut { scale: .8; transform-origin: bottom center; }
 
 .tutorial-guide-compact .tutorial-bubble { max-width: 250px; padding: 10px 12px; }
 .tutorial-guide-compact .tutorial-bubble h2 { font-size: 16px; }
@@ -477,5 +526,6 @@
   .tutorial-look-arrow,
   .tutorial-waveform,
   .tutorial-transmission,
-  .tutorial-pioneer-fade { animation: none; }
+  .tutorial-pioneer-fade,
+  .tutorial-video-answer { animation: none; }
 }

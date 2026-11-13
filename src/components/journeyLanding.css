@@ -1,0 +1,432 @@
+/* ==========================================================================
+   Journey landing: the first screen a new visitor sees
+   1. Stage + sky   2. Planet system   3. Copy + buttons   4. Motion
+   5. Responsive    6. Reduced motion
+   ========================================================================== */
+
+/* ---------- 1. Stage + sky ---------- */
+.jl {
+  --sys: min(58vw, 92vh);
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(70vw 60vh at 82% 58%, rgba(255, 112, 72, .16), transparent 62%),
+    radial-gradient(60vw 55vh at 8% 12%, rgba(118, 84, 255, .22), transparent 62%),
+    radial-gradient(50vw 40vh at 48% 104%, rgba(64, 150, 255, .16), transparent 70%),
+    linear-gradient(162deg, #04061a 0%, #0b1033 42%, #160b31 74%, #05050f 100%);
+  font-family: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+}
+.jl-sky { position: absolute; inset: 0; pointer-events: none; }
+.jl-nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: .55;
+  mix-blend-mode: screen;
+}
+.jl-nebula-a { width: 46vw; height: 30vh; left: -8vw; top: 4vh; background: rgba(140, 92, 255, .45); animation: jl-drift-a 26s ease-in-out infinite alternate; }
+.jl-nebula-b { width: 36vw; height: 26vh; right: 14vw; top: -6vh; background: rgba(255, 120, 170, .28); animation: jl-drift-b 30s ease-in-out infinite alternate; }
+.jl-nebula-c { width: 40vw; height: 30vh; left: 26vw; bottom: -14vh; background: rgba(60, 170, 255, .28); animation: jl-drift-a 34s ease-in-out infinite alternate-reverse; }
+
+/* Each star layer is a 1px dot carrying hundreds of box-shadows; two screens tall so it can loop. */
+.jl-stars {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  background: transparent;
+}
+.jl-stars-1 { animation: jl-stars-rise 240s linear infinite, jl-twinkle 5s ease-in-out infinite; }
+.jl-stars-2 { animation: jl-stars-rise 160s linear infinite, jl-twinkle 7s ease-in-out -2s infinite; }
+.jl-stars-3 { animation: jl-stars-rise 110s linear infinite, jl-twinkle 4s ease-in-out -1s infinite; }
+
+.jl-shooting {
+  position: absolute;
+  width: 170px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .95));
+  opacity: 0;
+  transform: rotate(-28deg);
+}
+.jl-shooting-a { top: 14vh; left: 58vw; animation: jl-shoot 9s ease-in 2.5s infinite; }
+.jl-shooting-b { top: 40vh; left: 18vw; animation: jl-shoot 13s ease-in 7s infinite; }
+
+/* ---------- 2. Planet system (Mars, orbiting machines, Moon, astronaut) ---------- */
+.jl-system {
+  position: absolute;
+  top: 50%;
+  right: calc(var(--sys) * -0.12);
+  width: var(--sys);
+  height: var(--sys);
+  translate: 0 -50%;
+  perspective: 1600px;
+  pointer-events: none;
+  animation: jl-system-in 1.6s cubic-bezier(.2, .8, .2, 1) both;
+}
+.jl-world {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.jl-planet {
+  position: absolute;
+  inset: 19%;
+  border-radius: 50%;
+  overflow: hidden;
+  transform: translateZ(0);
+  box-shadow:
+    0 0 0 1px rgba(255, 190, 150, .1),
+    0 0 70px rgba(255, 118, 70, .42),
+    0 0 180px rgba(255, 90, 60, .2);
+}
+.jl-planet-map {
+  position: absolute;
+  inset: 0;
+  background: url("/images/worlds/mars.jpg") 0 50% / 200% 100% repeat-x;
+  animation: jl-map-spin 90s linear infinite;
+}
+.jl-planet-shade {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 31% 27%, rgba(255, 236, 214, .32), rgba(255, 236, 214, 0) 32%),
+    radial-gradient(closest-side circle at 50% 50%, rgba(0, 0, 0, 0) 58%, rgba(14, 4, 24, .5) 86%, rgba(8, 2, 16, .92) 100%),
+    linear-gradient(128deg, rgba(0, 0, 0, 0) 38%, rgba(10, 3, 22, .55) 72%, rgba(6, 1, 14, .88) 96%);
+  box-shadow: inset 10px 8px 30px rgba(255, 196, 160, .22);
+}
+.jl-orbit {
+  position: absolute;
+  inset: 1%;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  animation: jl-orbit-spin 64s linear infinite;
+}
+.jl-orbit::before,
+.jl-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px dashed rgba(206, 222, 255, .5);
+}
+.jl-orbit::after {
+  inset: -4%;
+  border: 1px solid rgba(206, 222, 255, .12);
+}
+.jl-slot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: rotateZ(var(--th)) translateX(calc(var(--sys) * .49));
+}
+.jl-sat {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--sys) * .15);
+  height: auto;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, .55)) drop-shadow(0 0 14px rgba(160, 200, 255, .22));
+  animation: jl-counter 64s linear infinite;
+}
+.jl-moon {
+  position: absolute;
+  left: 2%;
+  top: 4%;
+  width: 14%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: inset -12px -10px 26px rgba(4, 3, 14, .85), 0 0 34px rgba(210, 220, 255, .28);
+  animation: jl-bob 9s ease-in-out infinite;
+}
+.jl-moon-map {
+  position: absolute;
+  inset: 0;
+  background: url("/images/worlds/moon.jpg") 0 50% / 200% 100% repeat-x;
+  animation: jl-map-spin 140s linear infinite;
+}
+.jl-astronaut {
+  position: absolute;
+  left: -9%;
+  bottom: 1%;
+  width: 18%;
+  height: auto;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .5));
+  animation: jl-astro 8s ease-in-out infinite;
+}
+
+/* ---------- 3. Copy + buttons ---------- */
+.jl-copy {
+  position: relative;
+  z-index: 3;
+  width: min(640px, 52vw);
+  margin-left: clamp(24px, 7.5vw, 132px);
+  padding: 40px 0 70px;
+}
+.jl-copy > * { animation: jl-rise .9s cubic-bezier(.2, .8, .2, 1) both; }
+.jl-copy > :nth-child(2) { animation-delay: .08s; }
+.jl-copy > :nth-child(3) { animation-delay: .18s; }
+.jl-copy > :nth-child(4) { animation-delay: .26s; }
+.jl-copy > :nth-child(5) { animation-delay: .36s; }
+.jl-copy > :nth-child(6) { animation-delay: .46s; }
+
+.jl-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 7px 15px 7px 12px;
+  border: 1px solid rgba(214, 224, 255, .18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .05);
+  backdrop-filter: blur(8px);
+  color: #d5ddff;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.jl-kicker-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffab7a;
+  box-shadow: 0 0 12px #ff8f5c;
+  animation: jl-pulse 2s ease-in-out infinite;
+}
+.jl-title {
+  margin: 22px 0 12px;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(58px, 8.2vw, 128px);
+  font-weight: 900;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  line-height: .9;
+  letter-spacing: -.02em;
+}
+.jl-title span {
+  display: block;
+  width: fit-content;
+  padding-bottom: .06em;
+  background: linear-gradient(100deg, #fff6e8 0%, #ffd3ad 34%, #ffa3c4 66%, #c8b3ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 8px 34px rgba(255, 140, 175, .28));
+}
+.jl-title span + span { margin-left: .55em; }
+.jl-tagline {
+  margin: 0 0 18px;
+  color: #ffc7a0;
+  font: italic 500 clamp(19px, 1.7vw, 24px)/1.3 "Literata", Georgia, serif;
+}
+.jl-lede {
+  max-width: 34em;
+  margin: 0;
+  color: #c9d3ec;
+  font-size: clamp(16px, 1.25vw, 18px);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+.jl-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 26px;
+  margin-top: 34px;
+}
+.jl-start {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  overflow: hidden;
+  padding: 11px 30px 11px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #ffd59c 0%, #ff9fb8 52%, #c7a5ff 100%);
+  color: #1d0d22;
+  font: 700 clamp(18px, 1.5vw, 21px)/1 "Jost", system-ui, sans-serif;
+  letter-spacing: .01em;
+  cursor: pointer;
+  box-shadow: 0 16px 44px rgba(255, 128, 166, .38), 0 0 0 1px rgba(255, 255, 255, .25) inset;
+  transition: transform .2s ease, box-shadow .2s ease;
+  animation: jl-rise .9s cubic-bezier(.2, .8, .2, 1) .5s both, jl-breathe 3.2s ease-in-out 1.6s infinite;
+}
+.jl-start::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, .55) 48%, transparent 64%);
+  transform: translateX(-120%);
+  animation: jl-shine 4.5s ease-in-out 1.8s infinite;
+  pointer-events: none;
+}
+.jl-start:hover,
+.jl-start:focus-visible {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 20px 54px rgba(255, 128, 166, .5), 0 0 0 1px rgba(255, 255, 255, .35) inset;
+}
+.jl-start:focus-visible { outline: 2px solid rgba(255, 255, 255, .8); outline-offset: 5px; }
+.jl-start-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1d0d22;
+  color: #ffd59c;
+  transition: transform .3s ease;
+}
+.jl-start:hover .jl-start-icon { transform: translate(2px, -2px) rotate(-8deg); }
+.jl-own {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 2px;
+  border: 0;
+  background: none;
+  color: #dfe6ff;
+  font: 500 16px "Jost", system-ui, sans-serif;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: rgba(223, 230, 255, .35);
+  text-underline-offset: 6px;
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+.jl-own:hover,
+.jl-own:focus-visible { color: #fff; text-decoration-color: #fff; }
+.jl-own:focus-visible { outline: 2px solid #9bd9ff; outline-offset: 4px; border-radius: 4px; }
+
+.jl-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.jl-facts li {
+  padding: 7px 14px;
+  border: 1px solid rgba(214, 224, 255, .14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .04);
+  color: #b9c4e2;
+  font-size: 13px;
+}
+.jl-facts b { color: #fff; font-weight: 700; }
+
+.jl-team {
+  position: absolute;
+  left: clamp(24px, 7.5vw, 132px);
+  bottom: 22px;
+  z-index: 3;
+  margin: 0;
+  color: rgba(214, 224, 255, .6);
+  font-size: 13px;
+  letter-spacing: .02em;
+  animation: jl-rise 1s ease .8s both;
+}
+.jl-team span { color: #ff9fb8; }
+.jl-team strong { color: #fff; font-weight: 700; letter-spacing: .04em; }
+
+.jl-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(214, 224, 255, .25);
+  border-radius: 50%;
+  background: rgba(8, 12, 32, .5);
+  color: #e3e9ff;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+.jl-close:hover,
+.jl-close:focus-visible { border-color: rgba(214, 224, 255, .7); background: rgba(214, 224, 255, .14); }
+.jl-close:focus-visible { outline: 2px solid #9bd9ff; outline-offset: 3px; }
+
+/* ---------- 4. Motion ---------- */
+@keyframes jl-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes jl-system-in { from { opacity: 0; scale: .86; } to { opacity: 1; scale: 1; } }
+@keyframes jl-map-spin { to { background-position: 200% 50%; } }
+@keyframes jl-orbit-spin {
+  from { transform: rotateZ(-16deg) rotateX(73deg) rotateZ(0deg); }
+  to   { transform: rotateZ(-16deg) rotateX(73deg) rotateZ(360deg); }
+}
+/* Keeps each orbiting machine upright and facing the visitor while its ring turns. */
+@keyframes jl-counter {
+  from { transform: rotateZ(calc(-1 * var(--th))) rotateX(-73deg) rotateZ(16deg) translate(-50%, -62%); }
+  to   { transform: rotateZ(calc(-1 * var(--th) - 360deg)) rotateX(-73deg) rotateZ(16deg) translate(-50%, -62%); }
+}
+@keyframes jl-astro {
+  0%, 100% { transform: translate(0, 0) rotate(-6deg); }
+  50% { transform: translate(10px, -18px) rotate(4deg); }
+}
+@keyframes jl-bob { 50% { transform: translateY(-10px); } }
+@keyframes jl-stars-rise { to { transform: translateY(-100vh); } }
+@keyframes jl-twinkle { 50% { opacity: .55; } }
+@keyframes jl-drift-a { to { transform: translate(6vw, 4vh) scale(1.1); } }
+@keyframes jl-drift-b { to { transform: translate(-5vw, 6vh) scale(.92); } }
+@keyframes jl-shoot {
+  0% { opacity: 0; transform: rotate(-28deg) translateX(0); }
+  3% { opacity: 1; }
+  10% { opacity: 0; transform: rotate(-28deg) translateX(-38vw); }
+  100% { opacity: 0; transform: rotate(-28deg) translateX(-38vw); }
+}
+@keyframes jl-pulse { 50% { opacity: .45; box-shadow: 0 0 4px #ff8f5c; } }
+@keyframes jl-breathe { 50% { box-shadow: 0 16px 60px rgba(255, 128, 166, .58), 0 0 0 1px rgba(255, 255, 255, .25) inset; } }
+@keyframes jl-shine { 0%, 55% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
+
+/* ---------- 5. Responsive ---------- */
+@media (max-width: 900px) {
+  .jl {
+    --sys: min(118vw, 74vh);
+    display: block;
+    overflow-y: auto;
+  }
+  .jl-system {
+    top: -6vh;
+    right: calc(var(--sys) * -0.3);
+    translate: 0 0;
+    opacity: .9;
+  }
+  .jl-copy {
+    width: auto;
+    margin: 0;
+    padding: 46vh 22px 26px;
+    background: linear-gradient(180deg, transparent 0, rgba(5, 6, 20, .72) 46vh, rgba(5, 6, 20, .9) 100%);
+  }
+  .jl-title { font-size: clamp(50px, 15vw, 84px); }
+  .jl-title span + span { margin-left: .4em; }
+  .jl-actions { gap: 12px 20px; margin-top: 26px; }
+  .jl-facts { margin-top: 24px; }
+  .jl-team { position: relative; left: auto; bottom: auto; padding: 0 22px 26px; background: rgba(5, 6, 20, .9); }
+  .jl-close { position: fixed; }
+}
+@media (max-width: 420px) {
+  .jl-start { width: 100%; justify-content: flex-start; }
+  .jl-kicker { font-size: 10px; letter-spacing: .12em; }
+}
+
+/* ---------- 6. Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .jl *,
+  .jl *::before,
+  .jl *::after { animation: none !important; }
+}

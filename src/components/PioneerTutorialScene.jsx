@@ -36,11 +36,10 @@ export default function PioneerTutorialScene({ onComplete }) {
   useEffect(() => {
     const nextStage = {
       "walk-message": "turn-left",
-      "message-delay": "story-message",
-      "go-delay": "go-message",
+      "message-delay": "go-message",
     }[stage];
     if (!nextStage) return undefined;
-    const delay = stage === "walk-message" ? 3000 : stage === "message-delay" ? 900 : 650;
+    const delay = stage === "walk-message" ? 3000 : 900;
     const timer = window.setTimeout(() => setStage(nextStage), delay);
     timers.current.push(timer);
     return () => window.clearTimeout(timer);
@@ -71,15 +70,15 @@ export default function PioneerTutorialScene({ onComplete }) {
       className={`tutorial-pioneer${flying ? " is-flying" : ""}`}
       role="dialog"
       aria-modal="true"
-      aria-label="Pioneer 11 transmission"
+      aria-label="Deep space"
     >
       <div className="tutorial-pioneer-head" aria-live="polite">
         <span className="tutorial-signal-dot" />
-        <span>PIONEER 11 · DEEP SPACE SIGNAL</span>
+        <span>DEEP SPACE</span>
       </div>
 
-      {stage === "loading" && <p className="tutorial-look-hint">Loading Pioneer 11 and astronaut…</p>}
-      {stage === "walk-message" && <p className="tutorial-look-hint">Can you walk in Space? Well.. You can always try !</p>}
+      {stage === "loading" && <p className="tutorial-look-hint">Floating out to deep space…</p>}
+      {stage === "walk-message" && <p className="tutorial-look-hint">Can you walk in space? Well… you can always try!</p>}
       {stage === "turn-left" && (
         <>
           <p className="tutorial-look-hint">Click on the arrow to turn</p>
@@ -90,29 +89,19 @@ export default function PioneerTutorialScene({ onComplete }) {
       )}
       {stage === "turn-right" && (
         <>
-          <p className="tutorial-look-hint">Turn to find the signal.</p>
+          <p className="tutorial-look-hint">Now turn back the other way!</p>
           <button type="button" className="tutorial-look-arrow right" onClick={turnRight} aria-label="Turn right">
             <span aria-hidden="true">›</span>
           </button>
         </>
       )}
 
-      {stage === "story-message" && (
-        <section className="tutorial-transmission" aria-live="polite" aria-labelledby="pioneer-message-title">
-          <div className="tutorial-transmission-label"><span className="tutorial-waveform" /> INCOMING TRANSMISSION</div>
-          <h1 id="pioneer-message-title">A signal from the pioneer</h1>
-          <p>Look there, kiddo. That little probe was sent on a daring mission to Saturn more than 50 years ago. It crossed the plane of Saturn’s rings...and survived !</p>
-          <p>It discovered 2 new moons, a new ring & sent data back to Earth for 22 years (Expected lifespan was 21 months). Now it's drifting out here in the dark, a pioneer that refused to die.</p>
-          <button type="button" className="tutorial-primary" onClick={() => setStage("go-delay")}>Continue</button>
-        </section>
-      )}
-
-      {stage === "go-message" && (
+      {stage === "go-message" && !flying && (
         <section className="tutorial-transmission tutorial-transmission-short" aria-live="polite" aria-labelledby="pioneer-go-title">
-          <div className="tutorial-transmission-label"><span className="tutorial-waveform" /> SIGNAL RECEIVED</div>
+          <div className="tutorial-transmission-label"><span className="tutorial-waveform" /> OUR SOLAR HOME</div>
           <h1 id="pioneer-go-title">Let’s explore more</h1>
-          <p>Although Pioneer11's antenna no longer points at the earth, there's still others waiting for us. Let's fly, buddy.</p>
-          <button type="button" className="tutorial-primary" onClick={startFlight}>Go</button>
+          <p>See that bright little light far away? That’s our Sun, and all around it is our solar home. Let’s fly closer and see how many planets you can find!</p>
+          <button type="button" className="tutorial-primary" onClick={startFlight}>Let’s go!</button>
         </section>
       )}
 

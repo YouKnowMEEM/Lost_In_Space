@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ArrowLeft, BookOpen, FileText, Home, Moon, Sun } from "lucide-react";
 import StoryBook from "./StoryBook";
+import StoryGuide from "./StoryGuide";
 import "../styles/fonts.css";
 import "./storybook.css";
 
@@ -103,14 +104,17 @@ export default function BookRoute({ config, mode = "story" }) {
       </header>
 
       {mode === "story" ? (
-        <StoryBook
-          story={story}
-          timing={timing}
-          scenes={scenes}
-          music={music}
-          missionPath={paths.mission}
-          nextBook={nextBook}
-        />
+        <>
+          <StoryBook
+            story={story}
+            timing={timing}
+            scenes={scenes}
+            music={music}
+            missionPath={paths.mission}
+            nextBook={nextBook}
+          />
+          <StoryGuide key={paths.story} missionPath={paths.mission} />
+        </>
       ) : (
         <Suspense fallback={<div className="mf-loading" role="status">Opening the mission file…</div>}>
           <MissionFile mission={mission} theme={theme} storyPath={paths.story} world={world} tone={tone} />
