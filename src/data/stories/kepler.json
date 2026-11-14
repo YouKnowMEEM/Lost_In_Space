@@ -1,0 +1,147 @@
+{
+  "id": "kepler",
+  "book": 13,
+  "title": "Kepler",
+  "subtitle": "The telescope that counted planets",
+  "tagline": "A bedtime story from deep space",
+  "voice": "af_heart",
+  "theme": "deep",
+  "missionPath": "/object/kepler",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Kepler",
+      "scene": "kepler-cover",
+      "narration": "Sleeping Beauties presents... Kepler. The telescope that counted planets. A bedtime story from deep space."
+    },
+    {
+      "id": "asleep",
+      "title": "Following the Earth",
+      "scene": "kepler-asleep",
+      "text": [
+        "Far away in space, a telescope is drifting along behind the Earth, like a little duckling following its mother around the Sun.",
+        "It is tall and round, with a slanted hood on top and a solar panel on its back. Every year, it falls a little farther behind.",
+        "Its name is Kepler. It is asleep now.",
+        "But for nine years, Kepler stared at the stars without blinking. And it discovered that the night sky is full of planets, more planets than there are stars."
+      ],
+      "fact": "Kepler was named after Johannes Kepler, an astronomer who, about four hundred years ago, worked out how planets move around the Sun.",
+      "sources": [
+        "kep"
+      ]
+    },
+    {
+      "id": "question",
+      "title": "Are There Other Earths?",
+      "scene": "kepler-question",
+      "text": [
+        "For thousands of years, people have looked up at the stars and wondered: do other stars have planets, like our Sun does? Could some of them be like the Earth?",
+        "When Kepler's story began, astronomers had found only a few hundred planets around other stars, and most of them were giants, much bigger than Jupiter.",
+        "Small, rocky planets like ours are very hard to see. They are tiny, and they are hidden in the glare of their bright stars.",
+        "So scientists asked a big question: are planets like Earth rare, or are they everywhere? To find out, they built Kepler."
+      ],
+      "fact": "Planets that circle stars other than our Sun are called exoplanets.",
+      "sources": [
+        "exo",
+        "kep"
+      ]
+    },
+    {
+      "id": "launch",
+      "title": "The Biggest Camera in Space",
+      "scene": "kepler-launch",
+      "text": [
+        "Kepler launched on the sixth of March, two thousand and nine.",
+        "It was a telescope with a big curved mirror, almost as wide as a grown-up is tall, and at the back, a giant camera. At that time, it was the biggest camera ever sent into space.",
+        "Kepler did not circle the Earth. It went around the Sun, following along behind our planet, where it was quiet and still, far from Earth's glow.",
+        "Then it turned towards a patch of sky near a group of stars called Cygnus, the Swan, and opened its eye."
+      ],
+      "fact": "Kepler's mirror was 1.4 metres wide, one of the biggest mirrors beyond Earth's orbit at the time.",
+      "sources": [
+        "kep",
+        "kepn"
+      ]
+    },
+    {
+      "id": "blink",
+      "title": "The Tiny Blink",
+      "scene": "kepler-blink",
+      "text": [
+        "Kepler could not see the planets themselves. So how did it find them?",
+        "It watched about one hundred and fifty thousand stars, all at once, and measured how bright each one was, over and over again, very, very carefully.",
+        "When a planet passes in front of its star, it blocks a tiny bit of the star's light. The star dims, just a little, like when a moth flies in front of a faraway streetlight. Then it brightens again.",
+        "If the same tiny blink came back again and again, regularly, like a clock, that meant a planet was going round and round its star. Kepler had found a new world!"
+      ],
+      "fact": "This way of finding planets is called the transit method. A transit is when one thing passes in front of another.",
+      "sources": [
+        "kep",
+        "exo"
+      ]
+    },
+    {
+      "id": "planets",
+      "title": "Planets Everywhere",
+      "scene": "kepler-planets",
+      "text": [
+        "Within its first six weeks, Kepler found five new planets. And then it found more, and more, and more.",
+        "Some planets were bigger than Jupiter. Some were rocky, like the Earth. Some circled two suns at once, like a planet in a space story. Some stars had six, seven, even eight planets, all packed close together.",
+        "And some small planets were just the right distance from their stars, not too hot and not too cold, where water could stay liquid on the ground.",
+        "The most common kind of planet Kepler found does not even exist in our Solar System: bigger than the Earth, but smaller than Neptune."
+      ],
+      "fact": "Kepler's data showed that many stars in the night sky probably have small, rocky planets where water could be liquid.",
+      "sources": [
+        "kep"
+      ]
+    },
+    {
+      "id": "wheels",
+      "title": "Two Broken Wheels",
+      "scene": "kepler-wheels",
+      "text": [
+        "To stare at the stars without wobbling, Kepler used spinning wheels inside it, a bit like the spinning top that keeps a toy steady.",
+        "It needed three working wheels to keep perfectly still. But in two thousand and thirteen, a second wheel broke. Now there were only two.",
+        "Kepler began to drift. The gentle push of sunlight kept nudging it, and it could not hold its gaze. Its first mission was over.",
+        "Was this the end? The team on Earth thought, and thought. And then they had a very clever idea."
+      ],
+      "fact": "Even sunlight pushes on a spacecraft, very gently. Scientists call it solar pressure.",
+      "sources": [
+        "kep"
+      ]
+    },
+    {
+      "id": "k2",
+      "title": "Balancing on Sunlight",
+      "scene": "kepler-k2",
+      "text": [
+        "The team turned Kepler so that the sunlight pushed on it evenly, from just the right direction. Like a kayak pointed straight into a river's current, it could stay steady.",
+        "Balanced on sunlight, Kepler could hunt for planets again! They called the new mission K2.",
+        "Now it could not stare at one patch of sky forever. So every three months or so, it turned to look at a new patch, in what the team called a campaign.",
+        "The team hoped to have fuel for about ten campaigns. Kepler managed nineteen!"
+      ],
+      "fact": "In K2, Kepler also watched exploding stars, faraway galaxies, and comets and asteroids in our own Solar System.",
+      "sources": [
+        "kep"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Kepler",
+      "scene": "kepler-goodnight",
+      "text": [
+        "In two thousand and eighteen, Kepler's fuel ran out at last. On the fifteenth of November, its team sent it a final goodnight message, and switched it off.",
+        "That was the very same date that the astronomer Johannes Kepler had died, three hundred and eighty-eight years before.",
+        "The telescope Kepler found more than two thousand six hundred planets. It showed us that our galaxy is full of worlds, billions of them, waiting to be explored.",
+        "Now it drifts quietly behind the Earth, around and around the Sun. Goodnight, Kepler. Thank you for counting the planets. Look up tonight: so many of those stars have worlds of their own."
+      ],
+      "fact": "A newer telescope called TESS now continues Kepler's work, searching for planets around the brightest stars near us.",
+      "photo": {
+        "of": "kepler",
+        "pos": "br"
+      },
+      "sources": [
+        "kep",
+        "tess"
+      ]
+    }
+  ]
+}

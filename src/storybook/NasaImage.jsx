@@ -4,14 +4,17 @@ import "./lightbox.css";
 
 /**
  * A photo from NASA's Image and Video Library that tries the next size if one is missing.
+ * `src` (one address or a list) can be given instead of a library `id`, for NASA photos
+ * hosted elsewhere (NASA Science, NSSDCA); the addresses are tried in order.
  *
  * Loading state is derived from the address that actually finished loading, never reset
  * in an effect: a photo that is already in the browser cache can finish loading before
  * effects run, and resetting afterwards would leave it hidden.
  */
-export default function NasaImage({ id, size = "large", alt = "", className = "", eager = false, ...rest }) {
-  const candidates = useMemo(() => nasaImageCandidates(id, size), [id, size]);
-  const key = `${id}|${size}`;
+export default function NasaImage({ id, src: given, size = "large", alt = "", className = "", eager = false, onGiveUp, ...rest }) {
+  const list = Array.isArray(given) ? given.join("|") : given || "";
+  const candidates = useMemo(() => (list ? list.split("|") : nasaImageCandidates(id, size)), [id, size, list]);
+  const key = `${id || list}|${size}`;
   const [failures, setFailures] = useState({ key, count: 0 });
   const [loadedSrc, setLoadedSrc] = useState(null);
   const attempt = failures.key === key ? failures.count : 0;
@@ -24,6 +27,8 @@ export default function NasaImage({ id, size = "large", alt = "", className = ""
   }, []);
 
   if (src === undefined) {
+    if (onGiveUp) return onGiveUp();
+    if (!id) return null;
     return (
       <a className={`nasa-missing ${className}`} href={nasaDetailsUrl(id)} target="_blank" rel="noreferrer">
         <span>Open this photo at NASA</span>

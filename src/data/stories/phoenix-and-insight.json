@@ -1,0 +1,165 @@
+{
+  "id": "phoenix-and-insight",
+  "book": 9,
+  "title": "Phoenix & InSight",
+  "subtitle": "The digger and the listener",
+  "tagline": "A bedtime story from Mars",
+  "voice": "af_heart",
+  "theme": "mars",
+  "missionPath": "/object/phoenix-lander",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Phoenix & InSight",
+      "scene": "pi-cover",
+      "narration": "Sleeping Beauties presents... Phoenix and InSight. The digger and the listener. A bedtime story from Mars."
+    },
+    {
+      "id": "asleep",
+      "title": "Two Round-Eared Landers",
+      "scene": "pi-asleep",
+      "text": [
+        "Far in the north of Mars, near the frozen pole, a lander is sleeping under a blanket of frost. It has two round solar panels, like big round ears.",
+        "And far to the south, on a flat, dusty plain near the middle of Mars, another lander is sleeping. It has round solar panels too, even bigger ones, now covered in red dust.",
+        "The first one is called Phoenix. It was a digger.",
+        "The second one is called InSight. It was a listener. And this is the story of what they found."
+      ],
+      "fact": "Phoenix landed in 2008. InSight landed ten years later, in 2018. They are cousins: InSight's design was based on Phoenix.",
+      "sources": [
+        "phx",
+        "ins"
+      ]
+    },
+    {
+      "id": "phoenix",
+      "title": "Rising from the Ashes",
+      "scene": "pi-phoenix",
+      "text": [
+        "A phoenix is a bird from old stories. When it grows old, it bursts into flames, and a brand new bird rises from the ashes.",
+        "The Phoenix lander got its name for a good reason. It was built from the parts of an earlier lander whose mission had been cancelled, packed away, waiting. Engineers took it out, fixed it up, and gave it a new life.",
+        "On the twenty-fifth of May, two thousand and eight, Phoenix came down near the north pole of Mars. It did not use airbags. It landed on three legs, using little rockets, just like Viking.",
+        "Up there, in summer, the Sun never sets. Phoenix spread its round panels and soaked up the light, all day and all night."
+      ],
+      "fact": "A spacecraft circling Mars took a picture of Phoenix as it hung beneath its parachute, the first photo of one spacecraft landing on another world.",
+      "sources": [
+        "phx",
+        "chute"
+      ]
+    },
+    {
+      "id": "ice",
+      "title": "The Vanishing Snow White",
+      "scene": "pi-ice",
+      "text": [
+        "Phoenix had a long robotic arm with a scoop. It began to dig, scraping little trenches in the ground. The team gave them names, like Dodo-Goldilocks and Snow White.",
+        "Only a few centimetres down, the scoop uncovered something bright and white. What could it be?",
+        "The scientists took pictures every day. And after four days, some of the little white lumps had disappeared! They had turned straight into gas, without melting first, the way ice does on Mars.",
+        "It was ice, real water ice, hiding just under the soil. Then Phoenix put a sample in a tiny oven, heated it, and smelled water vapour. Now everyone was sure."
+      ],
+      "fact": "On Mars, the air is so thin that ice usually turns straight into vapour instead of melting into water.",
+      "sources": [
+        "phx",
+        "phxn"
+      ]
+    },
+    {
+      "id": "taste",
+      "title": "Tasting the Soil",
+      "scene": "pi-taste",
+      "text": [
+        "Phoenix had little ovens and tiny beakers on its deck. It dropped scoops of soil into them, mixed them with water from Earth, and tasted them.",
+        "The soil was a bit salty, and less sour than the scientists expected. One of them said that, with some help, you could probably grow asparagus in it!",
+        "But Phoenix also found something called perchlorate. It is a salt that can be harmful to living things. It may also explain a mystery from Viking, years earlier.",
+        "Every scoop told a little more about whether this cold, icy place could ever have been a home for life."
+      ],
+      "fact": "Perchlorate can be useful too. One day, astronauts might use it to help make oxygen and rocket fuel.",
+      "sources": [
+        "phx"
+      ]
+    },
+    {
+      "id": "snow",
+      "title": "Snow from the Sky",
+      "scene": "pi-snow",
+      "text": [
+        "Phoenix had a laser that pointed straight up into the sky. It measured clouds and dust, high above.",
+        "One night, the laser saw something wonderful. Snow was falling from the clouds over Mars!",
+        "It was water snow, made of tiny ice crystals. It drifted down, but it turned back into vapour before it could reach the ground.",
+        "As the weeks went by, the summer ended. The Sun sank lower and lower. Each day was shorter and colder than the last. In November two thousand and eight, Phoenix sent its last message, and the long polar winter wrapped it in frost."
+      ],
+      "fact": "Phoenix was built to work for 90 Martian days. It worked for more than five months.",
+      "sources": [
+        "phx",
+        "phxn"
+      ]
+    },
+    {
+      "id": "insight",
+      "title": "A Lander That Listens",
+      "scene": "pi-insight",
+      "text": [
+        "Ten years later, a new lander set off: InSight. It launched from California, the first mission to another planet ever to leave from the west coast of America.",
+        "Flying alongside it were two tiny spacecraft, each about the size of a suitcase. Their nicknames were WALL-E and EVE. They were the first tiny satellites, called CubeSats, ever to travel to another planet.",
+        "When InSight landed, on the twenty-sixth of November, two thousand and eighteen, WALL-E and EVE sent the news straight home: InSight was safe!",
+        "InSight would not drive anywhere. It had a different job. It would sit very still, and listen to the inside of Mars."
+      ],
+      "fact": "InSight landed on a smooth, flat plain called Elysium Planitia, chosen because it was safe and boring, perfect for listening.",
+      "photo": {
+        "of": "insight-lander",
+        "pos": "br"
+      },
+      "sources": [
+        "ins",
+        "insn"
+      ]
+    },
+    {
+      "id": "quakes",
+      "title": "Marsquakes",
+      "scene": "pi-quakes",
+      "text": [
+        "InSight's robotic arm lifted its most important instrument and placed it gently on the ground. It was a seismometer, the most sensitive one ever made, under a little dome to keep off the wind.",
+        "Then InSight listened. And Mars began to talk.",
+        "It felt marsquakes, more than one thousand three hundred of them! Most were tiny. But in May two thousand and twenty-two, a big one came, the biggest quake ever felt on another planet.",
+        "It even heard space rocks hitting Mars. Later, spacecraft circling the planet found the fresh craters they had made."
+      ],
+      "fact": "InSight's seismometer could feel a movement smaller than the width of an atom.",
+      "sources": [
+        "ins"
+      ]
+    },
+    {
+      "id": "inside",
+      "title": "Mars on the Inside",
+      "scene": "pi-inside",
+      "text": [
+        "When a marsquake happens, waves travel through the whole planet, bending and bouncing off the layers inside. By timing those waves, scientists can draw a picture of what is hidden underneath.",
+        "InSight helped them draw the first map of the inside of another planet: a rocky crust on top, a thick mantle below, and in the middle, a big core of liquid metal.",
+        "InSight also had a heat probe, nicknamed the mole, that tried to hammer itself five metres into the ground. But the soil was clumpy and sticky, and the mole kept bouncing back up.",
+        "For almost two years, the team tried every trick they could think of. The mole never got deep enough, but they learned a lot about Martian soil."
+      ],
+      "fact": "Mars's liquid core is about 1,830 kilometres from its centre to its edge, bigger than scientists expected.",
+      "sources": [
+        "ins",
+        "core"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Digger and Listener",
+      "scene": "pi-goodnight",
+      "text": [
+        "Little by little, red dust settled on InSight's round solar panels, and its power grew weaker and weaker. Its last message came in December two thousand and twenty-two.",
+        "Now the two cousins sleep, far apart. Phoenix under the polar frost, beside the trenches where it found ice. InSight on its quiet plain, with its seismometer still sitting on the ground beside it.",
+        "One dug down and found water. The other listened, and heard the heartbeat of a planet.",
+        "Goodnight, Phoenix. Goodnight, InSight. Sleep well, round-eared friends."
+      ],
+      "fact": "The ice Phoenix found could one day be drinking water and rocket fuel for astronauts exploring Mars.",
+      "sources": [
+        "phx",
+        "ins"
+      ]
+    }
+  ]
+}

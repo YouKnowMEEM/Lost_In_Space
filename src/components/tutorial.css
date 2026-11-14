@@ -107,89 +107,18 @@
   background: rgba(9, 20, 38, .68);
 }
 
-/* ---------- Pioneer 11 intro scene ---------- */
-.tutorial-pioneer {
+/* ---------- Welcome card (first step on the solar-system page) ---------- */
+.tutorial-welcome {
   position: fixed;
   inset: 0;
-  z-index: 10001;
-  overflow: hidden;
-  background: transparent;
-  color: #edf6ff;
+  z-index: 9999;
+  pointer-events: none;
 }
-.app-shell .deep-space-probe-label.tutorial-pioneer-label { display: none; }
-.tutorial-pioneer-canvas,
-.tutorial-pioneer-canvas canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-.tutorial-pioneer-head {
-  position: absolute;
-  top: clamp(20px, 4vh, 42px);
-  left: clamp(18px, 4vw, 56px);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #b5d5ed;
-  font: 10px "Atkinson Hyperlegible Next", sans-serif;
-  letter-spacing: .18em;
-  text-shadow: 0 2px 12px #000;
-}
-.tutorial-signal-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #85d8ff;
-  box-shadow: 0 0 16px #72caff;
-  animation: tutorial-signal 1.8s ease-in-out infinite;
-}
-.tutorial-look-hint {
-  position: absolute;
-  top: 17%;
-  left: 50%;
-  margin: 0;
-  transform: translateX(-50%);
-  color: #d2e7f8;
-  font: 14px "Atkinson Hyperlegible Next", sans-serif;
-  text-align: center;
-  text-shadow: 0 2px 15px #000;
-  animation: tutorial-hint-in .4s ease both;
-}
-.tutorial-look-arrow {
-  position: absolute;
-  top: 50%;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  width: clamp(58px, 7vw, 86px);
-  height: clamp(82px, 15vh, 130px);
-  padding: 0;
-  border: 1px solid rgba(144, 212, 255, .24);
-  border-radius: 18px;
-  background: linear-gradient(90deg, rgba(78, 157, 216, .08), rgba(12, 29, 49, .45));
-  color: #d8f1ff;
-  cursor: pointer;
-  transform: translateY(-50%);
-  box-shadow: 0 0 28px rgba(77, 174, 239, .14), inset 0 0 22px rgba(101, 193, 255, .08);
-  animation: tutorial-arrow-glow 1.5s ease-in-out infinite;
-}
-.tutorial-look-arrow:hover,
-.tutorial-look-arrow:focus-visible {
-  border-color: rgba(165, 224, 255, .8);
-  outline: 2px solid rgba(155, 217, 255, .75);
-  outline-offset: 4px;
-}
-.tutorial-look-arrow span {
-  margin-top: -8px;
-  font: 72px/1 "Atkinson Hyperlegible Next", sans-serif;
-  font-weight: 200;
-}
-.tutorial-look-arrow.right { right: clamp(14px, 3.5vw, 48px); }
-.tutorial-look-arrow.left {
-  left: clamp(14px, 3.5vw, 48px);
-  background: linear-gradient(270deg, rgba(78, 157, 216, .08), rgba(12, 29, 49, .45));
-}
+.tutorial-welcome .tutorial-transmission { pointer-events: auto; }
+.tutorial-welcome .tutorial-welcome-card { bottom: clamp(20px, 4vh, 40px); width: min(560px, calc(100vw - 36px)); text-align: left; }
+.tutorial-welcome-card h1 { padding-right: 30px; }
+.tutorial-welcome-card .tutorial-close { top: 14px; right: 14px; }
+.tutorial-welcome-card .tutorial-primary { margin-top: 16px; }
 .tutorial-transmission {
   position: absolute;
   left: 50%;
@@ -235,29 +164,8 @@
 }
 .tutorial-transmission .tutorial-primary { display: block; margin: 9px auto 0; }
 .tutorial-transmission-short { width: min(460px, calc(100vw - 36px)); }
-.tutorial-pioneer-caption {
-  position: absolute;
-  right: 22px;
-  bottom: 20px;
-  color: rgba(184, 208, 227, .56);
-  font: 9px "Atkinson Hyperlegible Next", sans-serif;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-.tutorial-pioneer-fade {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 15%, rgba(2, 7, 19, .45) 100%);
-  animation: tutorial-flight-fade 3.4s ease-in forwards;
-}
-@keyframes tutorial-signal { 50% { opacity: .35; box-shadow: 0 0 5px #72caff; } }
-@keyframes tutorial-arrow-glow { 50% { box-shadow: 0 0 45px rgba(77, 174, 239, .34), inset 0 0 26px rgba(101, 193, 255, .16); } }
-@keyframes tutorial-hint-in { from { opacity: 0; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
 @keyframes tutorial-transmission-in { from { opacity: 0; translate: 0 14px; } to { opacity: 1; translate: 0 0; } }
 @keyframes tutorial-wave { to { background-position-x: 25px; } }
-@keyframes tutorial-flight-fade { to { opacity: .72; } }
 
 .tutorial-card {
   position: relative;
@@ -436,6 +344,32 @@
 }
 .tutorial-bubble .tutorial-primary { padding: 8px 13px; font-size: 12px; }
 .tutorial-bubble.is-title-only h2 { margin: 2px 0; }
+.tutorial-tips {
+  display: grid;
+  gap: 7px;
+  margin: 0 0 11px;
+  padding: 0;
+  list-style: none;
+}
+.tutorial-tips li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  align-items: center;
+  gap: 9px;
+  color: #e3edfa;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.tutorial-tips li > span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(124, 196, 255, .16);
+  color: #9fd8ff;
+  box-shadow: inset 0 0 0 1px rgba(159, 216, 255, .3);
+}
 .tutorial-bubble-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
 .tutorial-link {
   padding: 4px 0;
@@ -489,13 +423,8 @@
 @media (max-width: 560px) {
   .tutorial-card { padding: 27px 22px; }
 
-  .tutorial-look-hint { top: 14%; width: calc(100vw - 48px); font-size: 12px; }
-  .tutorial-look-arrow { width: 54px; height: 86px; }
-  .tutorial-look-arrow span { font-size: 60px; }
   .tutorial-transmission { bottom: 58px; padding: 19px 18px; }
   .tutorial-transmission p { font-size: 12px; line-height: 1.55; }
-  .tutorial-pioneer-head { top: 16px; left: 16px; font-size: 8px; }
-  .tutorial-pioneer-caption { right: 12px; bottom: 12px; font-size: 7px; }
 
   .tutorial-guide { left: 12px; right: 12px; bottom: 12px; max-width: none; }
   .tutorial-guide-left { left: 8px; right: auto; }
@@ -522,10 +451,14 @@
   .tutorial-guide-astronaut,
   .tutorial-tour-target,
   .tutorial-bubble,
-  .tutorial-signal-dot,
-  .tutorial-look-arrow,
   .tutorial-waveform,
   .tutorial-transmission,
-  .tutorial-pioneer-fade,
   .tutorial-video-answer { animation: none; }
+}
+
+/* The guide moves to the top when the button it points at is under it (mostly on phones). */
+.tutorial-guide.tutorial-guide-top {
+  top: calc(env(safe-area-inset-top, 0px) + 68px);
+  bottom: auto;
+  align-items: flex-start;
 }

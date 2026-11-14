@@ -1,0 +1,146 @@
+{
+  "id": "ingenuity",
+  "book": 10,
+  "title": "Ingenuity",
+  "subtitle": "The little helicopter that flew on Mars",
+  "tagline": "A bedtime story from Mars",
+  "voice": "af_heart",
+  "theme": "mars",
+  "missionPath": "/object/ingenuity-helicopter",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Ingenuity",
+      "scene": "ingenuity-cover",
+      "narration": "Sleeping Beauties presents... Ingenuity. The little helicopter that flew on Mars. A bedtime story from Mars."
+    },
+    {
+      "id": "asleep",
+      "title": "Resting on the Dunes",
+      "scene": "ingenuity-asleep",
+      "text": [
+        "In a crater on Mars called Jezero, among soft rippled sand dunes, a tiny helicopter is resting.",
+        "It is about as big as a tissue box, with four skinny legs, two long pairs of blades on top, and a little solar panel like a hat.",
+        "Its name is Ingenuity. Ingenuity means being clever and inventive, finding new ways to solve hard problems.",
+        "Ingenuity cannot fly any more. But once, it did something that no machine had ever done before. It flew through the sky of another planet."
+      ],
+      "fact": "Ingenuity weighs just 1.8 kilograms on Earth, about as much as a big bag of sugar.",
+      "sources": [
+        "ing"
+      ]
+    },
+    {
+      "id": "thin",
+      "title": "Air Almost Like Nothing",
+      "scene": "ingenuity-thin",
+      "text": [
+        "Flying on Mars is very, very hard. Helicopters fly by pushing air down with their spinning blades. But the air on Mars is so thin, it is less than one hundredth as thick as the air on Earth.",
+        "Trying to fly there is like trying to swim in a pool with almost no water in it.",
+        "So engineers made Ingenuity as light as they possibly could, and gave it extra-long blades, about as wide as a child's arms stretched out. Its blades would have to spin about forty times every second, much faster than a helicopter on Earth.",
+        "They tested it in a big chamber where they could pump out almost all of the air, to pretend it was Mars. And it worked!"
+      ],
+      "fact": "Ingenuity had two sets of blades, one on top of the other, spinning in opposite directions.",
+      "sources": [
+        "ing"
+      ]
+    },
+    {
+      "id": "ride",
+      "title": "A Ride on a Rover",
+      "scene": "ingenuity-ride",
+      "text": [
+        "Ingenuity could not fly to Mars by itself. So it hitched a ride, tucked underneath the belly of a big new rover called Perseverance.",
+        "On the eighteenth of February, two thousand and twenty-one, Perseverance landed safely in Jezero crater, with Ingenuity still folded up underneath.",
+        "Weeks later, Perseverance found a nice flat spot. Slowly, slowly, it unfolded the little helicopter and lowered it down, until its four legs touched the ground. Then the rover drove away, to give it room.",
+        "Now Ingenuity was all alone, on Mars. The first night would be terribly cold. Would it survive?"
+      ],
+      "fact": "Nights in Jezero crater can get colder than ninety degrees below zero Celsius. A little heater kept Ingenuity's batteries and computer warm.",
+      "sources": [
+        "ing",
+        "m2020"
+      ]
+    },
+    {
+      "id": "first",
+      "title": "The First Flight",
+      "scene": "ingenuity-first",
+      "text": [
+        "Ingenuity survived the night! Then it unlocked its blades and tested them, spinning slowly, then faster.",
+        "On the nineteenth of April, two thousand and twenty-one, it was time. The blades spun up, faster and faster, until they were a blur.",
+        "And Ingenuity lifted off the ground. Up, up, about three metres into the pink sky. It hovered there, turned a little, and gently came back down. The flight lasted less than a minute.",
+        "On Earth, the team waited for the news to arrive from Mars. When it came, they jumped up and cheered and hugged. It was the first powered, controlled flight on another planet!"
+      ],
+      "fact": "Perseverance filmed the first flight from a safe distance away, so we can all watch it.",
+      "photo": {
+        "of": "ingenuity-helicopter",
+        "pos": "br"
+      },
+      "sources": [
+        "first",
+        "ing"
+      ]
+    },
+    {
+      "id": "wright",
+      "title": "A Piece of the First Airplane",
+      "scene": "ingenuity-wright",
+      "text": [
+        "More than a hundred years earlier, in nineteen oh three, two brothers named Orville and Wilbur Wright made the first airplane flight on Earth, on a windy beach in North Carolina.",
+        "Ingenuity carried a secret. Tucked under its solar panel was a tiny piece of cloth, about as big as a postage stamp, taken from the wing of the Wright brothers' airplane.",
+        "So when Ingenuity flew, a little piece of the first airplane on Earth flew on Mars too.",
+        "To honour them, the patch of ground where Ingenuity first flew was named Wright Brothers Field."
+      ],
+      "fact": "The Wright brothers' first flight lasted 12 seconds. Ingenuity's first flight lasted 39 seconds.",
+      "sources": [
+        "first"
+      ]
+    },
+    {
+      "id": "scout",
+      "title": "From Test Pilot to Scout",
+      "scene": "ingenuity-scout",
+      "text": [
+        "Ingenuity was only supposed to make five test flights, in one month. But it kept flying, higher, faster and farther each time.",
+        "So the team gave it a new job. It became a scout for Perseverance, flying ahead to look at the land from above, finding safe paths for the rover and interesting rocks for the scientists.",
+        "Once, on its sixth flight, a small glitch scrambled its timing, and Ingenuity began to wobble and tilt in the air. But it fought to stay steady, and landed safely, all by itself.",
+        "It flew through winter cold, dusty skies, and long, lonely weeks when it could not talk to the rover. And still it kept flying."
+      ],
+      "fact": "Ingenuity once flew as high as 24 metres, taller than a seven-storey building.",
+      "sources": [
+        "ing"
+      ]
+    },
+    {
+      "id": "last",
+      "title": "The Last Flight",
+      "scene": "ingenuity-last",
+      "text": [
+        "On the eighteenth of January, two thousand and twenty-four, Ingenuity made its seventy-second flight. It was supposed to be a short hop.",
+        "But as it came down to land, over smooth sand dunes that gave its camera very little to see, something went wrong. When the team looked at the pictures, they saw that at least one of its blades was broken.",
+        "Ingenuity would never fly again.",
+        "It had been built for five flights in thirty days. It made seventy-two flights in almost three years, and flew about seventeen kilometres in all. The little test helicopter had become a real explorer."
+      ],
+      "fact": "Altogether, Ingenuity spent more than two hours in the air over Mars.",
+      "sources": [
+        "ing"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Ingenuity",
+      "scene": "ingenuity-goodnight",
+      "text": [
+        "Ingenuity rests on the dunes now, with its broken blades, watching the Martian sunsets.",
+        "Before saying goodbye, its team gave it one last job: to keep collecting notes about the weather and the dust around it, saved inside its memory, like a diary for future explorers.",
+        "And Ingenuity's story is not over. NASA is now planning a new team of Mars helicopters, built on everything Ingenuity taught us, for a mission called SkyFall. They will scout landing places for the first astronauts on Mars, and look for ice hidden under the ground.",
+        "Goodnight, Ingenuity. You showed that the sky of Mars is open. Sleep well, little flyer."
+      ],
+      "fact": "NASA's SkyFall mission plans to drop its helicopters while they are still falling through the Martian sky, and let them fly off on their own.",
+      "sources": [
+        "ing",
+        "skyfall"
+      ]
+    }
+  ]
+}

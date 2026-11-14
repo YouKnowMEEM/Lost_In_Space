@@ -1,0 +1,151 @@
+{
+  "id": "dawn",
+  "book": 12,
+  "title": "Dawn",
+  "subtitle": "The explorer with a gentle blue engine",
+  "tagline": "A bedtime story from deep space",
+  "voice": "af_heart",
+  "theme": "deep",
+  "missionPath": "/object/dawn",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Dawn",
+      "scene": "dawn-cover",
+      "narration": "Sleeping Beauties presents... Dawn. The explorer with a gentle blue engine. A bedtime story from deep space."
+    },
+    {
+      "id": "asleep",
+      "title": "Circling a Little World",
+      "scene": "dawn-asleep",
+      "text": [
+        "Out past Mars, in the wide ring of rocks called the asteroid belt, there is a small, round, grey world. Its name is Ceres.",
+        "And around Ceres, quietly, a spacecraft is circling. Round and round, it goes, with two enormous solar wings stretched out on either side, longer than a bus.",
+        "Its name is Dawn. It is fast asleep, but it never stops moving.",
+        "Dawn was a very special explorer. It did not just fly past things. It visited two different worlds, and stayed with each one, circling it for months and months."
+      ],
+      "fact": "From the tip of one solar wing to the other, Dawn measured almost 20 metres.",
+      "sources": [
+        "dawn",
+        "dawnn"
+      ]
+    },
+    {
+      "id": "why",
+      "title": "Two Very Different Worlds",
+      "scene": "dawn-why",
+      "text": [
+        "In the asteroid belt there are two giants. One is called Vesta. The other is called Ceres.",
+        "They are leftovers from the very beginning of our Solar System, from the time when the planets were being built. Studying them is like opening a time capsule.",
+        "But they are very different. Vesta is dry and rocky, with a lumpy shape. Ceres is round, and has lots of ice hidden inside it.",
+        "Why are they so different? To find out, NASA decided to visit both of them, one after the other, with a single spacecraft."
+      ],
+      "fact": "Ceres is so big and round that it is called a dwarf planet. Vesta is the second-biggest object in the asteroid belt.",
+      "sources": [
+        "dawn",
+        "ceres"
+      ]
+    },
+    {
+      "id": "engine",
+      "title": "A Gentle Blue Glow",
+      "scene": "dawn-engine",
+      "text": [
+        "Dawn launched on the twenty-seventh of September, two thousand and seven. But it did not have a big, roaring rocket engine to steer with.",
+        "Instead, it had ion engines. They work by giving tiny particles of a gas called xenon an electric charge, then shooting them out of the back, very, very fast. They glow a soft, beautiful blue.",
+        "The push from an ion engine is tiny, about as gentle as a sheet of paper resting on your hand. But an ion engine can keep pushing for days, and weeks, and months.",
+        "And little by little, that gentle push added up. Dawn went faster and faster, until it could do things no spacecraft had ever done."
+      ],
+      "fact": "Dawn's ion engines ran for almost six years altogether. That is a lot of gentle pushing!",
+      "sources": [
+        "hist",
+        "legacy"
+      ]
+    },
+    {
+      "id": "vesta",
+      "title": "The Giant Mountain on Vesta",
+      "scene": "dawn-vesta",
+      "text": [
+        "In July two thousand and eleven, Dawn arrived at Vesta, and slipped into orbit around it.",
+        "Vesta was amazing. Near its south pole, there was a giant crater, made long ago when something huge smashed into it. And right in the middle of that crater, there was a mountain.",
+        "It is one of the tallest mountains in the whole Solar System, more than twice as tall as Mount Everest!",
+        "Dawn also found long grooves wrapped around Vesta like belts, from that same giant crash. And scientists found that some of the meteorites that fall on Earth were once chipped off Vesta."
+      ],
+      "fact": "Vesta's giant crater is called Rheasilvia. Its central mountain rises about 20 kilometres high.",
+      "sources": [
+        "vesta",
+        "dawn"
+      ]
+    },
+    {
+      "id": "goodbye-vesta",
+      "title": "Leaving One World for Another",
+      "scene": "dawn-leave",
+      "text": [
+        "After more than a year at Vesta, Dawn did something no other spacecraft had ever done.",
+        "It turned on its blue engines, and slowly spiralled away from Vesta, out into space again, heading for a second world.",
+        "Older spacecraft, with big chemical rockets, could never have carried enough fuel for that. Only Dawn's gentle, patient ion engines made it possible.",
+        "For two and a half years, it glided on through the asteroid belt, closer and closer to Ceres."
+      ],
+      "fact": "Dawn was the first spacecraft ever to orbit two different worlds beyond the Earth.",
+      "sources": [
+        "hist",
+        "legacy"
+      ]
+    },
+    {
+      "id": "spots",
+      "title": "The Bright Spots",
+      "scene": "dawn-spots",
+      "text": [
+        "As Dawn came closer to Ceres, the scientists saw something puzzling in the pictures. There were bright white spots, shining like lights on the dark grey surface!",
+        "What could they be? Ice? Something shiny? Everybody wanted to know.",
+        "In March two thousand and fifteen, Dawn arrived at Ceres, and looked closer. The brightest spots were in a crater called Occator. They were made of salt! Very salty water had once seeped up from under the ground, and left the salt behind when it dried.",
+        "Dawn also found a tall, lonely mountain, made by icy, salty mud pushing up from below. It may even be an ice volcano."
+      ],
+      "fact": "Dawn arrived at Ceres four months before New Horizons flew past Pluto, so Ceres was the first dwarf planet ever visited by a spacecraft.",
+      "sources": [
+        "hist",
+        "ceres"
+      ]
+    },
+    {
+      "id": "water",
+      "title": "A World with Hidden Water",
+      "scene": "dawn-water",
+      "text": [
+        "The more Dawn looked, the more Ceres surprised everyone.",
+        "Under its crust, there may still be pockets of very salty water, a long, long way down.",
+        "And Dawn found clues of carbon-rich materials on Ceres's surface, the kind of materials that living things on Earth are built from.",
+        "So this small, cold, faraway world, sitting out in the asteroid belt, turned out to be a place where scientists want to keep looking for clues about water and life."
+      ],
+      "fact": "Ceres is about 940 kilometres wide, roughly the distance from the top of Great Britain to the bottom.",
+      "sources": [
+        "ceres",
+        "dawn"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Dawn",
+      "scene": "dawn-goodnight",
+      "text": [
+        "After eleven years in space, Dawn ran out of a special fuel it needed to point itself. In November two thousand and eighteen, it could no longer turn its antenna towards the Earth, and it went quiet.",
+        "But Dawn did not crash. Its team had placed it in a careful orbit high above Ceres, where it will keep circling for many years, so that no germs from Earth will ever touch that precious little world.",
+        "Round and round it goes, with its long wings spread out, a silent guardian of Ceres.",
+        "Goodnight, Dawn. Goodnight, gentle blue explorer."
+      ],
+      "fact": "Dawn's mission name was chosen because it studied worlds from the dawn of the Solar System.",
+      "photo": {
+        "of": "dawn",
+        "pos": "br"
+      },
+      "sources": [
+        "dawn",
+        "hist"
+      ]
+    }
+  ]
+}

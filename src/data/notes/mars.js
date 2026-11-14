@@ -226,7 +226,7 @@ export const MARS_NOTES = {
     story: [
       "The air of Mars is about one percent as thick as Earth's. Flying in it is like flying at 30 kilometres above Earth. My blades have to spin at about 2,400 turns a minute, many times faster than a helicopter's.",
       "On 19 April 2021 I rose three metres, hovered for half a minute and landed. It was the first powered, controlled flight on another planet. Tucked under my solar panel was a tiny piece of fabric from the Wright brothers' Flyer.",
-      "I was planned for five flights in a month. I flew 72 times over almost three years, scouting for Perseverance. On my last flight in January 2024 my rotor blades were damaged. I will not fly again, but I proved that someone can.",
+      "I was planned for five flights in a month. I flew 72 times over almost three years, scouting for Perseverance. On my last flight in January 2024 my rotor blades were damaged. I will not fly again, but I proved that someone can. NASA's next Mars helicopters, a mission called SkyFall, will build on what I learned.",
     ],
     whySent: "To test, as a technology demonstration, whether a helicopter could fly in the thin air of Mars.",
     discoveries: [

@@ -33,7 +33,11 @@
         "credit": "NASA / JPL · PIA03163",
         "pos": "tl"
       },
-      "fact": "A day on Mars is called a sol. It lasts about 40 minutes longer than a day on Earth."
+      "fact": "A day on Mars is called a sol. It lasts about 40 minutes longer than a day on Earth.",
+      "sources": [
+        "sci",
+        "mars"
+      ]
     },
     {
       "id": "twins",
@@ -49,7 +53,11 @@
         "caption": "Viking 1 lifts off on a Titan III-Centaur rocket from Cape Canaveral, Florida, on August 20, 1975.",
         "credit": "NASA · 9141929"
       },
-      "fact": "Each Viking lander had a small American flag painted on its side, along with the emblem of America's two-hundredth birthday."
+      "fact": "Each Viking lander had a small American flag painted on its side, along with the emblem of America's two-hundredth birthday.",
+      "sources": [
+        "sci",
+        "nssdc"
+      ]
     },
     {
       "id": "journey",
@@ -67,7 +75,19 @@
         "caption": "Mars, photographed by Viking 1 as it approached the red planet in June 1976.",
         "credit": "NASA · 101-KSC-76P-300"
       },
-      "fact": "Earth and Mars both travel around the Sun, so Viking didn't fly in a straight line. It followed a long, curving path to meet Mars where it would be ten months later."
+      "fact": "Earth and Mars both travel around the Sun, so Viking didn't fly in a straight line. It followed a long, curving path to meet Mars where it would be ten months later.",
+      "video": {
+        "src": "/video/viking-journey.mp4",
+        "poster": "/video/viking-journey.jpg",
+        "title": "Watch Viking 1's journey",
+        "label": "Our mission animation",
+        "caption": "Our animation of Viking 1: launch, the long trip to Mars, entering orbit, the fiery fall through the air, the parachute, landing and the search for life.",
+        "credit": "Animation: Team Lost_In_Space"
+      },
+      "sources": [
+        "sci",
+        "nssdc"
+      ]
     },
     {
       "id": "landing",
@@ -87,7 +107,11 @@
         "credit": "NASA · 101-KSC-76PC-303",
         "pos": "bl"
       },
-      "fact": "Viking's parachute was 16 meters wide. That's wider than a tennis court!"
+      "fact": "Viking's parachute was 16 meters wide. That's wider than a tennis court!",
+      "sources": [
+        "nssdc",
+        "sci"
+      ]
     },
     {
       "id": "cheese",
@@ -107,7 +131,11 @@
         "credit": "NASA / JPL · PIA00381",
         "pos": "bl"
       },
-      "fact": "It took several minutes for the whole picture to arrive, one stripe at a time."
+      "fact": "It took several minutes for the whole picture to arrive, one stripe at a time.",
+      "sources": [
+        "sci",
+        "nssdc"
+      ]
     },
     {
       "id": "sky",
@@ -126,7 +154,11 @@
         "credit": "NASA / JPL · PIA00563",
         "pos": "tr"
       },
-      "fact": "Fine dust in the Martian air spreads reddish light all over the sky. But close to the Sun, the dust lets blue light shine through. That's why sunsets on Mars look blue."
+      "fact": "Fine dust in the Martian air spreads reddish light all over the sky. But close to the Sun, the dust lets blue light shine through. That's why sunsets on Mars look blue.",
+      "sources": [
+        "sci",
+        "mars"
+      ]
     },
     {
       "id": "bigjoe",
@@ -144,7 +176,11 @@
         "credit": "NASA / JPL · PIA00382",
         "pos": "tl"
       },
-      "fact": "Viking's two cameras could spin all the way around, so the robot could look in every direction without moving at all."
+      "fact": "Viking's two cameras could spin all the way around, so the robot could look in every direction without moving at all.",
+      "sources": [
+        "bigjoe",
+        "nssdc"
+      ]
     },
     {
       "id": "lab",
@@ -163,7 +199,11 @@
         "credit": "NASA / JPL · PIA00389",
         "pos": "tl"
       },
-      "fact": "In 2008, another lander called Phoenix found a salt called perchlorate in Martian soil. It may explain some of Viking's mysterious results."
+      "fact": "In 2008, another lander called Phoenix found a salt called perchlorate in Martian soil. It may explain some of Viking's mysterious results.",
+      "sources": [
+        "nssdc",
+        "phoenix"
+      ]
     },
     {
       "id": "weather",
@@ -181,7 +221,11 @@
         "credit": "NASA / JPL · PIA00392",
         "pos": "tr"
       },
-      "fact": "A year on Mars lasts 687 Earth days, so every season lasts about twice as long as it does on Earth."
+      "fact": "A year on Mars lasts 687 Earth days, so every season lasts about twice as long as it does on Earth.",
+      "sources": [
+        "nssdc",
+        "mars"
+      ]
     },
     {
       "id": "sunsets",
@@ -200,7 +244,11 @@
         "credit": "NASA / JPL · PIA00567",
         "pos": "bl"
       },
-      "fact": "Viking 1 kept working for 2,245 sols, which is about 2,306 Earth days."
+      "fact": "Viking 1 kept working for 2,245 sols, which is about 2,306 Earth days.",
+      "sources": [
+        "sci",
+        "nssdc"
+      ]
     },
     {
       "id": "mistake",
@@ -213,7 +261,11 @@
         "The engineers tried to call it back for months. But Viking couldn't hear them anymore.",
         "It's a good lesson for every explorer, and every programmer: always check your work twice."
       ],
-      "fact": "Viking's faint signals crossed hundreds of millions of kilometers of space. Giant dish antennas on Earth, part of NASA's Deep Space Network, listened for them."
+      "fact": "Viking's faint signals crossed hundreds of millions of kilometers of space. Giant dish antennas on Earth, part of NASA's Deep Space Network, listened for them.",
+      "sources": [
+        "sci",
+        "nssdc"
+      ]
     },
     {
       "id": "goodnight",
@@ -232,7 +284,11 @@
         "credit": "NASA / JPL / University of Arizona · PIA01881",
         "pos": "tl"
       },
-      "fact": "Mars is only about half as wide as Earth, but its biggest volcano, Olympus Mons, is more than twice as tall as Mount Everest!"
+      "fact": "On 20 July 2026, Viking 1 had been resting on Mars for exactly fifty years. NASA celebrated with “Viking: 50 Years on Mars”.",
+      "sources": [
+        "mutch",
+        "fifty"
+      ]
     }
   ]
 }

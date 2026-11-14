@@ -1,0 +1,232 @@
+// Machines from NASA's "Discarded Equipment Storytelling" resource list that are not single
+// landing sites on the Moon and Mars maps: the three lunar rovers, the Apollo science stations,
+// and three explorers resting far from Earth (Dawn, NEAR Shoemaker and Kepler).
+// Facts were checked against NASA's NSSDCA records (1969-099C, 1971-063C, 1972-031C, 1972-096C,
+// 2007-043A, 1996-008A, 2009-011A) and the NASA Science mission pages.
+
+// Catalog entries in the same shape as the Moon and Mars map data.
+export const EXTRA_MOON = [
+  {
+    id: "lrv-15", name: "Lunar Rover (Apollo 15)", program: "Apollo", year: 1971, launchDate: "1971-07-26", landingDate: "1971-07-30",
+    statusCategory: "intact", lat: 26.132, lon: 3.633, equipmentType: "Lunar Roving Vehicle", mass: "210 kg",
+    description: "The first car on the Moon. Dave Scott and Jim Irwin drove it along Hadley Rille and the foot of the Apennine Mountains.",
+    status: "Parked near the Falcon descent stage",
+  },
+  {
+    id: "lrv-16", name: "Lunar Rover (Apollo 16)", program: "Apollo", year: 1972, launchDate: "1972-04-16", landingDate: "1972-04-21",
+    statusCategory: "intact", lat: -8.973, lon: 15.5, equipmentType: "Lunar Roving Vehicle", mass: "210 kg",
+    description: "John Young and Charlie Duke drove it across the Descartes Highlands, up the slopes of Stone Mountain.",
+    status: "Parked near the Orion descent stage",
+  },
+  {
+    id: "lrv-17", name: "Lunar Rover (Apollo 17)", program: "Apollo", year: 1972, launchDate: "1972-12-07", landingDate: "1972-12-11",
+    statusCategory: "intact", lat: 20.191, lon: 30.772, equipmentType: "Lunar Roving Vehicle", mass: "210 kg",
+    description: "The last car on the Moon. Gene Cernan and Harrison Schmitt drove it through the valley of Taurus-Littrow.",
+    status: "Parked where it filmed Challenger's liftoff",
+  },
+  {
+    id: "alsep", name: "ALSEP science stations", program: "Apollo", year: 1969, launchDate: "1969-11-14", landingDate: "1969-11-19",
+    statusCategory: "intact", lat: -3.009, lon: -23.425, equipmentType: "Apollo Lunar Surface Experiments Package",
+    mass: "about 25 kg central station",
+    description: "Robot science stations that astronauts set up on Apollo 12, 14, 15, 16 and 17. They listened to moonquakes and measured the Moon until 1977.",
+    status: "Switched off from Earth on 30 September 1977",
+  },
+];
+
+export const EXTRA_DEEP = [
+  { id: "dawn", name: "Dawn", program: "Discovery", year: 2007, launchDate: "2007-09-27", state: "adrift", status: "Out of fuel, circling the dwarf planet Ceres", noMap: true, place: "In orbit around Ceres" },
+  { id: "near-shoemaker", name: "NEAR Shoemaker", program: "Discovery", year: 1996, launchDate: "1996-02-17", landingDate: "2001-02-12", state: "asleep", status: "Resting on asteroid 433 Eros since 2001", noMap: true, place: "On the surface of asteroid Eros" },
+  { id: "kepler", name: "Kepler Space Telescope", program: "Kepler", year: 2009, launchDate: "2009-03-06", state: "adrift", status: "Retired in 2018, trailing behind Earth around the Sun", noMap: true, place: "Trailing Earth around the Sun" },
+];
+
+export const EXTRA_NOTES = {
+  "lrv-15": {
+    short: "Apollo 15 Rover",
+    mission: "Apollo 15 Lunar Roving Vehicle",
+    tagline: "The very first car on the Moon.",
+    riddle: "I folded up like a pocket knife to fit inside a lunar module, and I was the first car ever driven on another world.",
+    story: [
+      "I travelled to the Moon folded up flat, tucked into the side of the lunar module Falcon. On 31 July 1971 Dave Scott and Jim Irwin pulled a few straps, and I unfolded like a pop-up book onto the grey dust.",
+      "I ran on two batteries and four wire-mesh wheels. On my first drive the steering on my front wheels would not work, so Dave steered me with my back wheels alone. We still reached the edge of Hadley Rille, a winding canyon.",
+      "Over three days we drove about 28 kilometres. When the astronauts left, they parked me facing the lander, so my TV camera could watch Falcon's top half blast back into the sky. I am still parked there.",
+    ],
+    whySent: "Walking limited the first astronauts to a few hundred metres from their lander. A car let crews reach mountains, craters and canyons kilometres away and carry home many more rocks.",
+    discoveries: [
+      { t: "Far-away geology", d: "The rover let the crew explore up to 5 km from the lander, along Hadley Rille and the foot of the Apennine Mountains." },
+      { t: "The Genesis Rock", d: "On the slope of Hadley Delta, at Spur Crater, the crew found a piece of very old white rock, anorthosite, from the Moon's early crust." },
+      { t: "A first, and it worked", d: "NASA's records say this was the first time a vehicle of this type was used, and that it performed very well on lunar ground." },
+    ],
+    how: [
+      { t: "Electric and foldable", d: "Two 36-volt silver-zinc batteries powered a small motor in each wheel. The whole car folded in half twice to fit into a bay of the lunar module." },
+      { t: "Wire-mesh tyres", d: "Rubber would crack in the cold and heat, so the tyres were a mesh of woven steel wire with titanium treads." },
+    ],
+    numbers: [{ v: "31 Jul 1971", l: "first drive" }, { v: "~28 km", l: "driven" }, { v: "3", l: "drives (EVAs)" }, { v: "~13 km/h", l: "top speed" }],
+    left: "The rover, parked a short way from the Falcon descent stage, with its TV camera, antenna and seats still in place.",
+    fun: "Each rover weighed about 210 kg on Earth, but in the Moon's weak gravity it felt like a sixth of that, about the weight of a large dog.",
+    library: "Apollo 15 lunar roving vehicle",
+    nssdc: "1971-063C",
+    book: "lunar-rovers",
+  },
+  "lrv-16": {
+    short: "Apollo 16 Rover",
+    mission: "Apollo 16 Lunar Roving Vehicle",
+    tagline: "The rover that went for a Grand Prix.",
+    riddle: "An astronaut drove me in circles and skids so cameras could see how I handled, and I climbed the slopes of Stone Mountain.",
+    story: [
+      "I landed on 21 April 1972 in the Descartes Highlands, the bright, hilly part of the Moon. John Young and Charlie Duke unfolded me from the lunar module Orion.",
+      "Before the real trips, John took me for a test run that the crew nicknamed the Grand Prix. He drove fast, turned hard and skidded, while Charlie filmed how my wheels threw up rooster tails of dust.",
+      "We drove about 27 kilometres up Stone Mountain and out to the edge of North Ray Crater. On the last day John parked me for good, a little way from Orion, so my camera could film its liftoff.",
+    ],
+    whySent: "To carry the crew and their tools across the Descartes Highlands, where scientists hoped to find volcanic rocks.",
+    discoveries: [
+      { t: "No volcanoes after all", d: "The highlands were made of rocks smashed together by huge impacts, not volcanic lava. The rover carried the crew to the samples that proved it." },
+      { t: "Rocks from North Ray", d: "At North Ray Crater the crew sampled giant boulders, including one as big as a house, nicknamed House Rock." },
+      { t: "How a rover handles", d: "The Grand Prix film showed engineers how the rover bounced and slid in low gravity." },
+    ],
+    how: [
+      { t: "Steering front and back", d: "Both front and rear wheels could steer, so the rover could turn in a tight circle among craters." },
+      { t: "Talking to Earth", d: "An umbrella-shaped antenna on the rover sent TV pictures straight to Earth, and controllers could turn its camera remotely." },
+    ],
+    numbers: [{ v: "21 Apr 1972", l: "landing" }, { v: "~27 km", l: "driven" }, { v: "71 h", l: "on the Moon" }, { v: "3", l: "drives (EVAs)" }],
+    left: "The rover, parked east of the Orion descent stage in the Descartes Highlands.",
+    fun: "John Young, who drove this rover, later commanded the very first Space Shuttle flight in 1981.",
+    library: "Apollo 16 lunar roving vehicle",
+    nssdc: "1972-031C",
+    book: "lunar-rovers",
+  },
+  "lrv-17": {
+    short: "Apollo 17 Rover",
+    mission: "Apollo 17 Lunar Roving Vehicle",
+    tagline: "The last car on the Moon, fixed with maps and tape.",
+    riddle: "My broken fender was mended with folded maps and tape, and I filmed the last people leaving the Moon.",
+    story: [
+      "I was the last Moon car. On 11 December 1972 Gene Cernan and Harrison Schmitt landed in Taurus-Littrow, a deep valley between tall mountains, with me folded on the side of their lander, Challenger.",
+      "On our first day Gene's hammer caught my rear fender and broke part of it off. Without a fender I sprayed dark dust everywhere. So the astronauts made a new one from four folded paper maps, held on with tape and clamps. It worked!",
+      "We drove about 36 kilometres, the longest of any Moon car. Then Gene parked me at a spot the crew called the VIP site. My camera filmed Challenger's top half lifting off. Nobody has driven on the Moon since.",
+    ],
+    whySent: "To take a geologist and a pilot far across the valley of Taurus-Littrow, to the mountains on either side and the craters between them.",
+    discoveries: [
+      { t: "Orange soil", d: "Near Shorty Crater, Harrison Schmitt spotted orange soil: tiny beads of volcanic glass sprayed out by fire fountains long ago." },
+      { t: "A record haul", d: "The rover helped the crew bring home about 110 kg of rocks and soil, the most of any Apollo mission." },
+      { t: "Echoes under the valley", d: "Charges set out with the rover's help were detonated after the crew left, and listening devices recorded the layers beneath the valley floor." },
+    ],
+    how: [
+      { t: "A navigation computer", d: "A small computer counted wheel turns and tracked the rover's direction, so the crew always knew the way back to the lander." },
+      { t: "Duct-tape engineering", d: "Engineers on Earth worked out the map-fender repair overnight, and the astronauts built it with what they had on board." },
+    ],
+    numbers: [{ v: "11 Dec 1972", l: "landing" }, { v: "~36 km", l: "driven" }, { v: "~18 km/h", l: "fastest speed" }, { v: "4", l: "maps in the repaired fender" }],
+    left: "The rover at the VIP site, still facing the spot where Challenger's ascent stage lifted off.",
+    fun: "After parking this rover, Gene Cernan climbed into Challenger on 14 December 1972. He is, so far, the last person to have walked on the Moon.",
+    library: "Apollo 17 lunar roving vehicle",
+    nssdc: "1972-096C",
+    book: "lunar-rovers",
+  },
+  alsep: {
+    short: "ALSEP",
+    mission: "Apollo Lunar Surface Experiments Package",
+    tagline: "Little science stations that kept listening after the astronauts left.",
+    riddle: "I was powered by a warm plutonium battery, I felt moonquakes, and I kept working for years after the astronauts flew home.",
+    story: [
+      "Astronauts could only stay on the Moon for a few days. So on five Apollo missions they set up little science stations, called ALSEPs, to keep working after they left. The first was on Apollo 12, in November 1969.",
+      "Each station had a central box with an antenna pointed at Earth, joined by cables to instruments: a seismometer to feel moonquakes, a magnetometer, detectors for the solar wind and dust, and on some missions heat probes drilled into the ground.",
+      "A battery called an RTG kept us running, day and night, with heat from a capsule of plutonium. We sent data home for up to eight years. On 30 September 1977 controllers switched all the stations off together. We are still standing where the astronauts left us.",
+    ],
+    whySent: "To measure the Moon over months and years: how often it shakes, how much heat flows out of it, what its magnetic field is like and what the solar wind brings.",
+    discoveries: [
+      { t: "The Moon rings like a bell", d: "When Apollo 12's empty ascent stage was crashed into the Moon about 60 km away, the seismometer recorded the first artificial moonquake, and it lasted almost an hour." },
+      { t: "Moonquakes", d: "Seismometers at several sites heard thousands of small moonquakes, some deep inside the Moon, and helped map its crust and mantle." },
+      { t: "Heat from inside", d: "Heat-flow probes on Apollo 15 and 17 measured how much warmth is still escaping from the Moon's interior." },
+    ],
+    how: [
+      { t: "A nuclear battery", d: "The SNAP-27 generator held about 4 kg of plutonium-238. Its heat was turned straight into about 70 watts of electricity by 442 thermocouples, with fins to shed the extra heat." },
+      { t: "Mirrors still in use", d: "Laser retroreflectors left by Apollo 11, 14 and 15 need no power. Observatories still bounce lasers off them to measure the Moon's distance to within centimetres." },
+    ],
+    numbers: [{ v: "19 Nov 1969", l: "first station switched on" }, { v: "5", l: "stations (Apollo 12 to 17)" }, { v: "~70 W", l: "from each RTG" }, { v: "30 Sep 1977", l: "all switched off" }],
+    left: "Five central stations with their antennas, RTGs and instruments, plus Apollo 11's earlier solar-powered package and the laser mirrors.",
+    fun: "Apollo 13 also carried an ALSEP and its plutonium fuel cask. After the mission was aborted, the cask fell into the Pacific Ocean with the lunar module.",
+    library: "Apollo lunar surface experiments package ALSEP",
+    nssdc: "1969-099C",
+    book: "alsep",
+  },
+  dawn: {
+    short: "Dawn",
+    mission: "Dawn (Vesta and Ceres)",
+    tagline: "The ion-powered explorer that orbited two worlds.",
+    riddle: "A gentle blue engine pushed me to the asteroid belt, where I circled two different worlds. Now I circle the second one forever.",
+    story: [
+      "I left Earth on 27 September 2007. NASA calls me its first truly interplanetary spaceship, because I did not just fly past things: I went into orbit around two different worlds in the asteroid belt between Mars and Jupiter.",
+      "My engines did not roar. They breathed out a soft blue glow of charged xenon gas, gentler than the push of a sheet of paper on your hand. But I kept pushing for years, and that gentle push added up.",
+      "First I circled the giant asteroid Vesta. Then I flew on to the dwarf planet Ceres and found bright salty spots in its craters. In 2018 I ran out of the fuel I needed to point myself. I still circle Ceres, quiet, in a safe orbit.",
+    ],
+    whySent: "Vesta and Ceres are leftovers from when the planets formed, but they are very different: one dry and rocky, one with ice. Studying both helps explain how the solar system was built.",
+    discoveries: [
+      { t: "A giant scar on Vesta", d: "Vesta has a huge impact basin, Rheasilvia, near its south pole, with a mountain in the middle more than twice as tall as Everest." },
+      { t: "Bright spots on Ceres", d: "The bright patches in Occator Crater are salts left behind when salty water reached the surface and evaporated." },
+      { t: "A watery past", d: "Data from Dawn suggest Ceres may have had a long-lasting energy source and liquid inside it, making it interesting in the search for habitable places." },
+    ],
+    how: [
+      { t: "Ion engines", d: "Electricity from big solar wings charged xenon atoms and shot them out the back very fast. The push was tiny but lasted for years." },
+      { t: "Pointing with hydrazine", d: "Small thrusters kept Dawn pointed at its targets and at Earth. When their fuel ran out in 2018, the mission ended." },
+    ],
+    numbers: [{ v: "27 Sep 2007", l: "launch" }, { v: "2", l: "worlds orbited" }, { v: "2011", l: "arrived at Vesta" }, { v: "2015", l: "arrived at Ceres" }],
+    left: "The whole spacecraft, silent and unpowered, still in orbit around Ceres.",
+    fun: "Dawn was placed in an orbit around Ceres that will last for decades, so it cannot crash and bring Earth germs to a world that might once have had water.",
+    library: "Dawn spacecraft Ceres Vesta",
+    nssdc: "2007-043A",
+    book: "dawn",
+  },
+  "near-shoemaker": {
+    short: "NEAR Shoemaker",
+    mission: "Near Earth Asteroid Rendezvous",
+    tagline: "The first spacecraft to land on an asteroid.",
+    riddle: "I was never built to land, but on 12 February 2001 I touched down on a potato-shaped asteroid and kept talking for two more weeks.",
+    story: [
+      "I launched on 17 February 1996 and flew past asteroid Mathilde on the way. On 14 February 2000, Valentine's Day, I went into orbit around asteroid 433 Eros. I was the first spacecraft ever to orbit an asteroid.",
+      "For a whole year I circled Eros, a peanut-shaped rock about 34 kilometres long, and took about 160,000 pictures. That was about ten times more data than planned.",
+      "Then my team tried something daring. I was not designed to land, but they lowered me slowly onto the surface. I touched down at walking speed, survived, and sent data for two more weeks, until the cold silenced me. I am still there.",
+    ],
+    whySent: "To study a near-Earth asteroid up close: its shape, what it is made of, how its mass is spread inside and whether it has a magnetic field.",
+    discoveries: [
+      { t: "First asteroid orbit", d: "On 14 February 2000 NEAR became the first human-made object to orbit an asteroid." },
+      { t: "No magnetic field", d: "NEAR's data showed that Eros has no magnetic field, and a density similar to Earth's crust." },
+      { t: "A soft landing", d: "On 12 February 2001 it touched down at about 6.4 km/h, the first time a U.S. spacecraft was the first to land on a celestial body." },
+    ],
+    how: [
+      { t: "Solar power far from the Sun", d: "NEAR was the first spacecraft to rely on solar cells for power while operating beyond the orbit of Mars." },
+      { t: "Six instruments", d: "A camera, a magnetometer, an infrared spectrometer, an X-ray and gamma-ray spectrometer, a laser rangefinder and a radio gravity experiment." },
+    ],
+    numbers: [{ v: "14 Feb 2000", l: "entered orbit" }, { v: "12 Feb 2001", l: "landed on Eros" }, { v: "160,000", l: "pictures" }, { v: "−173 °C", l: "cold that ended it" }],
+    left: "The spacecraft itself, resting on Eros just south of the saddle-shaped Himeros region.",
+    fun: "NASA renamed the spacecraft NEAR Shoemaker in March 2000, in honour of the geologist Eugene Shoemaker, who helped show that impacts shape worlds.",
+    library: "NEAR Shoemaker Eros",
+    nssdc: "1996-008A",
+    book: "near-shoemaker",
+  },
+  kepler: {
+    short: "Kepler",
+    mission: "Kepler / K2 space telescope",
+    tagline: "The planet hunter that showed us planets are everywhere.",
+    riddle: "I stared at one patch of sky for four years, watching stars blink, and found more than 2,600 planets around other stars.",
+    story: [
+      "I launched on 6 March 2009. I am a telescope with a mirror 1.4 metres wide and the biggest camera ever sent to space at the time. I do not orbit Earth. I follow it around the Sun, trailing slowly behind.",
+      "I stared at about 150,000 stars in the constellation Cygnus, the Swan, and watched their brightness very carefully. When a planet passed in front of its star, the star dimmed a tiny bit. That little blink was how I found planets.",
+      "In 2013 two of my steering wheels broke. My team found a clever trick: they balanced me against the gentle push of sunlight, and I kept hunting as K2. In 2018 I ran out of fuel and was switched off. I still drift behind Earth.",
+    ],
+    whySent: "To find out how common planets like Earth are. Before Kepler, nobody knew if small rocky planets in the right place for liquid water were rare or common.",
+    discoveries: [
+      { t: "Planets everywhere", d: "Kepler showed that our galaxy has more planets than stars, billions of them hidden around other suns." },
+      { t: "A new kind of planet", d: "The most common size it found, between Earth and Neptune, does not exist in our solar system." },
+      { t: "Earth-size worlds", d: "It was NASA's first mission to find Earth-size planets in the habitable zones of their stars." },
+    ],
+    how: [
+      { t: "Watching for blinks", d: "A transit, a planet crossing its star, dims the star by a tiny amount. Kepler measured brightness so precisely that it could see this." },
+      { t: "Steering with sunlight", d: "After two reaction wheels failed, engineers used the pressure of sunlight to steady the telescope, like a kayak pointed into a current." },
+    ],
+    numbers: [{ v: "6 Mar 2009", l: "launch" }, { v: "2,600+", l: "planets discovered" }, { v: "500,000+", l: "stars surveyed" }, { v: "19", l: "K2 campaigns" }],
+    left: "The telescope itself, retired and silent, following Earth around the Sun in a safe orbit far from our planet.",
+    fun: "The K2 team planned for about 10 campaigns with the fuel left. They managed 19.",
+    library: "Kepler space telescope",
+    nssdc: "2009-011A",
+    book: "kepler",
+  },
+};

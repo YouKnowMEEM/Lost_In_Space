@@ -13,14 +13,14 @@ const MissionFile = lazy(() => import("../mission/MissionFile"));
  * and the mission file with the real documentation.
  */
 export default function BookRoute({ config, mode = "story" }) {
-  const { story, timing, scenes, music, theme, paths, nextBook, mission, world } = config;
+  const { story, timing, scenes, music, theme, paths, nextBook, mission, world, speechWords, missionLabel } = config;
 
   useEffect(() => {
     const previous = document.title;
     document.title =
       mode === "story"
         ? `${story.title}: ${story.subtitle} · Sleeping Beauties`
-        : `${mission.name} mission file · Sleeping Beauties`;
+        : `${mission?.name} mission file · Sleeping Beauties`;
     return () => {
       document.title = previous;
     };
@@ -96,8 +96,8 @@ export default function BookRoute({ config, mode = "story" }) {
             </NavLink>
             <NavLink to={paths.mission}>
               <FileText size={16} aria-hidden="true" />
-              <span className="sbk-mode-long">Mission file</span>
-              <span className="sbk-mode-short">Mission</span>
+              <span className="sbk-mode-long">{missionLabel || "Mission file"}</span>
+              <span className="sbk-mode-short">{missionLabel === "Field notes" ? "Notes" : "Mission"}</span>
             </NavLink>
           </nav>
         </div>
@@ -112,12 +112,14 @@ export default function BookRoute({ config, mode = "story" }) {
             music={music}
             missionPath={paths.mission}
             nextBook={nextBook}
+            speechWords={speechWords}
+            missionLabel={missionLabel}
           />
           <StoryGuide key={paths.story} missionPath={paths.mission} />
         </>
       ) : (
         <Suspense fallback={<div className="mf-loading" role="status">Opening the mission file…</div>}>
-          <MissionFile mission={mission} theme={theme} storyPath={paths.story} world={world} tone={tone} />
+          <MissionFile mission={mission} theme={theme} storyPath={paths.story} world={world} tone={tone} film={story.pages.find((p) => p.video?.src)?.video || null} />
         </Suspense>
       )}
     </div>

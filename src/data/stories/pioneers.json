@@ -1,0 +1,133 @@
+{
+  "id": "pioneers",
+  "book": 14,
+  "title": "Pioneer 10 & 11",
+  "subtitle": "The first travellers to the giant planets",
+  "tagline": "A bedtime story from deep space",
+  "voice": "af_heart",
+  "theme": "deep",
+  "missionPath": "/object/pioneer-10",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Pioneer 10 & 11",
+      "scene": "pioneers-cover",
+      "narration": "Sleeping Beauties presents... Pioneer 10 and 11. The first travellers to the giant planets. A bedtime story from deep space."
+    },
+    {
+      "id": "asleep",
+      "title": "Two Brothers, Flying Apart",
+      "scene": "pioneers-asleep",
+      "text": [
+        "Far, far away, beyond all the planets, two little spacecraft are flying through the dark. They will never stop.",
+        "Each one has a big white dish, like a face turned back towards home, and two long arms holding warm, finned batteries. Each one carries a little golden plaque, a picture-message for anyone who might find it.",
+        "They are Pioneer 10 and Pioneer 11. They are twin brothers, and they are flying in almost opposite directions.",
+        "Long before Voyager, these two went first, to places where no spacecraft had ever been."
+      ],
+      "fact": "A pioneer is someone who goes first, and opens the way for others to follow.",
+      "sources": [
+        "p10",
+        "p11"
+      ]
+    },
+    {
+      "id": "belt",
+      "title": "Through the Rocky Belt",
+      "scene": "pioneers-belt",
+      "text": [
+        "Pioneer 10 launched on the second of March, nineteen seventy-two. Its job was to fly to Jupiter, the biggest planet of all.",
+        "But first, it had to cross the asteroid belt, a giant ring of rocks circling the Sun between Mars and Jupiter. No spacecraft had ever tried.",
+        "Some scientists were worried. What if the belt was full of rocks and dust, like a hailstorm? A tiny pebble, moving fast, could break a spacecraft.",
+        "Pioneer 10 flew on, for seven long months, through the belt. And it came out the other side, without a scratch. The way to the giant planets was open!"
+      ],
+      "fact": "The asteroid belt turned out to be mostly empty space. The rocks in it are usually very far apart.",
+      "sources": [
+        "p10",
+        "p10n"
+      ]
+    },
+    {
+      "id": "jupiter",
+      "title": "Hello, Jupiter!",
+      "scene": "pioneers-jupiter",
+      "text": [
+        "In December nineteen seventy-three, Pioneer 10 reached Jupiter.",
+        "It sent home the first close-up pictures of the giant planet: its stripes of cloud, and the Great Red Spot, a storm bigger than the whole Earth.",
+        "But Jupiter had a surprise. Around it there is a huge belt of invisible radiation, much fiercer than anyone had thought. Pioneer 10's electronics got a terrible zap, and some of its pictures were spoiled.",
+        "It survived! And what it learned helped engineers build stronger spacecraft, like Voyager, to go there next."
+      ],
+      "fact": "Pioneer 10 came within about 130,000 kilometres of Jupiter's cloud tops.",
+      "sources": [
+        "p10",
+        "p10n"
+      ]
+    },
+    {
+      "id": "plaque",
+      "title": "A Message in a Bottle",
+      "scene": "pioneers-plaque",
+      "text": [
+        "After Jupiter, Pioneer 10 was flying so fast that the Sun could never pull it back. It was heading out of the Solar System, forever.",
+        "So the scientists had an idea. Why not send a message, like a note in a bottle thrown into the sea?",
+        "On a little gold-coloured plaque, they drew a picture: a man and a woman, with the man raising his hand to say hello. A map showing where our Sun is. And a drawing of our planets, with a tiny Pioneer flying away from the third one, the Earth.",
+        "The scientist Carl Sagan helped design it, and the artist Linda Salzman Sagan drew the people. Pioneer 11 carries the same plaque."
+      ],
+      "fact": "The plaque is a little smaller than a sheet of writing paper. It is fixed behind the dish, where space dust cannot wear it away.",
+      "sources": [
+        "p10"
+      ]
+    },
+    {
+      "id": "saturn",
+      "title": "Pioneer 11 Goes to Saturn",
+      "scene": "pioneers-saturn",
+      "text": [
+        "Pioneer 11 launched a year after its brother, in April nineteen seventy-three. It flew past Jupiter too, even closer, and saw the planet's poles for the first time.",
+        "Then Jupiter's gravity swung it around and sent it on a long journey across the Solar System, to a planet no spacecraft had ever visited: Saturn.",
+        "On the first of September, nineteen seventy-nine, Pioneer 11 swooped past Saturn, just above its clouds, crossing close by the beautiful rings.",
+        "It found a new thin ring, and a new little moon, and it measured Titan, Saturn's biggest moon, and found that it was very, very cold."
+      ],
+      "fact": "Pioneer 11 was the first spacecraft ever to visit Saturn.",
+      "photo": {
+        "of": "pioneer-11",
+        "pos": "br"
+      },
+      "sources": [
+        "p11",
+        "p11n"
+      ]
+    },
+    {
+      "id": "far",
+      "title": "Farther Than Anyone",
+      "scene": "pioneers-far",
+      "text": [
+        "The brothers kept flying, out past Uranus, out past Neptune, into the cold and the dark.",
+        "In June nineteen eighty-three, Pioneer 10 crossed the orbit of Neptune, then the farthest planet from the Sun. It was the first human-made object ever to travel so far.",
+        "Year after year, their voices grew fainter. Their batteries grew weaker. It took hours for their tiny signals to crawl home, and giant dish antennas on Earth had to listen very carefully to hear them at all.",
+        "Pioneer 11 sent its last message in nineteen ninety-five. Pioneer 10 kept whispering for longer, until the twenty-third of January, two thousand and three."
+      ],
+      "fact": "Pioneer 10's last signal came from more than 12 billion kilometres away.",
+      "sources": [
+        "p10"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Pioneers",
+      "scene": "pioneers-goodnight",
+      "text": [
+        "The Pioneers are quiet now. But they are still flying, deeper into space, every second.",
+        "Pioneer 10 is heading towards a red star called Aldebaran, the eye of the Bull in the night sky. It will take more than two million years to get anywhere near it.",
+        "Pioneer 11 is heading towards the stars of Aquila, the Eagle. And both of them still carry their little golden message: Hello. This is who we are. This is where we live.",
+        "Goodnight, Pioneer 10. Goodnight, Pioneer 11. Goodnight, brave brothers, who went first."
+      ],
+      "fact": "After the Pioneers came Voyager 1 and 2 and New Horizons. All five are now leaving the Solar System behind.",
+      "sources": [
+        "p10",
+        "p11"
+      ]
+    }
+  ]
+}

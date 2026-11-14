@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { SpeechVoice } from "./speechVoice";
 
 // Smoothly ramps an <audio> element's volume (and pauses it at zero).
 function fade(audio, target, ms = 700) {
@@ -43,8 +44,10 @@ function pageTurnSound(ctx) {
  * Narration + background music for a storybook.
  * One <audio> element plays the page narration (so mobile browsers keep it unlocked after
  * the first tap), another loops the lullaby quietly underneath.
+ * Books without recorded narration pass `speechWords` (page id -> words) and are read by
+ * the browser's own voice instead.
  */
-export function useNarration(musicSrc) {
+export function useNarration(musicSrc, speechWords = null) {
   const voiceRef = useRef(null);
   const musicRef = useRef(null);
   const ctxRef = useRef(null);
@@ -59,9 +62,10 @@ export function useNarration(musicSrc) {
     }
   });
   const [engaged, setEngaged] = useState(false); // has the reader pressed anything that may make sound?
+  const [voiceError, setVoiceError] = useState(false); // the browser's read-aloud voice failed
 
   useEffect(() => {
-    const voice = new Audio();
+    const voice = speechWords ? new SpeechVoice((id) => speechWords[id]) : new Audio();
     voice.preload = "auto";
     const music = new Audio(musicSrc);
     music.loop = true;
@@ -75,13 +79,16 @@ export function useNarration(musicSrc) {
       setPlaying(false);
       onEndRef.current?.();
     };
+    const onSpeechError = () => setVoiceError(true);
     voice.addEventListener("play", onPlay);
     voice.addEventListener("pause", onPause);
     voice.addEventListener("ended", onEnded);
+    voice.addEventListener("speecherror", onSpeechError);
     return () => {
       voice.removeEventListener("play", onPlay);
       voice.removeEventListener("pause", onPause);
       voice.removeEventListener("ended", onEnded);
+      voice.removeEventListener("speecherror", onSpeechError);
       voice.pause();
       music.pause();
       voice.removeAttribute("src");
@@ -90,7 +97,7 @@ export function useNarration(musicSrc) {
       if (ctxRef.current) ctxRef.current.close().catch(() => {});
       ctxRef.current = null;
     };
-  }, [musicSrc]);
+  }, [musicSrc, speechWords]);
 
   // Music sits low under the voice and a little higher when the reader reads alone.
   useEffect(() => {
@@ -173,6 +180,8 @@ export function useNarration(musicSrc) {
   return {
     voiceRef,
     playing,
+    voiceError,
+    clearVoiceError: () => setVoiceError(false),
     rate,
     musicOn,
     engaged,

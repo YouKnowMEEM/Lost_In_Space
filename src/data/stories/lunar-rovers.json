@@ -1,0 +1,173 @@
+{
+  "id": "lunar-rovers",
+  "book": 5,
+  "title": "Three Moon Buggies",
+  "subtitle": "The cars parked on the Moon",
+  "tagline": "A bedtime story from the Moon",
+  "voice": "af_heart",
+  "theme": "moon",
+  "missionPath": "/object/lrv-15",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Three Moon Buggies",
+      "scene": "rovers-cover",
+      "narration": "Sleeping Beauties presents... Three Moon Buggies. The cars parked on the Moon. A bedtime story from the Moon."
+    },
+    {
+      "id": "asleep",
+      "title": "Three Cars, Parked Forever",
+      "scene": "rovers-asleep",
+      "text": [
+        "Did you know there are three cars on the Moon?",
+        "They have no roofs and no doors. Their wheels are made of wire, and on the front of each one there is a little umbrella, made of gold mesh, that once pointed at the Earth.",
+        "One is parked beside a winding canyon. One is parked in the highlands, among bright white rocks. And one is parked in a deep valley between tall grey mountains.",
+        "Nobody has driven them for more than fifty years. They are the Lunar Roving Vehicles, and this is their story."
+      ],
+      "fact": "The three Moon buggies went to the Moon with Apollo 15, Apollo 16 and Apollo 17, in 1971 and 1972.",
+      "sources": [
+        "lrv",
+        "a15"
+      ]
+    },
+    {
+      "id": "tired",
+      "title": "Too Far to Walk",
+      "scene": "rovers-tired",
+      "text": [
+        "The first astronauts on the Moon had to walk everywhere, in big, stiff spacesuits, carrying heavy tools.",
+        "On Apollo 14, two astronauts tried to climb a hill to the rim of a big crater, pulling a little cart behind them. It was hot inside their suits, the ground was steep, and every rock looked the same. They had to turn back, very close to the top.",
+        "Scientists wanted to explore farther: to mountains, canyons and craters many kilometres away.",
+        "What the astronauts needed was a car. But how do you take a car to the Moon?"
+      ],
+      "fact": "Apollo 14's cart was called the Modular Equipment Transporter, or MET. The astronauts pulled it like a rickshaw.",
+      "sources": [
+        "a14",
+        "alsj"
+      ]
+    },
+    {
+      "id": "folded",
+      "title": "A Car That Folds",
+      "scene": "rovers-folded",
+      "text": [
+        "Engineers built a car that could fold up like a pop-up book.",
+        "Its wheels tucked in. Its seats folded flat. The whole buggy fit into a small space on the side of the lunar module, no bigger than a flat cupboard.",
+        "When the astronauts landed, they pulled on a few straps, and the buggy slowly swung down and unfolded, wheels popping out, until it stood on the grey dust.",
+        "Then they flipped up the seats, fastened their seat belts, and switched it on. There was no key. There was a little control stick, like a video game, between the two seats."
+      ],
+      "fact": "On Earth the rover weighed about 210 kilograms. In the Moon's weak gravity, it felt only as heavy as a big dog.",
+      "sources": [
+        "lrv"
+      ]
+    },
+    {
+      "id": "wheels",
+      "title": "Wire Wheels and Wobbly Rides",
+      "scene": "rovers-wheels",
+      "text": [
+        "A Moon car cannot have rubber tyres full of air. So its wheels were made of woven piano wire, springy like a basket, with little metal strips to grip the dust.",
+        "Each wheel had its very own electric motor, and two big batteries gave them power. The buggy could only go about as fast as a bicycle.",
+        "But on the Moon, even that felt fast! Because things weigh so little there, the buggy bounced and bounded over every bump, and sometimes all four wheels left the ground at once.",
+        "Behind them, the wheels threw up beautiful rooster tails of dust, rising and falling in perfect arcs, because there is no air on the Moon to blow them away."
+      ],
+      "fact": "The rover's antenna sent live colour television straight to Earth, so people at home could ride along.",
+      "sources": [
+        "lrv"
+      ]
+    },
+    {
+      "id": "hadley",
+      "title": "The Canyon at Hadley",
+      "scene": "rovers-hadley",
+      "text": [
+        "The first Moon buggy landed with Apollo 15, in July nineteen seventy-one. Dave Scott and Jim Irwin drove it at the foot of tall mountains called the Apennines.",
+        "On the very first drive, the front wheels would not steer! So Dave drove with only the back wheels steering, and it still worked.",
+        "They drove to the edge of Hadley Rille, a long winding canyon, deeper than a skyscraper is tall.",
+        "On a mountain slope, they found a special white rock that was very, very old, from the time when the Moon's first crust was forming. People called it the Genesis Rock."
+      ],
+      "fact": "Apollo 15's crew drove about 28 kilometres in three days.",
+      "photo": {
+        "of": "lrv-15",
+        "pos": "tl"
+      },
+      "sources": [
+        "a15",
+        "lrv"
+      ]
+    },
+    {
+      "id": "highlands",
+      "title": "The Grand Prix",
+      "scene": "rovers-highlands",
+      "text": [
+        "The second Moon buggy went with Apollo 16, in April nineteen seventy-two, to the bright Descartes Highlands.",
+        "Before the real work began, John Young took it for a test drive, speeding and turning while Charlie Duke filmed. Mission Control called it the Grand Prix. The buggy bounced and skidded and sprayed dust everywhere.",
+        "Then they drove up the slopes of Stone Mountain, so high that they could look back down at their tiny lunar module, far below.",
+        "Before he left the Moon, Charlie placed a small family photograph on the ground. It is still there."
+      ],
+      "fact": "The photo Charlie Duke left on the Moon shows him with his wife and their two sons.",
+      "photo": {
+        "of": "lrv-16",
+        "pos": "br"
+      },
+      "sources": [
+        "a16",
+        "duke"
+      ]
+    },
+    {
+      "id": "fender",
+      "title": "Fixed with Maps and Tape",
+      "scene": "rovers-fender",
+      "text": [
+        "The third and last Moon buggy went with Apollo 17, in December nineteen seventy-two, to a deep valley called Taurus-Littrow.",
+        "Oops! Gene Cernan caught a fender with his hammer, and part of it broke off. Without a fender, the wheel threw dark dust all over the astronauts and the buggy, and dust gets hot in the sunshine.",
+        "So that night, people on Earth worked out a clever fix. The next morning, Gene and Harrison Schmitt taped four stiff maps together, clipped them to the wheel with lamp clamps, and made a brand new fender.",
+        "It worked! And on that drive, Harrison found something amazing: bright orange soil, made of tiny glass beads from ancient volcanoes."
+      ],
+      "fact": "The repaired fender came back to Earth with the astronauts. Today it is kept at the Smithsonian's National Air and Space Museum.",
+      "photo": {
+        "of": "apollo-17",
+        "pos": "br"
+      },
+      "sources": [
+        "fender",
+        "newfender"
+      ]
+    },
+    {
+      "id": "camera",
+      "title": "The Buggy's Last Job",
+      "scene": "rovers-camera",
+      "text": [
+        "When it was time to go home, each crew parked its buggy a little way from the lander, facing it, like a friend waving goodbye.",
+        "The buggy had a television camera on its front, and people on Earth could turn it by radio.",
+        "So when the top half of the lunar module blasted off, the buggy was watching. On Earth, an engineer named Ed Fendell steered the camera upward, just in time, to follow the astronauts as they rose into the black sky.",
+        "On Apollo 17, he followed them perfectly. It was the buggy's last job, and it did it beautifully."
+      ],
+      "fact": "Light and radio take more than a second to travel from the Moon to Earth, so Ed had to press his buttons before the liftoff, not after it.",
+      "sources": [
+        "liftoff",
+        "lrv"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Moon Buggies",
+      "scene": "rovers-goodnight",
+      "text": [
+        "The three Moon buggies are still parked where the astronauts left them. Their batteries have run out, and their gold umbrellas still point towards home.",
+        "Together, they drove about ninety kilometres across the Moon, carried their friends to places no one could walk to, and helped bring back hundreds of kilograms of Moon rocks.",
+        "Their tracks are still there too. With no wind and no rain, they will last for a very, very long time. Spacecraft flying over the Moon have photographed them from above.",
+        "Goodnight, little buggies. Thank you for the ride."
+      ],
+      "fact": "Apollo 17's buggy holds the speed record for a car on the Moon: about 18 kilometres per hour, going downhill.",
+      "sources": [
+        "lrv",
+        "a17"
+      ]
+    }
+  ]
+}

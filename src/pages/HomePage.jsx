@@ -1,11 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, Clock3, FileText, Gamepad2, Headphones } from "lucide-react";
+import { ArrowRight, BookOpen, Clapperboard, Clock3, FileText, Gamepad2, Headphones } from "lucide-react";
 import ObjectRing from "../home/ObjectRing";
 import PhotoCarousel from "../home/PhotoCarousel";
 import { BEAUTIES, PHOTOS, STORYBOOKS } from "../home/homeData";
 import { SiteFooter, SiteHeader } from "../site/SiteChrome";
 import { CATALOG, stateCounts } from "../data/catalog";
+import { BOOKS, ORDER, storyPath } from "../storybook/library";
+
+// Every storybook on one shelf, grouped by world: the three narrated books lead each group.
+const WORLD_SHELVES = [
+  { world: "moon", short: "The Moon", title: "Stories from the Moon", text: "Landers, buggies and science stations, still resting in the grey dust." },
+  { world: "mars", short: "Mars", title: "Stories from Mars", text: "Landers, rovers and a helicopter under the pink Martian sky." },
+  { world: "deep", short: "Deep space", title: "Stories from deep space", text: "Explorers that flew past the planets, circled asteroids or watched the stars." },
+];
+const WORLD_TAG = { moon: "A story from the Moon", mars: "A story from Mars", deep: "A story from deep space" };
+const FILMS = { eagle: "/eagle?film", viking: "/viking-1?film" };
+const SHELF = [
+  ...STORYBOOKS.map((b) => ({ ...b, world: b.theme, narrated: true, film: FILMS[b.id] })),
+  ...ORDER.map((slug) => {
+    const b = BOOKS[slug];
+    return {
+      id: slug,
+      title: b.title,
+      subtitle: b.subtitle,
+      tagline: WORLD_TAG[b.world],
+      blurb: b.blurb,
+      cover: b.cover,
+      theme: b.world,
+      world: b.world,
+      pages: b.pages,
+      minutes: b.minutes,
+      story: storyPath(slug),
+      mission: `/object/${b.objects[0]}`,
+      missionLabel: "Field notes",
+    };
+  }),
+];
 import "../styles/fonts.css";
 import "../home/home.css";
 import "../site/site.css";
@@ -36,14 +67,23 @@ function Book({ book }) {
             <BookOpen size={16} aria-hidden="true" />
             {book.pages} pages
           </li>
+          <li>
+            <Headphones size={16} aria-hidden="true" />
+            {book.narrated ? "Narrated" : "Read aloud"}
+          </li>
         </ul>
         <div className="hp-book-actions">
           <Link to={book.story} className="hp-btn hp-btn-primary">
             <Headphones size={19} aria-hidden="true" /> Read and listen
           </Link>
           <Link to={book.mission} className="hp-btn hp-btn-quiet">
-            <FileText size={18} aria-hidden="true" /> Mission file
+            <FileText size={18} aria-hidden="true" /> {book.missionLabel || "Mission file"}
           </Link>
+          {book.film && (
+            <Link to={book.film} className="hp-btn hp-btn-quiet hp-btn-film">
+              <Clapperboard size={18} aria-hidden="true" /> Watch the film
+            </Link>
+          )}
         </div>
       </div>
     </article>
@@ -166,21 +206,39 @@ export default function HomePage({ onStartTutorial }) {
           <div className="hp-section-head">
             <h2 id="books-title">Storybooks</h2>
             <p>
-              Snuggle up with the machines that stayed behind. A soft voice reads every page aloud, the words glow as they are
-              spoken, and real NASA photographs are tucked between the pictures.
+              Snuggle up with the machines that stayed behind: {SHELF.length} picture books, one for every group of machines on NASA's list, plus Voyager 1. Each page
+              is read aloud while the words glow, and real NASA photographs are tucked between the pictures.
             </p>
           </div>
-          <div className="hp-books">
-            {STORYBOOKS.map((book) => (
-              <Book key={book.id} book={book} />
+          <nav className="hp-shelf-jump" aria-label="Storybooks by world">
+            {WORLD_SHELVES.map((w) => (
+              <a key={w.world} href={`#books-${w.world}`} className={`is-${w.world}`}>
+                <span className="hp-shelf-dot" aria-hidden="true" /> {w.short}
+                <small>{SHELF.filter((b) => b.world === w.world).length} books</small>
+              </a>
             ))}
-          </div>
+          </nav>
+          {WORLD_SHELVES.map((w) => (
+            <div key={w.world} id={`books-${w.world}`} className={`hp-shelf-group is-${w.world}`}>
+              <div className="hp-shelf-head">
+                <h3>
+                  <span className="hp-shelf-dot" aria-hidden="true" /> {w.title}
+                </h3>
+                <p>{w.text}</p>
+              </div>
+              <div className="hp-books">
+                {SHELF.filter((b) => b.world === w.world).map((book) => (
+                  <Book key={book.id} book={book} />
+                ))}
+              </div>
+            </div>
+          ))}
         </section>
 
-        <section id="atlas" className="hp-section" aria-labelledby="atlas-title">
+        <section id="library" className="hp-section" aria-labelledby="library-title">
           <div className="hp-section-head">
-            <h2 id="atlas-title">Meet them all</h2>
-            <p>Three storybooks are only the beginning. Every machine has its own page, and there are games for when you want to test what you have learned.</p>
+            <h2 id="library-title">Meet them all</h2>
+            <p>The {SHELF.length} storybooks are only the beginning. Every machine has its own page, and there are games for when you want to test what you have learned.</p>
           </div>
           <div className="hx-split">
             <div className="hx-panel hx-panel-atlas">
@@ -190,10 +248,10 @@ export default function HomePage({ onStartTutorial }) {
                 <img src="/images/objects/ingenuity.webp" alt="" loading="lazy" />
                 <img src="/images/objects/pioneer.webp" alt="" loading="lazy" />
               </div>
-              <h3>The Atlas</h3>
+              <h3>The Cosmic Library</h3>
               <p>All {CATALOG.length} machines on one timeline. Filter by world or by whether they are awake, then open field notes: a story in the machine's own voice, what it discovered and how its hardware made that possible.</p>
-              <Link className="hp-btn hp-btn-primary" to="/atlas">
-                Open the Atlas <ArrowRight size={18} aria-hidden="true" />
+              <Link className="hp-btn hp-btn-primary" to="/library">
+                Open the Cosmic Library <ArrowRight size={18} aria-hidden="true" />
               </Link>
             </div>
             <div className="hx-panel hx-panel-play">

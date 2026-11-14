@@ -1,25 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  BookOpen,
-  ChevronLeft,
-  ChevronRight,
-  Gauge,
-  Headphones,
-  ListOrdered,
-  Music2,
-  Pause,
-  Play,
-  RotateCcw,
-  Type,
-  Video,
-  X,
-} from "lucide-react";
+import { BookOpen, ChevronLeft, ChevronRight, Clapperboard, FileText, Gauge, Headphones, ListOrdered, Music2, Pause, Play, RotateCcw, Type, Video, X } from "lucide-react";
 import NasaImage from "./NasaImage";
 import { nasaImageCandidates } from "../lib/nasa";
 import Lightbox from "./Lightbox";
 import { useNarration } from "./useNarration";
+import { speechSupported } from "./speechVoice";
 import { displayText, displayWords } from "./text";
+import { BOOK_SOURCES } from "../data/citations";
 
 const FLIP_MS = 950;
 const RATES = [1, 0.85, 1.15];
@@ -64,7 +52,33 @@ function Words({ text, offset, onWord }) {
   ));
 }
 
-function TextPage({ story, page, number, total, live, onWord, onVideo, endActions }) {
+// Long publisher names, shortened for the small source line under each page.
+const SHORT_PUBLISHER = {
+  "NASA Space Science Data Coordinated Archive": "NASA NSSDCA",
+  "Smithsonian National Air and Space Museum": "Smithsonian",
+  "Apollo Lunar Surface Journal (NASA History)": "NASA History",
+};
+
+/** "Sources: …" under a page: where the facts on this page come from. */
+function PageSources({ sources }) {
+  if (!sources.length) return null;
+  return (
+    <p className="bk-src">
+      <span className="bk-src-label">{sources.length > 1 ? "Sources:" : "Source:"}</span>{" "}
+      {sources.map((src, i) => (
+        <React.Fragment key={src.id}>
+          {i > 0 && <span aria-hidden="true"> · </span>}
+          <a href={src.url} target="_blank" rel="noreferrer">
+            {src.title}
+          </a>{" "}
+          <span className="bk-src-pub">({SHORT_PUBLISHER[src.publisher] || src.publisher})</span>
+        </React.Fragment>
+      ))}
+    </p>
+  );
+}
+
+function TextPage({ story, page, number, total, live, onWord, onVideo, endActions, sources = [] }) {
   const titleCount = displayWords(page.title).length;
   let offset = titleCount;
   return (
@@ -98,20 +112,29 @@ function TextPage({ story, page, number, total, live, onWord, onVideo, endAction
               </aside>
             )}
             {page.video && (
-              <button type="button" className="bk-watch" onClick={() => onVideo(page.video)}>
-                <span className="bk-watch-icon" aria-hidden="true">
-                  <Video size={18} />
-                </span>
+              <button type="button" className={`bk-watch${page.video.poster ? " has-poster" : ""}`} onClick={() => onVideo(page.video)}>
+                {page.video.poster ? (
+                  <span className="bk-watch-thumb" aria-hidden="true">
+                    <img src={page.video.poster} alt="" loading="lazy" />
+                    <Play size={18} />
+                  </span>
+                ) : (
+                  <span className="bk-watch-icon" aria-hidden="true">
+                    <Video size={18} />
+                  </span>
+                )}
                 <span>
                   <strong>{page.video.title}</strong>
-                  <small>Real NASA footage</small>
+                  <small>{page.video.label || "Real NASA footage"}</small>
                 </span>
               </button>
             )}
           </div>
         )}
-        {endActions}
+        <PageSources sources={sources} />
       </div>
+      {/* Pinned under the text, so "Read again" and friends are always in view on the last page. */}
+      {endActions}
       <footer className="bk-folio" aria-hidden="true">
         {number} · {total}
       </footer>
@@ -121,12 +144,23 @@ function TextPage({ story, page, number, total, live, onWord, onVideo, endAction
 
 /* ----------------------------------------------------------------- scene page */
 
+// Rendered in place of a photo that could not load anywhere: tells the page to hide its frame.
+function PhotoGone({ onGone }) {
+  useEffect(() => {
+    onGone();
+  }, [onGone]);
+  return null;
+}
+
 function ScenePage({ page, scenes, live, onPhoto }) {
   const Scene = scenes[page.scene];
+  const photoKey = page.photo ? `${page.id}|${[].concat(page.photo.src || page.photo.nasa).join("|")}` : "";
+  const [gone, setGone] = useState("");
+  const hide = useCallback(() => setGone(photoKey), [photoKey]);
   return (
     <div className={`bk-scene ${live ? "is-live" : ""}`}>
       {Scene ? <Scene /> : <div className="bk-scene-missing" />}
-      {page.photo && (
+      {page.photo && gone !== photoKey && (
         <button
           type="button"
           className={`bk-polaroid at-${page.photo.pos || "br"}`}
@@ -134,7 +168,7 @@ function ScenePage({ page, scenes, live, onPhoto }) {
           aria-label={`Open the real photo: ${page.photo.caption}`}
         >
           <span className="bk-tape" aria-hidden="true" />
-          <NasaImage id={page.photo.nasa} size="medium" alt="" eager />
+          <NasaImage id={page.photo.nasa} src={page.photo.src} size="medium" alt="" eager onGiveUp={page.photo.src ? () => <PhotoGone onGone={hide} /> : undefined} />
           <span className="bk-polaroid-label">Real photo</span>
         </button>
       )}
@@ -159,12 +193,14 @@ function CoverPage({ story, scenes, live }) {
 
 /* --------------------------------------------------------------- the book */
 
-export default function StoryBook({ story, timing, scenes, music, missionPath, nextBook }) {
+export default function StoryBook({ story, timing, scenes, music, missionPath, nextBook, speechWords = null, missionLabel = "Mission file" }) {
   const pages = story.pages;
   const last = pages.length - 1;
   const spread = useMedia(SPREAD_QUERY);
-  const narration = useNarration(music);
+  const narration = useNarration(music, speechWords);
   const { voiceRef, playing } = narration;
+  // Books read by the browser's own voice: some browsers have no voice at all.
+  const voiceless = Boolean(speechWords) && (!speechSupported() || narration.voiceError);
 
   const [index, setIndex] = useState(() => {
     const m = typeof window !== "undefined" && window.location.hash.match(/^#page-(\d+)$/);
@@ -179,6 +215,12 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
   const [tocOpen, setTocOpen] = useState(false);
   const [viewer, setViewer] = useState(null);
   const [finished, setFinished] = useState(false);
+  // Our own mission animation, if this book has one: offered on the cover, in the controls and the chapters.
+  const film = useMemo(() => pages.find((p) => p.video?.src)?.video || null, [pages]);
+  // Every fact has a source: each page lists its own, the chapters panel lists them all.
+  const bookSources = BOOK_SOURCES[story.id] || [];
+  const sourcesById = useMemo(() => Object.fromEntries((BOOK_SOURCES[story.id] || []).map((src) => [src.id, src])), [story.id]);
+  const sourcesOf = (page) => (page.sources || []).map((id) => sourcesById[id]).filter(Boolean);
 
   const stageRef = useRef(null);
   const ringRef = useRef(null);
@@ -241,11 +283,11 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
     // Warm the cache for the next page's voice and photo.
     const next = pages[index + 1];
     const nt = next && timing.pages[next.id];
-    if (nt) fetch(nt.audio).catch(() => {});
+    if (nt && !nt.audio.startsWith("speech:")) fetch(nt.audio).catch(() => {});
     if (next?.photo) {
       const img = new Image();
       img.referrerPolicy = "no-referrer";
-      img.src = nasaImageCandidates(next.photo.nasa, "medium")[0];
+      img.src = next.photo.src ? [].concat(next.photo.src)[0] : nasaImageCandidates(next.photo.nasa, "medium")[0];
     }
     setFinished(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -339,10 +381,17 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
           const el = words[found];
           if (el) {
             el.classList.add("is-now");
+            const r = el.getBoundingClientRect();
             if (!spread) {
-              const r = el.getBoundingClientRect();
               const bottomLimit = window.innerHeight - 120;
               if (r.top < 70 || r.bottom > bottomLimit) el.scrollIntoView({ block: "center", behavior: "smooth" });
+            } else {
+              // A long page scrolls inside the book: keep the spoken word in view.
+              const box = el.closest(".bk-text-scroll");
+              const b = box?.getBoundingClientRect();
+              if (b && box.scrollHeight > box.clientHeight + 4 && (r.bottom > b.bottom - 12 || r.top < b.top + 8)) {
+                box.scrollTo({ top: box.scrollTop + (r.top - b.top) - b.height / 3, behavior: reducedMotion() ? "auto" : "smooth" });
+              }
             }
           }
           activeRef.current = found;
@@ -411,6 +460,12 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
     [narration]
   );
 
+  // Links such as /eagle?film open the animation straight away.
+  useEffect(() => {
+    if (film && new URLSearchParams(window.location.search).has("film")) openVideo(film);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [film]);
+
   useEffect(() => {
     const onKey = (e) => {
       if (viewer || tocOpen || e.target.closest?.("input, textarea, select")) return;
@@ -461,7 +516,7 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
             <RotateCcw size={17} aria-hidden="true" /> Read again
           </button>
           <Link className="bk-btn" to={missionPath}>
-            <BookOpen size={17} aria-hidden="true" /> Open the mission file
+            <FileText size={17} aria-hidden="true" /> {missionLabel}
           </Link>
           {nextBook && (
             <Link className="bk-btn bk-btn-primary" to={nextBook.path}>
@@ -482,6 +537,7 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
       onWord={live ? onWord : undefined}
       onVideo={openVideo}
       endActions={i === last ? endActions : null}
+      sources={sourcesOf(pages[i])}
     />
   );
   const leftOf = (i, live = false) =>
@@ -570,14 +626,28 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
 
         {shownIndex === 0 && !flip && (
           <div className="bk-start">
-            <button type="button" className="bk-btn bk-btn-primary bk-btn-lg" onClick={startListening}>
-              <Headphones size={20} aria-hidden="true" /> Read it to me
+            {!voiceless && (
+              <button type="button" className="bk-btn bk-btn-primary bk-btn-lg" onClick={startListening}>
+                <Headphones size={20} aria-hidden="true" /> Read it to me
+              </button>
+            )}
+            <button type="button" className={`bk-btn bk-btn-lg${voiceless ? " bk-btn-primary" : ""}`} onClick={readMyself}>
+              <BookOpen size={20} aria-hidden="true" /> {voiceless ? "Start reading" : "I'll read it myself"}
             </button>
-            <button type="button" className="bk-btn bk-btn-lg" onClick={readMyself}>
-              <BookOpen size={20} aria-hidden="true" /> I'll read it myself
-            </button>
-            <p className="bk-start-note">Get cosy. Everything in this story really happened.</p>
+            {film && (
+              <button type="button" className="bk-btn bk-btn-lg bk-btn-film" onClick={() => openVideo(film)}>
+                <Clapperboard size={20} aria-hidden="true" /> Watch the film
+              </button>
+            )}
+            <p className="bk-start-note">
+              {voiceless ? "This browser cannot read aloud, so tonight you are the narrator!" : "Get cosy. Everything in this story really happened."}
+            </p>
           </div>
+        )}
+        {voiceless && shownIndex > 0 && narration.voiceError && (
+          <p className="bk-voice-note" role="status">
+            Read-aloud is not available in this browser. You can still read along, or try another browser.
+          </p>
         )}
       </main>
 
@@ -597,6 +667,8 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
               type="button"
               className={`bk-play ${playing ? "is-playing" : ""}`}
               onClick={togglePlay}
+              disabled={voiceless}
+              title={voiceless ? "Read-aloud is not available in this browser" : undefined}
               aria-label={playing ? "Pause the narrator" : "Read this page aloud"}
               aria-pressed={playing}
             >
@@ -611,6 +683,11 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
             {index === 0 ? "Cover" : `Page ${index} of ${last}`}
           </span>
           <div className="bk-toggles">
+            {film && (
+              <button type="button" className="bk-chip bk-chip-film" onClick={() => openVideo(film)} title={film.title}>
+                <Clapperboard size={16} aria-hidden="true" /> <span>Film</span>
+              </button>
+            )}
             <button
               type="button"
               className={`bk-chip ${autoTurn ? "is-on" : ""}`}
@@ -668,6 +745,25 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
                 <X size={20} />
               </button>
             </div>
+            {film && (
+              <button
+                type="button"
+                className="bk-toc-film"
+                onClick={() => {
+                  setTocOpen(false);
+                  openVideo(film);
+                }}
+              >
+                <span className="bk-toc-film-thumb" aria-hidden="true">
+                  <img src={film.poster} alt="" />
+                  <Play size={18} />
+                </span>
+                <span>
+                  <strong>{film.title}</strong>
+                  <small>{film.label || "Our mission animation"}</small>
+                </span>
+              </button>
+            )}
             <ol>
               {pages.map((p, i) => (
                 <li key={p.id}>
@@ -681,9 +777,13 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
                     }}
                   >
                     <span className="bk-toc-n">{i === 0 ? "★" : i}</span>
-                    <span className="bk-toc-t">{i === 0 ? "Cover" : displayText(p.title)}</span>
+                    <span className="bk-toc-t">
+                      {i === 0 ? "Cover" : displayText(p.title)}
+                      {p.video && <Video size={15} className="bk-toc-video" aria-label="has a video" />}
+                    </span>
                     {(() => {
-                      const d = readingTime(timing.pages[p.id]?.duration);
+                      const pt = timing.pages[p.id];
+                      const d = readingTime(pt?.seconds ?? pt?.duration);
                       return (
                         <span className="bk-toc-d">
                           <span aria-hidden="true">{d.short}</span>
@@ -695,6 +795,22 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
                 </li>
               ))}
             </ol>
+            {bookSources.length > 0 && (
+              <section className="bk-toc-sources" aria-labelledby="bk-toc-sources-title">
+                <h3 id="bk-toc-sources-title">Where the facts come from</h3>
+                <ol>
+                  {bookSources.map((src) => (
+                    <li key={src.id}>
+                      <a href={src.url} target="_blank" rel="noreferrer">
+                        {src.title}
+                      </a>
+                      <small>{src.publisher}</small>
+                    </li>
+                  ))}
+                </ol>
+                <p>Photos and videos come from the NASA Image and Video Library (public domain) unless their caption says otherwise. The pictures were drawn for this book.</p>
+              </section>
+            )}
           </div>
         </div>
       )}

@@ -578,6 +578,94 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(22px, 3vw, 44px);
 }
+/* The bookshelf: every storybook, grouped by world */
+.hp-shelf-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 clamp(8px, 2vw, 18px);
+}
+.hp-shelf-jump a {
+  --w: var(--hp-moon);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--hp-line);
+  border-radius: 999px;
+  color: var(--hp-text);
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+.hp-shelf-jump a small {
+  color: var(--hp-soft);
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.hp-shelf-jump a:hover,
+.hp-shelf-jump a:focus-visible {
+  border-color: color-mix(in srgb, var(--w) 70%, transparent);
+  background: color-mix(in srgb, var(--w) 12%, transparent);
+}
+.hp-shelf-jump a.is-mars,
+.hp-shelf-group.is-mars {
+  --w: var(--hp-mars);
+}
+.hp-shelf-jump a.is-deep,
+.hp-shelf-group.is-deep {
+  --w: var(--hp-deep);
+}
+.hp-shelf-group {
+  --w: var(--hp-moon);
+  scroll-margin-top: 90px;
+}
+.hp-shelf-dot {
+  display: inline-block;
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--w);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--w) 70%, transparent);
+}
+.hp-shelf-head {
+  margin: clamp(40px, 5vw, 64px) 0 clamp(20px, 2.4vw, 30px);
+  padding-top: clamp(22px, 2.6vw, 30px);
+  border-top: 1px solid var(--hp-line);
+}
+.hp-shelf-head h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 6px;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(25px, 2.5vw, 32px);
+}
+.hp-shelf-head p {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--hp-soft);
+  font-size: 16.5px;
+}
+.hp-btn-film svg {
+  color: var(--accent);
+}
+/* Two buttons side by side in every book card; the film link wraps below when there is one. */
+.hp-book-actions .hp-btn {
+  min-height: 46px;
+  padding: 0 18px;
+  font-size: 15.5px;
+}
+.hp-book-actions .hp-btn-film {
+  min-height: 40px;
+  padding: 0 14px;
+  border-color: transparent;
+  font-size: 15px;
+}
+.hp-book-actions .hp-btn-film:hover { border-color: var(--hp-line); }
+
 .hp-book {
   display: flex;
   flex-direction: column;

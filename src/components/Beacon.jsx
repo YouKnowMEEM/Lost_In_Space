@@ -4,7 +4,7 @@ import "./beacon.css";
 
 /**
  * A glowing, pulsing marker around a control so a child cannot miss it
- * (used for the Atlas link and the Mission file button).
+ * (used for the Cosmic Library link and the Mission file button).
  * `selector` picks the element; the marker follows it while the page scrolls or resizes.
  */
 export default function Beacon({ selector, label }) {

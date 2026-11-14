@@ -4,11 +4,37 @@
 
 Sleeping Beauties is an interactive space archive built with React, Vite, Three.js, and a small Express API. It explores celestial destinations and forgotten space-exploration hardware through immersive 3D experiences and archival stories.
 
-## What is new in this revision
+## What is new (this update)
+
+- **The guided journey starts in deep space.** After the opening film, the tour opens on the solar-system page with the whole solar system in view. It points out the Cosmic Library, shows how to fly (zoom in and out, drag to turn), then asks you to find Mars. On Mars it asks you to find Viking 1 by turning the globe, and once you have turned it, suggests the search bar as a shortcut.
+- **The Atlas is now the Cosmic Library** (`/library`). Old `/atlas` links, filters included, redirect to it.
+- **Storybook machines glow.** On the Moon and Mars globes, every machine with a storybook has a golden light, a sparkle and a small book badge, and the map legend explains it.
+- **The Objects menu lists every storybook** on the Moon, Mars and deep-space pages, with a link to all of that world's machines in the Cosmic Library. A one-time hint points to the menu.
+- **The films are easy to find.** Eagle and Viking 1 show "Watch the film" on the cover, a Film button in the toolbar and a film card in Chapters. Their mission files have a "Watch our film" button and the film as the first card under "Real photos and video". The home bookshelf marks both books.
+- **A source beside every fact.** Every storybook page names the sources for its facts, and Chapters lists the whole book's sources (`src/data/citations.js`). Each planet pop-up on the solar-system page links to its NASA Science page.
+- **The last page of a book** keeps "Read again" and the other end buttons visible on every screen size.
+- **Brighter Mars books**, with coral, peach and violet skies.
+- **The home bookshelf** shows all fourteen books grouped by world, each with its cover, length, reading time and blurb.
+- **A new About page**: how to explore the site, how facts are checked, every citation in groups (NASA's challenge resources, each storybook, each mission file, every machine's NSSDCA record, NASA page and photo, the 3D worlds, and media and code), accessibility, ideas for teachers, and the team's address for suggestions: team.lostinspace.6@gmail.com.
+- **Links to a section** (`/about#accuracy`, `/#storybooks`) now open at that section.
+
+## Earlier in November 2026
+
+Built around the resource list NASA published for the *Discarded Equipment Storytelling* challenge.
+
+- **A storybook for every machine on NASA's list.** Eleven new illustrated books at `/stories/<name>`: *Surveyor*, *Three Moon Buggies* (the lunar rovers), *The Listening Stations* (ALSEP), *Sojourner*, *Spirit & Opportunity*, *Phoenix & InSight*, *Ingenuity*, *NEAR Shoemaker*, *Dawn*, *Kepler* and *Pioneer 10 & 11*. With Eagle, Viking 1 and Voyager 1 that makes fourteen, read in order (each book's last page offers the next one). Facts come from NASA's resource pages first, then NSSDCA records.
+- **Read-aloud with any browser voice.** The new books have no recorded audio yet, so they are read by the browser's own speech voice, with the same word-by-word highlighting, page turning, speed control and music as the recorded books. Browsers without a voice get a "you are the narrator" start instead. Recorded Kokoro narration can be added at any time (see `tools/narration/README.md`).
+- **New machines in the Cosmic Library** (then called the Atlas): the three Apollo lunar rovers, the ALSEP science stations, and three explorers far from any planet (Dawn around Ceres, NEAR Shoemaker on Eros, Kepler trailing the Earth). It now lists 37 machines.
+- **One real NASA photo per machine.** Library cards and field notes show a unique NASA photograph (NSSDCA Photo Gallery, NASA Science and the NASA Image and Video Library; every address was checked against NASA's pages). If NASA's servers cannot be reached, each card falls back to its own drawn portrait, stamped with its mission number, so no two cards ever look alike.
+- **Team animations** of Apollo 11's and Viking 1's journeys are in the Eagle and Viking 1 storybooks (`public/video/eagle-journey.mp4`, `viking-journey.mp4`).
+- **About page** lists NASA's thirteen resources for the challenge and links each one to its storybook and to the NASA source.
+- **Removed** files nothing used: `public/video/10secVideo.mp4`, `public/video/supersonic_freefall (1).mp4`, `public/images/presentation pose to left.png`, `public/images/objects/voyager_atlas.png`, `public/audio/README.txt`, `src/components/MoonMap.jsx` and the `_not-deployed/` folder (about 20 MB in all).
+
+## Earlier revision
 
 **New pages**
 
-- **The Atlas (`/atlas`)** lists all 30 machines on one interactive timeline, with search and filters by world and by status (*still awake*, *asleep*, *planned crash*, *adrift*). Filters live in the URL, so a link such as `/atlas?world=mars&state=awake` can be shared.
+- **The Atlas (`/atlas`, now the Cosmic Library at `/library`)** lists all 30 machines on one interactive timeline, with search and filters by world and by status (*still awake*, *asleep*, *planned crash*, *adrift*). Filters live in the URL, so a link such as `/atlas?world=mars&state=awake` can be shared.
 - **Field notes (`/object/:id`)** exist for the 27 machines that do not have a storybook: a story in the machine's own voice, why it was sent, what it discovered, how its hardware made that possible ("engineering meets science"), a map or distance ruler showing where it is now, live NASA photographs, and sources.
 - **Play (`/play`)** has *Signal Hunter* (now on Mars as well as the Moon: `/mars?game=signal-hunter`) and a new riddle game, *Who am I?*.
 - **About (`/about`)** explains who the project is for, how the facts were checked, what was corrected, the accessibility features, ideas for teachers, and every credit and licence.
@@ -35,14 +61,14 @@ Sleeping Beauties is an interactive space archive built with React, Vite, Three.
 | Curiosity, Perseverance | Marked `intact`, so the *Active* filter on Mars was empty | `active` |
 | Moon and Mars `storyPath` | Pointed at routes that did not exist | Every machine opens `/object/:id`, or its storybook |
 
-**Licensing note.** `public/audio/home-audio.mp3` was credited in the old footer as music from *Interstellar*, which is copyrighted. The tutorial and Deep Space page now play the project's own synthesized `deep-lullaby.mp3` instead. The original file and the unused `previous.mp3` were moved to `_not-deployed/`, outside `public/`, so they are not published. Delete that folder if you do not need them.
+**Licensing note.** `public/audio/home-audio.mp3` was credited in the old footer as music from *Interstellar*, which is copyrighted. The tutorial and Deep Space page now play the project's own synthesized `deep-lullaby.mp3` instead. The original file and the unused `previous.mp3` have been deleted from the project.
 
 ### Adding a machine
 
 1. Add it to `src/data/lunar_artifacts.json` or `mars_artifacts.json` (or to `DEEP` in `src/data/catalog.js` for a deep-space probe). Use `storyPath: "/object/<id>"`.
 2. Add its field notes to `src/data/notes/moon.js` or `mars.js`, keyed by the same `id`. Every entry needs `short`, `mission`, `tagline`, `riddle`, three `story` paragraphs, `whySent`, three `discoveries`, two `how` items, four `numbers`, `left`, `fun`, a `library` search phrase and the `nssdc` COSPAR id.
 3. Give it a picture: add a render to `ART` in `catalog.js`, or a drawn portrait name to `GLYPH` (the portraits are in `src/site/Glyphs.jsx`).
-4. It then appears in the Atlas, the timeline, the riddle game and the map sidebar without any other change.
+4. It then appears in the Cosmic Library, the timeline, the riddle game and the map sidebar without any other change.
 
 ## Features
 
@@ -51,6 +77,7 @@ Sleeping Beauties is an interactive space archive built with React, Vite, Three.
   - **Eagle (`/eagle`)** — *The little lander who stayed* (Apollo 11, 14 pages, about 11 minutes).
   - **Viking 1 (`/viking-1`)** — *The robot under the pink sky* (Mars, 12 pages, about 9 minutes).
   - **Voyager 1 (`/voyager-1`)** — *The traveller who kept going* (deep space, 13 pages, about 9 minutes).
+  - **Eleven more at `/stories/<name>`** — `surveyor`, `lunar-rovers`, `alsep`, `sojourner`, `spirit-and-opportunity`, `phoenix-and-insight`, `ingenuity`, `near-shoemaker`, `dawn`, `kepler`, `pioneers` (8 to 10 pages each). Their "Mission file" tab opens the machine's field notes; `?for=<id>` picks which machine of a shared book (for example `/stories/spirit-and-opportunity?for=opportunity-mer-b`).
 - **Mission files (`/eagle/mission`, `/viking-1/mission`, `/voyager-1/mission`)** — the real documentation: fact sheet, timeline in UTC, an interactive NASA 3D model with labelled parts, where it rests (or, for Voyager 1, a live map of where it is now), what was left behind or carried, NASA photos and video, a live search of NASA's Image and Video Library, and sources. Mission files open in a bright reading mode; the moon/sun button in the top bar switches to dark and the choice is remembered.
 - **Finding your way back:** every storybook and mission file has a home button and a link back to its world: Eagle to the Moon (`/moon`), Viking 1 to Mars (`/mars`), Voyager 1 to Space (`/space?object=voyager-1`).
 - **Deep Space (`/space`)** — an interactive solar-system experience with selectable destinations.
@@ -78,17 +105,22 @@ sleeping-beauties/
 │   │   ├── EaglePage.jsx        # Eagle storybook + mission file
 │   │   ├── VikingPage.jsx       # Viking 1 storybook + mission file
 │   │   ├── VoyagerPage.jsx      # Voyager 1 storybook + mission file
+│   │   ├── StoriesPage.jsx      # /stories/:slug — the eleven books for NASA's resource list
 │   │   ├── SpacePage.jsx, MoonPage.jsx, MarsPage.jsx
 │   ├── home/                    # Home page parts (object ring, photo carousel, content, styles)
-│   ├── site/                    # Shared header/footer, Atlas helpers, glyph portraits, map and ruler widgets, riddle game
+│   ├── site/                    # Shared header/footer, Cosmic Library helpers, glyph portraits, map and ruler widgets, riddle game
 │   ├── storybook/               # Book engine: page turns, narration, read-along, illustrations
-│   │   └── scenes/              # Hand-drawn SVG illustrations for each page
+│   │   ├── library.js           # The eleven new books: titles, worlds, reading order (loaded up front, tiny)
+│   │   ├── books/               # One small module per new book (its words + its illustrations), loaded on demand
+│   │   ├── speechVoice.js       # Read-aloud with the browser's voice, shaped like an <audio> element
+│   │   └── scenes/              # Hand-drawn SVG illustrations for each page (machines.jsx = the new cast)
 │   ├── mission/                 # Mission files: 3D model viewer, site map, Voyager's live map, NASA library search
 │   ├── data/
-│   │   ├── stories/             # Story text (eagle.json, viking.json, voyager.json) and narration timings
+│   │   ├── stories/             # Story text for all fourteen books, and narration timings for the recorded ones
 │   │   ├── missions/            # Mission-file facts, timelines, photos and sources
-│   │   ├── notes/               # Field notes for the 27 machines without a storybook (moon.js, mars.js)
-│   │   ├── catalog.js           # One catalog of all 30 machines: the Atlas, games and sidebars read from it
+│   │   ├── notes/               # Field notes (moon.js, mars.js, extra.js for the rovers, ALSEP, Dawn, NEAR, Kepler)
+│   │   ├── photos.js            # One verified NASA photo per machine, with fallbacks
+│   │   ├── catalog.js           # One catalog of all 37 machines: the Cosmic Library, games and sidebars read from it
 │   │   └── *.json               # Moon and Mars explorer data
 │   ├── lib/nasa.js              # NASA Image and Video Library helpers
 │   ├── lib/voyagerDistance.js   # Estimates Voyager 1's distance right now
@@ -112,7 +144,7 @@ sleeping-beauties/
 ## Storybooks, narration and NASA media
 
 - **Editing a story:** change the text in `src/data/stories/eagle.json`, `viking.json` or `voyager.json`, then rebuild the narration so the audio and the highlighted words match. Instructions are in `tools/narration/README.md`.
-- **Adding a book:** each storybook is one page file in `src/pages/` that brings together its story, narration timings, illustrations, music, theme, the world it links back to and its mission file. Shared routes live in `src/storybook/books.js`.
+- **Adding a book:** for a book like the eleven new ones, write `src/data/stories/<slug>.json` (same shape as the others; a page's `photo` can name a machine with `"of": "<catalog id>"`), draw its scenes in `src/storybook/scenes/`, add a module in `src/storybook/books/`, and list it in `src/storybook/library.js`. Add its sources to `src/data/citations.js` and give each page a `sources` list of their ids. The catalog, Cosmic Library, home bookshelf, Objects menus, golden map markers and About page pick it up automatically. Eagle, Viking 1 and Voyager 1 each have their own page file in `src/pages/` with a full mission file; their routes live in `src/storybook/books.js`.
 - **Illustrations** are React SVG components in `src/storybook/scenes/` (one per page, named in each page's `scene` field).
 - **Mission files** read from `src/data/missions/`. Each part of the 3D model has an `at` position in model units and an optional camera `view`. A model can also be marked `floating` (no ground shadow), hide a display stand with `clipBelow`, and frame part of itself with `target` and `span`.
 - **Voyager 1's live distance** is an estimate anchored to NASA's published milestone (25.902 billion km from Earth, one light-day, on 18 November 2026 at 10:16 UTC) and its speed of about 17 km/s, with Earth's position on its orbit added in. It agrees with NASA's figures for 1998, 2004, 2012 and 2024 to within about 0.3 AU.
@@ -121,10 +153,10 @@ sleeping-beauties/
 
 ### Credits
 
-- Photos and videos: [NASA Image and Video Library](https://images.nasa.gov/) (public domain).
+- Photos and videos: [NASA Image and Video Library](https://images.nasa.gov/), [NSSDCA Photo Gallery](https://nssdc.gsfc.nasa.gov/photo_gallery/) and [NASA Science](https://science.nasa.gov/) (public domain). Journey animations in the Eagle and Viking 1 books: Team Lost_In_Space.
 - 3D models: [NASA 3D Resources](https://github.com/nasa/NASA-3D-Resources) (Apollo Lunar Module, Viking Lander, Voyager, and the object renders on the home page).
 - Moon and Mars textures: [Solar System Scope](https://www.solarsystemscope.com/textures/) (CC BY 4.0).
-- Narrator voice: [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) (Apache 2.0), run locally.
+- Narrator voice: [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) (Apache 2.0), run locally, for Eagle, Viking 1 and Voyager 1; the other books use the browser's built-in speech voice.
 - Background music: original, synthesized by `tools/music/make_lullabies.py`.
 - Typefaces: Jost, Atkinson Hyperlegible Next, Fraunces and Literata (SIL Open Font License, `public/fonts/OFL.txt`).
 

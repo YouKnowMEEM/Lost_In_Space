@@ -10,36 +10,38 @@ export const V = {
   bodyDark: "#a69d91",
   ink: "#2f2624",
   copper: "#c97b45",
-  rust: "#c4643b",
-  rustLight: "#dc8a5c",
-  rustDark: "#93452a",
-  rock: "#6c3727",
-  rockLight: "#b77455",
+  rust: "#dd6233",
+  rustLight: "#f39058",
+  rustDark: "#a63e1e",
+  rock: "#7a3322",
+  rockLight: "#d27a50",
 };
 
 /* ------------------------------------------------------------- Mars */
 
+// A warm, sunny butterscotch day; a violet-and-coral dusk; a purple night; and the real
+// surprise of Mars, its blue sunsets.
 export const MARS_SKIES = {
   day: [
-    [0, "#b07a63"],
-    [0.55, "#d9a685"],
-    [1, "#f0cfae"],
+    [0, "#e2655c"],
+    [0.5, "#ff9f7e"],
+    [1, "#ffdcb2"],
   ],
   dusk: [
-    [0, "#3a2440"],
-    [0.5, "#8a5a66"],
-    [0.85, "#d39b86"],
-    [1, "#e8c0a4"],
+    [0, "#2c1b63"],
+    [0.48, "#7b4aa6"],
+    [0.8, "#ff8a68"],
+    [1, "#ffd395"],
   ],
   night: [
-    [0, "#0d0712"],
-    [0.6, "#2a1424"],
-    [1, "#4a2632"],
+    [0, "#0b0626"],
+    [0.6, "#2b1552"],
+    [1, "#5b2b62"],
   ],
   blue: [
-    [0, "#4f86c9"],
-    [0.6, "#8fb8e4"],
-    [1, "#cfe2f4"],
+    [0, "#3a6fd8"],
+    [0.6, "#7fb1f2"],
+    [1, "#d4ebff"],
   ],
   space: [
     [0, "#07050c"],
@@ -53,9 +55,9 @@ export function MarsGround({ y = 560, seed = 3, rocks = 22, tone = "day" }) {
   const r = rng(seed);
   const pal =
     tone === "night"
-      ? ["#6d3a2c", "#57291f", "#3f1c15"]
+      ? ["#7a3b3a", "#5a2633", "#3a1626"]
       : tone === "dusk"
-      ? ["#b15a39", "#8f4329", "#6c311f"]
+      ? ["#d86a3f", "#b04a2c", "#7e2f22"]
       : [V.rustLight, V.rust, V.rustDark];
   const hill = `M0 ${y - 30} Q90 ${y - 64} 190 ${y - 38} T380 ${y - 44} T600 ${y - 34} L600 ${y} L0 ${y}Z`;
   const ground = `M0 ${y} ${Array.from({ length: 6 }, (_, i) => `Q${(i + 0.5) * 100} ${y - 6 - r() * 10} ${(i + 1) * 100} ${y - 2 + r() * 6}`).join(" ")} L${W} ${H} L0 ${H}Z`;
@@ -73,7 +75,7 @@ export function MarsGround({ y = 560, seed = 3, rocks = 22, tone = "day" }) {
       {Array.from({ length: 5 }, (_, i) => {
         const x = r() * W;
         const yy = y + 40 + r() * (H - y - 60);
-        return <path key={`d${i}`} d={`M${x - 70} ${yy} Q${x} ${yy - 22} ${x + 80} ${yy}`} fill="#eaa67a" opacity="0.32" />;
+        return <path key={`d${i}`} d={`M${x - 70} ${yy} Q${x} ${yy - 22} ${x + 80} ${yy}`} fill="#ffc387" opacity="0.38" />;
       })}
       {Array.from({ length: rocks }, (_, i) => {
         const yy = y + 14 + r() * (H - y - 20);
@@ -351,21 +353,6 @@ export function TitanRocket({ x, y, s = 1, label = "VIKING" }) {
           {label}
         </text>
       )}
-    </g>
-  );
-}
-
-export function DSNDish({ x, y, s = 1, rotate = -28 }) {
-  return (
-    <g transform={`translate(${x} ${y}) scale(${s})`}>
-      <path d="M-30 0 L-14 -70 L14 -70 L30 0Z" fill="#cfd3dd" />
-      <path d="M-30 0 L30 0" stroke="#9aa1b3" strokeWidth="4" />
-      <g transform={`translate(0 -84) rotate(${rotate})`}>
-        <path d="M-80 0 Q0 46 80 0 Q0 14 -80 0Z" fill="#b9bfcd" />
-        <ellipse cx="0" cy="0" rx="80" ry="18" fill="#eef0f5" stroke="#9aa1b3" strokeWidth="2" />
-        <path d="M-40 4 L0 -52 L40 4" stroke="#9aa1b3" strokeWidth="2.5" fill="none" />
-        <circle cx="0" cy="-54" r="6" fill="#d8dce6" />
-      </g>
     </g>
   );
 }

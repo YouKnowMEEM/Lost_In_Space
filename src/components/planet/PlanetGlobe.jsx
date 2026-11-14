@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useMemo, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { CameraControls, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import EquipmentMarker from "./EquipmentMarker";
@@ -49,6 +49,38 @@ function TexturedPlanet({ texturePath, radius, artifacts, regions, orbits, selec
   </group>;
 }
 
+/**
+ * Adds up how far the visitor turns the globe by hand (radians, in window.__sbGlobeTurn), so the
+ * guided journey can notice when they have looked around. Camera moves made by the page itself
+ * (flying to a search result) do not count.
+ */
+function TurnTracker() {
+  const controls = useThree((state) => state.controls);
+  useEffect(() => {
+    window.__sbGlobeTurn = 0;
+    if (!controls?.addEventListener) return undefined;
+    let last = null;
+    const start = () => { last = { azimuth: controls.azimuthAngle, polar: controls.polarAngle }; };
+    const move = () => {
+      if (!last) return;
+      const azimuth = controls.azimuthAngle;
+      const polar = controls.polarAngle;
+      window.__sbGlobeTurn += Math.abs(azimuth - last.azimuth) + Math.abs(polar - last.polar);
+      last = { azimuth, polar };
+    };
+    const end = () => { last = null; };
+    controls.addEventListener("controlstart", start);
+    controls.addEventListener("control", move);
+    controls.addEventListener("controlend", end);
+    return () => {
+      controls.removeEventListener("controlstart", start);
+      controls.removeEventListener("control", move);
+      controls.removeEventListener("controlend", end);
+    };
+  }, [controls]);
+  return null;
+}
+
 export default function PlanetGlobe({ texturePath, radius = 3.2, artifacts, regions, orbits, selected, onSelect, selectedOrbit, onOrbitSelect, focusedRegion, focusPoint, onReady, signalHunter }) {
   const controls = useRef(null);
   useEffect(() => {
@@ -70,5 +102,6 @@ export default function PlanetGlobe({ texturePath, radius = 3.2, artifacts, regi
     <directionalLight position={[0, 2, 8]} intensity={2.3}/>
     <Suspense fallback={null}><TexturedPlanet texturePath={texturePath} radius={radius} artifacts={artifacts} regions={regions} orbits={orbits} selected={selected} onSelect={onSelect} selectedOrbit={selectedOrbit} onOrbitSelect={onOrbitSelect} focusedRegion={focusedRegion} onReady={onReady} signalHunter={signalHunter}/></Suspense>
     <CameraControls ref={controls} makeDefault minDistance={5.4} maxDistance={26} smoothTime={0.65} draggingSmoothTime={0.16} dollyToCursor={false} azimuthRotateSpeed={0.55} polarRotateSpeed={0.55} truckSpeed={0}/>
+    <TurnTracker/>
   </Canvas>;
 }

@@ -61,21 +61,23 @@
   --focus: #ffd36b;
 }
 .sbk-mars {
-  --bg: radial-gradient(130% 90% at 50% -10%, #6b3138 0%, #34161f 46%, #12080b 100%);
-  --paper: #fcf7f2;
-  --paper-2: #f4e8de;
-  --paper-edge: #e3d0c2;
-  --ink: #2b1714;
-  --ink-soft: #5c433d;
-  --accent: #ef8a55;
-  --accent-ink: #92331a;
-  --accent-soft: #fbdcc8;
-  --mark: rgba(244, 152, 98, 0.5);
-  --chrome: #fbeee7;
-  --chrome-soft: #dcbfb4;
-  --panel: rgba(30, 12, 16, 0.8);
-  --line: rgba(255, 214, 196, 0.16);
-  --focus: #ffc39c;
+  /* A Martian sunset: coral light over violet dusk, not a dull brown. */
+  --bg: radial-gradient(120% 80% at 50% 108%, rgba(255, 120, 64, 0.42) 0%, rgba(255, 120, 64, 0) 55%),
+    radial-gradient(125% 90% at 50% -12%, #c4492e 0%, #7a2245 36%, #33114a 68%, #150828 100%);
+  --paper: #fffaf3;
+  --paper-2: #ffeedd;
+  --paper-edge: #f3d3b9;
+  --ink: #2a1512;
+  --ink-soft: #6a3f33;
+  --accent: #ff7f45;
+  --accent-ink: #b53b10;
+  --accent-soft: #ffdcc4;
+  --mark: rgba(255, 140, 80, 0.5);
+  --chrome: #fff3ea;
+  --chrome-soft: #f6cbb7;
+  --panel: rgba(44, 12, 40, 0.82);
+  --line: rgba(255, 196, 170, 0.22);
+  --focus: #ffd06b;
 }
 
 .sbk-deep {
@@ -292,6 +294,8 @@
   inset: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  /* Rows never grow with the text: a long page scrolls inside the book instead. */
+  grid-template-rows: minmax(0, 1fr);
   perspective: 2800px;
   perspective-origin: 50% 40%;
 }
@@ -299,6 +303,7 @@
 .bk-half {
   position: relative;
   min-width: 0;
+  min-height: 0;
   height: 100%;
 }
 .bk-left > *,
@@ -740,12 +745,13 @@
   color: var(--ink-soft);
 }
 
-/* The end of the book */
+/* The end of the book: pinned below the text of the last page */
 .bk-end {
+  flex: none;
   display: grid;
-  gap: 0.9em;
-  margin-top: 1.4em;
-  padding-top: 1.1em;
+  gap: 0.55em;
+  margin: 0 9% 0 10%;
+  padding-top: 0.8em;
   border-top: 2px dotted var(--paper-edge);
 }
 .bk-the-end {
@@ -753,16 +759,26 @@
   font-variation-settings: "SOFT" 100, "WONK" 1;
   font-style: italic;
   font-weight: 700;
-  font-size: calc(2cqw * var(--text-scale));
+  font-size: calc(1.75cqw * var(--text-scale));
+  line-height: 1.1;
   color: var(--accent-ink);
 }
 .bk-end-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6em;
+  gap: 0.5em;
 }
 .bk-end-actions .bk-btn {
-  font-size: calc(1.02cqw * var(--text-scale));
+  min-height: 40px;
+  padding: 0 0.95em;
+  font-size: max(13px, calc(0.98cqw * var(--text-scale)));
+}
+/* A long page scrolls inside the book: a soft shadow at the bottom says there is more to read,
+   and disappears once the reader reaches the end (the cover moves with the text). */
+.bk.is-spread .bk-text-scroll {
+  background:
+    linear-gradient(to top, var(--paper-2) 45%, rgba(255, 255, 255, 0)) 0 100% / 100% 30px no-repeat local,
+    radial-gradient(farthest-side at 50% 100%, rgba(70, 45, 10, 0.22), rgba(70, 45, 10, 0)) 0 100% / 100% 14px no-repeat scroll;
 }
 
 /* ------------------------------------------------------------ cover */
@@ -1194,6 +1210,10 @@
 .bk-single .bk-text-scroll {
   overflow: visible;
   padding: 26px 22px 6px;
+}
+.bk-single .bk-end {
+  margin: 4px 22px 0;
+  padding-top: 16px;
 }
 .bk-single .bk-chapter {
   font-size: 15px;
@@ -1764,5 +1784,194 @@
   }
   .sbk-top {
     padding: 0 10px;
+  }
+}
+
+/* Shown for a moment while a storybook's pages download. */
+.sbk-opening {
+  min-height: 100dvh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  background: radial-gradient(130% 90% at 50% -10%, #1c2a58 0%, #0b1330 46%, #03060f 100%);
+  color: #dfe8ff;
+  font: 500 17px/1.4 "Jost", system-ui, sans-serif;
+}
+.sbk-opening-book {
+  width: 64px;
+  height: 46px;
+  border-radius: 4px 4px 6px 6px;
+  background: linear-gradient(90deg, #f7f4ea 0 49%, #c9c2b0 49% 51%, #f7f4ea 51%);
+  box-shadow: 0 10px 30px rgba(120, 160, 255, 0.35);
+  animation: sbk-opening 1.4s ease-in-out infinite;
+}
+.sbk-opening-retry {
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: #f2b640;
+  color: #1b2240;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+@keyframes sbk-opening {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-8px) rotate(3deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sbk-opening-book { animation: none; }
+}
+
+/* Shown when a book read by the browser's voice finds no voice to read with. */
+.bk-voice-note {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  z-index: 6;
+  max-width: min(92%, 520px);
+  margin: 0;
+  padding: 10px 16px;
+  transform: translateX(-50%);
+  border-radius: 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--chrome);
+  font-size: 14.5px;
+  line-height: 1.4;
+  text-align: center;
+}
+.bk-play:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ------------------------------------------------------------ our mission animations */
+/* The film is offered on the cover, as a chip in the controls and at the top of the chapters. */
+.bk-start .bk-btn-film {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.12);
+}
+.bk-start .bk-btn-film svg { color: var(--accent); }
+.bk-chip.bk-chip-film {
+  border-color: var(--accent);
+  color: var(--chrome);
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.bk-chip.bk-chip-film svg { color: var(--accent); }
+
+.bk-toc-film {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: calc(100% - 4px);
+  margin: 0 2px 14px;
+  padding: 10px 14px 10px 10px;
+  border: 2px solid var(--accent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+.bk-toc-film:hover { background: color-mix(in srgb, var(--accent) 24%, transparent); }
+.bk-toc-film strong { display: block; font-size: 16px; }
+.bk-toc-film small { display: block; margin-top: 2px; opacity: 0.75; font-size: 13px; }
+.bk-toc-film-thumb,
+.bk-watch-thumb {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #000;
+}
+.bk-toc-film-thumb img,
+.bk-watch-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bk-toc-film-thumb svg,
+.bk-watch-thumb svg {
+  position: relative;
+  padding: 7px;
+  box-sizing: content-box;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+}
+.bk-toc-video {
+  margin-left: 8px;
+  vertical-align: -2px;
+  opacity: 0.7;
+}
+
+.bk-watch.has-poster {
+  border-radius: 16px;
+  padding: 0.45em 1.1em 0.45em 0.45em;
+}
+.bk-watch.has-poster .bk-watch-thumb { width: 6.4em; border-radius: 10px; }
+.bk-watch.has-poster .bk-watch-thumb svg { width: 1.1em; height: 1.1em; padding: 0.35em; }
+
+/* ------------------------------------------------------------ sources */
+.bk-src {
+  margin: 1.1em 0 0.2em;
+  color: var(--ink-soft);
+  font-size: max(12px, calc(0.8cqw * var(--text-scale)));
+  line-height: 1.5;
+}
+.bk-src-label {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.bk-src a {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+.bk-src a:hover { text-decoration-thickness: 2px; }
+.bk-src-pub { opacity: 0.8; }
+.bk-single .bk-src { font-size: calc(13.5px * var(--text-scale)); }
+
+.bk-toc-sources {
+  margin: 18px 4px 6px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line, rgba(255, 255, 255, 0.15));
+}
+.bk-toc-sources h3 {
+  margin: 0 0 10px;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 18px;
+}
+.bk-toc-sources ol {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding-left: 1.3em;
+}
+.bk-toc-sources li { font-size: 14.5px; line-height: 1.4; }
+.bk-toc-sources a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.bk-toc-sources small { display: block; opacity: 0.7; font-size: 12.5px; }
+.bk-toc-sources p { margin: 12px 0 0; font-size: 13px; line-height: 1.5; opacity: 0.8; }
+/* The chapters panel scrolls as one: film, chapters, then the sources. */
+.bk-toc-panel { overflow-y: auto; overscroll-behavior: contain; }
+.bk-toc-panel > ol { flex: none; overflow: visible; }
+.bk-toc .bk-toc-sources ol { list-style: decimal; overflow: visible; padding-left: 1.3em; }
+
+/* Phones: the page scrolls under the top bar, so give the bar a fuller backdrop. */
+@media (max-width: 760px) {
+  .sbk-top {
+    background: linear-gradient(180deg, var(--panel) 0%, var(--panel) 62%, transparent 100%);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 }

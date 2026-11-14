@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { ChevronDown, Gamepad2, Menu, X } from "lucide-react";
 import "../styles/fonts.css";
 import "../home/home.css";
-import { worldCounts } from "../data/catalog";
+import { mapCounts, worldCounts } from "../data/catalog";
 import "./site.css";
 
 /** A crescent Moon with a closed, sleeping eye. */
@@ -18,10 +18,11 @@ export function Mark() {
 }
 
 const COUNTS = worldCounts();
+const ON_MAP = mapCounts();
 const WORLD_LINKS = [
-  { to: "/moon", label: "The Moon", note: `${COUNTS.moon} resting places`, color: "var(--hp-moon)" },
-  { to: "/mars", label: "Mars", note: `${COUNTS.mars} landers, rovers and a helicopter`, color: "var(--hp-mars)" },
-  { to: "/space", label: "Deep space", note: `${COUNTS.deep} probes leaving the planets behind`, color: "var(--hp-deep)" },
+  { to: "/moon", label: "The Moon", note: `${ON_MAP.moon} resting places`, color: "var(--hp-moon)" },
+  { to: "/mars", label: "Mars", note: `${ON_MAP.mars} landers, rovers and a helicopter`, color: "var(--hp-mars)" },
+  { to: "/space", label: "Deep space", note: `${ON_MAP.deep} probes leaving the planets behind`, color: "var(--hp-deep)" },
 ];
 
 /**
@@ -100,7 +101,7 @@ export function SiteHeader({ onTutorial }) {
             ))}
           </div>
         </div>
-        <NavLink to="/atlas">Atlas</NavLink>
+        <NavLink to="/library">Cosmic Library</NavLink>
         <Link to={{ pathname: "/", hash: "#storybooks" }}>Storybooks</Link>
         <NavLink to="/play" className="sx-nav-play">
           <Gamepad2 size={17} aria-hidden="true" /> Play
@@ -133,7 +134,7 @@ export function SiteFooter() {
             <Link to="/eagle">Eagle</Link>
             <Link to="/viking-1">Viking 1</Link>
             <Link to="/voyager-1">Voyager 1</Link>
-            <Link to="/atlas">All {Object.values(COUNTS).reduce((a, b) => a + b, 0)} machines</Link>
+            <Link to="/library">All {Object.values(COUNTS).reduce((a, b) => a + b, 0)} machines</Link>
           </div>
           <div>
             <h2>Worlds</h2>
@@ -167,7 +168,8 @@ export function usePageMeta(title, description) {
     const meta = document.querySelector('meta[name="description"]');
     const prevDesc = meta?.getAttribute("content");
     if (meta && description) meta.setAttribute("content", description);
-    window.scrollTo({ top: 0 });
+    // A link to a section (/about#accuracy) is scrolled into place by App; anything else starts at the top.
+    if (!window.location.hash) window.scrollTo({ top: 0 });
     return () => {
       document.title = prevTitle;
       if (meta && prevDesc != null) meta.setAttribute("content", prevDesc);

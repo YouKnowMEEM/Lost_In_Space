@@ -1,14 +1,16 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { CameraControls, Float, Html, Stars, useAnimations, useGLTF, useTexture } from "@react-three/drei";
+import { CameraControls, Float, Html, Stars, useGLTF, useTexture } from "@react-three/drei";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import {
-  ArrowDown, ArrowRight, Box, ChevronDown, ExternalLink, Lock, MapPin, Moon as MoonIcon,
+  ArrowDown, ArrowRight, BookOpen, Box, ChevronDown, ExternalLink, Lock, MapPin, Moon as MoonIcon,
   Orbit, Play, Radio, RadioTower, Rotate3D, Satellite, ScanLine, Sparkles, Timer, Volume2, VolumeX, Weight, Zap
 } from "lucide-react";
 import eagle from "../data/eagle.json";
+import { BY_ID, CATALOG } from "../data/catalog";
+import { BOOKS, ORDER, storyPath } from "../storybook/library";
 import { getArtifact } from "../services/archiveApi";
 import MoonExplorer from "../pages/MoonExplorer";
 import MarsExplorer from "../pages/MarsExplorer";
@@ -26,14 +28,76 @@ function SpaceBackdrop() {
   return <div className="space-backdrop" aria-hidden="true"><img src={SPACE_BG} alt=""/><div className="space-backdrop-gradient"/></div>;
 }
 
+// The storybooks of each world, for the "Objects" menu: the narrated book first, then the rest.
+const FIRST_BOOK = { moon: { title: "Eagle", path: "/eagle" }, mars: { title: "Viking 1", path: "/viking-1" }, deep: { title: "Voyager 1", path: "/voyager-1" } };
+const WORLD_WORDS = { moon: "on the Moon", mars: "on Mars", deep: "in deep space" };
+const booksIn = (world) => [FIRST_BOOK[world], ...ORDER.filter((slug) => BOOKS[slug].world === world).map((slug) => ({ title: BOOKS[slug].title, path: storyPath(slug) }))];
+const machinesIn = (world) => CATALOG.filter((c) => c.world === world).length;
+
+/**
+ * A one-time pop-up on each world map, pointing at the "Objects" menu. It waits while the guided
+ * journey is running (the journey has its own guide) and shows once per world per visit.
+ */
+function useObjectsHint(world, onMap, buttonRef) {
+  const [place, setPlace] = useState(null);
+  const used = useRef(false); // the visitor found the Objects menu without help
+  useEffect(() => {
+    if (!onMap) return undefined;
+    used.current = false;
+    const key = `sb-objects-hint-${world}`;
+    try { if (sessionStorage.getItem(key)) return undefined; } catch { /* storage may be disabled */ }
+    let timer = 0;
+    let tries = 0;
+    const show = () => {
+      const button = buttonRef.current;
+      if (!button || used.current || document.documentElement.hasAttribute("data-tour")) return;
+      // Never cover a menu the visitor has just opened: wait until it is closed again.
+      if (document.querySelector(".topbar .nav-dropdown.menu-open")) {
+        tries += 1;
+        if (tries < 6) timer = window.setTimeout(show, 2000);
+        return;
+      }
+      const r = button.getBoundingClientRect();
+      const right = Math.max(12, window.innerWidth - r.right - 16);
+      setPlace({ top: r.bottom + 14, right, arrow: Math.max(14, window.innerWidth - (r.left + r.width / 2) - right - 9) });
+      try { sessionStorage.setItem(key, "1"); } catch { /* storage may be disabled */ }
+    };
+    timer = window.setTimeout(show, world === "deep" ? 3200 : 2200);
+    return () => window.clearTimeout(timer);
+  }, [world, onMap, buttonRef]);
+  useEffect(() => {
+    if (!place) return undefined;
+    const hide = () => setPlace(null);
+    // Any tap elsewhere (on the globe, a marker, the search box) means the visitor has moved on.
+    const hideOnTap = (event) => { if (!event.target.closest?.(".objects-hint")) hide(); };
+    const timer = window.setTimeout(hide, 14000);
+    window.addEventListener("resize", hide);
+    document.addEventListener("pointerdown", hideOnTap, true);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("resize", hide);
+      document.removeEventListener("pointerdown", hideOnTap, true);
+    };
+  }, [place]);
+  const dismiss = () => {
+    used.current = true;
+    setPlace(null);
+    try { sessionStorage.setItem(`sb-objects-hint-${world}`, "1"); } catch { /* storage may be disabled */ }
+  };
+  return [place, dismiss];
+}
+
 function Topbar() {
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(null);
+  const objectsButton = useRef(null);
   const isMars = location.pathname.startsWith("/mars") || location.pathname.startsWith("/viking");
   const isMoon = location.pathname.startsWith("/moon") || location.pathname.startsWith("/eagle");
   const isSpace = location.pathname.startsWith("/space") || location.pathname.startsWith("/voyager");
   const brandText = isMars ? "MARS" : isMoon ? "THE MOON" : isSpace ? "DEEP SPACE" : "SLEEPING BEAUTIES";
   const worldKey = isMars ? "mars" : isSpace ? "deep" : "moon";
+  const onMap = ["/moon", "/mars", "/space"].includes(location.pathname);
+  const [hint, dismissHint] = useObjectsHint(worldKey, onMap, objectsButton);
   useEffect(() => { setOpenMenu(null); }, [location.pathname]);
   useEffect(() => {
     const closeOnEscape = (event) => { if (event.key === "Escape") setOpenMenu(null); };
@@ -49,12 +113,23 @@ function Topbar() {
           <span><strong>{brandText}</strong></span>
         </Link>
         <nav aria-label="Main navigation">
-          <Link className={location.pathname === "/" ? "nav-active" : ""} to="/">Home</Link>
+          <Link className={`nav-home${location.pathname === "/" ? " nav-active" : ""}`} to="/">Home</Link>
           <div className={`nav-dropdown ${openMenu === "worlds" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "worlds"} className={isMoon || isMars || isSpace ? "nav-active" : ""} onClick={()=>toggleMenu("worlds")}>Worlds <ChevronDown size={13}/></button><div className="nav-dropdown-menu"><Link to="/space" onClick={()=>setOpenMenu(null)}>Deep Space</Link><Link to="/moon" onClick={()=>setOpenMenu(null)}>Moon</Link><Link to="/mars" onClick={()=>setOpenMenu(null)}>Mars</Link></div></div>
-          {(isMoon || isMars || isSpace) && <div className={`nav-dropdown ${openMenu === "objects" ? "menu-open" : ""}`}><button type="button" aria-haspopup="true" aria-expanded={openMenu === "objects"} className={openMenu === "objects" ? "nav-active" : ""} onClick={()=>toggleMenu("objects")}>Objects <ChevronDown size={13}/></button><div className="nav-dropdown-menu">{isSpace ? <Link to="/voyager-1" onClick={()=>setOpenMenu(null)}>Voyager 1 (storybook)</Link> : isMars ? <Link to="/viking-1" onClick={()=>setOpenMenu(null)}>Viking 1 (storybook)</Link> : <Link to="/eagle" onClick={()=>setOpenMenu(null)}>Eagle (storybook)</Link>}<Link to={`/atlas?world=${worldKey}`} onClick={()=>setOpenMenu(null)}>All machines here</Link></div></div>}
-          <Link to="/atlas">Atlas</Link>
+          {(isMoon || isMars || isSpace) && <div className={`nav-dropdown nav-objects ${openMenu === "objects" ? "menu-open" : ""}${hint ? " has-hint" : ""}`}>
+            <button ref={objectsButton} type="button" aria-haspopup="true" aria-expanded={openMenu === "objects"} className={openMenu === "objects" ? "nav-active" : ""} onClick={()=>{ dismissHint(); toggleMenu("objects"); }}>Objects <ChevronDown size={13}/></button>
+            <div className="nav-dropdown-menu nav-objects-menu">
+              <span className="nav-menu-label">Storybooks {WORLD_WORDS[worldKey]}</span>
+              {booksIn(worldKey).map((book) => <Link key={book.path} to={book.path} onClick={()=>setOpenMenu(null)}><BookOpen size={15} aria-hidden="true"/>{book.title}</Link>)}
+              <Link className="nav-menu-all" to={`/library?world=${worldKey}`} onClick={()=>setOpenMenu(null)}>All {machinesIn(worldKey)} machines {WORLD_WORDS[worldKey]} <ArrowRight size={14} aria-hidden="true"/></Link>
+            </div>
+          </div>}
+          <Link className="nav-library" to="/library"><span className="nav-long">Cosmic </span>Library</Link>
           <Link to="/play">Play</Link>
         </nav>
+        {hint && <div className="objects-hint" role="status" style={{ top: hint.top, right: hint.right, "--arrow": `${hint.arrow}px` }}>
+          <p><strong>Looking for something?</strong> Open <b>Objects</b> to find every storybook and machine {WORLD_WORDS[worldKey]}.</p>
+          <button type="button" onClick={dismissHint}>Got it</button>
+        </div>}
       </header>
   );
 }
@@ -115,10 +190,29 @@ function MiniCanvas({ kind }) {
   </Canvas>;
 }
 
+// Where the short facts in the planet and probe pop-ups come from.
+const SPACE_SOURCES = {
+  sun: "https://science.nasa.gov/sun/", mercury: "https://science.nasa.gov/mercury/", venus: "https://science.nasa.gov/venus/",
+  earth: "https://science.nasa.gov/earth/", moon: "https://science.nasa.gov/moon/", mars: "https://science.nasa.gov/mars/",
+  jupiter: "https://science.nasa.gov/jupiter/", saturn: "https://science.nasa.gov/saturn/", uranus: "https://science.nasa.gov/uranus/",
+  neptune: "https://science.nasa.gov/neptune/", pluto: "https://science.nasa.gov/dwarf-planets/pluto/",
+  "voyager-1": "https://science.nasa.gov/mission/voyager/voyager-1/", "voyager-2": "https://science.nasa.gov/mission/voyager/voyager-2/",
+  "pioneer-10": "https://science.nasa.gov/mission/pioneer-10/", "pioneer-11": "https://science.nasa.gov/mission/pioneer-11/",
+  "new-horizons": "https://science.nasa.gov/mission/new-horizons/",
+};
+
+/** Mounts only once everything in its Suspense boundary has loaded: the planets and probes are on screen. */
+function SceneReady({ onReady }) {
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => onReady(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, [onReady]);
+  return null;
+}
+
 export function Home() {
   const navigate = useNavigate();
   const location = useLocation();
-  const tutorialIntro = new URLSearchParams(location.search).get("intro") === "pioneer";
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(null);
   const probeParam = new URLSearchParams(location.search).get("probe");
@@ -127,12 +221,9 @@ export function Home() {
   }, [probeParam]);
   const [audioOn, setAudioOn] = useState(true);
   const [welcomeVisible, setWelcomeVisible] = useState(true);
+  const [sceneReady, setSceneReady] = useState(false);
   const [speedModifier, setSpeedModifier] = useState(1);
   const [distanceToSelected, setDistanceToSelected] = useState(null);
-  const [introYaw, setIntroYaw] = useState(0);
-  const [introYawImmediate, setIntroYawImmediate] = useState(false);
-  const [introFlying, setIntroFlying] = useState(false);
-  const [introReady, setIntroReady] = useState(false);
   const audioRef = useRef(null);
   const cameraRef = useRef(null);
   const sunAnchorRef = useRef(null);
@@ -166,32 +257,6 @@ export function Home() {
     const valid = ["voyager-1", "voyager-2", "pioneer-10", "pioneer-11", "new-horizons"];
     if (valid.includes(object)) setSelected(object);
   }, [location.search]);
-  useEffect(() => {
-    if (!tutorialIntro) {
-      setIntroYaw(0);
-      setIntroYawImmediate(false);
-      setIntroFlying(false);
-      setIntroReady(false);
-      window.__sbPioneerIntroReady = false;
-      return undefined;
-    }
-    setIntroReady(false);
-    const onView = (event) => {
-      setIntroYaw(Number(event.detail?.yaw) || 0);
-      setIntroYawImmediate(Boolean(event.detail?.immediate));
-    };
-    const onReady = () => setIntroReady(true);
-    const onFlight = () => setIntroFlying(true);
-    window.addEventListener("sb:pioneer-intro-view", onView);
-    window.addEventListener("sb:pioneer-intro-ready", onReady);
-    window.addEventListener("sb:pioneer-intro-flight", onFlight);
-    if (window.__sbPioneerIntroReady) onReady();
-    return () => {
-      window.removeEventListener("sb:pioneer-intro-view", onView);
-      window.removeEventListener("sb:pioneer-intro-ready", onReady);
-      window.removeEventListener("sb:pioneer-intro-flight", onFlight);
-    };
-  }, [tutorialIntro]);
   const enterWorld = async (world) => {
     if (journey) return;
     setJourney({ world, phase: "approach" });
@@ -298,10 +363,11 @@ export function Home() {
     }
   };
 
-  return <Shell immersive hideTopbar={tutorialIntro}><main className={`solar-home${tutorialIntro ? " is-tutorial-intro" : ""}`} id="main-content" tabIndex="-1">
+  return <Shell immersive><main className="solar-home" id="main-content" tabIndex="-1" data-scene-ready={sceneReady ? "true" : "false"}>
+      <h1 className="sb-sr-only">Deep space: our solar system and the machines exploring it</h1>
     <AnimatePresence>
-      {!tutorialIntro && welcomeVisible && <motion.div className="solar-welcome" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:0.35}}>
-        <motion.span initial={{y:8}} animate={{y:0}} exit={{y:-5}} transition={{duration:0.55}}>Welcome to the Space</motion.span>
+      {welcomeVisible && <motion.div className="solar-welcome" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:0.35}}>
+        <motion.span initial={{y:8}} animate={{y:0}} exit={{y:-5}} transition={{duration:0.55}}>Welcome to space</motion.span>
       </motion.div>}
     </AnimatePresence>
     <audio ref={audioRef} loop src="/audio/music/deep-lullaby.mp3" preload="auto"/>
@@ -322,23 +388,23 @@ export function Home() {
             shadow-bias={-0.00008}
             shadow-normalBias={0.006}
         />
-        {tutorialIntro && <pointLight position={[22.2, 23.1, -91.1]} intensity={26} distance={14} decay={2} color="#b9ddff"/>}
         <SpaceStarsBackdrop/>
         <Suspense fallback={null}>
-          <SolarSystem selected={selected} onSelect={setSelected} planetAnchors={planetAnchors} probesRefs={probesRefs} paused={!!journey || tutorialIntro} speedModifier={speedModifier} cameraRef={cameraRef} onDistanceChange={setDistanceToSelected} tutorialIntro={tutorialIntro} introYaw={introYaw} introYawImmediate={introYawImmediate} introFlying={introFlying} introReady={introReady}/>
+          <SolarSystem selected={selected} onSelect={setSelected} planetAnchors={planetAnchors} probesRefs={probesRefs} paused={!!journey} speedModifier={speedModifier} cameraRef={cameraRef} onDistanceChange={setDistanceToSelected}/>
+          <SceneReady onReady={setSceneReady}/>
         </Suspense>
-        <CameraControls ref={cameraRef} makeDefault enabled={!tutorialIntro} minDistance={1.0} maxDistance={350} smoothTime={0.6} dollyToCursor={false}/>
+        <CameraControls ref={cameraRef} makeDefault minDistance={1.0} maxDistance={350} smoothTime={0.6} dollyToCursor={false}/>
       </Canvas>
     </div>
 
-    {!tutorialIntro && <div className="solar-scale-caption">Planets, Orbits not in actual scale. Checkout NASA's Eye on Solar System</div>}
-    {!tutorialIntro && distanceToSelected && selected && <div style={{ position: "absolute", top: 112, left: 20, zIndex: 90, background: "rgba(0,0,0,0.5)", padding: "8px 14px", borderRadius: "8px", color: "#afc8e8", fontFamily: "monospace", fontSize: "13px", backdropFilter: "blur(4px)", letterSpacing: "0.5px" }}>
+    <div className="solar-scale-caption">Planets and orbits are not drawn to scale. For a true-scale view, visit <a href="https://eyes.nasa.gov/apps/solar-system/" target="_blank" rel="noreferrer">NASA’s Eyes on the Solar System</a>.</div>
+    {distanceToSelected && selected && <div style={{ position: "absolute", top: 112, left: 20, zIndex: 90, background: "rgba(0,0,0,0.5)", padding: "8px 14px", borderRadius: "8px", color: "#afc8e8", fontFamily: "monospace", fontSize: "13px", backdropFilter: "blur(4px)", letterSpacing: "0.5px" }}>
       <span style={{ color: "#7a9cc6", fontSize: "11px" }}>DIST </span>{distanceToSelected} AU
     </div>}
-    {!tutorialIntro && <div className="solar-controls-panel">
+    <div className="solar-controls-panel">
       <label className="solar-speed-control">Simulation Speed <input type="range" min="0" max="5" step="0.1" value={speedModifier} onChange={e => setSpeedModifier(parseFloat(e.target.value))} /></label>
-    </div>}
-    {!tutorialIntro && <div className="solar-search-wrap">
+    </div>
+    <div className="solar-search-wrap">
       <label className="solar-search">
         <ScanLine size={18}/>
         <input value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={handleSearchKeyDown} placeholder="Search the solar system..." aria-label="Search space elements"/>
@@ -350,9 +416,9 @@ export function Home() {
         </button>)}
       </div>}
       {query.trim() && matches.length===0 && <div className="solar-search-empty">No space objects found. Try “Moon”, “Mars” or “Voyager”.</div>}
-    </div>}
+    </div>
 
-    {!tutorialIntro && selected && <div className="solar-explore-pop solar-explore-other">
+    {selected && <div className="solar-explore-pop solar-explore-other">
       <strong>{selected === "deep" ? "DEEP SPACE" : selected.toUpperCase()}</strong>
       {selected === "sun" && <em>The heart of our solar system</em>}
       {selected === "mercury" && <em>A cratered world, racing around the Sun in just 88 days.</em>}
@@ -360,18 +426,19 @@ export function Home() {
       {selected === "earth" && <em>The only place we know of inhabited by living things.</em>}
       {selected === "moon" && <><em>Earth's only natural satellite</em><button onClick={enterMoonArchive} disabled={!!journey}>Explore <ArrowRight size={16}/></button></>}
       {selected === "mars" && <><em>Dusty, cold, desert world with a very thin atmosphere.</em><button onClick={enterMarsArchive} disabled={!!journey}>Explore <ArrowRight size={16}/></button></>}
-      {selected === "jupiter" && <em>A massive gas giant.The Great Red Spot is a giant storm that has raged for centuries.</em>}
+      {selected === "jupiter" && <em>A massive gas giant. The Great Red Spot is a giant storm that has raged for centuries.</em>}
       {selected === "saturn" && <em>Its spectacular rings are made mostly of countless icy particles.</em>}
       {selected === "uranus" && <em>Uranus spins on its side, giving it some of the solar system's most extreme seasons.</em>}
       {selected === "neptune" && <em>Supersonic winds sweep through Neptune's deep blue atmosphere.</em>}
       {selected === "pluto" && <em>Pluto is a dwarf planet in the Kuiper Belt, following an unusually eccentric, tilted orbit that takes 248 years.</em>}
       {selected === "deep" && <em>Interplanetary and heliocentric objects</em>}
-      {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em><Link className="solar-story-link" to={selected === "voyager-1" ? "/voyager-1" : `/object/${selected}`}>Read the story <ArrowRight size={16}/></Link><small className="scale-note"></small></>}
+      {["voyager-1","voyager-2","pioneer-10","pioneer-11","new-horizons"].includes(selected) && <><em>{{"voyager-1":"Voyager 1 · Interstellar mission, launched 1977.","voyager-2":"Voyager 2 · The only spacecraft to visit Uranus and Neptune, launched 1977.","pioneer-10":"Pioneer 10 · First spacecraft to fly past Jupiter, launched 1972.","pioneer-11":"Pioneer 11 · First spacecraft to fly past Saturn, launched 1973.","new-horizons":"New Horizons · Pluto and Kuiper Belt explorer, launched 2006."}[selected]}</em><Link className="solar-story-link" to={BY_ID[selected]?.route || `/object/${selected}`}>Read the story <ArrowRight size={16}/></Link><small className="scale-note"></small></>}
+      {SPACE_SOURCES[selected] && <a className="solar-pop-source" href={SPACE_SOURCES[selected]} target="_blank" rel="noreferrer">Source: NASA Science <ExternalLink size={12} aria-hidden="true"/></a>}
     </div>}
     <AnimatePresence>{journey?.phase === "fade" && <motion.div className={`moon-journey-fade journey-${journey.world}`} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.46}} aria-hidden="true"/>}</AnimatePresence>
-    {!tutorialIntro && <button className="solar-audio-toggle" onClick={()=>setAudioOn(v=>!v)} aria-label={audioOn?"Mute ambient audio":"Play ambient audio"}>
+    <button className="solar-audio-toggle" onClick={()=>setAudioOn(v=>!v)} aria-label={audioOn?"Mute ambient audio":"Play ambient audio"}>
       {audioOn?<Volume2 size={17}/>:<VolumeX size={17}/> }
-    </button>}
+    </button>
   </main></Shell>;
 }
 
@@ -476,27 +543,17 @@ const PROBE_DATA = [
   { id:"new-horizons", label:"New Horizons", color:"#aeb9c7", position:[20.5, 2.3, -64.6], style:"new-horizons" }
 ];
 
-function getTutorialCameraPosition(pioneerPosition) {
-  const toSolarSystem = new THREE.Vector3(-pioneerPosition.x, 0, -pioneerPosition.z).normalize();
-  const cameraRight = new THREE.Vector3(-toSolarSystem.z, 0, toSolarSystem.x);
-  return pioneerPosition.clone()
-      .addScaledVector(toSolarSystem, -7.8)
-      .addScaledVector(cameraRight, 2.2)
-      .add(new THREE.Vector3(0, 0.75, 0));
-}
-
 const PROBE_MODELS = {
   voyager: "/models/voyager.glb",
   pioneer: "/models/pioneer.glb",
   "new-horizons": "/models/New_Horizons.glb"
 };
 
-function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef, planetOccluders, tutorialIntro = false }) {
+function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef, planetOccluders }) {
   const group = useRef();
   const [labelHidden, setLabelHidden] = useState(false);
   const lastLabelHidden = useRef(false);
   const { scene } = useGLTF(PROBE_MODELS[probe.style]);
-  const tutorialScale = tutorialIntro && probe.id === "pioneer-11" ? 3.1 : 1;
   const model = useMemo(() => {
     const clone = scene.clone(true);
     const bounds = new THREE.Box3().setFromObject(clone);
@@ -526,80 +583,16 @@ function DeepSpaceProbe({ probe, hovered, setHovered, onClick, anchorRef, planet
                 onPointerOver={(e)=>{e.stopPropagation();setHovered(probe.id)}}
                 onPointerOut={(e)=>{e.stopPropagation();setHovered(null)}}>
     <mesh><sphereGeometry args={[.27,16,12]}/><meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false}/></mesh>
-    {tutorialIntro && probe.id === "pioneer-11" && <pointLight position={[0, 0.25, 0.6]} intensity={8} distance={5} color="#b9ddff"/>}
-    <group scale={model.scale * tutorialScale} position={[-model.center.x * model.scale * tutorialScale,-model.center.y * model.scale * tutorialScale,-model.center.z * model.scale * tutorialScale]}>
+    <group scale={model.scale} position={[-model.center.x * model.scale,-model.center.y * model.scale,-model.center.z * model.scale]}>
       <primitive object={model.scene}/>
     </group>
     {!labelHidden && <Html position={[0,.48,0]} center distanceFactor={12} zIndexRange={[30,0]} occlude={planetOccluders}>
-      <button type="button" className={`deep-space-probe-label${tutorialIntro && probe.id === "pioneer-11" ? " tutorial-pioneer-label" : ""}`} onClick={(e)=>{e.stopPropagation();onClick(probe.id)}} aria-label={`Zoom to ${probe.label}`} title={`Zoom to ${probe.label}`}>{probe.label}</button>
+      <button type="button" className="deep-space-probe-label" onClick={(e)=>{e.stopPropagation();onClick(probe.id)}} aria-label={`Zoom to ${probe.label}`} title={`Zoom to ${probe.label}`}>{probe.label}</button>
     </Html>}
   </group>;
 }
 useGLTF.preload(PROBE_MODELS.pioneer);
 
-function TutorialAstronaut({ position, flying, walking }) {
-  const { scene, animations } = useGLTF("/models/astronaut.glb");
-  const root = useRef();
-  const { actions, mixer } = useAnimations(animations, root);
-  const actionRef = useRef(null);
-  const flyingRef = useRef(flying);
-  const finishedRef = useRef(false);
-  const fit = useMemo(() => {
-    const bounds = new THREE.Box3().setFromObject(scene);
-    const size = bounds.getSize(new THREE.Vector3());
-    return {
-      center: bounds.getCenter(new THREE.Vector3()),
-      scale: 1.85 / (size.y || Math.max(size.x, size.z, 1)),
-    };
-  }, [scene]);
-
-  flyingRef.current = flying;
-  useEffect(() => {
-    const action = Object.values(actions)[0];
-    if (!action) return undefined;
-    actionRef.current = action;
-    action.reset();
-    action.setLoop(THREE.LoopOnce, 1);
-    action.clampWhenFinished = true;
-    const onFinished = (event) => {
-      if (event.action !== actionRef.current || !flyingRef.current || finishedRef.current) return;
-      finishedRef.current = true;
-      window.dispatchEvent(new Event("sb:pioneer-intro-complete"));
-    };
-    mixer.addEventListener("finished", onFinished);
-    return () => {
-      mixer.removeEventListener("finished", onFinished);
-      action.stop();
-      actionRef.current = null;
-    };
-  }, [actions, mixer]);
-
-  useEffect(() => {
-    if (!walking || !actionRef.current) return;
-    actionRef.current.reset().play();
-  }, [walking]);
-
-  useEffect(() => {
-    if (!flying || !actionRef.current) return;
-    actionRef.current.paused = false;
-    actionRef.current.play();
-  }, [flying]);
-
-  useFrame(() => {
-    const action = actionRef.current;
-    if (!flyingRef.current && action && action.time >= 6.9) {
-      action.time = 6.9;
-      action.paused = true;
-    }
-  });
-
-  return (
-    <group ref={root} position={position} rotation={[0, 2.54, 0]} scale={fit.scale}>
-      <primitive object={scene} position={[-fit.center.x, -fit.center.y, -fit.center.z]} />
-    </group>
-  );
-}
-useGLTF.preload("/models/astronaut.glb");
 
 function solveKepler(meanAnomaly, eccentricity) {
   let eccentricAnomaly = meanAnomaly;
@@ -626,7 +619,7 @@ function EllipticalOrbit({ semiMajor, eccentricity, inclination = 0, longitudeOf
   return <group rotation={[0, longitudeOfAscendingNode, 0]}><group rotation={[inclination, 0, 0]}><group rotation={[0, argumentOfPerihelion, 0]}><primitive object={line}/></group></group></group>;
 }
 
-function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, speedModifier, cameraRef, onDistanceChange, tutorialIntro = false, introYaw = 0, introYawImmediate = false, introFlying = false, introReady = false }) {
+function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, speedModifier, cameraRef, onDistanceChange }) {
   const [hovered, setHovered] = useState(null);
   const elapsed = useRef(0);
   const planetOccluders = useMemo(() => [
@@ -654,9 +647,6 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     planetAnchors?.neptune,
     planetAnchors?.pluto,
   ]);
-  const activePlanetOccluders = tutorialIntro
-    ? [planetAnchors?.sun].filter(Boolean)
-    : planetOccluders;
 
   // Position refs for orbiting bodies
   const mercuryPosition = useRef();
@@ -718,22 +708,8 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
 
   const targetPos = useMemo(() => new THREE.Vector3(), []);
   const camPos = useMemo(() => new THREE.Vector3(), []);
-  const tutorialAstronautPosition = useMemo(() => {
-    const pioneer = PROBE_DATA.find((probe) => probe.id === "pioneer-11");
-    const cameraPosition = getTutorialCameraPosition(new THREE.Vector3(...pioneer.position));
-    const forward = cameraPosition.clone().negate().normalize();
-    const cameraRight = new THREE.Vector3(-forward.z, 0, forward.x).normalize();
-    return cameraPosition.addScaledVector(forward, 9.6).addScaledVector(cameraRight, 3.8).toArray();
-  }, []);
   const prevSelected = useRef(null);
   const distFrameCount = useRef(0);
-  const introCamera = useRef({
-    active: false,
-    yaw: null,
-    flying: false,
-    position: new THREE.Vector3(),
-    lookAt: new THREE.Vector3(),
-  });
 
   // Visually proportional sizes
   const RADII = {
@@ -771,8 +747,8 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
   };
 
   useFrame((state, delta) => {
-    if (paused && !tutorialIntro) return;
-    if (!paused) elapsed.current += Math.min(delta, 0.05) * 3 * speedModifier;
+    if (paused) return;
+    elapsed.current += Math.min(delta, 0.05) * 3 * speedModifier;
     const days = elapsed.current;
 
     // Kepler equation solver for all planets
@@ -802,59 +778,6 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
 
     const controls = cameraRef?.current;
     if (!controls) return;
-
-    const intro = introCamera.current;
-    if (tutorialIntro) {
-      const pioneer = probesRefs?.current?.["pioneer-11"];
-      if (!pioneer) return;
-      pioneer.getWorldPosition(targetPos);
-
-      if (!intro.active) {
-        intro.active = true;
-        intro.position.copy(getTutorialCameraPosition(targetPos));
-        intro.yaw = null;
-        intro.flying = false;
-        controls.enabled = false;
-        controls.setPosition(intro.position.x, intro.position.y, intro.position.z, false);
-      }
-
-      if (intro.yaw !== introYaw) {
-        intro.lookAt.set(-intro.position.x, -intro.position.y, -intro.position.z).normalize();
-        intro.lookAt.applyAxisAngle(new THREE.Vector3(0, 1, 0), THREE.MathUtils.degToRad(introYaw));
-        intro.lookAt.multiplyScalar(80).add(intro.position);
-        controls.setTarget(intro.lookAt.x, intro.lookAt.y, intro.lookAt.z, intro.yaw !== null && !introYawImmediate);
-        intro.yaw = introYaw;
-        if (intro.yaw === introYaw && !window.__sbPioneerIntroReady) {
-          window.__sbPioneerIntroReady = true;
-          window.dispatchEvent(new Event("sb:pioneer-intro-ready"));
-        }
-      }
-
-      if (introFlying && !intro.flying) {
-        intro.flying = true;
-        const forward = intro.lookAt.clone().sub(intro.position).normalize().multiplyScalar(1.4);
-        intro.position.add(forward);
-        controls.setLookAt(
-          intro.position.x, intro.position.y, intro.position.z,
-          intro.lookAt.x, intro.lookAt.y, intro.lookAt.z,
-          true
-        );
-      }
-      return;
-    }
-
-    if (intro.active) {
-      intro.active = false;
-      intro.yaw = null;
-      intro.flying = false;
-      controls.enabled = true;
-      controls.minDistance = 1.0;
-      controls.maxDistance = 350;
-      prevSelected.current = selected;
-      window.__sbPioneerIntroReady = false;
-      controls.setLookAt(0, 18, 38, 0, 0, 0, true);
-      return;
-    }
 
     // Selection changed — fire smooth fly-to animation
     if (selected !== prevSelected.current) {
@@ -910,30 +833,11 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
 
   const select = (name) => (event) => { event.stopPropagation(); onSelect(name); };
 
-  if (tutorialIntro) {
-    const pioneer = PROBE_DATA.find((probe) => probe.id === "pioneer-11");
-    if (!pioneer) return null;
-    return <>
-      <group ref={planetAnchors?.sun}>
-        <SunModel hovered={hovered} setHovered={setHovered} onClick={select("sun")} paused />
-      </group>
-      <DeepSpaceProbe
-        probe={pioneer}
-        hovered={hovered}
-        setHovered={setHovered}
-        onClick={onSelect}
-        anchorRef={(node) => { if (probesRefs) probesRefs.current[pioneer.id] = node; }}
-        planetOccluders={activePlanetOccluders}
-        tutorialIntro
-      />
-      <TutorialAstronaut position={tutorialAstronautPosition} flying={introFlying} walking={introReady} />
-    </>;
-  }
 
   return <>
     {/* Sun */}
     <group ref={planetAnchors?.sun}>
-      <SunModel hovered={hovered} setHovered={setHovered} onClick={select("sun")} paused={tutorialIntro} />
+      <SunModel hovered={hovered} setHovered={setHovered} onClick={select("sun")} />
     </group>
 
     {/* Orbit lines */}
@@ -949,13 +853,13 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
 
     {/* Deep Space Probes */}
     {PROBE_DATA.map(probe =>
-      <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect} anchorRef={(node) => { if (probesRefs) probesRefs.current[probe.id] = node; }} planetOccluders={activePlanetOccluders} tutorialIntro={tutorialIntro}/>
+      <DeepSpaceProbe key={probe.id} probe={probe} hovered={hovered} setHovered={setHovered} onClick={onSelect} anchorRef={(node) => { if (probesRefs) probesRefs.current[probe.id] = node; }} planetOccluders={planetOccluders}/>
     )}
     {/* Mercury */}
     <group ref={mercuryPlane} rotation={[incMercury, 0, 0]}>
       <group ref={mercuryPosition}>
         <group ref={planetAnchors?.mercury}>
-          <CelestialModel radius={RADII.mercury} name="mercury" hovered={hovered} setHovered={setHovered} onClick={select("mercury")} paused={tutorialIntro} />
+          <CelestialModel radius={RADII.mercury} name="mercury" hovered={hovered} setHovered={setHovered} onClick={select("mercury")} />
         </group>
       </group>
     </group>
@@ -964,7 +868,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={venusPlane} rotation={[incVenus, 0, 0]}>
       <group ref={venusPosition}>
         <group ref={planetAnchors?.venus}>
-          <CelestialModel radius={RADII.venus} name="venus" hovered={hovered} setHovered={setHovered} onClick={select("venus")} paused={tutorialIntro} />
+          <CelestialModel radius={RADII.venus} name="venus" hovered={hovered} setHovered={setHovered} onClick={select("venus")} />
         </group>
       </group>
     </group>
@@ -973,13 +877,13 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={earthPlane}>
       <group ref={earthPosition}>
         <group ref={planetAnchors?.earth}>
-          <CelestialModel radius={RADII.earth} name="earth" hovered={hovered} setHovered={setHovered} onClick={select("earth")} paused={tutorialIntro} />
+          <CelestialModel radius={RADII.earth} name="earth" hovered={hovered} setHovered={setHovered} onClick={select("earth")} />
         </group>
         <EllipticalOrbit semiMajor={moonA} eccentricity={moonE} inclination={incMoon} color="#e8edf5" opacity={0.25}/>
         <group ref={moonPlane} rotation={[incMoon, 0, 0]}>
           <group ref={moonPosition}>
             <group ref={planetAnchors?.moon}>
-              <CelestialModel radius={RADII.moon} name="moon" hovered={hovered} setHovered={setHovered} onClick={select("moon")} paused={tutorialIntro} />
+              <CelestialModel radius={RADII.moon} name="moon" hovered={hovered} setHovered={setHovered} onClick={select("moon")} />
             </group>
           </group>
         </group>
@@ -990,7 +894,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={marsPlane} rotation={[incMars, 0, 0]}>
       <group ref={marsPosition}>
         <group ref={planetAnchors?.mars}>
-          <CelestialModel radius={RADII.mars} name="mars" hovered={hovered} setHovered={setHovered} onClick={select("mars")} paused={tutorialIntro} />
+          <CelestialModel radius={RADII.mars} name="mars" hovered={hovered} setHovered={setHovered} onClick={select("mars")} />
         </group>
       </group>
     </group>
@@ -999,7 +903,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={jupiterPlane} rotation={[incJupiter, 0, 0]}>
       <group ref={jupiterPosition}>
         <group ref={planetAnchors?.jupiter}>
-          <CelestialModel radius={RADII.jupiter} name="jupiter" hovered={hovered} setHovered={setHovered} onClick={select("jupiter")} paused={tutorialIntro} />
+          <CelestialModel radius={RADII.jupiter} name="jupiter" hovered={hovered} setHovered={setHovered} onClick={select("jupiter")} />
         </group>
       </group>
     </group>
@@ -1008,7 +912,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={saturnPlane} rotation={[incSaturn, 0, 0]}>
       <group ref={saturnPosition}>
         <group ref={planetAnchors?.saturn}>
-          <CelestialModel radius={RADII.saturn} name="saturn" hovered={hovered} setHovered={setHovered} onClick={select("saturn")} paused={tutorialIntro} />
+          <CelestialModel radius={RADII.saturn} name="saturn" hovered={hovered} setHovered={setHovered} onClick={select("saturn")} />
         </group>
       </group>
     </group>
@@ -1017,7 +921,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={uranusPlane} rotation={[incUranus, 0, 0]}>
       <group ref={uranusPosition}>
         <group ref={planetAnchors?.uranus}>
-          <CelestialModel radius={RADII.uranus} name="uranus" hovered={hovered} setHovered={setHovered} onClick={select("uranus")} paused={tutorialIntro} />
+          <CelestialModel radius={RADII.uranus} name="uranus" hovered={hovered} setHovered={setHovered} onClick={select("uranus")} />
         </group>
       </group>
     </group>
@@ -1026,7 +930,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
     <group ref={neptunePlane} rotation={[incNeptune, 0, 0]}>
       <group ref={neptunePosition}>
         <group ref={planetAnchors?.neptune}>
-          <CelestialModel radius={RADII.neptune} name="neptune" hovered={hovered} setHovered={setHovered} onClick={select("neptune")} paused={tutorialIntro} />
+          <CelestialModel radius={RADII.neptune} name="neptune" hovered={hovered} setHovered={setHovered} onClick={select("neptune")} />
         </group>
       </group>
     </group>
@@ -1037,7 +941,7 @@ function SolarSystem({ selected, onSelect, planetAnchors, probesRefs, paused, sp
         <group rotation={[0, plutoArgumentOfPerihelion, 0]}>
           <group ref={plutoPosition}>
             <group ref={planetAnchors?.pluto}>
-              <CelestialModel radius={RADII.pluto} name="pluto" hovered={hovered} setHovered={setHovered} onClick={select("pluto")} selected={selected} paused={tutorialIntro} />
+              <CelestialModel radius={RADII.pluto} name="pluto" hovered={hovered} setHovered={setHovered} onClick={select("pluto")} selected={selected} />
             </group>
           </group>
         </group>

@@ -66,7 +66,7 @@ export default function WhoAmI() {
   const verdict = useMemo(() => {
     if (score >= 7) return "Mission control wants to hire you. You know these machines.";
     if (score >= 5) return "Great flying. You have met most of the machines.";
-    if (score >= 3) return "A good start. Each story in the Atlas will teach you more.";
+    if (score >= 3) return "A good start. Each story in the Cosmic Library will teach you more.";
     return "Every explorer starts somewhere. Read a few stories and try again.";
   }, [score]);
 
@@ -82,7 +82,7 @@ export default function WhoAmI() {
           <button type="button" className="hp-btn hp-btn-primary" onClick={again}>
             <RotateCcw size={18} aria-hidden="true" /> Play again with new riddles
           </button>
-          <Link to="/atlas" className="hp-btn hp-btn-quiet">
+          <Link to="/library" className="hp-btn hp-btn-quiet">
             Read their stories
           </Link>
         </div>

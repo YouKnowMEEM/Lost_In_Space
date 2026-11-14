@@ -58,7 +58,6 @@
 .app-shell .solar-search-empty { font-size: 14px; }
 .app-shell .solar-pop-note { font-size: 13.5px; }
 .app-shell .solar-home-caption p { font-size: 14px; }
-.app-shell .deep-space-probe-label.tutorial-pioneer-label { font-size: 12px; }
 
 /* a visible keyboard focus on every control of the world pages */
 .app-shell a:focus-visible,
@@ -86,3 +85,173 @@
   text-decoration: none;
 }
 .app-shell .solar-story-link:hover { background: rgba(143, 211, 255, 0.22); }
+
+/* The scale note links to NASA's true-scale simulator. */
+.app-shell .solar-scale-caption a { pointer-events: auto; color: #cfe6ff; text-decoration: underline; text-underline-offset: 2px; }
+.app-shell .solar-scale-caption a:hover { color: #fff; }
+
+/* Machines with a storybook: golden markers on the Moon and Mars globes */
+.equipment-marker-label .equipment-marker-book {
+  display: block;
+  margin-top: 3px;
+  color: #ffd56e;
+  font: 600 10px/1.2 "Atkinson Hyperlegible Next", Arial, sans-serif;
+}
+.app-shell .moon-map-title .moon-book-key {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 10px;
+  color: #ffe2a0;
+  font-size: 13px;
+}
+.moon-book-key i {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffc23d;
+  box-shadow: 0 0 10px 3px rgba(255, 194, 61, .7);
+  animation: book-key-glow 2.2s ease-in-out infinite;
+}
+@keyframes book-key-glow { 50% { box-shadow: 0 0 4px 1px rgba(255, 194, 61, .45); } }
+.moon-control-legend .key-book { background: #ffc23d; box-shadow: 0 0 8px #ffc23d; }
+.app-shell .moon-sidebar-book {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 16px 0 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 194, 61, .45);
+  border-radius: 8px;
+  background: rgba(255, 194, 61, .1);
+  color: #ffe2a0;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.app-shell .moon-sidebar-book strong { color: #fff4d6; font-weight: 600; }
+.app-shell .moon-sidebar-book svg { flex: none; color: #ffc23d; }
+@media (max-width: 760px) {
+  .app-shell .moon-map-title .moon-book-key { font-size: 11px; margin-top: 7px; }
+}
+@media (prefers-reduced-motion: reduce) { .moon-book-key i { animation: none; } }
+
+/* "Objects" menu: every storybook of this world, then the whole list in the Cosmic Library */
+.app-shell .nav-objects-menu { min-width: 250px; gap: 2px; padding: 8px; }
+.app-shell .nav-objects-menu .nav-menu-label {
+  padding: 6px 12px 7px;
+  color: #ffd56e;
+  font: 700 11px/1.2 "Atkinson Hyperlegible Next", sans-serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.app-shell .nav-objects-menu a { display: flex; align-items: center; gap: 10px; }
+.app-shell .nav-objects-menu a svg { flex: none; color: #ffc23d; }
+.app-shell .nav-objects-menu .nav-menu-all {
+  justify-content: space-between;
+  margin-top: 6px;
+  border-top: 1px solid rgba(147, 193, 228, .18);
+  border-radius: 0 0 6px 6px;
+  padding-top: 12px;
+  color: #9fd8ff;
+}
+.app-shell .nav-objects-menu .nav-menu-all svg { color: currentColor; }
+
+/* One-time pop-up pointing at the "Objects" menu */
+.nav-objects.has-hint > button { color: #ffd56e !important; text-shadow: 0 0 14px rgba(255, 200, 80, .85); }
+.objects-hint {
+  position: fixed;
+  z-index: 140;
+  width: min(290px, calc(100vw - 24px));
+  padding: 14px 15px 13px;
+  border: 1px solid rgba(255, 207, 102, .6);
+  border-radius: 14px;
+  background: linear-gradient(160deg, rgba(40, 30, 8, .97), rgba(12, 14, 22, .97));
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .55), 0 0 30px rgba(255, 190, 60, .18);
+  color: #fff3d6;
+  animation: objects-hint-in .35s cubic-bezier(.2, .8, .2, 1) both;
+}
+.objects-hint::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: var(--arrow, 26px);
+  width: 14px;
+  height: 14px;
+  border-top: 1px solid rgba(255, 207, 102, .6);
+  border-left: 1px solid rgba(255, 207, 102, .6);
+  background: rgb(38, 29, 9);
+  transform: rotate(45deg);
+}
+.objects-hint p { margin: 0 0 10px; font: 14px/1.5 "Atkinson Hyperlegible Next", sans-serif; }
+.objects-hint p strong { display: block; margin-bottom: 3px; color: #ffd56e; font-size: 15px; }
+.objects-hint p b { color: #fff; }
+.objects-hint button {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #ffc23d;
+  color: #2a1a00;
+  font: 700 13px "Atkinson Hyperlegible Next", sans-serif;
+  cursor: pointer;
+}
+.objects-hint button:hover { background: #ffd56e; }
+@keyframes objects-hint-in { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: none; } }
+html[data-tour] .objects-hint { display: none; }
+@media (prefers-reduced-motion: reduce) { .objects-hint { animation: none; } }
+body:has(.moon-equipment-sidebar) .objects-hint { display: none; }
+
+/* The sound button sits above the speed slider, clear of the menu. */
+.app-shell .solar-audio-toggle { top: auto; bottom: 88px; right: 20px; }
+@media (max-width: 700px) {
+  .app-shell .solar-audio-toggle { top: auto; bottom: 76px; right: 12px; }
+}
+/* During the guided journey its own welcome card greets the visitor. */
+html[data-tour] .solar-welcome { display: none; }
+.app-shell .solar-pop-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  color: #a9c9e8;
+  font-size: 12.5px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.app-shell .solar-pop-source:hover { color: #fff; }
+
+/* Read by screen readers, hidden on screen (the 3D view is the page's visual title). */
+.sb-sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Phones: the round logo already leads home, so "Home" makes room for the Cosmic Library ("Library"). */
+@media (max-width: 560px) {
+  .app-shell .topbar nav > a.nav-home { display: none; }
+  .app-shell .topbar nav > a.nav-library,
+  .app-shell .topbar nav > a:last-child { display: inline-flex; }
+  .app-shell .topbar nav .nav-long { display: none; }
+}
+
+/* The top bar (with its menus and the Objects hint) stays above the page's own floating
+   controls, such as the solar-system search box. */
+.app-shell .topbar { z-index: 130; }
+
+/* Phones: open the Worlds and Objects menus just under the 60px bar, not below the screen. */
+@media (max-width: 560px) {
+  .app-shell .topbar .nav-dropdown-menu {
+    top: 66px;
+    right: 10px;
+    left: auto;
+    max-height: calc(100dvh - 80px);
+    overflow-y: auto;
+  }
+}

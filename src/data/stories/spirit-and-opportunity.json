@@ -1,0 +1,182 @@
+{
+  "id": "spirit-and-opportunity",
+  "book": 8,
+  "title": "Spirit & Opportunity",
+  "subtitle": "The twin rovers who kept going",
+  "tagline": "A bedtime story from Mars",
+  "voice": "af_heart",
+  "theme": "mars",
+  "missionPath": "/object/spirit-mer-a",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Spirit & Opportunity",
+      "scene": "twins-cover",
+      "narration": "Sleeping Beauties presents... Spirit and Opportunity. The twin rovers who kept going. A bedtime story from Mars."
+    },
+    {
+      "id": "asleep",
+      "title": "Two Sisters, Far Apart",
+      "scene": "twins-asleep",
+      "text": [
+        "On opposite sides of Mars, two rovers are sleeping. They look exactly alike: six wheels, wide solar panels like wings, and a head on a tall neck, with two camera eyes.",
+        "One is called Spirit. She rests in a crater called Gusev, tilted in a patch of soft sand.",
+        "The other is called Opportunity. She rests on the edge of a giant crater called Endeavour, covered in red dust.",
+        "They were twins. They were only supposed to work for three months. Instead, they kept on going, and going, and going."
+      ],
+      "fact": "Spirit and Opportunity were each about as big as a golf cart, and their camera eyes sat about as high as a grown-up's eyes.",
+      "sources": [
+        "mer"
+      ]
+    },
+    {
+      "id": "twins",
+      "title": "Made to Find Water",
+      "scene": "twins-made",
+      "text": [
+        "Today, Mars is a cold desert. But long ago, scientists wondered, was it wetter? Were there lakes, or rivers, or water hidden in the ground?",
+        "Water is very important, because everywhere we find water on Earth, we find life.",
+        "So NASA built two robot geologists, and gave each one the same tools: cameras to look, a robotic arm with a magnifying glass, sensors to sniff out what rocks are made of, and a little grinder to brush and scrape away a rock's dusty skin.",
+        "In the summer of two thousand and three, they launched, one after the other, on two rockets. Their destination: two places on Mars that looked as if water had once been there."
+      ],
+      "fact": "Their names were chosen in a contest won by Sofi Collis, a nine-year-old girl who had been adopted from an orphanage in Siberia.",
+      "sources": [
+        "mer",
+        "names"
+      ]
+    },
+    {
+      "id": "landing",
+      "title": "Hole in One!",
+      "scene": "twins-landing",
+      "text": [
+        "In January two thousand and four, the twins arrived, three weeks apart. Each one landed just like Pathfinder had, bouncing across the ground inside a ball of airbags.",
+        "Spirit landed first, in Gusev crater, a giant hole where scientists hoped a lake had once been.",
+        "Then Opportunity bounced, and bounced, and rolled, and rolled, and dropped right into a tiny crater, as if a golfer had sunk a perfect putt. The scientists cheered, Hole in one!",
+        "And when Opportunity opened its eyes, there, in the wall of the little crater, were layers of rock. It was exactly what the scientists had hoped to see."
+      ],
+      "fact": "Opportunity's little landing crater was named Eagle crater.",
+      "sources": [
+        "mer",
+        "oppn"
+      ]
+    },
+    {
+      "id": "blueberries",
+      "title": "Blueberries on Mars",
+      "scene": "twins-blueberries",
+      "text": [
+        "Opportunity looked closely at the ground, and saw something strange: thousands of tiny round grey balls, scattered everywhere, like little marbles.",
+        "The scientists nicknamed them blueberries. They are made of a mineral called hematite.",
+        "Inside the layered rocks, Opportunity found more clues: salty minerals, and tiny gaps where crystals had once grown and dissolved.",
+        "Put together, the clues told a story. Long ago, salty water had soaked through these rocks. The blueberries had grown in that water, one layer at a time. Mars really had been wet!"
+      ],
+      "fact": "The blueberries are much smaller than real blueberries, most no bigger than a pea.",
+      "sources": [
+        "mer",
+        "oppn"
+      ]
+    },
+    {
+      "id": "spirit-hills",
+      "title": "Spirit Climbs a Mountain",
+      "scene": "twins-hills",
+      "text": [
+        "On the other side of Mars, Spirit found that Gusev's floor was mostly old lava, not lake mud. So she set off for some hills on the horizon, called the Columbia Hills.",
+        "She drove for months, and then she climbed, all the way to the top of Husband Hill. From up there, she could see the whole crater spread out below her.",
+        "Little whirlwinds of dust, called dust devils, danced across the plains. Sometimes the wind even blew across her solar panels and swept them clean, like a friend with a feather duster.",
+        "Then one of Spirit's front wheels broke. It would not turn any more. So Spirit learned to drive backwards, dragging the broken wheel behind her like a plough."
+      ],
+      "fact": "The Columbia Hills are named after the seven astronauts of the space shuttle Columbia, who died in 2003.",
+      "sources": [
+        "mer",
+        "spiritn"
+      ]
+    },
+    {
+      "id": "silica",
+      "title": "A Happy Accident",
+      "scene": "twins-silica",
+      "text": [
+        "Dragging that broken wheel turned out to be lucky.",
+        "One day in two thousand and seven, as Spirit dragged it along, the wheel scraped away the reddish soil, and underneath was something bright white.",
+        "Spirit sniffed it. It was almost pure silica, the stuff that sand and glass are made of. On Earth, soil like this forms near hot springs and steaming vents, where warm water bubbles up from underground.",
+        "Long ago, Gusev crater may have had hot springs! On Earth, tiny living things love hot springs. That made this one of the most exciting discoveries of the whole mission."
+      ],
+      "fact": "Spirit spent years exploring around a flat, layered rock feature that the team named Home Plate.",
+      "sources": [
+        "mer",
+        "spiritn"
+      ]
+    },
+    {
+      "id": "stuck",
+      "title": "Stuck in the Sand",
+      "scene": "twins-stuck",
+      "text": [
+        "In two thousand and nine, Spirit was driving with only five working wheels when she broke through a crust, into soft, fluffy sand underneath.",
+        "Her wheels spun and spun. She was stuck!",
+        "On Earth, engineers built a copy of the patch of sand and tested ways to wriggle out. For months, they tried. But then a second wheel stopped working, and Spirit could not escape.",
+        "Winter was coming. Stuck in one place, Spirit could not tilt her solar panels towards the low winter Sun. Her last message came in March two thousand and ten. NASA kept listening for more than a year, just in case."
+      ],
+      "fact": "Spirit drove 7.7 kilometres, explored for more than six years, and was planned to last for just 90 days.",
+      "sources": [
+        "mer",
+        "spiritn"
+      ]
+    },
+    {
+      "id": "marathon",
+      "title": "Opportunity Runs a Marathon",
+      "scene": "twins-marathon",
+      "text": [
+        "Opportunity kept going. She drove from crater to crater, each one bigger than the last. Once she got stuck in a sand dune too, for five long weeks, but she wriggled free!",
+        "In two thousand and eleven, she reached the rim of Endeavour, a crater so big you could fit a whole city inside. There, she found clay, a kind of mineral that forms in gentle water, the kind that living things might like.",
+        "In two thousand and fifteen, Opportunity passed the length of a marathon. Her team celebrated with a real running race on Earth.",
+        "For years, she held the record for driving the farthest on another world: more than forty-five kilometres."
+      ],
+      "fact": "Opportunity's record held until 11 October 2026, when the Perseverance rover finally drove past her mark.",
+      "sources": [
+        "mer",
+        "record"
+      ]
+    },
+    {
+      "id": "storm",
+      "title": "The Great Dust Storm",
+      "scene": "twins-storm",
+      "text": [
+        "In June two thousand and eighteen, a dust storm began on Mars. It grew, and grew, until it wrapped around the whole planet.",
+        "The sky over Opportunity turned dark, as dark as night in the middle of the day. Her solar panels could not catch any sunlight.",
+        "On the tenth of June, Opportunity sent one last message. Then she went quiet.",
+        "Her team on Earth sent her more than a thousand messages, hoping she would wake up when the storm cleared. On the last night of trying, they played her one final wake-up song: I'll Be Seeing You."
+      ],
+      "fact": "Opportunity worked for more than fourteen years, instead of 90 days. NASA declared her mission complete in February 2019.",
+      "sources": [
+        "end",
+        "song"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Twins",
+      "scene": "twins-goodnight",
+      "text": [
+        "Spirit sleeps in Gusev crater, tilted in her sandy bed. Opportunity sleeps on the rim of Endeavour, in a place called Perseverance Valley.",
+        "Together, they proved that long ago, Mars had water: salty water soaking its rocks, and maybe warm springs bubbling up from below.",
+        "They were planned to last three months. They lasted for years and years, through winters and storms, broken wheels and sandy traps. They never gave up.",
+        "Goodnight, Spirit. Goodnight, Opportunity. Goodnight, brave sisters of Mars."
+      ],
+      "fact": "Spirit's landing site is called the Columbia Memorial Station. Opportunity's is called the Challenger Memorial Station.",
+      "photo": {
+        "of": "spirit-mer-a",
+        "pos": "br"
+      },
+      "sources": [
+        "mer",
+        "end"
+      ]
+    }
+  ]
+}

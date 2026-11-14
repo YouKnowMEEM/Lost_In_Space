@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, BookOpen, ExternalLink, Maximize2, Play } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Clapperboard, ExternalLink, Maximize2, Play } from "lucide-react";
 import NasaImage from "../storybook/NasaImage";
 import Lightbox from "../storybook/Lightbox";
 import SiteMap from "./SiteMap";
@@ -56,7 +56,7 @@ function Photo({ nasa, caption, credit, onOpen, size = "medium", className = "" 
   );
 }
 
-export default function MissionFile({ mission, theme, storyPath, world, tone = "light" }) {
+export default function MissionFile({ mission, theme, storyPath, world, tone = "light", film = null }) {
   const [viewer, setViewer] = useState(null);
   const [pick, setPick] = useState({ id: mission.model.parts[0].id, n: 0 });
   const choose = useCallback((id) => setPick((p) => ({ id, n: p.n + 1 })), []);
@@ -98,6 +98,11 @@ export default function MissionFile({ mission, theme, storyPath, world, tone = "
             <a className="mf-btn mf-btn-ghost" href="#spacecraft">
               Explore the 3D model <ArrowRight size={18} aria-hidden="true" />
             </a>
+            {film && (
+              <button type="button" className="mf-btn mf-btn-ghost" onClick={() => open({ kind: "video", ...film })}>
+                <Clapperboard size={18} aria-hidden="true" /> Watch our film
+              </button>
+            )}
           </div>
         </div>
         <dl className="mf-stats">
@@ -246,12 +251,28 @@ export default function MissionFile({ mission, theme, storyPath, world, tone = "
 
         {/* ------------------------------------------------ gallery */}
         <section id="gallery" className="mf-section">
-          <h2>Real photos{mission.videos.length ? " and video" : ""}</h2>
+          <h2>Real photos{mission.videos.length || film ? " and video" : ""}</h2>
           <p className="mf-section-intro">
-            Every picture here comes from NASA's Image and Video Library and is in the public domain. Select one to see it larger.
+            {film
+              ? "Our own animation of the mission comes first. Every other picture and video here comes from NASA's Image and Video Library and is in the public domain. Select one to see it larger."
+              : "Every picture here comes from NASA's Image and Video Library and is in the public domain. Select one to see it larger."}
           </p>
-          {mission.videos.length > 0 && (
+          {(mission.videos.length > 0 || film) && (
             <ul className="mf-videos">
+              {film && (
+                <li className="mf-video-ours">
+                  <button type="button" onClick={() => open({ kind: "video", ...film })}>
+                    <span className="mf-video-poster">
+                      <img src={film.poster} alt="" loading="lazy" />
+                      <span className="mf-video-play" aria-hidden="true">
+                        <Play size={22} />
+                      </span>
+                    </span>
+                    <strong>{film.title}</strong>
+                    <small>{film.credit}</small>
+                  </button>
+                </li>
+              )}
               {mission.videos.map((v) => (
                 <li key={v.nasa}>
                   <button type="button" onClick={() => open({ kind: "video", nasa: v.nasa, title: v.title, caption: v.caption, credit: `NASA · ${v.nasa}` })}>

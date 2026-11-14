@@ -185,7 +185,7 @@ export const MOON_NOTES = {
       { t: "A robot hand", d: "The arm and scoop were a small 'soil mechanics' laboratory. It could push, scrape, dig and drop, and the camera recorded every move." },
       { t: "Camera with a mirror", d: "A TV camera looked into a tilting, turning mirror. By moving the mirror, it could see in every direction without moving the whole lander." },
     ],
-    numbers: [{ v: "20 Apr 1967", l: "touchdown" }, { v: "6,000+", l: "pictures sent" }, { v: "2", l: "bounces on landing" }, { v: "20 Nov 1969", l: "visited by Apollo 12" }],
+    numbers: [{ v: "20 Apr 1967", l: "touchdown" }, { v: "6,326", l: "pictures sent" }, { v: "2", l: "bounces on landing" }, { v: "20 Nov 1969", l: "visited by Apollo 12" }],
     left: "The lander minus the camera, scoop and tubing that Apollo 12 took home. It sits at the Surveyor crater site, a short walk from Intrepid.",
     fun: "Surveyor 3's landing crater is now called Surveyor crater. Intrepid stands on its rim less than 200 metres away.",
     library: "Surveyor 3 Apollo 12 Conrad Bean",

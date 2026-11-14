@@ -1362,3 +1362,9 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* "Watch our film" is a button that opens the player, styled like the links beside it. */
+button.mf-btn { font: inherit; font-weight: 700; font-size: 16px; }
+.mf-video-ours button { outline-offset: 3px; }
+.mf-video-ours strong::before { content: "Our film · "; color: var(--mf-accent, #f2b640); }
+.mf-hero-photo .nasa-missing { display: none; } /* decorative hero: the caption below already names the photo */

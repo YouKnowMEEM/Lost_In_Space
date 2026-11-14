@@ -1,0 +1,163 @@
+{
+  "id": "alsep",
+  "book": 6,
+  "title": "The Listening Stations",
+  "subtitle": "Science boxes that stayed on the Moon",
+  "tagline": "A bedtime story from the Moon",
+  "voice": "af_heart",
+  "theme": "moon",
+  "missionPath": "/object/alsep",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "The Listening Stations",
+      "scene": "alsep-cover",
+      "narration": "Sleeping Beauties presents... The Listening Stations. Science boxes that stayed on the Moon. A bedtime story from the Moon."
+    },
+    {
+      "id": "asleep",
+      "title": "Boxes in the Dust",
+      "scene": "alsep-asleep",
+      "text": [
+        "If you could walk to the places where astronauts landed on the Moon, you would find some funny little things lying in the dust.",
+        "A box with a roof on stilts. A tall, twisty antenna pointing at the Earth. Thin cables snaking across the ground. A dark can with fins, like a tiny radiator.",
+        "These are the listening stations. Astronauts set them up and then flew home, but the stations stayed behind, listening to the Moon all by themselves.",
+        "Now they are fast asleep. But for years and years, they were wide awake."
+      ],
+      "fact": "Their full name is the Apollo Lunar Surface Experiments Package, or ALSEP for short. Astronauts set one up on Apollo 12, 14, 15, 16 and 17.",
+      "sources": [
+        "alsep12"
+      ]
+    },
+    {
+      "id": "why",
+      "title": "Someone to Stay Behind",
+      "scene": "alsep-why",
+      "text": [
+        "Astronauts could only stay on the Moon for a few days. Then they had to go home.",
+        "But scientists had questions that would take years to answer. Does the Moon shake? Is it warm inside? What blows across it from the Sun?",
+        "So they asked: what if the astronauts left helpers behind? Small, tough machines that could keep measuring, day and night, and send everything they learned back to Earth by radio.",
+        "Neil and Buzz left a first little listener at Tranquility Base, powered by sunlight. Then came the bigger stations, one on each of the next five Moon landings that touched down safely."
+      ],
+      "fact": "Apollo 11's seismometer worked for about three weeks. The bigger stations that followed lasted for years.",
+      "sources": [
+        "easep",
+        "alsep12"
+      ]
+    },
+    {
+      "id": "setup",
+      "title": "Unpacking on the Moon",
+      "scene": "alsep-setup",
+      "text": [
+        "Each station travelled to the Moon packed into two boxes, tucked into the side of the lunar module.",
+        "The astronauts fixed the two boxes to the ends of a pole, and carried them away from the lander like a weightlifter carrying a barbell.",
+        "Then, a short walk from the lander, they unpacked everything. They stood up the central station and opened its roof to shade it from the hot Sun. They pointed its antenna at the Earth. They laid out instruments in a circle around it, each one joined to the station by a cable.",
+        "It was like setting up a tiny laboratory, while wearing thick gloves and a giant helmet."
+      ],
+      "fact": "The station's roof was a sunshade. In daylight, the Moon's ground gets hotter than boiling water.",
+      "photo": {
+        "of": "alsep",
+        "pos": "bl"
+      },
+      "sources": [
+        "alsep12"
+      ]
+    },
+    {
+      "id": "battery",
+      "title": "A Battery That Stays Warm",
+      "scene": "alsep-battery",
+      "text": [
+        "Every station needed power, all the time. But on the Moon, each night lasts about two weeks, long and dark and terribly cold. Solar panels would not be enough.",
+        "So each station had a special battery: a dark can with fins, called an RTG. Inside it was a capsule of plutonium, which stays warm all by itself, year after year. The battery turned that warmth into electricity.",
+        "On Apollo 12, the capsule got stuck in its carrying case! Alan Bean had to tap the case with a hammer, again and again, until it finally slid out.",
+        "After that, the station hummed along happily, through every long lunar night."
+      ],
+      "fact": "Each RTG made about 70 watts of electricity, roughly enough to light one bright light bulb.",
+      "sources": [
+        "alsep12"
+      ]
+    },
+    {
+      "id": "bell",
+      "title": "The Moon Rings Like a Bell",
+      "scene": "alsep-bell",
+      "text": [
+        "The most important instrument was the seismometer. It could feel the tiniest shake in the ground, much smaller than you could ever feel.",
+        "When Apollo 12's astronauts were safely back in their command module, they let go of the empty top half of their lunar module. Controllers sent it crashing into the Moon on purpose, to see what would happen.",
+        "The seismometer felt it, and it kept on feeling it. The Moon kept trembling, softly, for nearly an hour, like a bell that had been rung.",
+        "Scientists were amazed. On Earth, the shaking from a crash dies away in a minute or two. The Moon is dry and stony all the way through, so it keeps on ringing."
+      ],
+      "fact": "Later Apollo missions crashed their used rocket stages into the Moon on purpose, too, so the stations could feel the shaking from far away.",
+      "sources": [
+        "alsep12",
+        "seismic"
+      ]
+    },
+    {
+      "id": "moonquakes",
+      "title": "Moonquakes",
+      "scene": "alsep-moonquakes",
+      "text": [
+        "Year after year, the stations listened. And the Moon had a lot to say.",
+        "They felt thousands of moonquakes. Some came from very deep inside, gently tugged by the Earth's gravity. Some happened when the Sun rose and the cold ground warmed up and cracked. And a few were strong shallow quakes, near the surface.",
+        "They felt space rocks hitting the Moon, too, big and small.",
+        "By listening to the way the shaking travelled through the Moon, scientists could start to draw a picture of what it is like deep inside: its crust, its rocky middle, and its small core."
+      ],
+      "fact": "The stations recorded more than twelve thousand moonquakes between 1969 and 1977.",
+      "sources": [
+        "seismic"
+      ]
+    },
+    {
+      "id": "trip",
+      "title": "Oops, a Cable!",
+      "scene": "alsep-trip",
+      "text": [
+        "Some stations had heat probes, long thin sticks pushed deep into holes in the ground. They measured how much warmth was flowing up from inside the Moon.",
+        "On Apollo 16, John Young was walking past the station in his big boots. He could not see his feet very well inside his suit, and his foot caught on a cable.",
+        "Snap! The cable pulled loose from the station, and that heat probe never worked.",
+        "John felt terrible. But on Apollo 15 and Apollo 17, the heat probes worked well, and they showed that heat is still slowly leaking out of the Moon."
+      ],
+      "fact": "Accidents like this one taught engineers to make cables easier to see and harder to pull loose.",
+      "sources": [
+        "a16",
+        "alsj"
+      ]
+    },
+    {
+      "id": "mirrors",
+      "title": "Mirrors That Still Work",
+      "scene": "alsep-mirrors",
+      "text": [
+        "Some astronauts also left special mirrors on the Moon, near the listening stations. They are flat panels full of little glass corners.",
+        "When scientists on Earth shine a laser at one of them, the light bounces straight back to where it came from. By timing how long the light takes to come home, they can measure the distance to the Moon very, very precisely.",
+        "That is how we know a surprising secret: the Moon is drifting away from us, very slowly. About as fast as your fingernails grow.",
+        "And those mirrors need no power at all. Scientists are still bouncing lasers off them today."
+      ],
+      "fact": "The Moon moves about 3.8 centimetres farther from Earth every year.",
+      "sources": [
+        "laser",
+        "jpllaser"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Listeners",
+      "scene": "alsep-goodnight",
+      "text": [
+        "For up to eight years, the stations sent their messages home: shakes and rumbles, heat and cold, the wind from the Sun.",
+        "Then, on the thirtieth of September, nineteen seventy-seven, people at NASA sent one last command to all of the stations together. Switch off.",
+        "And the Moon went quiet.",
+        "The stations are still standing where the astronauts left them, their antennas still pointing at the blue Earth. Goodnight, little listeners. Thank you for hearing the Moon's heartbeat."
+      ],
+      "fact": "The seismometers' recordings are still studied today. In 2011, scientists used them to show that the Moon has a small core that is partly liquid.",
+      "sources": [
+        "alsep12",
+        "core"
+      ]
+    }
+  ]
+}

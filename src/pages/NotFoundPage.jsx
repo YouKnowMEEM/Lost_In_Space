@@ -21,8 +21,8 @@ export default function NotFoundPage({ what = "page" }) {
             <Link className="hp-btn hp-btn-primary" to="/">
               Back to the start
             </Link>
-            <Link className="hp-btn hp-btn-quiet" to="/atlas">
-              Browse the Atlas
+            <Link className="hp-btn hp-btn-quiet" to="/library">
+              Browse the Cosmic Library
             </Link>
             <Link className="hp-btn hp-btn-quiet" to={pick.route}>
               <Compass size={18} aria-hidden="true" /> Surprise me: {pick.short}

@@ -52,6 +52,7 @@ export const vikingMission = {
     { when: "Jan 1981", title: "A new name", text: "The lander becomes the Thomas A. Mutch Memorial Station, in honor of the leader of the imaging team." },
     { when: "Nov 1982", title: "Contact lost", text: "A command meant to update battery-charging software overwrites the antenna-pointing data. Recovery attempts end in May 1983." },
     { when: "Dec 2006", title: "Seen from orbit", text: "The HiRISE camera on Mars Reconnaissance Orbiter locates the lander and likely spots its heat shield, back shell and parachute.", photo: "PIA01881" },
+    { when: "20 Jul 2026", title: "Fifty years on Mars", text: "Half a century after touchdown, NASA marks the anniversary with \u201cViking: 50 Years on Mars\u201d. Every Mars lander since has built on what Viking learned." },
   ],
   model: {
     src: "/models/viking-lander.glb",
@@ -114,6 +115,9 @@ export const vikingMission = {
     { title: "Viking 1", publisher: "NASA Science", url: "https://science.nasa.gov/mission/viking-1/" },
     { title: "Viking Lander 1 Thomas A. Mutch Memorial Station Imaged from Orbit", publisher: "NASA Photojournal", url: "https://science.nasa.gov/photojournal/viking-lander-1-thomas-a-mutch-memorial-station-imaged-from-orbit/" },
     { title: "Boulder ‘Big Joe’ and Surface Changes on Mars", publisher: "NASA Photojournal", url: "https://science.nasa.gov/photojournal/boulder-big-joe-and-surface-changes-on-mars/" },
+    { title: "Mars", publisher: "NASA Science", url: "https://science.nasa.gov/mars/" },
+    { title: "Phoenix", publisher: "NASA Science", url: "https://science.nasa.gov/mission/phoenix/" },
+    { title: "Viking: 50 Years on Mars (poster and story)", publisher: "NASA Science", url: "https://science.nasa.gov/resource/viking-50-years-on-mars-poster/" },
     { title: "NASA Image and Video Library", publisher: "NASA (all photos on this page)", url: "https://images.nasa.gov/" },
     { title: "NASA 3D Resources: Viking Lander", publisher: "NASA (3D model)", url: "https://github.com/nasa/NASA-3D-Resources" },
   ],

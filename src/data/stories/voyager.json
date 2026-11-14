@@ -25,7 +25,11 @@
         "Out there, in the dark between the stars, a small spacecraft is still travelling. It is farther from home than anything people have ever made.",
         "Its name is Voyager 1. It left Earth almost fifty years ago, and it has never stopped."
       ],
-      "fact": "Voyager 1 is more than 25 billion kilometres from Earth. Even light, the fastest thing there is, needs almost a whole day to get there."
+      "fact": "Voyager 1 is more than 25 billion kilometres from Earth. Even light, the fastest thing there is, needs almost a whole day to get there.",
+      "sources": [
+        "where",
+        "sci"
+      ]
     },
     {
       "id": "lineup",
@@ -42,7 +46,11 @@
         "credit": "NASA / JPL-Caltech · PIA21478",
         "pos": "br"
       },
-      "fact": "Voyager's computers can do about 8,000 things a second. A phone today can do billions!"
+      "fact": "Voyager's computers can do about 8,000 things a second. A phone today can do billions!",
+      "sources": [
+        "faq",
+        "sci"
+      ]
     },
     {
       "id": "launch",
@@ -60,7 +68,11 @@
         "credit": "NASA / JPL-Caltech · PIA21747",
         "pos": "tl"
       },
-      "fact": "Voyager 1 travels about 17 kilometres every second. At that speed you could fly from London to New York in about five and a half minutes."
+      "fact": "Voyager 1 travels about 17 kilometres every second. At that speed you could fly from London to New York in about five and a half minutes.",
+      "sources": [
+        "sci",
+        "faq"
+      ]
     },
     {
       "id": "record",
@@ -77,7 +89,10 @@
         "caption": "The real Golden Record is prepared for Voyager 1 in 1977.",
         "credit": "NASA / JPL-Caltech · PIA21741",
         "pos": "tr"
-      }
+      },
+      "sources": [
+        "record"
+      ]
     },
     {
       "id": "jupiter",
@@ -95,7 +110,11 @@
         "credit": "NASA / JPL · PIA00144",
         "pos": "bl"
       },
-      "fact": "Voyager 1 sent home about 18,000 pictures of Jupiter and its moons. Its sharpest camera could read a newspaper headline from a kilometre away."
+      "fact": "Voyager 1 sent home about 18,000 pictures of Jupiter and its moons. Its sharpest camera could read a newspaper headline from a kilometre away.",
+      "sources": [
+        "nssdc",
+        "sci"
+      ]
     },
     {
       "id": "io",
@@ -113,7 +132,11 @@
         "credit": "NASA / JPL · PIA00010",
         "pos": "br"
       },
-      "fact": "Io is the most volcanic place we know of. Its volcanoes can throw material hundreds of kilometres high."
+      "fact": "Io is the most volcanic place we know of. Its volcanoes can throw material hundreds of kilometres high.",
+      "sources": [
+        "sci",
+        "nssdc"
+      ]
     },
     {
       "id": "saturn",
@@ -131,7 +154,11 @@
         "credit": "NASA / JPL · PIA00024",
         "pos": "br"
       },
-      "fact": "Titan's air is mostly nitrogen, like the air we breathe, but it is so thick and hazy that Voyager could not see the ground at all."
+      "fact": "Titan's air is mostly nitrogen, like the air we breathe, but it is so thick and hazy that Voyager could not see the ground at all.",
+      "sources": [
+        "sci",
+        "nssdc"
+      ]
     },
     {
       "id": "dot",
@@ -149,7 +176,11 @@
         "credit": "NASA / JPL · PIA00452",
         "pos": "tr"
       },
-      "fact": "Earth was smaller than one pixel in the picture. The scientist Carl Sagan called it the Pale Blue Dot."
+      "fact": "Earth was smaller than one pixel in the picture. The scientist Carl Sagan called it the Pale Blue Dot.",
+      "sources": [
+        "sci",
+        "faq"
+      ]
     },
     {
       "id": "bubble",
@@ -173,7 +204,11 @@
         "caption": "A short NASA video about the edge of the Sun's bubble.",
         "credit": "NASA's Goddard Space Flight Center"
       },
-      "fact": "Scientists were only sure a year later, after the Sun sent out a burst that made the gas around Voyager ring like a bell."
+      "fact": "Scientists were only sure a year later, after the Sun sent out a burst that made the gas around Voyager ring like a bell.",
+      "sources": [
+        "sci",
+        "faq"
+      ]
     },
     {
       "id": "listening",
@@ -191,7 +226,11 @@
         "credit": "NASA / JPL-Caltech · PIA13277",
         "pos": "tr"
       },
-      "fact": "The listening stations sit on opposite sides of the world, so one of them can always see Voyager while the Earth spins."
+      "fact": "The listening stations sit on opposite sides of the world, so one of them can always see Voyager while the Earth spins.",
+      "sources": [
+        "where",
+        "faq"
+      ]
     },
     {
       "id": "glitch",
@@ -209,7 +248,11 @@
         "caption": "The Voyager team at NASA's Jet Propulsion Laboratory on April 20, 2024, when readable data arrived again.",
         "credit": "NASA / JPL-Caltech"
       },
-      "fact": "All of Voyager's computers together have about 69 kilobytes of memory. One photo on a phone needs far more than that!"
+      "fact": "All of Voyager's computers together have about 69 kilobytes of memory. One photo on a phone needs far more than that!",
+      "sources": [
+        "y2024",
+        "faq"
+      ]
     },
     {
       "id": "sleepy",
@@ -221,7 +264,11 @@
         "In April [2026]{twenty twenty-six}, they switched off one more. Now only two are still working: one that feels the magnetic fields of space, and one that listens to waves rippling through it.",
         "One day, Voyager 1 will not have enough power to call home. It will fall silent, like the other sleeping beauties."
       ],
-      "fact": "Voyager's power generators lose about 4 watts every year. That's about as much as a small night-light."
+      "fact": "Voyager's power generators lose about 4 watts every year. That's about as much as a small night-light.",
+      "sources": [
+        "y2025",
+        "y2026"
+      ]
     },
     {
       "id": "goodnight",
@@ -234,7 +281,11 @@
         "So tonight, look up at the stars. Somewhere out there, past all the planets, a little traveller is still on its way.",
         "Goodnight, Voyager."
       ],
-      "fact": "Seen from Earth, Voyager 1 is in the constellation Ophiuchus, the Serpent Bearer, which you can find in the evening sky in summer."
+      "fact": "Seen from Earth, Voyager 1 is in the constellation Ophiuchus, the Serpent Bearer, which you can find in the evening sky in summer.",
+      "sources": [
+        "where",
+        "sci"
+      ]
     }
   ]
 }

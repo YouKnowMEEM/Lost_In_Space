@@ -33,7 +33,9 @@ export default function Lightbox({ item, onClose, tone = "dark" }) {
   }, [item]);
 
   if (!item) return null;
-  const video = item.kind === "video" ? nasaVideo(item.nasa) : null;
+  // A video is either NASA's (by library id) or one of this site's own films (src + poster).
+  const video = item.kind === "video" ? (item.src ? { sources: [item.src], poster: item.poster } : nasaVideo(item.nasa)) : null;
+  const nasaLink = item.nasa ? nasaDetailsUrl(item.nasa) : item.link;
 
   return (
     <div className={`lb lb-${tone}`} role="dialog" aria-modal="true" aria-label={item.title || "Real NASA photo"}>
@@ -53,12 +55,12 @@ export default function Lightbox({ item, onClose, tone = "dark" }) {
                 onError={() => setVideoTry((n) => n + 1)}
               />
             ) : (
-              <a className="nasa-missing" href={nasaDetailsUrl(item.nasa)} target="_blank" rel="noreferrer">
-                <span>This video could not load here. Watch it at NASA.</span>
-              </a>
+              <p className="nasa-missing">
+                <span>This video could not load here.</span>
+              </p>
             )
           ) : (
-            <NasaImage id={item.nasa} size="large" alt={item.caption} eager />
+            <NasaImage id={item.nasa} src={item.src} size="large" alt={item.caption} eager />
           )}
         </div>
         <figcaption className="lb-caption">
@@ -66,9 +68,11 @@ export default function Lightbox({ item, onClose, tone = "dark" }) {
           <span>{item.caption}</span>
           <span className="lb-meta">
             <span>{item.credit}</span>
-            <a href={nasaDetailsUrl(item.nasa)} target="_blank" rel="noreferrer">
-              View at NASA <ExternalLink size={14} aria-hidden="true" />
-            </a>
+            {nasaLink && (
+              <a href={nasaLink} target="_blank" rel="noreferrer">
+                View at NASA <ExternalLink size={14} aria-hidden="true" />
+              </a>
+            )}
           </span>
         </figcaption>
         <button ref={closeRef} type="button" className="lb-close" onClick={onClose} aria-label="Close viewer">

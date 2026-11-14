@@ -1,0 +1,191 @@
+{
+  "id": "surveyor",
+  "book": 4,
+  "title": "Surveyor",
+  "subtitle": "The robots who tested the Moon",
+  "tagline": "A bedtime story from the Moon",
+  "voice": "af_heart",
+  "theme": "moon",
+  "missionPath": "/object/surveyor-3",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Surveyor",
+      "scene": "surveyor-cover",
+      "narration": "Sleeping Beauties presents... Surveyor. The robots who tested the Moon. A bedtime story from the Moon."
+    },
+    {
+      "id": "asleep",
+      "title": "Five Little Robots",
+      "scene": "surveyor-asleep",
+      "text": [
+        "Shh. Look across the grey hills of the Moon.",
+        "Far apart from one another, five little robots are standing very still. Each one has three thin legs, a flat solar panel on a pole, and a camera that once looked all around.",
+        "They are the Surveyors. They have been asleep for almost sixty years.",
+        "Before any person ever walked on the Moon, these five robots went first. They had a very important question to answer, and only they could answer it."
+      ],
+      "fact": "NASA sent seven Surveyors to the Moon between 1966 and 1968. Five of them landed safely and did their work.",
+      "sources": [
+        "s3",
+        "nasm"
+      ]
+    },
+    {
+      "id": "question",
+      "title": "The Big Question",
+      "scene": "surveyor-question",
+      "text": [
+        "In the 1960s, people on Earth were getting ready to send astronauts to the Moon. But there was a problem. Nobody knew what the ground was like.",
+        "Some scientists worried that the Moon was covered in deep, soft dust, like a sea of powder. A heavy spaceship might sink right into it and never come out!",
+        "Earlier spacecraft had only crashed into the Moon, taking pictures on the way down. Now NASA needed a robot that could land gently, stand on the ground, and look.",
+        "So engineers built the Surveyors: brave little scouts, sent to find out if the Moon was safe to stand on."
+      ],
+      "fact": "Before Surveyor, NASA's Ranger spacecraft photographed the Moon as they flew straight into it. Their pictures helped choose where Surveyor could land.",
+      "sources": [
+        "ranger",
+        "s1"
+      ]
+    },
+    {
+      "id": "landing",
+      "title": "A Very Soft Landing",
+      "scene": "surveyor-landing",
+      "text": [
+        "Landing softly on the Moon is very hard. There is no air, so a parachute is no use at all. The only way to slow down is with rockets.",
+        "On the second of June, nineteen sixty-six, Surveyor 1 came falling towards a plain called the Ocean of Storms. Its big braking rocket roared, then dropped away, empty. A radar measured how high and how fast it was going.",
+        "Three little engines took over, puffing gently, slower, and slower, until Surveyor 1 was almost floating.",
+        "Then: touch. Three footpads pressed into the dust. It had worked, on the very first try!"
+      ],
+      "fact": "Surveyor 1 was the first American spacecraft to land softly on another world.",
+      "photo": {
+        "of": "surveyor-5",
+        "pos": "br"
+      },
+      "sources": [
+        "s1",
+        "s1n"
+      ]
+    },
+    {
+      "id": "pictures",
+      "title": "Not Quicksand After All",
+      "scene": "surveyor-pictures",
+      "text": [
+        "The scientists held their breath. Had Surveyor 1 sunk?",
+        "No! Its footpads had pressed only a little way into the ground, about as deep as your footprint in damp sand. The Moon's dust was firm enough to stand on.",
+        "Then the camera began to look around. It peered into a little tilting mirror and turned it, this way and that, and took picture after picture. Rocks. Craters. Its own feet. The black sky.",
+        "Surveyor 1 sent more than eleven thousand pictures home. Engineers studied every one, and they began to smile. Astronauts could land here."
+      ],
+      "fact": "Surveyor 1 even woke up again after the freezing two-week lunar night, showing that machines could survive the Moon's cold.",
+      "sources": [
+        "s1n",
+        "s1"
+      ]
+    },
+    {
+      "id": "scoop",
+      "title": "Two Bounces and a Scoop",
+      "scene": "surveyor-scoop",
+      "text": [
+        "In April nineteen sixty-seven, Surveyor 3 came down to land. But shiny rocks below confused its radar, and its little engines did not switch off when they should.",
+        "Boing! Surveyor 3 bounced up off the ground. Boing! It bounced again. At last, its engines stopped, and it settled down, a little crooked, on the slope of a crater.",
+        "Surveyor 3 had a new tool: a folding arm with a small scoop at the end. It reached out, pressed on the ground, and dug little trenches, like a child playing at the beach.",
+        "The Moon's soil, it turned out, clumped together a bit like damp sand. That told engineers how to design the astronauts' boots and tools."
+      ],
+      "fact": "Surveyor 3 sent home 6,326 pictures, and its scoop was the first tool to dig into the Moon.",
+      "sources": [
+        "s3",
+        "s3n"
+      ]
+    },
+    {
+      "id": "eclipse",
+      "title": "When the Earth Hid the Sun",
+      "scene": "surveyor-eclipse",
+      "text": [
+        "A few days later, Surveyor 3 saw something no one on Earth could see.",
+        "From the Moon, the Earth looks big and blue. On that day, the Earth slid right in front of the Sun. The Moon went dark.",
+        "But all around the edge of the Earth, there was a thin ring of glowing light. It was sunlight shining through the Earth's air, all the sunrises and sunsets on our planet at once.",
+        "Surveyor 3 pointed its camera up and took pictures of it: a solar eclipse, seen from the Moon."
+      ],
+      "fact": "On Earth we see the Moon block the Sun. From the Moon, Surveyor 3 watched the Earth do it instead, on 24 April 1967.",
+      "sources": [
+        "s3n",
+        "s3"
+      ]
+    },
+    {
+      "id": "hop",
+      "title": "The Robot That Hopped",
+      "scene": "surveyor-hop",
+      "text": [
+        "The Surveyors kept learning. Surveyor 5 landed in the Sea of Tranquility, and carried a tiny chemistry lab. It found that the Moon's dark plains are made of old, cooled lava.",
+        "Surveyor 6 did something nobody had ever done. Its team told it to fire its little engines, just for a moment.",
+        "Whoosh! Surveyor 6 rose up about as high as a ceiling, floated sideways, and set itself down again, a few steps away.",
+        "It was the first time anything had ever lifted off from another world. Astronauts would need to do the same thing one day, to come home."
+      ],
+      "fact": "Surveyor 5 landed only about 25 kilometres from where Eagle would land in 1969. Without knowing it, it was scouting the first landing site for people.",
+      "sources": [
+        "s6n",
+        "s5n",
+        "a11n"
+      ]
+    },
+    {
+      "id": "lasers",
+      "title": "Two Beams of Light",
+      "scene": "surveyor-lasers",
+      "text": [
+        "The last of the family, Surveyor 7, was sent somewhere new: the bright, rocky hills near a giant crater called Tycho.",
+        "Its chemistry lab found that these pale highlands are different from the dark plains. They are the Moon's oldest ground.",
+        "Then, one night in January nineteen sixty-eight, astronomers in Arizona and California aimed two powerful lasers at the Moon, right at Surveyor 7.",
+        "Surveyor 7 looked up at the Earth, and there they were: two tiny points of light, shining all the way across space. It was the first time lasers from Earth were seen on the Moon."
+      ],
+      "fact": "Surveyor 7's pictures show a landscape covered in boulders, thrown out long ago by the impact that made Tycho crater.",
+      "photo": {
+        "of": "surveyor-7",
+        "pos": "bl"
+      },
+      "sources": [
+        "s7n"
+      ]
+    },
+    {
+      "id": "visitors",
+      "title": "Visitors!",
+      "scene": "surveyor-visitors",
+      "text": [
+        "Two and a half years after Surveyor 3 bounced to a stop, something wonderful happened.",
+        "In November nineteen sixty-nine, the Apollo 12 lunar module came down out of the black sky and landed close by, just at the edge of Surveyor 3's crater.",
+        "Out stepped two astronauts, Pete Conrad and Alan Bean. They walked over to the little robot, the very first time people had ever visited a machine on another world.",
+        "Carefully, they cut off its camera, its scoop and some of its tubes, and took them home to Earth, so scientists could see what years on the Moon do to metal and glass."
+      ],
+      "fact": "Surveyor 3's camera came home to Earth, and it is now kept at the Smithsonian's National Air and Space Museum.",
+      "photo": {
+        "of": "surveyor-3",
+        "pos": "tr"
+      },
+      "sources": [
+        "s3",
+        "camera"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Surveyors",
+      "scene": "surveyor-goodnight",
+      "text": [
+        "The Surveyors' batteries are empty now, and their cameras are still. Surveyor 3 stands without its camera, keeping watch near Apollo 12's empty lander.",
+        "But their work made the footsteps possible. Because five brave little robots tested the ground, Eagle knew where to land, and Neil and Buzz knew the Moon would hold them.",
+        "Spacecraft flying high above the Moon have photographed some of the Surveyors, still standing just where they landed.",
+        "So goodnight, little scouts. Thank you for going first. Sleep tight, under the blue Earth."
+      ],
+      "fact": "Some scientists once thought germs had survived on Surveyor 3's camera. Later studies found they most likely got onto it back on Earth, after the camera came home.",
+      "sources": [
+        "s3",
+        "microbe"
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import BookRoute from "../storybook/BookRoute";
-import { EAGLE_PATHS, VOYAGER_PATHS } from "../storybook/books";
+import { VOYAGER_PATHS } from "../storybook/books";
 import { voyagerScenes } from "../storybook/scenes/voyagerScenes";
 import story from "../data/stories/voyager.json";
 import timing from "../data/stories/voyager.timing.json";
@@ -15,7 +15,7 @@ const config = {
   paths: VOYAGER_PATHS,
   // Voyager 1 lives on the Space page of the main site.
   world: { label: "Space", short: "Space", path: "/space?object=voyager-1" },
-  nextBook: { title: "Eagle", path: EAGLE_PATHS.story },
+  nextBook: { title: "Surveyor", path: "/stories/surveyor" },
   mission: voyagerMission,
 };
 

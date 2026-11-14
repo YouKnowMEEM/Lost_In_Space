@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Html } from "@react-three/drei";
+import { storybookAt } from "../../data/catalog";
 
 /* ------------------------------------------------------------------ */
 /* Geometry helper (unchanged API)                                     */
@@ -68,6 +69,77 @@ function getTextures() {
       g.beginPath();
       g.arc(s / 2, s / 2, s * 0.42, 0, Math.PI * 2);
       g.stroke();
+    }),
+    // Four-pointed twinkle for machines that have a storybook
+    sparkle: make((g, s) => {
+      const c = s / 2;
+      const halo = g.createRadialGradient(c, c, 0, c, c, c);
+      halo.addColorStop(0, "rgba(255,255,255,0.85)");
+      halo.addColorStop(0.2, "rgba(255,255,255,0.3)");
+      halo.addColorStop(0.55, "rgba(255,255,255,0.05)");
+      halo.addColorStop(1, "rgba(255,255,255,0)");
+      g.fillStyle = halo;
+      g.fillRect(0, 0, s, s);
+      g.fillStyle = "rgba(255,255,255,1)";
+      g.shadowColor = "rgba(255,255,255,1)";
+      g.shadowBlur = s * 0.04;
+      g.beginPath();
+      for (let k = 0; k < 4; k++) {
+        const tip = (k * Math.PI) / 2 - Math.PI / 2;
+        const waist = tip + Math.PI / 4;
+        g.lineTo(c + Math.cos(tip) * c * 0.94, c + Math.sin(tip) * c * 0.94);
+        g.lineTo(c + Math.cos(waist) * c * 0.065, c + Math.sin(waist) * c * 0.065);
+      }
+      g.closePath();
+      g.fill();
+    }),
+    // A small golden badge with an open book, floating above storybook markers
+    book: make((g, s) => {
+      const c = s / 2;
+      const halo = g.createRadialGradient(c, c, s * 0.26, c, c, s * 0.5);
+      halo.addColorStop(0, "rgba(255,196,72,0.6)");
+      halo.addColorStop(1, "rgba(255,196,72,0)");
+      g.fillStyle = halo;
+      g.fillRect(0, 0, s, s);
+      const disc = g.createLinearGradient(0, s * 0.18, 0, s * 0.82);
+      disc.addColorStop(0, "#ffe596");
+      disc.addColorStop(1, "#f29a18");
+      g.fillStyle = disc;
+      g.beginPath();
+      g.arc(c, c, s * 0.34, 0, Math.PI * 2);
+      g.fill();
+      g.lineWidth = s * 0.03;
+      g.strokeStyle = "rgba(255,255,255,0.95)";
+      g.stroke();
+      // open book: two curved pages meeting at the spine
+      const w = s * 0.215;
+      const h = s * 0.19;
+      const top = c - h * 0.5;
+      const page = (dir) => {
+        g.beginPath();
+        g.moveTo(c, top + h * 0.12);
+        g.quadraticCurveTo(c + dir * w * 0.5, top - h * 0.14, c + dir * w, top + h * 0.02);
+        g.lineTo(c + dir * w, top + h);
+        g.quadraticCurveTo(c + dir * w * 0.5, top + h * 0.84, c, top + h * 1.1);
+        g.closePath();
+        g.fill();
+      };
+      g.fillStyle = "#fffaf0";
+      page(-1);
+      page(1);
+      g.strokeStyle = "rgba(176,96,8,0.85)";
+      g.lineWidth = s * 0.014;
+      g.beginPath();
+      g.moveTo(c, top + h * 0.12);
+      g.lineTo(c, top + h * 1.1);
+      for (const dir of [-1, 1]) {
+        for (let k = 1; k <= 3; k++) {
+          const y = top + h * (0.2 + k * 0.19);
+          g.moveTo(c + dir * w * 0.2, y);
+          g.lineTo(c + dir * w * 0.78, y - h * 0.05);
+        }
+      }
+      g.stroke();
     })
   };
   return textureCache;
@@ -77,6 +149,7 @@ function getTextures() {
 /* Look & feel                                                         */
 /* ------------------------------------------------------------------ */
 const COLORS = { active: "#4cd7ff", impact: "#ff7c59", future: "#c084fc", default: "#e0eeff" };
+const GOLD = "#ffc23d";
 
 // How lively each status category feels
 const PROFILES = {
@@ -86,9 +159,11 @@ const PROFILES = {
   default: { speed: 0.22, reach: 0.16, alpha: 0.22, glow: 0.55 }
 };
 
+const STORY_PROFILE = { speed: 0.42, reach: 0.34, alpha: 0.85, glow: 1.1 };
+
 const REFERENCE_DISTANCE = 11.5; // default camera distance in PlanetGlobe
 const LIFT = 0.012;
-const LAYER_ORDER = { shadow: 10, glow: 11, pulse: 12, select: 13, core: 14, rim: 15 };
+const LAYER_ORDER = { shadow: 10, aura: 11, glow: 12, pulse: 13, sparkle: 14, select: 15, core: 16, rim: 17, badge: 18 };
 
 const _world = new THREE.Vector3();
 const _normal = new THREE.Vector3();
@@ -99,7 +174,7 @@ const _apolloBlue = new THREE.Color("#3f9fff");
 /* ------------------------------------------------------------------ */
 /* Hover label with a soft fade in/out                                 */
 /* ------------------------------------------------------------------ */
-function MarkerLabel({ name, visible }) {
+function MarkerLabel({ name, book, visible }) {
   const [mounted, setMounted] = useState(false);
   const [shown, setShown] = useState(false);
 
@@ -128,11 +203,12 @@ function MarkerLabel({ name, visible }) {
       className="equipment-marker-label"
       style={{
         opacity: shown ? 1 : 0,
-        transform: `translateY(${shown ? -26 : -19}px)`,
+        transform: `translateY(${(shown ? -26 : -19) - (book ? 30 : 0)}px)`,
         transition: "opacity .18s ease, transform .22s cubic-bezier(.2,.8,.2,1)"
       }}
     >
       <strong>{name}</strong>
+      {book && <small className="equipment-marker-book">Storybook: {book}</small>}
     </div>
   </Html>;
 }
@@ -166,8 +242,10 @@ export default function EquipmentMarker({ artifact, selected, onSelect, surfaceR
   }, [position]);
 
   const category = artifact.statusCategory === "active" || artifact.statusCategory === "impact" || artifact.statusCategory === "future" ? artifact.statusCategory : "default";
-  const profile = PROFILES[category];
-  const baseColor = useMemo(() => new THREE.Color(COLORS[category]), [category]);
+  // Machines with a storybook shine gold, twinkle and carry a little book badge.
+  const book = useMemo(() => storybookAt(artifact.id), [artifact.id]);
+  const profile = book ? STORY_PROFILE : PROFILES[category];
+  const baseColor = useMemo(() => new THREE.Color(book ? GOLD : COLORS[category]), [book, category]);
   const phase = useMemo(() => Math.abs(Number(artifact.lat) * 0.137 + Number(artifact.lon) * 0.071) % 1, [artifact.lat, artifact.lon]);
 
   // Stable ref setters, one per layer
@@ -245,6 +323,16 @@ export default function EquipmentMarker({ artifact, selected, onSelect, surfaceR
     const eased = 1 - Math.pow(1 - p, 3);
     put(L.pulse, 0.1 + eased * profile.reach, Math.pow(1 - p, 1.4) * profile.alpha * (1 + 0.6 * emphasis));
 
+    // Storybook machines: a warm aura, a slow twinkle and a bobbing book badge
+    if (book) {
+      const twinkle = (Math.sin(t * 2.3 + phase * 6.283) + 1) / 2;
+      put(L.aura, 0.5 + 0.08 * breathe + 0.1 * emphasis, 0.42 + 0.22 * breathe + 0.2 * emphasis);
+      put(L.sparkle, 0.3 + 0.1 * twinkle + 0.05 * emphasis, 0.35 + 0.6 * twinkle);
+      if (L.sparkle) L.sparkle.material.rotation = 0.35 * Math.sin(t * 0.4 + phase * 6.283);
+      put(L.badge, 0.27 + 0.05 * emphasis, 1);
+      if (L.badge) L.badge.center.set(0.5, -0.32 - 0.08 * Math.sin(t * 2 + phase * 6.283));
+    }
+
     // Selection ring settles in from slightly larger
     put(L.select, 0.17 + 0.03 * (1 - sT), 0.9 * sT);
 
@@ -256,7 +344,7 @@ export default function EquipmentMarker({ artifact, selected, onSelect, surfaceR
     if (L.pulse) L.pulse.material.color.copy(isSelectedApollo11 ? _apolloBlue : baseColor);
     if (L.select) L.select.material.color.copy(isSelectedApollo11 ? _apolloBlue : _white);
     if (L.rim) L.rim.material.color.copy(isSelectedApollo11 ? _apolloBlue : _white);
-    if (L.core) L.core.material.color.copy(baseColor).lerp(_white, sT * 0.6);
+    if (L.core) L.core.material.color.copy(baseColor).lerp(_white, sT * (book ? 0.35 : 0.6));
   });
 
   const guardedHandlers = {
@@ -308,13 +396,17 @@ export default function EquipmentMarker({ artifact, selected, onSelect, surfaceR
       </mesh>
 
       <sprite {...layerProps("shadow")}><spriteMaterial {...materialProps(textures.soft, "#000000")}/></sprite>
+      {book && <sprite {...layerProps("aura")}><spriteMaterial {...materialProps(textures.soft, "#ffb22e")}/></sprite>}
       <sprite {...layerProps("glow")}><spriteMaterial {...materialProps(textures.soft, baseColor)}/></sprite>
       <sprite {...layerProps("pulse")}><spriteMaterial {...materialProps(textures.ring, baseColor)}/></sprite>
+      {book && <sprite {...layerProps("sparkle")}><spriteMaterial {...materialProps(textures.sparkle, "#fff2c4")}/></sprite>}
       <sprite {...layerProps("select")}><spriteMaterial {...materialProps(textures.ring, "#ffffff")}/></sprite>
       <sprite {...layerProps("core")}><spriteMaterial {...materialProps(textures.disc, baseColor)}/></sprite>
       <sprite {...layerProps("rim")}><spriteMaterial {...materialProps(textures.ring, "#ffffff")}/></sprite>
+      {/* The book badge can be tapped too */}
+      {book && <sprite {...layerProps("badge")} raycast={THREE.Sprite.prototype.raycast} {...guardedHandlers}><spriteMaterial {...materialProps(textures.book, "#ffffff")}/></sprite>}
     </group>
 
-    <MarkerLabel name={artifact.name} visible={hovered && !selected}/>
+    <MarkerLabel name={artifact.name} book={book?.title} visible={hovered && !selected}/>
   </group>;
 }

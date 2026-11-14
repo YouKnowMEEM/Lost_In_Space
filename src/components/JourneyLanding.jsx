@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { ArrowRight, Rocket, X } from "lucide-react";
+import { ORDER } from "../storybook/library";
 import "./journeyLanding.css";
 
 /** A fixed, seeded star field so the sky looks the same on every visit. */
@@ -108,7 +109,7 @@ export default function JourneyLanding({ onStart, onSkip }) {
         </div>
         <ul className="jl-facts" aria-label="What is inside">
           <li><b>3</b> worlds</li>
-          <li><b>3</b> storybooks</li>
+          <li><b>{3 + ORDER.length}</b> storybooks</li>
           <li><b>3D</b> maps</li>
         </ul>
       </main>

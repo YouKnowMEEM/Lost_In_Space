@@ -26,7 +26,11 @@
         "Its name is Eagle. And once, it did something no machine had ever done before. It carried two people down to the surface of another world.",
         "This is its story."
       ],
-      "fact": "The dark “seas” on the Moon have no water at all. They are huge plains of old, hardened lava. Long ago, astronomers thought they might be oceans, and the names stuck."
+      "fact": "The dark “seas” on the Moon have no water at all. They are huge plains of old, hardened lava. Long ago, astronomers thought they might be oceans, and the names stuck.",
+      "sources": [
+        "moon",
+        "nssdc"
+      ]
     },
     {
       "id": "strange",
@@ -44,7 +48,11 @@
         "credit": "NASA · AS11-44-6581",
         "pos": "tl"
       },
-      "fact": "The astronauts flew Eagle standing up! There were no seats, just straps and handholds to keep them steady."
+      "fact": "The astronauts flew Eagle standing up! There were no seats, just straps and handholds to keep them steady.",
+      "sources": [
+        "overview",
+        "alsj"
+      ]
     },
     {
       "id": "launch",
@@ -67,7 +75,11 @@
         "caption": "Apollo 11 launch, restored from 70mm film.",
         "credit": "NASA · KSC_69-71212"
       },
-      "fact": "About a million people gathered near the launch site to watch, and millions more watched on TV."
+      "fact": "About a million people gathered near the launch site to watch, and millions more watched on TV.",
+      "sources": [
+        "overview",
+        "mission"
+      ]
     },
     {
       "id": "wings",
@@ -85,7 +97,19 @@
         "caption": "Our home, seen by the Apollo 11 crew on their way to the Moon. Can you spot Africa?",
         "credit": "NASA · AS11-36-5355"
       },
-      "fact": "When Columbia flew behind the Moon, Michael Collins was cut off from every other human being. He later wrote that he didn't feel lonely at all, just excited and confident."
+      "fact": "When Columbia flew behind the Moon, Michael Collins was cut off from every other human being. He later wrote that he didn't feel lonely at all, just excited and confident.",
+      "video": {
+        "src": "/video/eagle-journey.mp4",
+        "poster": "/video/eagle-journey.jpg",
+        "title": "Watch Apollo 11's whole journey",
+        "label": "Our mission animation",
+        "caption": "Our animation of Apollo 11's journey, from liftoff and the trip to the Moon to Eagle's landing, the flight home and splashdown, following NASA's mission timeline.",
+        "credit": "Animation: Team Lost_In_Space"
+      },
+      "sources": [
+        "overview",
+        "mission"
+      ]
     },
     {
       "id": "alarm",
@@ -104,7 +128,11 @@
         "credit": "NASA · S69-39593",
         "pos": "tr"
       },
-      "fact": "The software that saved the day was written by a team at MIT led by a computer scientist named Margaret Hamilton. Eagle's whole memory was smaller than a single photo on a phone today."
+      "fact": "The software that saved the day was written by a team at MIT led by a computer scientist named Margaret Hamilton. Eagle's whole memory was smaller than a single photo on a phone today.",
+      "sources": [
+        "overview",
+        "hamilton"
+      ]
     },
     {
       "id": "boulders",
@@ -119,7 +147,11 @@
         "“Thirty seconds.”",
         "All around the world, people held their breath..."
       ],
-      "fact": "Engineers later worked out that Eagle had a little more fuel than the gauge showed, because the fuel was sloshing around in its tanks. But nobody knew that at the time!"
+      "fact": "Engineers later worked out that Eagle had a little more fuel than the gauge showed, because the fuel was sloshing around in its tanks. But nobody knew that at the time!",
+      "sources": [
+        "overview",
+        "alsj"
+      ]
     },
     {
       "id": "landed",
@@ -144,7 +176,11 @@
         "caption": "From liftoff in Florida to leaving the Moon, in about two minutes.",
         "credit": "NASA"
       },
-      "fact": "Eagle touched down at 20:17:40, Coordinated Universal Time. In Houston, it was 3:17 in the afternoon."
+      "fact": "Eagle touched down at 20:17:40, Coordinated Universal Time. In Houston, it was 3:17 in the afternoon.",
+      "sources": [
+        "nssdc",
+        "overview"
+      ]
     },
     {
       "id": "step",
@@ -169,7 +205,11 @@
         "caption": "Neil Armstrong and Buzz Aldrin on the Moon, restored film footage.",
         "credit": "NASA"
       },
-      "fact": "Neil Armstrong's first step on the Moon happened at 02:56 Coordinated Universal Time on July 21, 1969."
+      "fact": "Neil Armstrong's first step on the Moon happened at 02:56 Coordinated Universal Time on July 21, 1969.",
+      "sources": [
+        "nssdc",
+        "overview"
+      ]
     },
     {
       "id": "busy",
@@ -188,7 +228,11 @@
         "credit": "NASA · AS11-40-5875",
         "pos": "tl"
       },
-      "fact": "The Moon rocks taught scientists about three brand-new minerals. One of them is named after this very place: tranquillityite!"
+      "fact": "The Moon rocks taught scientists about three brand-new minerals. One of them is named after this very place: tranquillityite!",
+      "sources": [
+        "nssdc",
+        "minerals"
+      ]
     },
     {
       "id": "plaque",
@@ -211,7 +255,11 @@
         "caption": "Neil Armstrong reads the plaque aloud, live from the Moon.",
         "credit": "NASA"
       },
-      "fact": "The letters on the plaque are in a typeface called Futura. So this font has been to the Moon!"
+      "fact": "The letters on the plaque are in a typeface called Futura. So this font has been to the Moon!",
+      "sources": [
+        "mission",
+        "futura"
+      ]
     },
     {
       "id": "pen",
@@ -230,7 +278,11 @@
         "caption": "Buzz Aldrin inside Eagle. The cabin was about the size of a small closet.",
         "credit": "NASA · AS11-36-5390"
       },
-      "fact": "Buzz Aldrin kept that felt-tip pen as a souvenir of the day it helped bring him home."
+      "fact": "Buzz Aldrin kept that felt-tip pen as a souvenir of the day it helped bring him home.",
+      "sources": [
+        "alsj",
+        "overview"
+      ]
     },
     {
       "id": "liftoff",
@@ -243,7 +295,11 @@
         "Below them, the bottom half of Eagle stood alone on the Moon, with its four legs planted, its plaque shining, and footprints all around it.",
         "It had done its job perfectly. And now, its long sleep was about to begin."
       ],
-      "fact": "There was no launch tower and no ground crew on the Moon. Eagle's bottom half was the only launch pad they needed."
+      "fact": "There was no launch tower and no ground crew on the Moon. Eagle's bottom half was the only launch pad they needed.",
+      "sources": [
+        "overview",
+        "nssdc"
+      ]
     },
     {
       "id": "reunion",
@@ -260,7 +316,11 @@
         "caption": "Eagle's top half returning to Columbia, with the Earth behind it. Michael Collins took this picture.",
         "credit": "NASA · AS11-44-6642"
       },
-      "fact": "Every human being alive in 1969, except Michael Collins, was either inside that little spacecraft or on the Earth behind it, all in one photo!"
+      "fact": "Every human being alive in 1969, except Michael Collins, was either inside that little spacecraft or on the Earth behind it, all in one photo!",
+      "sources": [
+        "photo",
+        "overview"
+      ]
     },
     {
       "id": "goodnight",
@@ -280,7 +340,11 @@
         "credit": "NASA / GSFC / Arizona State University · PIA12909",
         "pos": "tl"
       },
-      "fact": "Thanks to the laser mirror, we know the Moon is drifting away from Earth by about 3.8 centimeters every year. That's about as fast as your fingernails grow!"
+      "fact": "Thanks to the laser mirror, we know the Moon is drifting away from Earth by about 3.8 centimeters every year. That's about as fast as your fingernails grow!",
+      "sources": [
+        "lro",
+        "laser"
+      ]
     }
   ]
 }

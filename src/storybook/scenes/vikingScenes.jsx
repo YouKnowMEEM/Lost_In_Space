@@ -3,12 +3,10 @@ import { Earth, Flame, Frame, Glow, Orbiter, Puffs, Sky, Stars, Zzz, useUid, W, 
 import {
   Aeroshell,
   BigJoe,
-  DSNDish,
   MARS_SKIES,
   MarsGlobe,
   MarsGround,
   Parachute,
-  Rock,
   SmallMoon,
   TitanRocket,
   VikingCraft,
@@ -129,7 +127,7 @@ function Landing() {
   const u = useUid();
   return (
     <Frame label="Viking 1 landing on Mars in three steps: a glowing heat shield, a big parachute, and then rockets firing just above the ground">
-      <Sky id={`${u}-sky`} stops={[[0, "#120812"], [0.35, "#5a2c3a"], [0.75, "#c9896b"], [1, "#e6b48e"]]} />
+      <Sky id={`${u}-sky`} stops={[[0, "#160a3a"], [0.35, "#6e2c6c"], [0.75, "#ff8a5c"], [1, "#ffc98a"]]} />
       <Stars seed={41} count={30} bottom={200} color="#fff1e4" />
       <MarsGround y={650} seed={42} rocks={14} />
       <path d="M150 210 C220 270 330 250 360 330 C390 410 400 470 420 560" stroke="#fff" strokeOpacity="0.55" strokeWidth="2.5" strokeDasharray="5 9" fill="none" />

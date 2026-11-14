@@ -1,0 +1,147 @@
+{
+  "id": "sojourner",
+  "book": 7,
+  "title": "Sojourner",
+  "subtitle": "The first rover on Mars",
+  "tagline": "A bedtime story from Mars",
+  "voice": "af_heart",
+  "theme": "mars",
+  "missionPath": "/object/pathfinder-sojourner",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Sojourner",
+      "scene": "sojourner-cover",
+      "narration": "Sleeping Beauties presents... Sojourner. The first rover on Mars. A bedtime story from Mars."
+    },
+    {
+      "id": "asleep",
+      "title": "A Little Rover, Fast Asleep",
+      "scene": "sojourner-asleep",
+      "text": [
+        "On Mars, in a wide, rocky valley, there is a lander with three petals spread open like a flower. It has a camera on a pole, like a head on a long neck.",
+        "And a few steps away, there is a very small rover. It is about as big as a microwave oven, with six little wheels and a solar panel on its back.",
+        "The lander is called the Carl Sagan Memorial Station. The little rover is called Sojourner.",
+        "They have been sleeping in the red dust since nineteen ninety-seven. Sojourner was the very first rover ever to drive on Mars."
+      ],
+      "fact": "Sojourner weighs about 11 kilograms on Earth, about as much as a big pet cat and a small dog together.",
+      "sources": [
+        "mpf",
+        "name"
+      ]
+    },
+    {
+      "id": "name",
+      "title": "A Name Chosen by a Child",
+      "scene": "sojourner-name",
+      "text": [
+        "Before it flew to Mars, the little rover needed a name. So NASA held a contest, and children everywhere wrote essays about brave women in history.",
+        "The winner was a twelve-year-old girl named Valerie Ambroise. She chose Sojourner Truth, a woman who had escaped from slavery and travelled across America, speaking up for freedom and fairness.",
+        "A sojourner is a traveller. It was the perfect name for a rover.",
+        "And the lander was later named after Carl Sagan, a scientist who loved the stars and helped millions of people fall in love with them too."
+      ],
+      "fact": "Carl Sagan worked on many NASA missions, including Viking and Voyager. He died in 1996, the year before Pathfinder landed.",
+      "sources": [
+        "name",
+        "mpf"
+      ]
+    },
+    {
+      "id": "bounce",
+      "title": "Bouncing onto Mars",
+      "scene": "sojourner-bounce",
+      "text": [
+        "Mars Pathfinder did not land on legs, like Viking. It tried something brand new.",
+        "First, a heat shield glowed as it plunged through the air. Then a parachute opened. Then, just above the ground, giant airbags puffed up all around the lander, until it looked like a huge bunch of grapes.",
+        "Boing! It hit the ground and bounced, high into the air. Boing! Boing! It bounced about fifteen times, like a giant beach ball, and rolled across the rocks.",
+        "At last it came to a stop. It was the fourth of July, nineteen ninety-seven, and Pathfinder was safely on Mars."
+      ],
+      "fact": "The first bounce sent Pathfinder about 15 metres high, as tall as a four-storey building.",
+      "sources": [
+        "mpf"
+      ]
+    },
+    {
+      "id": "petals",
+      "title": "The Flower Opens",
+      "scene": "sojourner-petals",
+      "text": [
+        "Slowly, the airbags pulled in. Then the lander opened its three petals, and the sunlight fell on its solar panels.",
+        "The camera on the pole rose up and looked around. It saw a valley full of rocks, of every size and shape, and two hills on the horizon that scientists named Twin Peaks.",
+        "Riding on one of the petals was Sojourner, folded up tight.",
+        "On its second day on Mars, Sojourner stood up to its full height, about as tall as a ruler. Then it rolled down a little ramp, and its wheels touched the red ground. The first wheels ever to roll on Mars!"
+      ],
+      "fact": "The landing site is called Ares Vallis. Long ago, giant floods of water rushed through this valley.",
+      "photo": {
+        "of": "pathfinder-sojourner",
+        "pos": "tr"
+      },
+      "sources": [
+        "mpf"
+      ]
+    },
+    {
+      "id": "rocks",
+      "title": "Barnacle Bill and Yogi",
+      "scene": "sojourner-rocks",
+      "text": [
+        "Sojourner did not drive far. It never went more than about twelve metres from its lander, which passed its messages to Earth.",
+        "It drove very slowly, about one centimetre every second, and it thought hard about every rock in its way. Its team on Earth gave the rocks fun names: Barnacle Bill, Yogi, Scooby-Doo, Wedge, and many more.",
+        "Sojourner had a special sensor at the back. It would roll up to a rock, back its sensor gently against it, and wait, listening to tiny particles bouncing off the stone.",
+        "That told scientists what each rock was made of. Mars had many different kinds of rock, all jumbled together, carried there by water long ago."
+      ],
+      "fact": "Messages between Mars and Earth take many minutes to travel, so Sojourner had to steer itself around rocks using its own laser eyes.",
+      "sources": [
+        "mpf",
+        "mpfn"
+      ]
+    },
+    {
+      "id": "watching",
+      "title": "The Whole World Watching",
+      "scene": "sojourner-watching",
+      "text": [
+        "Down on Earth, something new was happening. People could now see pictures from another planet on a computer, at home.",
+        "Every day, NASA put Pathfinder's newest pictures on the internet. Millions and millions of people clicked to see them. It was one of the busiest websites in the world.",
+        "Children watched the little rover bump up to rocks and sniff them. They saw a pink sky, and blue sunsets, and white clouds of ice in the early morning.",
+        "For a few months, a tiny rover on Mars was one of the most famous machines on Earth."
+      ],
+      "fact": "The lander sent home more than 16,500 pictures, and Sojourner sent about 550 of its own.",
+      "sources": [
+        "mpf"
+      ]
+    },
+    {
+      "id": "longer",
+      "title": "Much Longer Than Planned",
+      "scene": "sojourner-longer",
+      "text": [
+        "Sojourner was built to work for just one week. The lander was built to work for one month.",
+        "But they kept going, and going. Sojourner explored for almost three months, poking and measuring and driving in little loops around its lander.",
+        "The lander's camera watched dust devils dance across the valley, and its weather mast felt the cold Martian mornings and the warm afternoons.",
+        "Then, as Martian autumn came, the lander's battery grew tired. The last message came on the twenty-seventh of September, nineteen ninety-seven."
+      ],
+      "fact": "Pathfinder showed that a small, clever, low-cost mission could land on Mars. Many later missions copied its airbags.",
+      "sources": [
+        "mpf"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, Sojourner",
+      "scene": "sojourner-goodnight",
+      "text": [
+        "Without the lander, Sojourner could not talk to Earth any more. Nobody knows exactly what it did next. Perhaps it waited. Perhaps it kept circling its friend, just as it had been told to do if the lander ever went quiet.",
+        "Today, high above, a spacecraft called the Mars Reconnaissance Orbiter has photographed the lander, its petals, and maybe the little rover too, still resting in Ares Vallis.",
+        "Sojourner was small. But it showed that rovers could explore Mars. Every rover that came after it, Spirit, Opportunity, Curiosity and Perseverance, followed its tracks.",
+        "Goodnight, Sojourner. Goodnight, little traveller."
+      ],
+      "fact": "Sojourner drove about 100 metres in all, a short walk for you, but a giant first step for rovers.",
+      "sources": [
+        "mpf",
+        "record"
+      ]
+    }
+  ]
+}

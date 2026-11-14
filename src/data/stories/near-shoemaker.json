@@ -1,0 +1,146 @@
+{
+  "id": "near-shoemaker",
+  "book": 11,
+  "title": "NEAR Shoemaker",
+  "subtitle": "The spacecraft that landed on an asteroid",
+  "tagline": "A bedtime story from deep space",
+  "voice": "af_heart",
+  "theme": "deep",
+  "missionPath": "/object/near-shoemaker",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "NEAR Shoemaker",
+      "scene": "near-cover",
+      "narration": "Sleeping Beauties presents... NEAR Shoemaker. The spacecraft that landed on an asteroid. A bedtime story from deep space."
+    },
+    {
+      "id": "asleep",
+      "title": "Asleep on a Space Rock",
+      "scene": "near-asleep",
+      "text": [
+        "Out in space, tumbling slowly around the Sun, there is a rock shaped like a giant peanut. Its name is Eros.",
+        "And on Eros, resting in the dust, there is a spacecraft. It has a round dish for talking to Earth, and four square solar panels spread out around it like the petals of a flower.",
+        "Its name is NEAR Shoemaker.",
+        "It was never built to land. But it did, very gently, and it became the first spacecraft ever to touch down on an asteroid."
+      ],
+      "fact": "Eros is about 34 kilometres long. It would take you about eight hours to walk from one end to the other, if you could walk on it!",
+      "sources": [
+        "near",
+        "eros"
+      ]
+    },
+    {
+      "id": "asteroids",
+      "title": "Leftovers from Long Ago",
+      "scene": "near-asteroids",
+      "text": [
+        "Asteroids are leftovers. Long, long ago, when the planets were being made, lots of rocky pieces were left over. Most of them still circle the Sun, between Mars and Jupiter.",
+        "But some asteroids wander closer to the Earth. Scientists call them near-Earth asteroids. Eros is one of the biggest.",
+        "Nobody had ever studied an asteroid up close for a long time. What were they made of? Were they solid, or piles of rubble? Did they have magnets inside?",
+        "So NASA built a spacecraft to fly to Eros, circle around it, and find out. They called it NEAR, short for Near Earth Asteroid Rendezvous."
+      ],
+      "fact": "A rendezvous is a planned meeting. NEAR's job was to meet Eros and stay with it.",
+      "sources": [
+        "near"
+      ]
+    },
+    {
+      "id": "mathilde",
+      "title": "A Dark Rock on the Way",
+      "scene": "near-mathilde",
+      "text": [
+        "NEAR launched on the seventeenth of February, nineteen ninety-six.",
+        "On its way, it flew past another asteroid, called Mathilde. Mathilde was very dark, darker than charcoal, and covered in huge craters.",
+        "Then NEAR swung back past the Earth, using our planet's gravity like a slingshot, to throw itself towards Eros.",
+        "The plan was simple. Fire the engine, slow down, and arrive at Eros in January nineteen ninety-nine. But space does not always follow the plan."
+      ],
+      "fact": "Mathilde was much less heavy than it looked. Scientists think it may be full of empty spaces, like a pile of loosely stacked rocks.",
+      "sources": [
+        "near",
+        "nearn"
+      ]
+    },
+    {
+      "id": "missed",
+      "title": "The Missed Meeting",
+      "scene": "near-missed",
+      "text": [
+        "In December nineteen ninety-eight, NEAR fired its big engine to slow down. But the engine stopped almost as soon as it started!",
+        "For a whole day, NEAR's team could not hear from it. Was it lost? Then, finally, it called home. It was safe, but it was going too fast to stop at Eros.",
+        "NEAR zoomed past the asteroid, taking pictures as it went. Then the team made a new plan: NEAR would circle the Sun for one more year, and come back to try again.",
+        "They waited, and waited. And on the fourteenth of February, two thousand, Valentine's Day, NEAR slipped gently into orbit around Eros. The first spacecraft ever to orbit an asteroid!"
+      ],
+      "fact": "Because NEAR arrived on Valentine's Day, and Eros is the name of the Greek god of love, people loved telling this part of the story.",
+      "sources": [
+        "near"
+      ]
+    },
+    {
+      "id": "orbit",
+      "title": "A Year of Pictures",
+      "scene": "near-orbit",
+      "text": [
+        "For a whole year, NEAR circled round and round Eros, sometimes high above it, sometimes skimming low.",
+        "Its camera took picture after picture, about one hundred and sixty thousand of them! Its other instruments measured what the rocks were made of, and bounced a laser off the ground to measure every hill and hollow.",
+        "Eros turned out to be one solid piece of rock, scattered with boulders and craters, covered in fine dust, with a big curved dip in its middle, like a saddle.",
+        "And it had no magnet inside at all."
+      ],
+      "fact": "In March 2000, NASA renamed the spacecraft NEAR Shoemaker, after Eugene Shoemaker, a geologist who taught the world how impacts shape planets.",
+      "sources": [
+        "near"
+      ]
+    },
+    {
+      "id": "landing",
+      "title": "Let's Try Landing!",
+      "scene": "near-landing",
+      "text": [
+        "At the end of the year, NEAR's work was done. Its team had a daring idea. What if we try to land it?",
+        "NEAR had no legs. It had no landing radar. It was never meant to touch the ground. But Eros is small, and its gravity is very weak, so maybe, just maybe, it could work.",
+        "On the twelfth of February, two thousand and one, NEAR began to sink slowly towards the asteroid, firing its little thrusters, taking pictures all the way down. Each picture showed more and more detail: boulders, then pebbles, then grains of dust.",
+        "Then it touched down, at about the speed of a brisk walk. And it was still working!"
+      ],
+      "fact": "NEAR took 69 close-up pictures as it came down. The last one was taken just 120 metres above the ground.",
+      "sources": [
+        "near",
+        "landing"
+      ]
+    },
+    {
+      "id": "listening",
+      "title": "Two More Weeks",
+      "scene": "near-listening",
+      "text": [
+        "The team could hardly believe it. NEAR had landed on an asteroid, and it was still talking to Earth!",
+        "So they gave it more time. Lying in the dust, NEAR used one of its instruments to sniff the ground right underneath it, finding out what the asteroid was made of, from closer than ever before.",
+        "For about two weeks, it kept sending its messages home.",
+        "But Eros is far from the Sun, and the nights there are very cold. On the twenty-eighth of February, two thousand and one, NEAR sent its last message. Then the cold sent it to sleep."
+      ],
+      "fact": "On Eros, NEAR got as cold as about 173 degrees below zero Celsius.",
+      "sources": [
+        "near"
+      ]
+    },
+    {
+      "id": "goodnight",
+      "title": "Goodnight, NEAR",
+      "scene": "near-goodnight",
+      "text": [
+        "NEAR Shoemaker is still on Eros, resting just south of the big saddle in the asteroid's middle.",
+        "Together, the spacecraft and the asteroid go around and around the Sun, once every year and three quarters.",
+        "NEAR was the first to circle an asteroid and the first to land on one. Since then, other spacecraft have visited asteroids and even brought pieces of them home to Earth. NEAR showed them the way.",
+        "Goodnight, NEAR. Goodnight, little flower, sleeping on your space peanut."
+      ],
+      "fact": "In 2002, NASA tried to call NEAR one more time. There was no answer. It is sleeping soundly.",
+      "photo": {
+        "of": "near-shoemaker",
+        "pos": "br"
+      },
+      "sources": [
+        "near"
+      ]
+    }
+  ]
+}

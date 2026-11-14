@@ -1,16 +1,19 @@
 // One catalog of every machine in the project, built from the Moon and Mars map data, the
-// deep-space probes and the field notes. The Atlas, the field-notes pages, the games and the
+// deep-space probes and the field notes. The Cosmic Library, the field-notes pages, the games and the
 // map sidebars all read from here, so a fact only has to be right in one place.
 
 import lunar from "./lunar_artifacts.json";
 import mars from "./mars_artifacts.json";
 import { MOON_NOTES } from "./notes/moon";
 import { MARS_NOTES, DEEP_NOTES } from "./notes/mars";
+import { EXTRA_DEEP, EXTRA_MOON, EXTRA_NOTES } from "./notes/extra";
+import { PHOTOS } from "./photos";
+import { BOOKS, BOOK_FOR, storyPath } from "../storybook/library";
 
 export const WORLDS = {
   moon: { id: "moon", name: "The Moon", short: "Moon", path: "/moon", accent: "#f2b640", blurb: "Landers, rovers and crash sites on the lunar surface." },
   mars: { id: "mars", name: "Mars", short: "Mars", path: "/mars", accent: "#f28c5e", blurb: "Landers, rovers and a helicopter on the red planet." },
-  deep: { id: "deep", name: "Deep space", short: "Deep space", path: "/space", accent: "#8fd3ff", blurb: "Probes still travelling beyond the planets." },
+  deep: { id: "deep", name: "Deep space", short: "Deep space", path: "/space", accent: "#8fd3ff", blurb: "Far from home: probes heading for the stars, one circling a dwarf planet, one resting on an asteroid." },
 };
 
 // What a visitor should understand at a glance. Each state has a plain-English label.
@@ -21,7 +24,7 @@ export const STATES = {
   adrift: { id: "adrift", label: "Adrift", long: "Silent, but still flying through space.", color: "#8fd3ff" },
 };
 
-// The three machines that already have narrated storybooks and mission files.
+// The three machines with narrated storybooks and full mission files.
 const STORYBOOKS = {
   "apollo-11": { story: "/eagle", mission: "/eagle/mission", art: "/images/objects/eagle.webp", short: "Eagle", mission_name: "Apollo 11 (G-Class)" },
   "viking-1": { story: "/viking-1", mission: "/viking-1/mission", art: "/images/objects/viking.webp", short: "Viking 1", mission_name: "Viking 1 lander" },
@@ -66,6 +69,12 @@ const GLYPH = {
   "curiosity-msl": "rover", "perseverance-mars-2020": "rover",
   "phoenix-lander": "phoenix",
   "new-horizons": "horizons",
+  // Drawn portraits shown when a photo cannot load, so no two cards ever share a picture.
+  "lrv-15": "buggy", "lrv-16": "buggy", "lrv-17": "buggy", alsep: "station",
+  dawn: "dawn", "near-shoemaker": "near", kepler: "kepler",
+  "apollo-11": "lm", "apollo-12": "lm", "apollo-14": "lm", "apollo-15": "lm", "apollo-16": "lm", "apollo-17": "lm",
+  "viking-1": "viking", "viking-2": "viking", "spirit-mer-a": "mer", "opportunity-mer-b": "mer",
+  "pioneer-10": "pioneer", "pioneer-11": "pioneer", "voyager-1": "voyager", "voyager-2": "voyager",
 };
 
 // Deep-space probes. Distances are estimates for late 2026 (Voyager 1 from NASA's live figure).
@@ -77,7 +86,19 @@ const DEEP = [
   { id: "new-horizons", name: "New Horizons", program: "New Horizons", year: 2006, launchDate: "2006-01-19", state: "awake", status: "Extended mission in the Kuiper Belt", au: 66 },
 ];
 
-const NOTES = { ...MOON_NOTES, ...MARS_NOTES, ...DEEP_NOTES };
+const NOTES = { ...MOON_NOTES, ...MARS_NOTES, ...DEEP_NOTES, ...EXTRA_NOTES };
+
+// Every other machine in NASA's list has a storybook too; its field notes are its mission file.
+function bookFor(id) {
+  if (STORYBOOKS[id]) return { ...STORYBOOKS[id], ownMission: true };
+  const slug = BOOK_FOR[id];
+  if (!slug) return null;
+  const b = BOOKS[slug];
+  // A book about several machines remembers which one the reader came for, so its mission-file
+  // tab opens that machine's field notes.
+  const story = b.objects[0] === id ? storyPath(slug) : `${storyPath(slug)}?for=${id}`;
+  return { slug, story, mission: `/object/${id}`, short: null, title: b.title, ownMission: false };
+}
 
 // Riddles for the three machines whose stories live in storybooks (the others keep theirs in the field notes).
 const RIDDLES = {
@@ -88,6 +109,29 @@ const RIDDLES = {
 
 const NSSDC_IDS = { "apollo-11": "1969-059C", "viking-1": "1975-075C", "voyager-1": "1977-084A" };
 
+// NASA's own page for each machine that the map data does not already link to. Each field-notes
+// page lists it under "Sources", next to the NSSDCA record.
+const SCI = (slug) => `https://science.nasa.gov/mission/${slug}/`;
+const MISSION_PAGES = {
+  "apollo-11": "https://www.nasa.gov/mission/apollo-11/",
+  "apollo-12": "https://www.nasa.gov/mission/apollo-12/",
+  "apollo-14": "https://www.nasa.gov/mission/apollo-14/",
+  "apollo-15": "https://www.nasa.gov/mission/apollo-15/",
+  "apollo-16": "https://www.nasa.gov/mission/apollo-16/",
+  "apollo-17": "https://www.nasa.gov/mission/apollo-17/",
+  "surveyor-1": SCI("surveyor-1"), "surveyor-3": SCI("surveyor-3"), "surveyor-5": SCI("surveyor-5"), "surveyor-6": SCI("surveyor-6"), "surveyor-7": SCI("surveyor-7"),
+  "ranger-7": SCI("ranger-7"), "ranger-8": SCI("ranger-8"), "ranger-9": SCI("ranger-9"),
+  "lunar-prospector": SCI("lunar-prospector"),
+  "lrv-15": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html",
+  "lrv-16": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html",
+  "lrv-17": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html",
+  alsep: "https://www.nasa.gov/history/alsj/",
+  "voyager-1": SCI("voyager/voyager-1"), "voyager-2": SCI("voyager/voyager-2"),
+  "pioneer-10": SCI("pioneer-10"), "pioneer-11": SCI("pioneer-11"),
+  "new-horizons": SCI("new-horizons"),
+  dawn: SCI("dawn"), "near-shoemaker": SCI("near-shoemaker"), kepler: SCI("kepler"),
+};
+
 function stateOf(a) {
   if (a.statusCategory === "active") return "awake";
   if (a.statusCategory === "impact") return "impact";
@@ -95,7 +139,7 @@ function stateOf(a) {
 }
 
 function build(a, world) {
-  const book = STORYBOOKS[a.id];
+  const book = bookFor(a.id);
   const note = NOTES[a.id] || null;
   return {
     id: a.id,
@@ -114,7 +158,7 @@ function build(a, world) {
     lon: a.lon,
     au: a.au,
     description: a.description,
-    nasaUrl: a.readMoreUrl,
+    nasaUrl: a.readMoreUrl || MISSION_PAGES[a.id] || null,
     nssdc: note?.nssdc || NSSDC_IDS[a.id] || null,
     tagline: note?.tagline || null,
     riddle: note?.riddle || RIDDLES[a.id] || null,
@@ -122,16 +166,22 @@ function build(a, world) {
     book: book || null,
     art: book?.art || ART[a.id] || null,
     glyph: GLYPH[a.id] || null,
+    photo: PHOTOS[a.id] || null,
+    place: a.place || null,
+    noMap: !!a.noMap,
     // Where "Read the story" goes: a storybook if one exists, otherwise the field notes.
     route: book ? book.story : `/object/${a.id}`,
     hasStorybook: !!book,
+    // Eagle, Viking 1 and Voyager 1 have their own mission files instead of field notes.
+    hasMissionFile: !!book?.ownMission,
   };
 }
 
 export const CATALOG = [
   ...lunar.map((a) => build(a, "moon")),
+  ...EXTRA_MOON.map((a) => build(a, "moon")),
   ...mars.map((a) => build(a, "mars")),
-  ...DEEP.map((a) => build(a, "deep")),
+  ...[...DEEP, ...EXTRA_DEEP].map((a) => build(a, "deep")),
 ];
 
 // Voyager 1's tagline lives with its storybook.
@@ -144,8 +194,35 @@ CATALOG.forEach((c) => {
   if (!c.tagline && TAGS[c.id]) c.tagline = TAGS[c.id];
 });
 
+// A render used by more than one machine is never the fallback for a photo that fails to load
+// (the machine's own drawn portrait is used instead), so no two cards ever look the same.
+const ART_USERS = {};
+CATALOG.forEach((c) => {
+  if (c.art) ART_USERS[c.art] = (ART_USERS[c.art] || 0) + 1;
+});
+CATALOG.forEach((c) => {
+  c.artShared = Boolean(c.art) && ART_USERS[c.art] > 1;
+});
+
 export const BY_ID = Object.fromEntries(CATALOG.map((c) => [c.id, c]));
 export const withNotes = () => CATALOG.filter((c) => c.note);
+
+// The Moon map marks landing sites. The rovers and the Apollo 12 listening station have
+// storybooks under their own catalog ids, so their sites lead to those books.
+const SITE_BOOK = { "apollo-12": "alsep", "apollo-15": "lrv-15", "apollo-16": "lrv-16", "apollo-17": "lrv-17" };
+
+/** The storybook a map marker leads to, as { title, path }, or null if it has none. */
+export function storybookAt(markerId) {
+  const own = BY_ID[markerId];
+  const entry = own?.hasStorybook ? own : BY_ID[SITE_BOOK[markerId]];
+  if (!entry?.hasStorybook) return null;
+  return { title: entry.book.title || entry.short, path: entry.route };
+}
+
+/** How many machines each 3D world map shows (the Cosmic Library also lists rovers, stations and far explorers). */
+export function mapCounts() {
+  return { moon: lunar.length, mars: mars.length, deep: DEEP.length };
+}
 
 export function worldCounts() {
   const out = { moon: 0, mars: 0, deep: 0 };

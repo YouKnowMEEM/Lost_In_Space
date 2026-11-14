@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useCallback, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, BookOpen, ExternalLink, Lightbulb, MapPin, Wrench } from "lucide-react";
 import Page from "../site/SiteChrome";
@@ -42,15 +42,18 @@ const makeFieldNoteModel = ({ src, floating = true }) => ({
   parts: [],
 });
 
+// Machines that share a landing site with a lander on the map open the map at that lander.
+const MAP_SITE = { "lrv-15": "apollo-15", "lrv-16": "apollo-16", "lrv-17": "apollo-17", alsep: "apollo-12" };
+
 export const mapLink = (item) => {
   if (item.world === "deep") return `/space?probe=${item.id}`;
-  return `${WORLDS[item.world].path}?focus=${item.id}`;
+  return `${WORLDS[item.world].path}?focus=${MAP_SITE[item.id] || item.id}`;
 };
 
 function Neighbour({ item, dir }) {
   if (!item) return null;
   return (
-    <Link to={item.route} className={`ob-next-card is-${dir}`}>
+    <Link to={item.hasMissionFile ? item.route : `/object/${item.id}`} className={`ob-next-card is-${dir}`}>
       <span className="ob-next-dir">
         {dir === "prev" && <ArrowLeft size={16} aria-hidden="true" />}
         {dir === "prev" ? "Before" : "Next"}
@@ -66,9 +69,12 @@ export default function ObjectPage() {
   const { id } = useParams();
   const item = BY_ID[id];
   const [viewer, setViewer] = useState(null);
+  // Remembers (per machine) that its photo could not load, so the caption and zoom go away too.
+  const [photoFailedFor, setPhotoFailedFor] = useState(null);
+  const markPhotoFailed = useCallback(() => setPhotoFailedFor(id), [id]);
 
   if (!item) return <NotFoundPage what="machine" />;
-  if (item.hasStorybook) return <Navigate to={item.route} replace />;
+  if (item.hasMissionFile) return <Navigate to={item.route} replace />;
   const n = item.note;
   if (!n) return <NotFoundPage what="machine" />;
 
@@ -88,7 +94,7 @@ export default function ObjectPage() {
         <section className="ob-hero" aria-labelledby="ob-title">
           <div className="ob-hero-copy">
             <nav className="ob-crumbs" aria-label="Breadcrumb">
-              <Link to="/atlas">Atlas</Link>
+              <Link to="/library">Cosmic Library</Link>
               <span aria-hidden="true">/</span>
               <Link to={world.path}>{world.name}</Link>
             </nav>
@@ -102,12 +108,22 @@ export default function ObjectPage() {
               {item.type && <span className="sx-chip">{item.type}</span>}
             </div>
             <div className="ob-actions">
-              <a className="hp-btn hp-btn-primary" href="#story">
-                <BookOpen size={19} aria-hidden="true" /> Read its story
-              </a>
-              <Link className="hp-btn hp-btn-quiet" to={mapLink(item)}>
-                <MapPin size={19} aria-hidden="true" /> See it on the map
-              </Link>
+              {item.hasStorybook ? (
+                <Link className="hp-btn hp-btn-primary" to={item.route}>
+                  <BookOpen size={19} aria-hidden="true" /> Read the storybook
+                </Link>
+              ) : (
+                <a className="hp-btn hp-btn-primary" href="#story">
+                  <BookOpen size={19} aria-hidden="true" /> Read its story
+                </a>
+              )}
+              {item.noMap ? (
+                item.place && <span className="ob-place"><MapPin size={17} aria-hidden="true" /> {item.place}</span>
+              ) : (
+                <Link className="hp-btn hp-btn-quiet" to={mapLink(item)}>
+                  <MapPin size={19} aria-hidden="true" /> See it on the map
+                </Link>
+              )}
             </div>
           </div>
           <div className="ob-hero-art">
@@ -118,11 +134,20 @@ export default function ObjectPage() {
                   <ModelViewer model={makeFieldNoteModel(fieldNoteModel)} />
                 </Suspense>
               </div>
-            ) : <ObjectArt item={item} eager className="ob-art" />}
-            {["apollo-12", "apollo-14", "apollo-15", "apollo-16", "apollo-17"].includes(item.id) && <p className="ob-art-note">Picture: Similar to Eagle lunar module with slight modification.</p>}
-            {item.id === "viking-2" && <p className="ob-art-note">Picture: Viking 1, Viking 2's identical twin.</p>}
-            {item.id === "spirit-mer-a" && <p className="ob-art-note">Picture: Opportunity, Spirit's identical twin.</p>}
-            {(item.id === "pioneer-11" || item.id === "pioneer-10") && <p className="ob-art-note">Picture: a Pioneer probe. Pioneer 10 and 11 were twins.</p>}
+            ) : item.photo && photoFailedFor !== item.id ? (
+              <figure className="ob-photo">
+                <button type="button" className="ob-photo-open" onClick={() => setViewer({ kind: "photo", src: item.photo.src, caption: item.photo.caption, credit: item.photo.credit })} aria-label={`Enlarge the photo: ${item.photo.caption}`}>
+                  <ObjectArt item={item} eager photo className="ob-photo-img" alt={item.photo.caption} onPhotoFail={markPhotoFailed} />
+                </button>
+                <figcaption>
+                  {item.photo.caption} <span>{item.photo.credit}</span>
+                </figcaption>
+              </figure>
+            ) : (
+              <ObjectArt item={item.photo && item.artShared && item.glyph ? { ...item, art: null } : item} eager className="ob-art" />
+            )}
+            {!item.photo && !fieldNoteModel && item.id === "opportunity-mer-b" && <p className="ob-art-note">Picture: an illustration of the twin rovers Spirit and Opportunity.</p>}
+            {!item.photo && !fieldNoteModel && item.id === "surveyor-6" && <p className="ob-art-note">Picture: a Surveyor lander like Surveyor 6.</p>}
             {fieldNoteModel && <p className="ob-art-note">NASA 3D model · Drag to rotate; scroll to zoom.</p>}
           </div>
         </section>
@@ -240,7 +265,7 @@ export default function ObjectPage() {
             {item.nasaUrl && (
               <li>
                 <a href={item.nasaUrl} target="_blank" rel="noreferrer">
-                  NASA mission page <ExternalLink size={14} aria-hidden="true" />
+                  {item.nasaUrl.includes("nssdc.gsfc.nasa.gov") ? "NASA NSSDCA: Apollo Lunar Roving Vehicle" : item.nasaUrl.includes("/alsj") ? "NASA History: Apollo Lunar Surface Journal" : "NASA mission page"} <ExternalLink size={14} aria-hidden="true" />
                 </a>
               </li>
             )}

@@ -28,6 +28,20 @@ run locally through `kokoro-onnx`. Nothing is sent to an online service.
    PAGES=landed,step python tools/narration/build_narration.py eagle
    ```
 
+   The eleven newer books work the same way, by their file name in `src/data/stories/`:
+
+   ```bash
+   python tools/narration/build_narration.py surveyor lunar-rovers alsep sojourner spirit-and-opportunity phoenix-and-insight ingenuity near-shoemaker dawn kepler pioneers
+   ```
+
+   Until a book has recorded audio, the site reads it with the browser's own speech voice.
+   After building one, switch it to the recording in its module in `src/storybook/books/`
+   by replacing the line `const timing = null;` with:
+
+   ```js
+   import timing from "../../data/stories/dawn.timing.json";
+   ```
+
 This writes `public/audio/stories/<book>/NN-<page>.mp3` and the word timings in
 `src/data/stories/<book>.timing.json`, which drive the highlighted read-along text.
 

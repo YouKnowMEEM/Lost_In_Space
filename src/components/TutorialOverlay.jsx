@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { X } from "lucide-react";
-import PioneerTutorialScene from "./PioneerTutorialScene";
+import { Hand, X, ZoomIn } from "lucide-react";
 import JourneyLanding from "./JourneyLanding";
 import IntroVideo from "./IntroVideo";
 import Beacon from "./Beacon";
@@ -72,6 +71,9 @@ const $ = (selector) => document.querySelector(selector);
 const marsSelected = () => $(".solar-explore-pop > strong")?.textContent.trim().toUpperCase() === "MARS";
 const vikingDetailsOpen = () => Boolean($('.moon-equipment-sidebar[aria-label="Viking 1 Lander details"]'));
 const marsSearch = () => ($(".moon-search input")?.value || "").toLocaleLowerCase();
+const searchingViking = () => marsSearch().includes("viking");
+// PlanetGlobe adds up how far the visitor has turned the globe by hand (in radians).
+const globeTurned = () => (window.__sbGlobeTurn || 0) > 0.75;
 
 /** The element a step points at; `targetText` picks one of several matches by its text. */
 function findTarget(step) {
@@ -86,32 +88,55 @@ function findTarget(step) {
  *   next.button  - a button in the speech bubble
  *   next.click   - a click on the highlighted control
  *   next.when    - something becomes true on the page (Mars is selected, a panel opened…)
+ *   next.after   - a number of milliseconds after the step appeared (a gentle fallback)
  *   next.path    - the visitor arrives on another page
  *   next.section / next.gallery - the visitor scrolls to a part of the mission file
+ * `jumps` skip ahead when the visitor is quicker than the guide (e.g. finds Viking 1 by themselves).
  * `back` sends the visitor one step back if they undo what they just did.
+ * `card` steps are a large welcome card instead of the astronaut's speech bubble; `tips` adds a
+ * short list with icons to the bubble.
  * `hidden` steps only highlight a control (or let the page's own guide talk).
  * `restart` is the step to resume from if the visitor wanders off and comes back.
  */
 const TOUR = [
-  // Deep space
-  { id: "atlas", path: "/space", restart: "find-mars", delay: 2300, target: '.topbar nav a[href="/atlas"]', beacon: true, avatar: "/images/astronautApollo11.png",
-    title: "Every machine in one place", text: "If you ever want to find all the objects, go to the Atlas. Look, it's glowing up there!",
+  // Deep space: the journey opens with the whole solar system in view.
+  { id: "welcome", path: "/space", restart: "welcome", ready: '.solar-home[data-scene-ready="true"]', delay: 900, card: true, label: "OUR SOLAR HOME",
+    title: "Welcome to our solar home!",
+    text: "That glowing ball in the middle is our Sun. Around it, the planets travel on their own paths, from little Mercury all the way out to Neptune and tiny Pluto. Somewhere out here, NASA’s sleeping machines are waiting to tell you their stories. Shall we go and find them?",
+    next: { button: "Let’s explore!" } },
+  { id: "library", path: "/space", restart: "library", target: '.topbar nav a[href="/library"]', beacon: true, avatar: "/images/astronautApollo11.png",
+    title: "Every machine in one place", text: "Whenever you want to see all the machines together, open the Cosmic Library. Look, it’s glowing up there!",
     next: { button: "Got it!" },
-    // Children will tap the glowing link: let them peek at the Atlas, then bring them back.
-    detour: { path: "/atlas", title: "This is the Atlas!", text: "Every machine we know of lives here. Come back any time. Now, let’s carry on our journey!", button: "Continue the journey" } },
+    // Children will tap the glowing link: let them peek at the library, then bring them back.
+    detour: { path: "/library", title: "Welcome to the Cosmic Library!", text: "Every machine we know of lives here, and you can come back whenever you like. Now, let’s carry on with our journey!", button: "Continue the journey" } },
+  { id: "controls", path: "/space", restart: "controls", avatar: "/images/happyAstronaut.png",
+    title: "Fly like an astronaut!", text: "You are the pilot now. Try it out:",
+    tips: [
+      { icon: ZoomIn, text: "Zoom in and out with your mouse wheel, or pinch with two fingers." },
+      { icon: Hand, text: "Drag with your mouse or finger to turn left, right, up and down." },
+    ],
+    next: { button: "I’m ready!" } },
   { id: "find-mars", path: "/space", restart: "find-mars", target: ".solar-search input", avatar: "/images/astronaut.png",
-    title: "Find Mars", next: { when: marsSelected } },
-  { id: "explore-mars", path: "/space", restart: "find-mars", target: ".solar-explore-pop button", hidden: true,
+    title: "Now, can you find Mars?", text: "Type “Mars” in the search bar, or look for the little red planet and tap it.",
+    next: { when: marsSelected } },
+  { id: "explore-mars", path: "/space", restart: "find-mars", target: ".solar-explore-pop button", avatar: "/images/happyAstronaut.png",
+    title: "You found Mars!", text: "Tap “Explore” and we’ll fly down to it.",
     back: () => !marsSelected(), next: { path: "/mars" } },
 
-  // Mars
-  { id: "find-viking", path: "/mars", restart: "find-viking", ready: '.moon-atlas[data-globe-ready="true"]', target: ".moon-search input", side: "left", compact: true, avatar: "/images/astronaut.png",
-    title: "Find Viking 1 from the search bar", next: { when: () => marsSearch().includes("viking") || vikingDetailsOpen() } },
+  // Mars: first look around by hand, then learn the shortcut.
+  { id: "find-viking", path: "/mars", restart: "find-viking", ready: '.moon-atlas[data-globe-ready="true"]', side: "left", compact: true, avatar: "/images/astronaut.png",
+    title: "Can you find Viking 1?", text: "Drag Mars to turn it, and look for the glowing lights. Viking 1 is resting in the north, on a wide plain called Chryse Planitia.",
+    jumps: [{ when: vikingDetailsOpen, to: "read-viking" }, { when: searchingViking, to: "pick-viking" }],
+    next: { when: globeTurned, after: 30000 } },
+  { id: "search-hint", path: "/mars", restart: "find-viking", target: ".moon-search input", side: "left", compact: true, avatar: "/images/astronautApollo11.png",
+    title: "Here’s a shortcut!", text: "You can also search for it. Type “Viking” in the search bar.",
+    jumps: [{ when: vikingDetailsOpen, to: "read-viking" }],
+    next: { when: searchingViking } },
   { id: "pick-viking", path: "/mars", restart: "find-viking", target: ".moon-search-results button", targetText: "viking 1", side: "left", compact: true, avatar: "/images/astronautApollo11.png",
-    title: "There it is!", text: "Tap “Viking 1 Lander” and we’ll fly to where it landed.",
-    back: () => !marsSearch().includes("viking") && !vikingDetailsOpen(), next: { click: true, when: vikingDetailsOpen } },
+    title: "There it is!", text: "Tap “Viking 1 Lander” and we’ll fly straight to where it landed.",
+    back: () => !searchingViking() && !vikingDetailsOpen(), next: { click: true, when: vikingDetailsOpen } },
   { id: "tap-viking", path: "/mars", restart: "find-viking", side: "left", compact: true, avatar: "/images/astronaut.png",
-    title: "Tap the Viking 1 marker", text: "We’re above Chryse Planitia, the “Plains of Gold”. Tap Viking 1’s glowing marker to open its details.",
+    title: "Tap the Viking 1 marker", text: "We’re above Chryse Planitia, the “Plains of Gold”. Tap the glowing marker in the middle to open Viking 1’s details.",
     next: { when: vikingDetailsOpen } },
   { id: "read-viking", path: "/mars", restart: "find-viking", target: ".moon-read-more", side: "left", compact: true, avatar: "/images/happyAstronaut.png",
     title: "Read Viking 1’s story", text: "Viking 1 has rested here since 1976. Tap “Read the story” to open its storybook.",
@@ -151,6 +176,12 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     stepRef.current = index;
     setStep(index);
   }, []);
+
+  // Other parts of the site keep their own pop-ups quiet while the journey is running.
+  useEffect(() => {
+    document.documentElement.toggleAttribute("data-tour", mode !== "closed");
+    return () => document.documentElement.removeAttribute("data-tour");
+  }, [mode]);
 
   useEffect(() => {
     if (!isHome || mode !== "closed") return;
@@ -203,6 +234,13 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     goTo(Math.max(0, next));
   }, [finish, goTo]);
 
+  // Skip ahead to a named step, again only if the tour is still where the caller saw it.
+  const jump = useCallback((from, id) => {
+    if (stepRef.current !== from) return;
+    const index = indexOf(id);
+    if (index >= 0) goTo(index);
+  }, [goTo]);
+
   /* ---------- Watch the page for the current step ---------- */
   useEffect(() => {
     if (mode !== "tour" || !current) return undefined;
@@ -212,6 +250,7 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     let highlighted = null;
     let shownTimer = 0;
     let shownQueued = false;
+    let shownAt = 0;
 
     if (current.next?.path && location.pathname === current.next.path) {
       advance(me);
@@ -226,7 +265,11 @@ export default function TutorialOverlay({ startRequest = 0 }) {
       const pageReady = onPage && stillHere && (!current.ready || $(current.ready));
       if (pageReady && !shownQueued) {
         shownQueued = true;
-        shownTimer = window.setTimeout(() => alive && setShownStep(me), current.delay || 0);
+        shownTimer = window.setTimeout(() => {
+          if (!alive) return;
+          shownAt = Date.now();
+          setShownStep(me);
+        }, current.delay || 0);
       }
       const target = pageReady && !current.beacon ? findTarget(current) : null;
       if (target !== highlighted) {
@@ -235,9 +278,12 @@ export default function TutorialOverlay({ startRequest = 0 }) {
         highlighted?.classList.add("tutorial-tour-target");
       }
       if (!pageReady) return;
-      if (current.next?.when?.() || reachedSection()) advance(me);
+      const shortcut = current.jumps?.find((rule) => rule.when());
+      if (shortcut) jump(me, shortcut.to);
+      else if (current.next?.when?.() || reachedSection() || waitedLongEnough()) advance(me);
       else if (current.back?.()) advance(me, -1);
     };
+    const waitedLongEnough = () => Boolean(current.next?.after && shownAt && Date.now() - shownAt >= current.next.after);
     // Mission-file steps move on as the visitor scrolls through its sections (the page loads lazily,
     // so the section menu is looked up each time rather than once).
     const reachedSection = () => {
@@ -289,7 +335,7 @@ export default function TutorialOverlay({ startRequest = 0 }) {
       highlighted?.classList.remove("tutorial-tour-target");
       document.removeEventListener("click", onClick, true);
     };
-  }, [mode, step, current, location.pathname, advance]);
+  }, [mode, step, current, location.pathname, advance, jump]);
 
   // If the visitor wanders to a page that is not on the journey, offer a way back.
   useEffect(() => {
@@ -300,6 +346,45 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     const timer = window.setTimeout(() => setDrifted(true), current.detour?.path === location.pathname ? 900 : 1400);
     return () => window.clearTimeout(timer);
   }, [mode, current, location.pathname]);
+
+  // On a phone the guide stands at the bottom of the screen, where many buttons are. If the
+  // button it is talking about is underneath it, the guide moves up to the top instead.
+  const guideRef = useRef(null);
+  const [guideTop, setGuideTop] = useState(false);
+  useEffect(() => {
+    if (mode !== "tour" || !current?.target || current.card || current.hidden) {
+      setGuideTop(false);
+      return undefined;
+    }
+    let shown = false;
+    const check = () => {
+      const guide = guideRef.current;
+      const target = findTarget(current);
+      if (!guide || !target) return;
+      let t = target.getBoundingClientRect();
+      // The first time, bring a button that is hidden lower in a panel into view.
+      if (!shown && t.width > 0) {
+        shown = true;
+        if (t.top < 0 || t.bottom > window.innerHeight) {
+          target.scrollIntoView({ block: "nearest", behavior: "auto" });
+          t = target.getBoundingClientRect();
+        }
+      }
+      const g = guide.getBoundingClientRect();
+      const standsAt = window.innerHeight - 20 - g.height; // the guide's top edge when it is at the bottom
+      const covers = t.width > 0 && t.bottom > standsAt && t.top < window.innerHeight && t.right > g.left && t.left < g.right;
+      setGuideTop(covers);
+    };
+    check();
+    const timer = window.setInterval(check, 300);
+    window.addEventListener("resize", check);
+    window.addEventListener("scroll", check, { capture: true, passive: true });
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("resize", check);
+      window.removeEventListener("scroll", check, { capture: true });
+    };
+  }, [mode, current]);
 
   const returnToJourney = () => {
     const resume = indexOf(current.restart || current.id);
@@ -329,16 +414,10 @@ export default function TutorialOverlay({ startRequest = 0 }) {
     setMode("tour");
     navigate("/space");
   };
-  const enterDeepSpace = () => {
-    window.__sbPioneerIntroReady = false;
-    setMode("pioneer");
-    navigate("/space?intro=pioneer");
-  };
 
   if (mode === "closed") return null;
   if (mode === "welcome") return <JourneyLanding onStart={begin} onSkip={skip} />;
-  if (mode === "video") return <IntroVideo src={INTRO_FILM} onDone={enterDeepSpace} />;
-  if (mode === "pioneer") return <PioneerTutorialScene onComplete={enterTour} />;
+  if (mode === "video") return <IntroVideo src={INTRO_FILM} onDone={enterTour} />;
   if (mode === "finished") {
     return (
       <div className="tutorial-shade">
@@ -346,7 +425,7 @@ export default function TutorialOverlay({ startRequest = 0 }) {
           <img className="tutorial-astronaut" src="/images/happyAstronaut.png" alt="" />
           <p className="tutorial-kicker">JOURNEY COMPLETE</p>
           <h2 id="tour-finished-title">You did it, explorer!</h2>
-          <p>There is so much more waiting for you: walk on the Moon, follow the deep-space probes, open the Atlas to meet every machine, and read the other storybooks. Feeling brave? Try a game!</p>
+          <p>There is so much more waiting for you: walk on the Moon, follow the deep-space probes, open the Cosmic Library to meet every machine, and read the other storybooks. Feeling brave? Try a game!</p>
           <div className="tutorial-actions tutorial-finished-actions">
             <button className="tutorial-primary" onClick={() => setMode("closed")}>Keep exploring</button>
           </div>
@@ -423,21 +502,43 @@ export default function TutorialOverlay({ startRequest = 0 }) {
   const beacon = current.beacon && current.target ? <Beacon selector={current.target} /> : null;
   if (current.hidden) return beacon;
 
+  if (current.card) {
+    return (
+      <div className="tutorial-welcome">
+        <section key={step} className="tutorial-transmission tutorial-welcome-card" role="dialog" aria-labelledby="tour-card-title" aria-describedby="tour-card-text">
+          <button type="button" className="tutorial-close" aria-label="End the journey" title="End the journey" onClick={() => setConfirmSkip(true)}><X size={15} /></button>
+          <div className="tutorial-transmission-label"><span className="tutorial-waveform" aria-hidden="true" /> {current.label}</div>
+          <h1 id="tour-card-title">{current.title}</h1>
+          <p id="tour-card-text">{current.text}</p>
+          <button type="button" className="tutorial-primary" autoFocus onClick={() => advance(step)}>{current.next.button}</button>
+        </section>
+      </div>
+    );
+  }
+
   const classes = [
     "tutorial-guide",
     current.side === "left" && "tutorial-guide-left",
     current.compact && "tutorial-guide-compact",
+    guideTop && "tutorial-guide-top",
   ].filter(Boolean).join(" ");
 
   return (
     <>
       {beacon}
-      <aside className={classes} aria-live="polite">
+      <aside className={classes} aria-live="polite" ref={guideRef}>
         <img className="tutorial-guide-astronaut" src={current.avatar || "/images/astronaut.png"} alt="Astronaut guide" />
         <div key={step} className={`tutorial-bubble${current.raised ? " tutorial-bubble-raised" : ""}${current.text ? "" : " is-title-only"}`}>
           <button type="button" className="tutorial-close" aria-label="End the journey" title="End the journey" onClick={() => setConfirmSkip(true)}><X size={15} /></button>
           <h2>{current.title}</h2>
           {current.text && <p>{current.text}</p>}
+          {current.tips && (
+            <ul className="tutorial-tips">
+              {current.tips.map(({ icon: Icon, text }) => (
+                <li key={text}><span aria-hidden="true"><Icon size={17} /></span>{text}</li>
+              ))}
+            </ul>
+          )}
           {current.next?.button && <button className="tutorial-primary" onClick={() => advance(step)}>{current.next.button}</button>}
         </div>
       </aside>

@@ -1,16 +1,20 @@
 import React, { useMemo } from "react";
-import { ArrowUpRight, MapPin, X } from "lucide-react";
+import { ArrowUpRight, BookOpen, MapPin, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { BY_ID, NSSDC_URL } from "../../data/catalog";
+import { BY_ID, NSSDC_URL, storybookAt } from "../../data/catalog";
 
 function Detail({ label, children }) {
   return <div className="moon-detail"><span>{label}</span><strong>{children || "Not provided"}</strong></div>;
 }
 
 export default function EquipmentSidebar({ artifact, origin, onClose, equipmentHeading = "NASA LUNAR EQUIPMENT" }) {
-  const story = artifact?.storyPath;
-  const record = artifact ? BY_ID[artifact.id]?.nssdc : null;
+  // Machines with a storybook open it; the field notes stay one tap away.
+  const entry = artifact ? BY_ID[artifact.id] : null;
+  const book = artifact ? storybookAt(artifact.id) : null;
+  const story = book?.path || artifact?.storyPath;
+  const notes = book && !entry?.hasMissionFile ? `/object/${artifact.id}` : null;
+  const record = entry?.nssdc || null;
   const latLon = (lat, lon) => `${Math.abs(Number(lat)).toFixed(2)}° ${Number(lat) >= 0 ? "N" : "S"}, ${Math.abs(Number(lon)).toFixed(2)}° ${Number(lon) >= 0 ? "E" : "W"}`;
 
   // Calculate starting offset from click origin relative to the docked sidebar position
@@ -77,6 +81,7 @@ export default function EquipmentSidebar({ artifact, origin, onClose, equipmentH
             <p className="moon-sidebar-kicker">{equipmentHeading}</p>
             <h2>{artifact.name}</h2>
             <div className={`moon-status status-${artifact.statusCategory}`}><i/>{artifact.status}</div>
+            {book && <p className="moon-sidebar-book"><BookOpen size={15} aria-hidden="true"/><span>Storybook: <strong>{book.title}</strong></span></p>}
             <p className="moon-sidebar-description">{artifact.description}</p>
             <div className="moon-details-grid">
               <Detail label="Agency">{artifact.agency}</Detail>
@@ -91,6 +96,7 @@ export default function EquipmentSidebar({ artifact, origin, onClose, equipmentH
             </div>
             <div className="moon-sidebar-actions">
               {story && <Link className="moon-read-more" to={story}>Read the story <ArrowUpRight size={15}/></Link>}
+              {notes && <Link className="moon-surface-mode" to={notes}>Field notes <ArrowUpRight size={15}/></Link>}
               {record && <a className="moon-surface-mode" href={NSSDC_URL(record)} target="_blank" rel="noreferrer">NASA data record <ArrowUpRight size={15}/></a>}
             </div>
           </motion.aside>
