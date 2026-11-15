@@ -2278,3 +2278,5 @@ nav.ab-jump a[aria-current] {
 }
 .ab-table .ab-host { display: block; color: var(--hp-dim); font-size: 12.5px; }
 .ab-table td:nth-child(2) a { white-space: nowrap; }
+.ab-team.ab-devs { margin-top: 8px; }
+.ab-devs a { overflow-wrap: anywhere; }

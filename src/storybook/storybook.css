@@ -639,7 +639,7 @@
   font-family: "Fraunces", Georgia, serif;
   font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 72;
   font-weight: 760;
-  font-size: calc(2.55cqw * var(--text-scale));
+  font-size: calc(2.55cqw * var(--text-scale) * var(--fit, 1));
   line-height: 1.06;
   letter-spacing: -0.01em;
   color: var(--ink);
@@ -647,7 +647,7 @@
 }
 .bk-story {
   font-family: "Literata", Georgia, serif;
-  font-size: calc(1.42cqw * var(--text-scale));
+  font-size: calc(1.42cqw * var(--text-scale) * var(--fit, 1));
   line-height: 1.62;
   font-weight: 430;
   font-variation-settings: "opsz" 18;
@@ -683,7 +683,7 @@
   border-radius: 14px;
   background: var(--accent-soft);
   color: var(--ink);
-  font-size: calc(1.16cqw * var(--text-scale));
+  font-size: calc(1.16cqw * var(--text-scale) * var(--fit, 1));
   line-height: 1.45;
 }
 .bk-fact strong {
@@ -705,7 +705,7 @@
   color: var(--ink) !important;
   text-align: left;
   cursor: pointer;
-  font-size: calc(1.05cqw * var(--text-scale));
+  font-size: calc(1.05cqw * var(--text-scale) * var(--fit, 1));
   box-shadow: 0 3px 0 var(--ink);
   transition: transform 0.15s, box-shadow 0.15s;
 }
@@ -1925,7 +1925,7 @@
 .bk-src {
   margin: 1.1em 0 0.2em;
   color: var(--ink-soft);
-  font-size: max(12px, calc(0.8cqw * var(--text-scale)));
+  font-size: max(11px, calc(0.8cqw * var(--text-scale) * var(--fit, 1)));
   line-height: 1.5;
 }
 .bk-src-label {
@@ -1974,4 +1974,54 @@
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
   }
+}
+
+/* "More below": shown only when a page's text still does not fit in the two-page view. */
+.bk-more {
+  position: absolute;
+  left: 50%;
+  bottom: 2.6em;
+  z-index: 5;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.42em 0.95em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent, #f2c14e);
+  color: var(--accent-ink-on, #2b1d00);
+  font: 700 max(12px, 0.9cqw) / 1 "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  box-shadow: 0 6px 16px rgba(60, 40, 10, 0.28);
+  cursor: pointer;
+  animation: bk-more-nudge 2.4s ease-in-out infinite;
+}
+.bk-more:hover { filter: brightness(1.05); }
+@keyframes bk-more-nudge {
+  0%, 70%, 100% { transform: translateX(-50%); }
+  80% { transform: translate(-50%, 3px); }
+  90% { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) { .bk-more { animation: none; } }
+.bk-single .bk-more { display: none; }
+
+/* Two-page view: a compact "The End" row, so the last page's text has room to fit. */
+.bk.is-spread .bk-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45em 0.6em;
+  padding-top: 0.65em;
+}
+.bk.is-spread .bk-the-end {
+  font-size: calc(1.45cqw * var(--text-scale));
+  margin-right: 0.15em;
+}
+.bk.is-spread .bk-end-actions {
+  display: contents;
+}
+.bk.is-spread .bk-end-actions .bk-btn {
+  min-height: 34px;
+  padding: 0 0.8em;
+  font-size: max(12.5px, calc(0.9cqw * var(--text-scale)));
 }

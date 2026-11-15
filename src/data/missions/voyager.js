@@ -72,17 +72,18 @@ export const voyagerMission = {
     fit: 3.1,
     yaw: -Math.PI / 4,
     floating: true,
-    // The NASA model stands on a frame; Voyager has no legs in space, so the viewer hides it.
-    clipBelow: -0.0135,
-    target: [0, 0.02, 0.03],
-    span: [0.2, 0.14],
+    // The NASA model stands on a display frame; Voyager has no legs in space, so the viewer hides it.
+    hide: ["Cylinder.049", "Cylinder.050", "Cylinder.051", "Cylinder.052", "Cylinder.056", "Cylinder.057", "Cylinder.058", "Cylinder.059", "Cube.006"],
+    // Positions below are in the units of voyager.glb (the dish is about 11.8 units across).
+    target: [0, 1.0, 0.4],
+    span: [15, 9],
     parts: [
-      { id: "dish", name: "High-gain antenna", at: [0, 0.036, 0], view: { azimuth: Math.PI / 2, polar: Math.PI * 0.27 }, text: "A 3.7-metre dish that always points back at Earth. It sends Voyager's data home and receives the team's commands." },
-      { id: "record", name: "Golden Record", at: [0.0342, 0.0007, 0], view: { azimuth: Math.PI / 2, polar: Math.PI * 0.47 }, text: "Fixed to the side of the body inside its protective cover, which carries instructions for playing it. It holds the sounds and pictures of Earth." },
-      { id: "cameras", name: "Cameras and scan platform", at: [0.005, 0.004, -0.095], view: { azimuth: Math.PI * 0.78, polar: Math.PI * 0.42 }, text: "A turntable at the end of the science boom. It aimed the two TV cameras and other instruments at Jupiter, Saturn and their moons. The cameras were switched off in 1990." },
-      { id: "rtg", name: "Nuclear power generators", at: [0, -0.012, 0.085], view: { azimuth: Math.PI * 0.36, polar: Math.PI * 0.45 }, text: "Three RTGs on their own boom, kept away from the instruments. They turn heat from plutonium-238 into electricity, about 4 watts less every year." },
-      { id: "mag", name: "Magnetometer boom", at: [0, 0.08, 0.12], view: { azimuth: Math.PI / 2, polar: Math.PI * 0.42 }, text: "A 13-metre boom that holds magnetic field sensors far from the spacecraft's own electronics. The magnetometer is one of the two instruments still working." },
-      { id: "bus", name: "Ten-sided body", at: [-0.031, -0.006, 0], view: { azimuth: -Math.PI / 2, polar: Math.PI * 0.45 }, text: "The main body holds the computers, the radio, the tape recorder and the fuel tank for the thrusters." },
+      { id: "dish", name: "High-gain antenna", at: [0, 2.6, 0.2], view: { azimuth: Math.PI / 2, polar: Math.PI * 0.27 }, text: "A 3.7-metre dish that always points back at Earth. It sends Voyager's data home and receives the team's commands." },
+      { id: "record", name: "Golden Record", at: [-2.0, -0.27, 0.21], view: { azimuth: -Math.PI / 2, polar: Math.PI * 0.47 }, text: "Fixed to the side of the body inside its protective cover, which carries instructions for playing it. It holds the sounds and pictures of Earth." },
+      { id: "cameras", name: "Cameras and scan platform", at: [0, 0.2, -6.6], view: { azimuth: Math.PI * 0.8, polar: Math.PI * 0.42 }, text: "A turntable at the end of the science boom. It aimed the two TV cameras and other instruments at Jupiter, Saturn and their moons. The cameras were switched off in 1990." },
+      { id: "rtg", name: "Nuclear power generators", at: [0, -0.6, 6.9], view: { azimuth: Math.PI * 0.3, polar: Math.PI * 0.45 }, text: "Three RTGs on their own boom, kept away from the instruments. They turn heat from plutonium-238 into electricity, about 4 watts less every year." },
+      { id: "mag", name: "Magnetometer boom", at: [0.1, 4.2, 5.9], view: { azimuth: Math.PI / 2, polar: Math.PI * 0.42 }, text: "A 13-metre boom that holds magnetic field sensors far from the spacecraft's own electronics. The magnetometer is one of the two instruments still working." },
+      { id: "bus", name: "Ten-sided body", at: [2.75, -0.3, 0.2], view: { azimuth: Math.PI / 2, polar: Math.PI * 0.45 }, text: "The main body holds the computers, the radio, the tape recorder and the fuel tank for the thrusters." },
     ],
   },
   where: {

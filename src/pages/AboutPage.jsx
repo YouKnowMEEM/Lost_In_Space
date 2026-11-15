@@ -180,7 +180,7 @@ const GUIDE = [
   {
     icon: BookOpen,
     title: "Read the storybooks",
-    text: "Fourteen picture books: one for every group of machines on NASA's list, plus Voyager 1. Press “Read it to me” and each word lights up as it is spoken. Open “Chapters” to jump to any page. Eagle and Viking 1 also have our animated film: look for “Watch the film”.",
+    text: "Fourteen picture books: one for every group of machines on NASA's list, plus Voyager 1. Press “Read it to me” and each word lights up as it is spoken. Open “Chapters” to jump to any page. Eagle and Viking 1 also have our animated film: look for “Watch the Science”.",
     links: [["All storybooks", { pathname: "/", hash: "#storybooks" }]],
   },
   {
@@ -255,6 +255,10 @@ export default function AboutPage() {
             NASA Space Apps Challenge 2026
           </a>{" "}
           (challenge: “Abandoned but not forgotten: NASA's discarded equipment storytelling”). An independent project: NASA has not endorsed it.
+        </p>
+        <p className="ab-team ab-devs">
+          Developed by the members of <strong>Team LostInSpace</strong>: <strong><a href="https://github.com/Chayan4-4" target="_blank" rel="noreferrer">Chayan Datta</a></strong>{" "}
+           and{" "}<strong><a href="https://github.com/YouKnowMEEM/" target="_blank" rel="noreferrer">S. M. Sabiqun Meem</a></strong> .
         </p>
         <div className="ab-hero-actions">
           <Link className="hp-btn hp-btn-primary" to="/space">
@@ -571,7 +575,7 @@ export default function AboutPage() {
           <div>
             <dt>Narration</dt>
             <dd>
-              <a href="https://huggingface.co/hexgrad/Kokoro-82M" target="_blank" rel="noreferrer">Kokoro-82M</a> (Apache 2.0), run on our own computer, made the recorded voice of Eagle, Viking 1 and Voyager 1. The other books are read by the speech voice built into your browser.
+              <a href="https://huggingface.co/hexgrad/Kokoro-82M" target="_blank" rel="noreferrer">Kokoro-82M</a> (Apache 2.0), an open AI text-to-speech model run on our own computer, made the recorded voice of Eagle, Viking 1 and Voyager 1, so that narration is AI-generated. The other books are read by the speech voice built into your browser.
             </dd>
           </div>
           <div>
@@ -590,7 +594,7 @@ export default function AboutPage() {
           </div>
           <div>
             <dt>Software</dt>
-            <dd>React, React Router, Vite, three.js, React Three Fiber, drei, Framer Motion and Lucide icons, all open source.</dd>
+            <dd>React, React Router, Vite, Zustand, three.js, React Three Fiber, drei, React Three postprocessing, Framer Motion, Lucide icons, Node.js with Express, and MySQL, all open source. Narration was built with kokoro-onnx, Python, NumPy and FFmpeg. We used an AI assistant (Claude, by Anthropic) to help write code and polish text; every fact was checked against the sources above.</dd>
           </div>
         </dl>
         </div>

@@ -43,10 +43,24 @@ function clipped(material, plane) {
  * The NASA model, centred on the origin and standing on y = 0.
  * clipBelow (model units) hides anything under that height, such as a display stand.
  */
-function Model({ src, fit, clipBelow, onReady }) {
+/** three.js drops dots and similar characters from glTF node names; compare names the same way. */
+const plainName = (name) => String(name || "").replace(/[\s.[\]:/]/g, "");
+
+function Model({ src, fit, clipBelow, hide, onReady }) {
   const { scene } = useGLTF(src, DRACO_PATH);
   const layout = useMemo(() => {
     const object = scene.clone(true);
+    // Leave out named parts that are not the spacecraft (for example a museum display stand).
+    if (hide && hide.length) {
+      const names = hide.map(plainName);
+      const drop = [];
+      object.traverse((o) => {
+        if (!o.isMesh) return;
+        const n = plainName(o.name);
+        if (names.some((h) => n === h || n.startsWith(h + "_"))) drop.push(o);
+      });
+      drop.forEach((o) => o.removeFromParent());
+    }
     const box = new THREE.Box3().setFromObject(object);
     if (typeof clipBelow === "number" && clipBelow > box.min.y) {
       // After the layout below, model height clipBelow sits exactly at world y = 0.
@@ -61,7 +75,8 @@ function Model({ src, fit, clipBelow, onReady }) {
     const center = box.getCenter(new THREE.Vector3());
     const scale = fit / Math.max(size.x, size.y, size.z);
     return { object, scale, offset: [-center.x, -box.min.y, -center.z], size: size.multiplyScalar(scale) };
-  }, [scene, fit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scene, fit, clipBelow, hide]);
 
   useEffect(() => {
     onReady(layout);
@@ -196,7 +211,7 @@ class ModelBoundary extends React.Component {
 /**
  * Interactive 3D model with numbered hotspots.
  * model: { src, fit, yaw, parts: [{ id, name, at: [x, y, z] (model units), view?: { azimuth, polar } }],
- *          floating?, clipBelow?, target?: [x, y, z], span?: [width, height] }
+ *          floating?, clipBelow?, hide?: [node names], target?: [x, y, z], span?: [width, height] }
  */
 export default function ModelViewer(props) {
   const [attempt, setAttempt] = useState(0);
@@ -275,7 +290,7 @@ function ModelScene({ model, active, pickCount = 0, onPick }) {
         <StudioLight />
         <Suspense fallback={null}>
           <group rotation={[0, yaw, 0]}>
-            <Model src={model.src} fit={fit} clipBelow={model.clipBelow} onReady={setLayout} />
+            <Model src={model.src} fit={fit} clipBelow={model.clipBelow} hide={model.hide} onReady={setLayout} />
           </group>
           {/* A spacecraft in flight floats; landers get a soft shadow on the ground. */}
           {!floating && (

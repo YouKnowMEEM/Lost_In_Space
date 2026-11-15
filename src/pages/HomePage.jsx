@@ -81,7 +81,7 @@ function Book({ book }) {
           </Link>
           {book.film && (
             <Link to={book.film} className="hp-btn hp-btn-quiet hp-btn-film">
-              <Clapperboard size={18} aria-hidden="true" /> Watch the film
+              <Clapperboard size={18} aria-hidden="true" /> Watch the Science
             </Link>
           )}
         </div>

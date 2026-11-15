@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { BookOpen, ChevronLeft, ChevronRight, Clapperboard, FileText, Gauge, Headphones, ListOrdered, Music2, Pause, Play, RotateCcw, Type, Video, X } from "lucide-react";
+import { BookOpen, ChevronDown, ChevronLeft, ChevronRight, Clapperboard, FileText, Gauge, Headphones, ListOrdered, Music2, Pause, Play, RotateCcw, Type, Video, X } from "lucide-react";
 import NasaImage from "./NasaImage";
 import { nasaImageCandidates } from "../lib/nasa";
 import Lightbox from "./Lightbox";
@@ -78,12 +78,94 @@ function PageSources({ sources }) {
   );
 }
 
-function TextPage({ story, page, number, total, live, onWord, onVideo, endActions, sources = [] }) {
+/* In the two-page view each text page has a fixed size. If a page's text is too long for it, the
+   text is made a little smaller (never below a readable size) so everything fits; if it still does
+   not fit, a "More below" button shows that the page scrolls. */
+const MIN_FIT = 0.8;
+const MIN_TEXT_PX = 11;
+
+function useFitText(enabled, shrink, pageKey) {
+  const articleRef = useRef(null);
+  const scrollRef = useRef(null);
+  const [more, setMore] = useState(false);
+  const [moreBottom, setMoreBottom] = useState(0);
+
+  const updateMore = useCallback(() => {
+    const sc = scrollRef.current;
+    const el = articleRef.current;
+    const show = Boolean(sc) && sc.scrollTop + sc.clientHeight < sc.scrollHeight - 6;
+    setMore(show);
+    // Sit just above whatever is pinned under the text (the page number, or "The End" on the last page).
+    if (show && el) setMoreBottom(Math.max(0, Math.round(el.getBoundingClientRect().bottom - sc.getBoundingClientRect().bottom)));
+  }, []);
+
+  useLayoutEffect(() => {
+    const el = articleRef.current;
+    const sc = scrollRef.current;
+    if (!el || !sc) return undefined;
+    if (!enabled) {
+      el.style.removeProperty("--fit");
+      setMore(false);
+      return undefined;
+    }
+    const overflows = () => sc.scrollHeight - sc.clientHeight > 1;
+    const fit = () => {
+      el.style.setProperty("--fit", "1");
+      if (shrink && overflows()) {
+        const story = el.querySelector(".bk-story");
+        const base = story ? parseFloat(getComputedStyle(story).fontSize) || 16 : 16;
+        const floor = Math.min(1, Math.max(MIN_FIT, MIN_TEXT_PX / base));
+        let best = floor;
+        if (floor < 1) {
+          el.style.setProperty("--fit", String(floor));
+          if (!overflows()) {
+            // The largest size that still fits.
+            let lo = floor;
+            let hi = 1;
+            for (let k = 0; k < 7; k += 1) {
+              const mid = (lo + hi) / 2;
+              el.style.setProperty("--fit", String(mid));
+              if (overflows()) hi = mid;
+              else lo = mid;
+            }
+            best = lo;
+          }
+        }
+        el.style.setProperty("--fit", best.toFixed(3));
+      }
+      updateMore();
+    };
+    fit();
+    let raf = 0;
+    const later = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(fit);
+    };
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(later) : null;
+    ro?.observe(sc);
+    document.fonts?.ready?.then(later).catch(() => {});
+    sc.addEventListener("scroll", updateMore, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      ro?.disconnect();
+      sc.removeEventListener("scroll", updateMore);
+    };
+  }, [enabled, shrink, pageKey, updateMore]);
+
+  const scrollMore = () => {
+    const sc = scrollRef.current;
+    if (sc) sc.scrollBy({ top: Math.max(80, sc.clientHeight * 0.7), behavior: "smooth" });
+  };
+  return { articleRef, scrollRef, more, moreBottom, scrollMore };
+}
+
+function TextPage({ story, page, number, total, live, onWord, onVideo, endActions, sources = [], fitToPage = false, shrinkToFit = false }) {
   const titleCount = displayWords(page.title).length;
   let offset = titleCount;
+  const { articleRef, scrollRef, more, moreBottom, scrollMore } = useFitText(fitToPage, shrinkToFit, `${number}|${Boolean(endActions)}`);
   return (
-    <article className="bk-text" data-live={live ? "true" : undefined}>
-      <div className="bk-text-scroll">
+    <article className="bk-text" data-live={live ? "true" : undefined} ref={articleRef}>
+      <div className="bk-text-scroll" ref={scrollRef}>
         <header className="bk-head">
           <span className="bk-chapter" aria-hidden="true">
             {number}
@@ -133,6 +215,11 @@ function TextPage({ story, page, number, total, live, onWord, onVideo, endAction
         )}
         <PageSources sources={sources} />
       </div>
+      {more && (
+        <button type="button" className="bk-more" style={{ bottom: moreBottom + 8 }} onClick={scrollMore} tabIndex={-1} aria-hidden="true">
+          More below <ChevronDown size={15} />
+        </button>
+      )}
       {/* Pinned under the text, so "Read again" and friends are always in view on the last page. */}
       {endActions}
       <footer className="bk-folio" aria-hidden="true">
@@ -538,6 +625,8 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
       onVideo={openVideo}
       endActions={i === last ? endActions : null}
       sources={sourcesOf(pages[i])}
+      fitToPage={spread}
+      shrinkToFit={spread && size === "m"}
     />
   );
   const leftOf = (i, live = false) =>
@@ -636,7 +725,7 @@ export default function StoryBook({ story, timing, scenes, music, missionPath, n
             </button>
             {film && (
               <button type="button" className="bk-btn bk-btn-lg bk-btn-film" onClick={() => openVideo(film)}>
-                <Clapperboard size={20} aria-hidden="true" /> Watch the film
+                <Clapperboard size={20} aria-hidden="true" /> Watch the Science
               </button>
             )}
             <p className="bk-start-note">

@@ -10,7 +10,7 @@ Sleeping Beauties is an interactive space archive built with React, Vite, Three.
 - **The Atlas is now the Cosmic Library** (`/library`). Old `/atlas` links, filters included, redirect to it.
 - **Storybook machines glow.** On the Moon and Mars globes, every machine with a storybook has a golden light, a sparkle and a small book badge, and the map legend explains it.
 - **The Objects menu lists every storybook** on the Moon, Mars and deep-space pages, with a link to all of that world's machines in the Cosmic Library. A one-time hint points to the menu.
-- **The films are easy to find.** Eagle and Viking 1 show "Watch the film" on the cover, a Film button in the toolbar and a film card in Chapters. Their mission files have a "Watch our film" button and the film as the first card under "Real photos and video". The home bookshelf marks both books.
+- **The films are easy to find.** Eagle and Viking 1 show "Watch the Science" on the cover, a Film button in the toolbar and a film card in Chapters. Their mission files have a "Watch our film" button and the film as the first card under "Real photos and video". The home bookshelf marks both books.
 - **A source beside every fact.** Every storybook page names the sources for its facts, and Chapters lists the whole book's sources (`src/data/citations.js`). Each planet pop-up on the solar-system page links to its NASA Science page.
 - **The last page of a book** keeps "Read again" and the other end buttons visible on every screen size.
 - **Brighter Mars books**, with coral, peach and violet skies.
